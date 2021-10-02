@@ -648,7 +648,7 @@ namespace ExtraMath
 
         public static explicit operator AABBi(AABBd value)
         {
-            return new AABBi((Vector3i)value.Position, (Vector3i)value.Size);
+            return new AABBi((Vector3I)value.Position, (Vector3I)value.Size);
         }
 
         public static implicit operator AABBd(AABBi value)

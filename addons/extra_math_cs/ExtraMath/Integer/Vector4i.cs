@@ -19,7 +19,7 @@ namespace ExtraMath
     /// </summary>
     [Serializable]
     [StructLayout(LayoutKind.Sequential)]
-    public struct Vector4i : IEquatable<Vector4i>
+    public struct Vector4I : IEquatable<Vector4I>
     {
         public enum Axis
         {
@@ -34,11 +34,11 @@ namespace ExtraMath
         public int z;
         public int w;
 
-        public Vector3i XYZ
+        public Vector3I XYZ
         {
             get
             {
-                return new Vector3i(x, y, z);
+                return new Vector3I(x, y, z);
             }
             set
             {
@@ -88,22 +88,22 @@ namespace ExtraMath
             }
         }
 
-        public Vector4i Abs()
+        public Vector4I Abs()
         {
-            return new Vector4i(Mathf.Abs(x), Mathf.Abs(y), Mathf.Abs(z), Mathf.Abs(w));
+            return new Vector4I(Mathf.Abs(x), Mathf.Abs(y), Mathf.Abs(z), Mathf.Abs(w));
         }
 
-        public int DistanceSquaredTo(Vector4i b)
+        public int DistanceSquaredTo(Vector4I b)
         {
             return (b - this).LengthSquared();
         }
 
-        public real_t DistanceTo(Vector4i b)
+        public real_t DistanceTo(Vector4I b)
         {
             return (b - this).Length();
         }
 
-        public int Dot(Vector4i b)
+        public int Dot(Vector4I b)
         {
             return x * b.x + y * b.y + z * b.z + w * b.w;
         }
@@ -155,9 +155,9 @@ namespace ExtraMath
         }
 
 #if GODOT
-        public Vector4i PosMod(int mod)
+        public Vector4I PosMod(int mod)
         {
-            Vector4i v = this;
+            Vector4I v = this;
             v.x = Mathf.PosMod(v.x, mod);
             v.y = Mathf.PosMod(v.y, mod);
             v.z = Mathf.PosMod(v.z, mod);
@@ -165,9 +165,9 @@ namespace ExtraMath
             return v;
         }
 
-        public Vector4i PosMod(Vector4i modv)
+        public Vector4I PosMod(Vector4I modv)
         {
-            Vector4i v = this;
+            Vector4I v = this;
             v.x = Mathf.PosMod(v.x, modv.x);
             v.y = Mathf.PosMod(v.y, modv.y);
             v.z = Mathf.PosMod(v.z, modv.z);
@@ -176,9 +176,9 @@ namespace ExtraMath
         }
 #endif
 
-        public Vector4i Sign()
+        public Vector4I Sign()
         {
-            Vector4i v = this;
+            Vector4I v = this;
 #if GODOT
             v.x = Mathf.Sign(v.x);
             v.y = Mathf.Sign(v.y);
@@ -193,69 +193,69 @@ namespace ExtraMath
             return v;
         }
 
-        public Vector2i[] UnpackVector2()
+        public Vector2I[] UnpackVector2()
         {
-            Vector2i[] arr = new Vector2i[2];
-            arr[0] = new Vector2i(x, y);
-            arr[1] = new Vector2i(z, w);
+            Vector2I[] arr = new Vector2I[2];
+            arr[0] = new Vector2I(x, y);
+            arr[1] = new Vector2I(z, w);
             return arr;
         }
 
-        public void UnpackVector2(out Vector2i xy, out Vector2i zw)
+        public void UnpackVector2(out Vector2I xy, out Vector2I zw)
         {
-            xy = new Vector2i(x, y);
-            zw = new Vector2i(z, w);
+            xy = new Vector2I(x, y);
+            zw = new Vector2I(z, w);
         }
 
         // Constants
-        private static readonly Vector4i _zero = new Vector4i(0, 0, 0, 0);
-        private static readonly Vector4i _one = new Vector4i(1, 1, 1, 1);
-        private static readonly Vector4i _negOne = new Vector4i(-1, -1, -1, -1);
+        private static readonly Vector4I _zero = new Vector4I(0, 0, 0, 0);
+        private static readonly Vector4I _one = new Vector4I(1, 1, 1, 1);
+        private static readonly Vector4I _negOne = new Vector4I(-1, -1, -1, -1);
 
-        private static readonly Vector4i _unitX = new Vector4i(1, 0, 0, 0);
-        private static readonly Vector4i _unitY = new Vector4i(0, 1, 0, 0);
-        private static readonly Vector4i _unitZ = new Vector4i(0, 0, 1, 0);
-        private static readonly Vector4i _unitW = new Vector4i(0, 0, 0, 1);
+        private static readonly Vector4I _unitX = new Vector4I(1, 0, 0, 0);
+        private static readonly Vector4I _unitY = new Vector4I(0, 1, 0, 0);
+        private static readonly Vector4I _unitZ = new Vector4I(0, 0, 1, 0);
+        private static readonly Vector4I _unitW = new Vector4I(0, 0, 0, 1);
 
-        public static Vector4i Zero { get { return _zero; } }
-        public static Vector4i One { get { return _one; } }
-        public static Vector4i NegOne { get { return _negOne; } }
+        public static Vector4I Zero { get { return _zero; } }
+        public static Vector4I One { get { return _one; } }
+        public static Vector4I NegOne { get { return _negOne; } }
 
-        public static Vector4i UnitX { get { return _unitX; } }
-        public static Vector4i UnitY { get { return _unitY; } }
-        public static Vector4i UnitZ { get { return _unitZ; } }
-        public static Vector4i UnitW { get { return _unitW; } }
+        public static Vector4I UnitX { get { return _unitX; } }
+        public static Vector4I UnitY { get { return _unitY; } }
+        public static Vector4I UnitZ { get { return _unitZ; } }
+        public static Vector4I UnitW { get { return _unitW; } }
 
         // Constructors
-        public Vector4i(int x, int y, int z, int w)
+        public Vector4I(int x, int y, int z, int w)
         {
             this.x = x;
             this.y = y;
             this.z = z;
             this.w = w;
         }
-        public Vector4i(Vector4i v)
+        public Vector4I(Vector4I v)
         {
             this.x = v.x;
             this.y = v.y;
             this.z = v.z;
             this.w = v.w;
         }
-        public Vector4i(Vector4 v)
+        public Vector4I(Vector4 v)
         {
             this.x = Mathf.RoundToInt(v.x);
             this.y = Mathf.RoundToInt(v.y);
             this.z = Mathf.RoundToInt(v.z);
             this.w = Mathf.RoundToInt(v.w);
         }
-        public Vector4i(Vector3i xyz, int w)
+        public Vector4I(Vector3I xyz, int w)
         {
             x = xyz.x;
             y = xyz.y;
             z = xyz.z;
             this.w = w;
         }
-        public Vector4i(Vector2i xy, Vector2i zw)
+        public Vector4I(Vector2I xy, Vector2I zw)
         {
             x = xy.x;
             y = xy.y;
@@ -263,29 +263,29 @@ namespace ExtraMath
             w = zw.y;
         }
 
-        public static implicit operator Vector4(Vector4i value)
+        public static implicit operator Vector4(Vector4I value)
         {
             return new Vector4(value.x, value.y, value.z, value.w);
         }
 
-        public static explicit operator Vector4i(Vector4 value)
+        public static explicit operator Vector4I(Vector4 value)
         {
-            return new Vector4i(value);
+            return new Vector4I(value);
         }
 
 #if UNITY_5_3_OR_NEWER
-        public static implicit operator UnityEngine.Vector4(Vector4i value)
+        public static implicit operator UnityEngine.Vector4(Vector4I value)
         {
             return new UnityEngine.Vector4(value.x, value.y, value.z, value.w);
         }
 
-        public static explicit operator Vector4i(UnityEngine.Vector4 value)
+        public static explicit operator Vector4I(UnityEngine.Vector4 value)
         {
-            return new Vector4i((Vector4)value);
+            return new Vector4I((Vector4)value);
         }
 #endif
 
-        public static Vector4i operator +(Vector4i left, Vector4i right)
+        public static Vector4I operator +(Vector4I left, Vector4I right)
         {
             left.x += right.x;
             left.y += right.y;
@@ -294,7 +294,7 @@ namespace ExtraMath
             return left;
         }
 
-        public static Vector4i operator -(Vector4i left, Vector4i right)
+        public static Vector4I operator -(Vector4I left, Vector4I right)
         {
             left.x -= right.x;
             left.y -= right.y;
@@ -303,7 +303,7 @@ namespace ExtraMath
             return left;
         }
 
-        public static Vector4i operator -(Vector4i vec)
+        public static Vector4I operator -(Vector4I vec)
         {
             vec.x = -vec.x;
             vec.y = -vec.y;
@@ -312,7 +312,7 @@ namespace ExtraMath
             return vec;
         }
 
-        public static Vector4i operator *(Vector4i vec, int scale)
+        public static Vector4I operator *(Vector4I vec, int scale)
         {
             vec.x *= scale;
             vec.y *= scale;
@@ -321,7 +321,7 @@ namespace ExtraMath
             return vec;
         }
 
-        public static Vector4i operator *(int scale, Vector4i vec)
+        public static Vector4I operator *(int scale, Vector4I vec)
         {
             vec.x *= scale;
             vec.y *= scale;
@@ -330,7 +330,7 @@ namespace ExtraMath
             return vec;
         }
 
-        public static Vector4i operator *(Vector4i left, Vector4i right)
+        public static Vector4I operator *(Vector4I left, Vector4I right)
         {
             left.x *= right.x;
             left.y *= right.y;
@@ -339,7 +339,7 @@ namespace ExtraMath
             return left;
         }
 
-        public static Vector4i operator /(Vector4i vec, int scale)
+        public static Vector4I operator /(Vector4I vec, int scale)
         {
             vec.x /= scale;
             vec.y /= scale;
@@ -348,7 +348,7 @@ namespace ExtraMath
             return vec;
         }
 
-        public static Vector4i operator /(Vector4i left, Vector4i right)
+        public static Vector4I operator /(Vector4I left, Vector4I right)
         {
             left.x /= right.x;
             left.y /= right.y;
@@ -357,7 +357,7 @@ namespace ExtraMath
             return left;
         }
 
-        public static Vector4i operator %(Vector4i vec, int divisor)
+        public static Vector4I operator %(Vector4I vec, int divisor)
         {
             vec.x %= divisor;
             vec.y %= divisor;
@@ -366,7 +366,7 @@ namespace ExtraMath
             return vec;
         }
 
-        public static Vector4i operator %(Vector4i vec, Vector4i divisorv)
+        public static Vector4I operator %(Vector4I vec, Vector4I divisorv)
         {
             vec.x %= divisorv.x;
             vec.y %= divisorv.y;
@@ -375,7 +375,7 @@ namespace ExtraMath
             return vec;
         }
 
-        public static Vector4i operator &(Vector4i vec, int and)
+        public static Vector4I operator &(Vector4I vec, int and)
         {
             vec.x &= and;
             vec.y &= and;
@@ -384,7 +384,7 @@ namespace ExtraMath
             return vec;
         }
 
-        public static Vector4i operator &(Vector4i vec, Vector4i andv)
+        public static Vector4I operator &(Vector4I vec, Vector4I andv)
         {
             vec.x &= andv.x;
             vec.y &= andv.y;
@@ -393,17 +393,17 @@ namespace ExtraMath
             return vec;
         }
 
-        public static bool operator ==(Vector4i left, Vector4i right)
+        public static bool operator ==(Vector4I left, Vector4I right)
         {
             return left.Equals(right);
         }
 
-        public static bool operator !=(Vector4i left, Vector4i right)
+        public static bool operator !=(Vector4I left, Vector4I right)
         {
             return !left.Equals(right);
         }
 
-        public static bool operator <(Vector4i left, Vector4i right)
+        public static bool operator <(Vector4I left, Vector4I right)
         {
             if (left.x == right.x)
             {
@@ -420,7 +420,7 @@ namespace ExtraMath
             return left.x < right.x;
         }
 
-        public static bool operator >(Vector4i left, Vector4i right)
+        public static bool operator >(Vector4I left, Vector4I right)
         {
             if (left.x == right.x)
             {
@@ -437,7 +437,7 @@ namespace ExtraMath
             return left.x > right.x;
         }
 
-        public static bool operator <=(Vector4i left, Vector4i right)
+        public static bool operator <=(Vector4I left, Vector4I right)
         {
             if (left.x == right.x)
             {
@@ -454,7 +454,7 @@ namespace ExtraMath
             return left.x < right.x;
         }
 
-        public static bool operator >=(Vector4i left, Vector4i right)
+        public static bool operator >=(Vector4I left, Vector4I right)
         {
             if (left.x == right.x)
             {
@@ -473,15 +473,15 @@ namespace ExtraMath
 
         public override bool Equals(object obj)
         {
-            if (obj is Vector4i)
+            if (obj is Vector4I)
             {
-                return Equals((Vector4i)obj);
+                return Equals((Vector4I)obj);
             }
 
             return false;
         }
 
-        public bool Equals(Vector4i other)
+        public bool Equals(Vector4I other)
         {
             return x == other.x && y == other.y && z == other.z && w == other.w;
         }

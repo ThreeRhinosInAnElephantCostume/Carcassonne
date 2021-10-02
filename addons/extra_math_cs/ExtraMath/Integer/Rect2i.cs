@@ -16,14 +16,14 @@ namespace ExtraMath
     [StructLayout(LayoutKind.Sequential)]
     public struct Rect2i : IEquatable<Rect2i>
     {
-        private Vector2i _position;
-        private Vector2i _size;
+        private Vector2I _position;
+        private Vector2I _size;
 
         /// <summary>
         /// Beginning corner. Typically has values lower than End.
         /// </summary>
         /// <value>Directly uses a private field.</value>
-        public Vector2i Position
+        public Vector2I Position
         {
             get { return _position; }
             set { _position = value; }
@@ -34,7 +34,7 @@ namespace ExtraMath
         /// If the size is negative, you can use <see cref="Abs"/> to fix it.
         /// </summary>
         /// <value>Directly uses a private field.</value>
-        public Vector2i Size
+        public Vector2I Size
         {
             get { return _size; }
             set { _size = value; }
@@ -45,7 +45,7 @@ namespace ExtraMath
         /// <see cref="Size"/>. Setting this value will change the size.
         /// </summary>
         /// <value>Getting is equivalent to `value = Position + Size`, setting is equivalent to `Size = value - Position`.</value>
-        public Vector2i End
+        public Vector2I End
         {
             get { return _position + _size; }
             set { _size = value - _position; }
@@ -67,8 +67,8 @@ namespace ExtraMath
         /// <returns>The modified Rect2i.</returns>
         public Rect2i Abs()
         {
-            Vector2i end = End;
-            Vector2i topLeft = new Vector2i(Mathf.Min(_position.x, end.x), Mathf.Min(_position.y, end.y));
+            Vector2I end = End;
+            Vector2I topLeft = new Vector2I(Mathf.Min(_position.x, end.x), Mathf.Min(_position.y, end.y));
             return new Rect2i(topLeft, _size.Abs());
         }
 
@@ -90,8 +90,8 @@ namespace ExtraMath
             newRect._position.x = Mathf.Max(b._position.x, _position.x);
             newRect._position.y = Mathf.Max(b._position.y, _position.y);
 
-            Vector2i bEnd = b._position + b._size;
-            Vector2i end = _position + _size;
+            Vector2I bEnd = b._position + b._size;
+            Vector2I end = _position + _size;
 
             newRect._size.x = Mathf.Min(bEnd.x, end.x) - newRect._position.x;
             newRect._size.y = Mathf.Min(bEnd.y, end.y) - newRect._position.y;
@@ -116,12 +116,12 @@ namespace ExtraMath
         /// </summary>
         /// <param name="to">The point to include.</param>
         /// <returns>The expanded Rect2i.</returns>
-        public Rect2i Expand(Vector2i to)
+        public Rect2i Expand(Vector2I to)
         {
             var expanded = this;
 
-            Vector2i begin = expanded._position;
-            Vector2i end = expanded._position + expanded._size;
+            Vector2I begin = expanded._position;
+            Vector2I end = expanded._position + expanded._size;
 
             if (to.x < begin.x)
             {
@@ -245,7 +245,7 @@ namespace ExtraMath
         /// </summary>
         /// <param name="point">The point to check.</param>
         /// <returns>A bool for whether or not the Rect2i contains `point`.</returns>
-        public bool HasPoint(Vector2i point)
+        public bool HasPoint(Vector2I point)
         {
             if (point.x < _position.x)
                 return false;
@@ -323,7 +323,7 @@ namespace ExtraMath
         /// </summary>
         /// <param name="position">The position.</param>
         /// <param name="size">The size.</param>
-        public Rect2i(Vector2i position, Vector2i size)
+        public Rect2i(Vector2I position, Vector2I size)
         {
             _position = position;
             _size = size;
@@ -335,10 +335,10 @@ namespace ExtraMath
         /// <param name="position">The position.</param>
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
-        public Rect2i(Vector2i position, int width, int height)
+        public Rect2i(Vector2I position, int width, int height)
         {
             _position = position;
-            _size = new Vector2i(width, height);
+            _size = new Vector2I(width, height);
         }
 
         /// <summary>
@@ -347,9 +347,9 @@ namespace ExtraMath
         /// <param name="x">The position's X coordinate.</param>
         /// <param name="y">The position's Y coordinate.</param>
         /// <param name="size">The size.</param>
-        public Rect2i(int x, int y, Vector2i size)
+        public Rect2i(int x, int y, Vector2I size)
         {
-            _position = new Vector2i(x, y);
+            _position = new Vector2I(x, y);
             _size = size;
         }
 
@@ -362,8 +362,8 @@ namespace ExtraMath
         /// <param name="height">The height.</param>
         public Rect2i(int x, int y, int width, int height)
         {
-            _position = new Vector2i(x, y);
-            _size = new Vector2i(width, height);
+            _position = new Vector2I(x, y);
+            _size = new Vector2I(width, height);
         }
 
         public static bool operator ==(Rect2i left, Rect2i right)
@@ -379,7 +379,7 @@ namespace ExtraMath
 #if GODOT
         public static explicit operator Rect2i(Godot.Rect2 value)
         {
-            return new Rect2i((Vector2i)value.Position, (Vector2i)value.Size);
+            return new Rect2i((Vector2I)value.Position, (Vector2I)value.Size);
         }
 
         public static implicit operator Godot.Rect2(Rect2i value)

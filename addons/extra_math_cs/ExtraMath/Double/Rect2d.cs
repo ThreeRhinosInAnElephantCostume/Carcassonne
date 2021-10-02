@@ -428,7 +428,7 @@ namespace ExtraMath
 
         public static explicit operator Rect2i(Rect2d value)
         {
-            return new Rect2i((Vector2i)value.Position, (Vector2i)value.Size);
+            return new Rect2i((Vector2I)value.Position, (Vector2I)value.Size);
         }
 
         public static implicit operator Rect2d(Rect2i value)

@@ -480,12 +480,12 @@ namespace ExtraMath
             return new Vector4d(value.x, value.y, value.z, value.w);
         }
 
-        public static explicit operator Vector4i(Vector4d value)
+        public static explicit operator Vector4I(Vector4d value)
         {
-            return new Vector4i((int)value.x, (int)value.y, (int)value.z, (int)value.w);
+            return new Vector4I((int)value.x, (int)value.y, (int)value.z, (int)value.w);
         }
 
-        public static implicit operator Vector4d(Vector4i value)
+        public static implicit operator Vector4d(Vector4I value)
         {
             return new Vector4d(value.x, value.y, value.z, value.w);
         }

@@ -19,7 +19,7 @@ namespace ExtraMath
     /// </summary>
     [Serializable]
     [StructLayout(LayoutKind.Sequential)]
-    public struct Vector3i : IEquatable<Vector3i>
+    public struct Vector3I : IEquatable<Vector3I>
     {
         /// <summary>
         /// Enumerated index values for the axes.
@@ -88,9 +88,9 @@ namespace ExtraMath
         /// Returns a new vector with all components in absolute values (i.e. positive).
         /// </summary>
         /// <returns>A vector with <see cref="Mathf.Abs(int)"/> called on each component.</returns>
-        public Vector3i Abs()
+        public Vector3I Abs()
         {
-            return new Vector3i(Mathf.Abs(x), Mathf.Abs(y), Mathf.Abs(z));
+            return new Vector3I(Mathf.Abs(x), Mathf.Abs(y), Mathf.Abs(z));
         }
 
         /// <summary>
@@ -98,9 +98,9 @@ namespace ExtraMath
         /// </summary>
         /// <param name="b">The other vector.</param>
         /// <returns>The cross product vector.</returns>
-        public Vector3i Cross(Vector3i b)
+        public Vector3I Cross(Vector3I b)
         {
-            return new Vector3i
+            return new Vector3I
             (
                 y * b.z - z * b.y,
                 z * b.x - x * b.z,
@@ -115,7 +115,7 @@ namespace ExtraMath
         /// </summary>
         /// <param name="b">The other vector to use.</param>
         /// <returns>The squared distance between the two vectors.</returns>
-        public int DistanceSquaredTo(Vector3i b)
+        public int DistanceSquaredTo(Vector3I b)
         {
             return (b - this).LengthSquared();
         }
@@ -125,7 +125,7 @@ namespace ExtraMath
         /// </summary>
         /// <param name="b">The other vector to use.</param>
         /// <returns>The distance between the two vectors.</returns>
-        public real_t DistanceTo(Vector3i b)
+        public real_t DistanceTo(Vector3I b)
         {
             return (b - this).Length();
         }
@@ -135,7 +135,7 @@ namespace ExtraMath
         /// </summary>
         /// <param name="b">The other vector to use.</param>
         /// <returns>The dot product of the two vectors.</returns>
-        public int Dot(Vector3i b)
+        public int Dot(Vector3I b)
         {
             return x * b.x + y * b.y + z * b.z;
         }
@@ -194,9 +194,9 @@ namespace ExtraMath
         /// </summary>
         /// <param name="mod">A value representing the divisor of the operation.</param>
         /// <returns>A vector with each component <see cref="Mathf.PosMod(int, int)"/> by `mod`.</returns>
-        public Vector3i PosMod(int mod)
+        public Vector3I PosMod(int mod)
         {
-            Vector3i v = this;
+            Vector3I v = this;
             v.x = Mathf.PosMod(v.x, mod);
             v.y = Mathf.PosMod(v.y, mod);
             v.z = Mathf.PosMod(v.z, mod);
@@ -208,9 +208,9 @@ namespace ExtraMath
         /// </summary>
         /// <param name="modv">A vector representing the divisors of the operation.</param>
         /// <returns>A vector with each component <see cref="Mathf.PosMod(int, int)"/> by `modv`'s components.</returns>
-        public Vector3i PosMod(Vector3i modv)
+        public Vector3I PosMod(Vector3I modv)
         {
-            Vector3i v = this;
+            Vector3I v = this;
             v.x = Mathf.PosMod(v.x, modv.x);
             v.y = Mathf.PosMod(v.y, modv.y);
             v.z = Mathf.PosMod(v.z, modv.z);
@@ -224,9 +224,9 @@ namespace ExtraMath
         /// by calling <see cref="Mathf.Sign(int)"/> on each component.
         /// </summary>
         /// <returns>A vector with all components as either `1`, `-1`, or `0`.</returns>
-        public Vector3i Sign()
+        public Vector3I Sign()
         {
-            Vector3i v = this;
+            Vector3I v = this;
 #if GODOT
             v.x = Mathf.Sign(v.x);
             v.y = Mathf.Sign(v.y);
@@ -248,78 +248,78 @@ namespace ExtraMath
         /// <param name="to">The other vector to compare this vector to.</param>
         /// <param name="axis">The reference axis to use for the angle sign.</param>
         /// <returns>The signed angle between the two vectors, in radians.</returns>
-        public real_t SignedAngleTo(Vector3i to, Vector3i axis)
+        public real_t SignedAngleTo(Vector3I to, Vector3I axis)
         {
-            Vector3i crossTo = Cross(to);
+            Vector3I crossTo = Cross(to);
             real_t unsignedAngle = Mathf.Atan2(crossTo.Length(), Dot(to));
             real_t sign = crossTo.Dot(axis);
             return (sign < 0) ? -unsignedAngle : unsignedAngle;
         }
 
         // Constants
-        private static readonly Vector3i _zero = new Vector3i(0, 0, 0);
-        private static readonly Vector3i _one = new Vector3i(1, 1, 1);
+        private static readonly Vector3I _zero = new Vector3I(0, 0, 0);
+        private static readonly Vector3I _one = new Vector3I(1, 1, 1);
 
-        private static readonly Vector3i _up = new Vector3i(0, 1, 0);
-        private static readonly Vector3i _down = new Vector3i(0, -1, 0);
-        private static readonly Vector3i _right = new Vector3i(1, 0, 0);
-        private static readonly Vector3i _left = new Vector3i(-1, 0, 0);
-        private static readonly Vector3i _forward = new Vector3i(0, 0, -1);
-        private static readonly Vector3i _back = new Vector3i(0, 0, 1);
+        private static readonly Vector3I _up = new Vector3I(0, 1, 0);
+        private static readonly Vector3I _down = new Vector3I(0, -1, 0);
+        private static readonly Vector3I _right = new Vector3I(1, 0, 0);
+        private static readonly Vector3I _left = new Vector3I(-1, 0, 0);
+        private static readonly Vector3I _forward = new Vector3I(0, 0, -1);
+        private static readonly Vector3I _back = new Vector3I(0, 0, 1);
 
         /// <summary>
         /// Zero vector, a vector with all components set to `0`.
         /// </summary>
-        /// <value>Equivalent to `new Vector3i(0, 0, 0)`</value>
-        public static Vector3i Zero { get { return _zero; } }
+        /// <value>Equivalent to `new Vector3I(0, 0, 0)`</value>
+        public static Vector3I Zero { get { return _zero; } }
         /// <summary>
         /// One vector, a vector with all components set to `1`.
         /// </summary>
-        /// <value>Equivalent to `new Vector3i(1, 1, 1)`</value>
-        public static Vector3i One { get { return _one; } }
+        /// <value>Equivalent to `new Vector3I(1, 1, 1)`</value>
+        public static Vector3I One { get { return _one; } }
 
         /// <summary>
         /// Up unit vector.
         /// </summary>
-        /// <value>Equivalent to `new Vector3i(0, 1, 0)`</value>
-        public static Vector3i Up { get { return _up; } }
+        /// <value>Equivalent to `new Vector3I(0, 1, 0)`</value>
+        public static Vector3I Up { get { return _up; } }
         /// <summary>
         /// Down unit vector.
         /// </summary>
-        /// <value>Equivalent to `new Vector3i(0, -1, 0)`</value>
-        public static Vector3i Down { get { return _down; } }
+        /// <value>Equivalent to `new Vector3I(0, -1, 0)`</value>
+        public static Vector3I Down { get { return _down; } }
         /// <summary>
         /// Right unit vector. Represents the local direction of right,
         /// and the global direction of east.
         /// </summary>
-        /// <value>Equivalent to `new Vector3i(1, 0, 0)`</value>
-        public static Vector3i Right { get { return _right; } }
+        /// <value>Equivalent to `new Vector3I(1, 0, 0)`</value>
+        public static Vector3I Right { get { return _right; } }
         /// <summary>
         /// Left unit vector. Represents the local direction of left,
         /// and the global direction of west.
         /// </summary>
-        /// <value>Equivalent to `new Vector3i(-1, 0, 0)`</value>
-        public static Vector3i Left { get { return _left; } }
+        /// <value>Equivalent to `new Vector3I(-1, 0, 0)`</value>
+        public static Vector3I Left { get { return _left; } }
         /// <summary>
         /// Forward unit vector. Represents the local direction of forward,
         /// and the global direction of north.
         /// </summary>
-        /// <value>Equivalent to `new Vector3i(0, 0, -1)`</value>
-        public static Vector3i Forward { get { return _forward; } }
+        /// <value>Equivalent to `new Vector3I(0, 0, -1)`</value>
+        public static Vector3I Forward { get { return _forward; } }
         /// <summary>
         /// Back unit vector. Represents the local direction of back,
         /// and the global direction of south.
         /// </summary>
-        /// <value>Equivalent to `new Vector3i(0, 0, 1)`</value>
-        public static Vector3i Back { get { return _back; } }
+        /// <value>Equivalent to `new Vector3I(0, 0, 1)`</value>
+        public static Vector3I Back { get { return _back; } }
 
         /// <summary>
-        /// Constructs a new <see cref="Vector3i"/> with the given components.
+        /// Constructs a new <see cref="Vector3I"/> with the given components.
         /// </summary>
         /// <param name="x">The vector's X component.</param>
         /// <param name="y">The vector's Y component.</param>
         /// <param name="z">The vector's Z component.</param>
-        public Vector3i(int x, int y, int z)
+        public Vector3I(int x, int y, int z)
         {
             this.x = x;
             this.y = y;
@@ -327,10 +327,10 @@ namespace ExtraMath
         }
 
         /// <summary>
-        /// Constructs a new <see cref="Vector3i"/> from an existing <see cref="Vector3i"/>.
+        /// Constructs a new <see cref="Vector3I"/> from an existing <see cref="Vector3I"/>.
         /// </summary>
-        /// <param name="vi">The existing <see cref="Vector3i"/>.</param>
-        public Vector3i(Vector3i vi)
+        /// <param name="vi">The existing <see cref="Vector3I"/>.</param>
+        public Vector3I(Vector3I vi)
         {
             this.x = vi.x;
             this.y = vi.y;
@@ -338,18 +338,18 @@ namespace ExtraMath
         }
 
         /// <summary>
-        /// Constructs a new <see cref="Vector3i"/> from an existing <see cref="Vector3"/>
+        /// Constructs a new <see cref="Vector3I"/> from an existing <see cref="Vector3"/>
         /// by rounding the components via <see cref="Mathf.RoundToInt(real_t)"/>.
         /// </summary>
         /// <param name="v">The <see cref="Vector3"/> to convert.</param>
-        public Vector3i(Vector3 v)
+        public Vector3I(Vector3 v)
         {
             this.x = Mathf.RoundToInt(v.x);
             this.y = Mathf.RoundToInt(v.y);
             this.z = Mathf.RoundToInt(v.z);
         }
 
-        public static Vector3i operator +(Vector3i left, Vector3i right)
+        public static Vector3I operator +(Vector3I left, Vector3I right)
         {
             left.x += right.x;
             left.y += right.y;
@@ -357,7 +357,7 @@ namespace ExtraMath
             return left;
         }
 
-        public static Vector3i operator -(Vector3i left, Vector3i right)
+        public static Vector3I operator -(Vector3I left, Vector3I right)
         {
             left.x -= right.x;
             left.y -= right.y;
@@ -365,7 +365,7 @@ namespace ExtraMath
             return left;
         }
 
-        public static Vector3i operator -(Vector3i vec)
+        public static Vector3I operator -(Vector3I vec)
         {
             vec.x = -vec.x;
             vec.y = -vec.y;
@@ -373,7 +373,7 @@ namespace ExtraMath
             return vec;
         }
 
-        public static Vector3i operator *(Vector3i vec, int scale)
+        public static Vector3I operator *(Vector3I vec, int scale)
         {
             vec.x *= scale;
             vec.y *= scale;
@@ -381,7 +381,7 @@ namespace ExtraMath
             return vec;
         }
 
-        public static Vector3i operator *(int scale, Vector3i vec)
+        public static Vector3I operator *(int scale, Vector3I vec)
         {
             vec.x *= scale;
             vec.y *= scale;
@@ -389,7 +389,7 @@ namespace ExtraMath
             return vec;
         }
 
-        public static Vector3i operator *(Vector3i left, Vector3i right)
+        public static Vector3I operator *(Vector3I left, Vector3I right)
         {
             left.x *= right.x;
             left.y *= right.y;
@@ -397,7 +397,7 @@ namespace ExtraMath
             return left;
         }
 
-        public static Vector3i operator /(Vector3i vec, int divisor)
+        public static Vector3I operator /(Vector3I vec, int divisor)
         {
             vec.x /= divisor;
             vec.y /= divisor;
@@ -405,7 +405,7 @@ namespace ExtraMath
             return vec;
         }
 
-        public static Vector3i operator /(Vector3i vec, Vector3i divisorv)
+        public static Vector3I operator /(Vector3I vec, Vector3I divisorv)
         {
             vec.x /= divisorv.x;
             vec.y /= divisorv.y;
@@ -413,7 +413,7 @@ namespace ExtraMath
             return vec;
         }
 
-        public static Vector3i operator %(Vector3i vec, int divisor)
+        public static Vector3I operator %(Vector3I vec, int divisor)
         {
             vec.x %= divisor;
             vec.y %= divisor;
@@ -421,7 +421,7 @@ namespace ExtraMath
             return vec;
         }
 
-        public static Vector3i operator %(Vector3i vec, Vector3i divisorv)
+        public static Vector3I operator %(Vector3I vec, Vector3I divisorv)
         {
             vec.x %= divisorv.x;
             vec.y %= divisorv.y;
@@ -429,7 +429,7 @@ namespace ExtraMath
             return vec;
         }
 
-        public static Vector3i operator &(Vector3i vec, int and)
+        public static Vector3I operator &(Vector3I vec, int and)
         {
             vec.x &= and;
             vec.y &= and;
@@ -437,7 +437,7 @@ namespace ExtraMath
             return vec;
         }
 
-        public static Vector3i operator &(Vector3i vec, Vector3i andv)
+        public static Vector3I operator &(Vector3I vec, Vector3I andv)
         {
             vec.x &= andv.x;
             vec.y &= andv.y;
@@ -445,17 +445,17 @@ namespace ExtraMath
             return vec;
         }
 
-        public static bool operator ==(Vector3i left, Vector3i right)
+        public static bool operator ==(Vector3I left, Vector3I right)
         {
             return left.Equals(right);
         }
 
-        public static bool operator !=(Vector3i left, Vector3i right)
+        public static bool operator !=(Vector3I left, Vector3I right)
         {
             return !left.Equals(right);
         }
 
-        public static bool operator <(Vector3i left, Vector3i right)
+        public static bool operator <(Vector3I left, Vector3I right)
         {
             if (left.x == right.x)
             {
@@ -468,7 +468,7 @@ namespace ExtraMath
             return left.x < right.x;
         }
 
-        public static bool operator >(Vector3i left, Vector3i right)
+        public static bool operator >(Vector3I left, Vector3I right)
         {
             if (left.x == right.x)
             {
@@ -481,7 +481,7 @@ namespace ExtraMath
             return left.x > right.x;
         }
 
-        public static bool operator <=(Vector3i left, Vector3i right)
+        public static bool operator <=(Vector3I left, Vector3I right)
         {
             if (left.x == right.x)
             {
@@ -494,7 +494,7 @@ namespace ExtraMath
             return left.x < right.x;
         }
 
-        public static bool operator >=(Vector3i left, Vector3i right)
+        public static bool operator >=(Vector3I left, Vector3I right)
         {
             if (left.x == right.x)
             {
@@ -507,39 +507,39 @@ namespace ExtraMath
             return left.x > right.x;
         }
 
-        public static implicit operator Vector3(Vector3i value)
+        public static implicit operator Vector3(Vector3I value)
         {
             return new Vector3(value.x, value.y, value.z);
         }
 
-        public static explicit operator Vector3i(Vector3 value)
+        public static explicit operator Vector3I(Vector3 value)
         {
-            return new Vector3i(value);
+            return new Vector3I(value);
         }
 
 #if UNITY_5_3_OR_NEWER
-        public static implicit operator Vector3Int(Vector3i value)
+        public static implicit operator Vector3Int(Vector3I value)
         {
             return new Vector3Int(value.x, value.y, value.z);
         }
 
-        public static explicit operator Vector3i(Vector3Int value)
+        public static explicit operator Vector3I(Vector3Int value)
         {
-            return new Vector3i(value);
+            return new Vector3I(value);
         }
 #endif
 
         public override bool Equals(object obj)
         {
-            if (obj is Vector3i)
+            if (obj is Vector3I)
             {
-                return Equals((Vector3i)obj);
+                return Equals((Vector3I)obj);
             }
 
             return false;
         }
 
-        public bool Equals(Vector3i other)
+        public bool Equals(Vector3I other)
         {
             return x == other.x && y == other.y && z == other.z;
         }

@@ -16,14 +16,14 @@ namespace ExtraMath
     [StructLayout(LayoutKind.Sequential)]
     public struct AABBi : IEquatable<AABBi>
     {
-        private Vector3i _position;
-        private Vector3i _size;
+        private Vector3I _position;
+        private Vector3I _size;
 
         /// <summary>
         /// Beginning corner. Typically has values lower than End.
         /// </summary>
         /// <value>Directly uses a private field.</value>
-        public Vector3i Position
+        public Vector3I Position
         {
             get { return _position; }
             set { _position = value; }
@@ -34,7 +34,7 @@ namespace ExtraMath
         /// If the size is negative, you can use <see cref="Abs"/> to fix it.
         /// </summary>
         /// <value>Directly uses a private field.</value>
-        public Vector3i Size
+        public Vector3I Size
         {
             get { return _size; }
             set { _size = value; }
@@ -45,7 +45,7 @@ namespace ExtraMath
         /// <see cref="Size"/>. Setting this value will change the size.
         /// </summary>
         /// <value>Getting is equivalent to `value = Position + Size`, setting is equivalent to `Size = value - Position`.</value>
-        public Vector3i End
+        public Vector3I End
         {
             get { return _position + _size; }
             set { _size = value - _position; }
@@ -58,8 +58,8 @@ namespace ExtraMath
         /// <returns>The modified AABBi.</returns>
         public AABBi Abs()
         {
-            Vector3i end = End;
-            Vector3i topLeft = new Vector3i(Mathf.Min(_position.x, end.x), Mathf.Min(_position.y, end.y), Mathf.Min(_position.z, end.z));
+            Vector3I end = End;
+            Vector3I topLeft = new Vector3I(Mathf.Min(_position.x, end.x), Mathf.Min(_position.y, end.y), Mathf.Min(_position.z, end.z));
             return new AABBi(topLeft, _size.Abs());
         }
 
@@ -70,10 +70,10 @@ namespace ExtraMath
         /// <returns>A bool for whether or not this AABBi encloses `b`.</returns>
         public bool Encloses(AABBi with)
         {
-            Vector3i src_min = _position;
-            Vector3i src_max = _position + _size;
-            Vector3i dst_min = with._position;
-            Vector3i dst_max = with._position + with._size;
+            Vector3I src_min = _position;
+            Vector3I src_max = _position + _size;
+            Vector3I dst_min = with._position;
+            Vector3I dst_max = with._position + with._size;
 
             return src_min.x <= dst_min.x &&
                    src_max.x > dst_max.x &&
@@ -88,10 +88,10 @@ namespace ExtraMath
         /// </summary>
         /// <param name="point">The point to include.</param>
         /// <returns>The expanded AABBi.</returns>
-        public AABBi Expand(Vector3i point)
+        public AABBi Expand(Vector3I point)
         {
-            Vector3i begin = _position;
-            Vector3i end = _position + _size;
+            Vector3I begin = _position;
+            Vector3I end = _position + _size;
 
             if (point.x < begin.x)
             {
@@ -136,26 +136,26 @@ namespace ExtraMath
         /// </summary>
         /// <param name="idx">Which endpoint to get.</param>
         /// <returns>An endpoint of the AABBi.</returns>
-        public Vector3i GetEndpoint(int idx)
+        public Vector3I GetEndpoint(int idx)
         {
             switch (idx)
             {
                 case 0:
-                    return new Vector3i(_position.x, _position.y, _position.z);
+                    return new Vector3I(_position.x, _position.y, _position.z);
                 case 1:
-                    return new Vector3i(_position.x, _position.y, _position.z + _size.z);
+                    return new Vector3I(_position.x, _position.y, _position.z + _size.z);
                 case 2:
-                    return new Vector3i(_position.x, _position.y + _size.y, _position.z);
+                    return new Vector3I(_position.x, _position.y + _size.y, _position.z);
                 case 3:
-                    return new Vector3i(_position.x, _position.y + _size.y, _position.z + _size.z);
+                    return new Vector3I(_position.x, _position.y + _size.y, _position.z + _size.z);
                 case 4:
-                    return new Vector3i(_position.x + _size.x, _position.y, _position.z);
+                    return new Vector3I(_position.x + _size.x, _position.y, _position.z);
                 case 5:
-                    return new Vector3i(_position.x + _size.x, _position.y, _position.z + _size.z);
+                    return new Vector3I(_position.x + _size.x, _position.y, _position.z + _size.z);
                 case 6:
-                    return new Vector3i(_position.x + _size.x, _position.y + _size.y, _position.z);
+                    return new Vector3I(_position.x + _size.x, _position.y + _size.y, _position.z);
                 case 7:
-                    return new Vector3i(_position.x + _size.x, _position.y + _size.y, _position.z + _size.z);
+                    return new Vector3I(_position.x + _size.x, _position.y + _size.y, _position.z + _size.z);
                 default:
                     throw new ArgumentOutOfRangeException(nameof(idx), String.Format("Index is {0}, but a value from 0 to 7 is expected.", idx));
             }
@@ -165,43 +165,43 @@ namespace ExtraMath
         /// Returns the normalized longest axis of the AABBi.
         /// </summary>
         /// <returns>A vector representing the normalized longest axis of the AABBi.</returns>
-        public Vector3i GetLongestAxis()
+        public Vector3I GetLongestAxis()
         {
-            Vector3i axis = new Vector3i(1, 0, 0);
+            Vector3I axis = new Vector3I(1, 0, 0);
             int max_size = _size.x;
 
             if (_size.y > max_size)
             {
-                axis = new Vector3i(0, 1, 0);
+                axis = new Vector3I(0, 1, 0);
                 max_size = _size.y;
             }
 
             if (_size.z > max_size)
             {
-                axis = new Vector3i(0, 0, 1);
+                axis = new Vector3I(0, 0, 1);
             }
 
             return axis;
         }
 
         /// <summary>
-        /// Returns the <see cref="Vector3i.Axis"/> index of the longest axis of the AABBi.
+        /// Returns the <see cref="Vector3I.Axis"/> index of the longest axis of the AABBi.
         /// </summary>
-        /// <returns>A <see cref="Vector3i.Axis"/> index for which axis is longest.</returns>
-        public Vector3i.Axis GetLongestAxisIndex()
+        /// <returns>A <see cref="Vector3I.Axis"/> index for which axis is longest.</returns>
+        public Vector3I.Axis GetLongestAxisIndex()
         {
-            Vector3i.Axis axis = Vector3i.Axis.X;
+            Vector3I.Axis axis = Vector3I.Axis.X;
             int max_size = _size.x;
 
             if (_size.y > max_size)
             {
-                axis = Vector3i.Axis.Y;
+                axis = Vector3I.Axis.Y;
                 max_size = _size.y;
             }
 
             if (_size.z > max_size)
             {
-                axis = Vector3i.Axis.Z;
+                axis = Vector3I.Axis.Z;
             }
 
             return axis;
@@ -232,43 +232,43 @@ namespace ExtraMath
         /// Returns the normalized shortest axis of the AABBi.
         /// </summary>
         /// <returns>A vector representing the normalized shortest axis of the AABBi.</returns>
-        public Vector3i GetShortestAxis()
+        public Vector3I GetShortestAxis()
         {
-            Vector3i axis = new Vector3i(1, 0, 0);
+            Vector3I axis = new Vector3I(1, 0, 0);
             int max_size = _size.x;
 
             if (_size.y < max_size)
             {
-                axis = new Vector3i(0, 1, 0);
+                axis = new Vector3I(0, 1, 0);
                 max_size = _size.y;
             }
 
             if (_size.z < max_size)
             {
-                axis = new Vector3i(0, 0, 1);
+                axis = new Vector3I(0, 0, 1);
             }
 
             return axis;
         }
 
         /// <summary>
-        /// Returns the <see cref="Vector3i.Axis"/> index of the shortest axis of the AABBi.
+        /// Returns the <see cref="Vector3I.Axis"/> index of the shortest axis of the AABBi.
         /// </summary>
-        /// <returns>A <see cref="Vector3i.Axis"/> index for which axis is shortest.</returns>
-        public Vector3i.Axis GetShortestAxisIndex()
+        /// <returns>A <see cref="Vector3I.Axis"/> index for which axis is shortest.</returns>
+        public Vector3I.Axis GetShortestAxisIndex()
         {
-            Vector3i.Axis axis = Vector3i.Axis.X;
+            Vector3I.Axis axis = Vector3I.Axis.X;
             int max_size = _size.x;
 
             if (_size.y < max_size)
             {
-                axis = Vector3i.Axis.Y;
+                axis = Vector3I.Axis.Y;
                 max_size = _size.y;
             }
 
             if (_size.z < max_size)
             {
-                axis = Vector3i.Axis.Z;
+                axis = Vector3I.Axis.Z;
             }
 
             return axis;
@@ -337,7 +337,7 @@ namespace ExtraMath
         /// </summary>
         /// <param name="point">The point to check.</param>
         /// <returns>A bool for whether or not the AABBi contains `point`.</returns>
-        public bool HasPoint(Vector3i point)
+        public bool HasPoint(Vector3I point)
         {
             if (point.x < _position.x)
                 return false;
@@ -362,12 +362,12 @@ namespace ExtraMath
         /// <returns>The clipped AABBi.</returns>
         public AABBi Intersection(AABBi with)
         {
-            Vector3i src_min = _position;
-            Vector3i src_max = _position + _size;
-            Vector3i dst_min = with._position;
-            Vector3i dst_max = with._position + with._size;
+            Vector3I src_min = _position;
+            Vector3I src_max = _position + _size;
+            Vector3I dst_min = with._position;
+            Vector3I dst_max = with._position + with._size;
 
-            Vector3i min, max;
+            Vector3I min, max;
 
             if (src_min.x > dst_max.x || src_max.x < dst_min.x)
             {
@@ -449,16 +449,16 @@ namespace ExtraMath
         /// <returns>A bool for whether or not the AABBi intersects the plane.</returns>
         public bool IntersectsPlane(Plane plane)
         {
-            Vector3i[] points =
+            Vector3I[] points =
             {
-                new Vector3i(_position.x, _position.y, _position.z),
-                new Vector3i(_position.x, _position.y, _position.z + _size.z),
-                new Vector3i(_position.x, _position.y + _size.y, _position.z),
-                new Vector3i(_position.x, _position.y + _size.y, _position.z + _size.z),
-                new Vector3i(_position.x + _size.x, _position.y, _position.z),
-                new Vector3i(_position.x + _size.x, _position.y, _position.z + _size.z),
-                new Vector3i(_position.x + _size.x, _position.y + _size.y, _position.z),
-                new Vector3i(_position.x + _size.x, _position.y + _size.y, _position.z + _size.z)
+                new Vector3I(_position.x, _position.y, _position.z),
+                new Vector3I(_position.x, _position.y, _position.z + _size.z),
+                new Vector3I(_position.x, _position.y + _size.y, _position.z),
+                new Vector3I(_position.x, _position.y + _size.y, _position.z + _size.z),
+                new Vector3I(_position.x + _size.x, _position.y, _position.z),
+                new Vector3I(_position.x + _size.x, _position.y, _position.z + _size.z),
+                new Vector3I(_position.x + _size.x, _position.y + _size.y, _position.z),
+                new Vector3I(_position.x + _size.x, _position.y + _size.y, _position.z + _size.z)
             };
 
             bool over = false;
@@ -489,7 +489,7 @@ namespace ExtraMath
         /// <param name="from">The start of the line segment.</param>
         /// <param name="to">The end of the line segment.</param>
         /// <returns>A bool for whether or not the AABBi intersects the line segment.</returns>
-        public bool IntersectsSegment(Vector3i from, Vector3i to)
+        public bool IntersectsSegment(Vector3I from, Vector3I to)
         {
             int min = 0;
             int max = 1;
@@ -550,18 +550,18 @@ namespace ExtraMath
         /// <returns>The merged AABBi.</returns>
         public AABBi Merge(AABBi with)
         {
-            Vector3i beg1 = _position;
-            Vector3i beg2 = with._position;
-            var end1 = new Vector3i(_size.x, _size.y, _size.z) + beg1;
-            var end2 = new Vector3i(with._size.x, with._size.y, with._size.z) + beg2;
+            Vector3I beg1 = _position;
+            Vector3I beg2 = with._position;
+            var end1 = new Vector3I(_size.x, _size.y, _size.z) + beg1;
+            var end2 = new Vector3I(with._size.x, with._size.y, with._size.z) + beg2;
 
-            var min = new Vector3i(
+            var min = new Vector3I(
                               beg1.x < beg2.x ? beg1.x : beg2.x,
                               beg1.y < beg2.y ? beg1.y : beg2.y,
                               beg1.z < beg2.z ? beg1.z : beg2.z
                           );
 
-            var max = new Vector3i(
+            var max = new Vector3I(
                               end1.x > end2.x ? end1.x : end2.x,
                               end1.y > end2.y ? end1.y : end2.y,
                               end1.z > end2.z ? end1.z : end2.z
@@ -575,7 +575,7 @@ namespace ExtraMath
         /// </summary>
         /// <param name="position">The position.</param>
         /// <param name="size">The size, typically positive.</param>
-        public AABBi(Vector3i position, Vector3i size)
+        public AABBi(Vector3I position, Vector3I size)
         {
             _position = position;
             _size = size;
@@ -588,10 +588,10 @@ namespace ExtraMath
         /// <param name="width">The width, typically positive.</param>
         /// <param name="height">The height, typically positive.</param>
         /// <param name="depth">The depth, typically positive.</param>
-        public AABBi(Vector3i position, int width, int height, int depth)
+        public AABBi(Vector3I position, int width, int height, int depth)
         {
             _position = position;
-            _size = new Vector3i(width, height, depth);
+            _size = new Vector3I(width, height, depth);
         }
 
         /// <summary>
@@ -601,9 +601,9 @@ namespace ExtraMath
         /// <param name="y">The position's Y coordinate.</param>
         /// <param name="z">The position's Z coordinate.</param>
         /// <param name="size">The size, typically positive.</param>
-        public AABBi(int x, int y, int z, Vector3i size)
+        public AABBi(int x, int y, int z, Vector3I size)
         {
-            _position = new Vector3i(x, y, z);
+            _position = new Vector3I(x, y, z);
             _size = size;
         }
 
@@ -618,14 +618,14 @@ namespace ExtraMath
         /// <param name="depth">The depth, typically positive.</param>
         public AABBi(int x, int y, int z, int width, int height, int depth)
         {
-            _position = new Vector3i(x, y, z);
-            _size = new Vector3i(width, height, depth);
+            _position = new Vector3I(x, y, z);
+            _size = new Vector3I(width, height, depth);
         }
 
 #if GODOT
         public static explicit operator AABBi(Godot.AABB value)
         {
-            return new AABBi((Vector3i)value.Position, (Vector3i)value.Size);
+            return new AABBi((Vector3I)value.Position, (Vector3I)value.Size);
         }
 
         public static implicit operator Godot.AABB(AABBi value)

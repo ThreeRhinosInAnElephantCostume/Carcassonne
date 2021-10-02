@@ -696,12 +696,12 @@ namespace ExtraMath
         }
 #endif
 
-        public static explicit operator Vector3i(Vector3d value)
+        public static explicit operator Vector3I(Vector3d value)
         {
-            return new Vector3i((int)value.x, (int)value.y, (int)value.z);
+            return new Vector3I((int)value.x, (int)value.y, (int)value.z);
         }
 
-        public static implicit operator Vector3d(Vector3i value)
+        public static implicit operator Vector3d(Vector3I value)
         {
             return new Vector3d(value.x, value.y, value.z);
         }

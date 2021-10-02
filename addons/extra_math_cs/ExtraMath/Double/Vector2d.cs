@@ -647,12 +647,12 @@ namespace ExtraMath
         }
 #endif
 
-        public static explicit operator Vector2i(Vector2d value)
+        public static explicit operator Vector2I(Vector2d value)
         {
-            return new Vector2i((int)value.x, (int)value.y);
+            return new Vector2I((int)value.x, (int)value.y);
         }
 
-        public static implicit operator Vector2d(Vector2i value)
+        public static implicit operator Vector2d(Vector2I value)
         {
             return new Vector2d(value.x, value.y);
         }

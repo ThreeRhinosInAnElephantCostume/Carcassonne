@@ -19,7 +19,7 @@ namespace ExtraMath
     /// </summary>
     [Serializable]
     [StructLayout(LayoutKind.Sequential)]
-    public struct Vector2i : IEquatable<Vector2i>
+    public struct Vector2I : IEquatable<Vector2I>
     {
         /// <summary>
         /// Enumerated index values for the axes.
@@ -78,9 +78,9 @@ namespace ExtraMath
         /// Returns a new vector with all components in absolute values (i.e. positive).
         /// </summary>
         /// <returns>A vector with <see cref="Mathf.Abs(int)"/> called on each component.</returns>
-        public Vector2i Abs()
+        public Vector2I Abs()
         {
-            return new Vector2i(Mathf.Abs(x), Mathf.Abs(y));
+            return new Vector2I(Mathf.Abs(x), Mathf.Abs(y));
         }
 
         /// <summary>
@@ -100,7 +100,7 @@ namespace ExtraMath
         /// </summary>
         /// <param name="to">The other vector to compare this vector to.</param>
         /// <returns>The angle between the two vectors, in radians.</returns>
-        public real_t AngleTo(Vector2i to)
+        public real_t AngleTo(Vector2I to)
         {
             return Mathf.Atan2(Cross(to), Dot(to));
         }
@@ -110,7 +110,7 @@ namespace ExtraMath
         /// </summary>
         /// <param name="to">The other vector to compare this vector to.</param>
         /// <returns>The angle between the two vectors, in radians.</returns>
-        public real_t AngleToPoint(Vector2i to)
+        public real_t AngleToPoint(Vector2I to)
         {
             return Mathf.Atan2(y - to.y, x - to.x);
         }
@@ -129,7 +129,7 @@ namespace ExtraMath
         /// </summary>
         /// <param name="b">The other vector.</param>
         /// <returns>The cross product vector.</returns>
-        public int Cross(Vector2i b)
+        public int Cross(Vector2I b)
         {
             return x * b.y - y * b.x;
         }
@@ -141,7 +141,7 @@ namespace ExtraMath
         /// </summary>
         /// <param name="b">The other vector to use.</param>
         /// <returns>The squared distance between the two vectors.</returns>
-        public int DistanceSquaredTo(Vector2i b)
+        public int DistanceSquaredTo(Vector2I b)
         {
             return (b - this).LengthSquared();
         }
@@ -151,7 +151,7 @@ namespace ExtraMath
         /// </summary>
         /// <param name="b">The other vector to use.</param>
         /// <returns>The distance between the two vectors.</returns>
-        public real_t DistanceTo(Vector2i b)
+        public real_t DistanceTo(Vector2I b)
         {
             return (b - this).Length();
         }
@@ -161,7 +161,7 @@ namespace ExtraMath
         /// </summary>
         /// <param name="b">The other vector to use.</param>
         /// <returns>The dot product of the two vectors.</returns>
-        public int Dot(Vector2i b)
+        public int Dot(Vector2I b)
         {
             return x * b.x + y * b.y;
         }
@@ -218,9 +218,9 @@ namespace ExtraMath
         /// </summary>
         /// <param name="mod">A value representing the divisor of the operation.</param>
         /// <returns>A vector with each component <see cref="Mathf.PosMod(int, int)"/> by `mod`.</returns>
-        public Vector2i PosMod(int mod)
+        public Vector2I PosMod(int mod)
         {
-            Vector2i v = this;
+            Vector2I v = this;
             v.x = Mathf.PosMod(v.x, mod);
             v.y = Mathf.PosMod(v.y, mod);
             return v;
@@ -231,9 +231,9 @@ namespace ExtraMath
         /// </summary>
         /// <param name="modv">A vector representing the divisors of the operation.</param>
         /// <returns>A vector with each component <see cref="Mathf.PosMod(int, int)"/> by `modv`'s components.</returns>
-        public Vector2i PosMod(Vector2i modv)
+        public Vector2I PosMod(Vector2I modv)
         {
-            Vector2i v = this;
+            Vector2I v = this;
             v.x = Mathf.PosMod(v.x, modv.x);
             v.y = Mathf.PosMod(v.y, modv.y);
             return v;
@@ -246,9 +246,9 @@ namespace ExtraMath
         /// by calling <see cref="Mathf.Sign(int)"/> on each component.
         /// </summary>
         /// <returns>A vector with all components as either `1`, `-1`, or `0`.</returns>
-        public Vector2i Sign()
+        public Vector2I Sign()
         {
-            Vector2i v = this;
+            Vector2I v = this;
 #if GODOT
             v.x = Mathf.Sign(v.x);
             v.y = Mathf.Sign(v.y);
@@ -264,179 +264,179 @@ namespace ExtraMath
         /// compared to the original, with the same length.
         /// </summary>
         /// <returns>The perpendicular vector.</returns>
-        public Vector2i Orthogonal()
+        public Vector2I Orthogonal()
         {
-            return new Vector2i(y, -x);
+            return new Vector2I(y, -x);
         }
 
         // Constants
-        private static readonly Vector2i _zero = new Vector2i(0, 0);
-        private static readonly Vector2i _one = new Vector2i(1, 1);
+        private static readonly Vector2I _zero = new Vector2I(0, 0);
+        private static readonly Vector2I _one = new Vector2I(1, 1);
 
-        private static readonly Vector2i _up = new Vector2i(0, -1);
-        private static readonly Vector2i _down = new Vector2i(0, 1);
-        private static readonly Vector2i _right = new Vector2i(1, 0);
-        private static readonly Vector2i _left = new Vector2i(-1, 0);
+        private static readonly Vector2I _up = new Vector2I(0, -1);
+        private static readonly Vector2I _down = new Vector2I(0, 1);
+        private static readonly Vector2I _right = new Vector2I(1, 0);
+        private static readonly Vector2I _left = new Vector2I(-1, 0);
 
         /// <summary>
         /// Zero vector, a vector with all components set to `0`.
         /// </summary>
-        /// <value>Equivalent to `new Vector2i(0, 0)`</value>
-        public static Vector2i Zero { get { return _zero; } }
+        /// <value>Equivalent to `new Vector2I(0, 0)`</value>
+        public static Vector2I Zero { get { return _zero; } }
         /// <summary>
         /// One vector, a vector with all components set to `1`.
         /// </summary>
-        /// <value>Equivalent to `new Vector2i(1, 1)`</value>
-        public static Vector2i One { get { return _one; } }
+        /// <value>Equivalent to `new Vector2I(1, 1)`</value>
+        public static Vector2I One { get { return _one; } }
 
         /// <summary>
         /// Up unit vector. Y is down in 2D, so this vector points -Y.
         /// </summary>
-        /// <value>Equivalent to `new Vector2i(0, -1)`</value>
-        public static Vector2i Up { get { return _up; } }
+        /// <value>Equivalent to `new Vector2I(0, -1)`</value>
+        public static Vector2I Up { get { return _up; } }
         /// <summary>
         /// Down unit vector. Y is down in 2D, so this vector points +Y.
         /// </summary>
-        /// <value>Equivalent to `new Vector2i(0, 1)`</value>
-        public static Vector2i Down { get { return _down; } }
+        /// <value>Equivalent to `new Vector2I(0, 1)`</value>
+        public static Vector2I Down { get { return _down; } }
         /// <summary>
         /// Right unit vector. Represents the direction of right.
         /// </summary>
-        /// <value>Equivalent to `new Vector2i(1, 0)`</value>
-        public static Vector2i Right { get { return _right; } }
+        /// <value>Equivalent to `new Vector2I(1, 0)`</value>
+        public static Vector2I Right { get { return _right; } }
         /// <summary>
         /// Left unit vector. Represents the direction of left.
         /// </summary>
-        /// <value>Equivalent to `new Vector2i(-1, 0)`</value>
-        public static Vector2i Left { get { return _left; } }
+        /// <value>Equivalent to `new Vector2I(-1, 0)`</value>
+        public static Vector2I Left { get { return _left; } }
 
         /// <summary>
-        /// Constructs a new <see cref="Vector2i"/> with the given components.
+        /// Constructs a new <see cref="Vector2I"/> with the given components.
         /// </summary>
         /// <param name="x">The vector's X component.</param>
         /// <param name="y">The vector's Y component.</param>
-        public Vector2i(int x, int y)
+        public Vector2I(int x, int y)
         {
             this.x = x;
             this.y = y;
         }
 
         /// <summary>
-        /// Constructs a new <see cref="Vector2i"/> from an existing <see cref="Vector2i"/>.
+        /// Constructs a new <see cref="Vector2I"/> from an existing <see cref="Vector2I"/>.
         /// </summary>
-        /// <param name="vi">The existing <see cref="Vector2i"/>.</param>
-        public Vector2i(Vector2i vi)
+        /// <param name="vi">The existing <see cref="Vector2I"/>.</param>
+        public Vector2I(Vector2I vi)
         {
             this.x = vi.x;
             this.y = vi.y;
         }
 
         /// <summary>
-        /// Constructs a new <see cref="Vector2i"/> from an existing <see cref="Vector2"/>
+        /// Constructs a new <see cref="Vector2I"/> from an existing <see cref="Vector2"/>
         /// by rounding the components via <see cref="Mathf.RoundToInt(real_t)"/>.
         /// </summary>
         /// <param name="v">The <see cref="Vector2"/> to convert.</param>
-        public Vector2i(Vector2 v)
+        public Vector2I(Vector2 v)
         {
             this.x = Mathf.RoundToInt(v.x);
             this.y = Mathf.RoundToInt(v.y);
         }
 
-        public static Vector2i operator +(Vector2i left, Vector2i right)
+        public static Vector2I operator +(Vector2I left, Vector2I right)
         {
             left.x += right.x;
             left.y += right.y;
             return left;
         }
 
-        public static Vector2i operator -(Vector2i left, Vector2i right)
+        public static Vector2I operator -(Vector2I left, Vector2I right)
         {
             left.x -= right.x;
             left.y -= right.y;
             return left;
         }
 
-        public static Vector2i operator -(Vector2i vec)
+        public static Vector2I operator -(Vector2I vec)
         {
             vec.x = -vec.x;
             vec.y = -vec.y;
             return vec;
         }
 
-        public static Vector2i operator *(Vector2i vec, int scale)
+        public static Vector2I operator *(Vector2I vec, int scale)
         {
             vec.x *= scale;
             vec.y *= scale;
             return vec;
         }
 
-        public static Vector2i operator *(int scale, Vector2i vec)
+        public static Vector2I operator *(int scale, Vector2I vec)
         {
             vec.x *= scale;
             vec.y *= scale;
             return vec;
         }
 
-        public static Vector2i operator *(Vector2i left, Vector2i right)
+        public static Vector2I operator *(Vector2I left, Vector2I right)
         {
             left.x *= right.x;
             left.y *= right.y;
             return left;
         }
 
-        public static Vector2i operator /(Vector2i vec, int divisor)
+        public static Vector2I operator /(Vector2I vec, int divisor)
         {
             vec.x /= divisor;
             vec.y /= divisor;
             return vec;
         }
 
-        public static Vector2i operator /(Vector2i vec, Vector2i divisorv)
+        public static Vector2I operator /(Vector2I vec, Vector2I divisorv)
         {
             vec.x /= divisorv.x;
             vec.y /= divisorv.y;
             return vec;
         }
 
-        public static Vector2i operator %(Vector2i vec, int divisor)
+        public static Vector2I operator %(Vector2I vec, int divisor)
         {
             vec.x %= divisor;
             vec.y %= divisor;
             return vec;
         }
 
-        public static Vector2i operator %(Vector2i vec, Vector2i divisorv)
+        public static Vector2I operator %(Vector2I vec, Vector2I divisorv)
         {
             vec.x %= divisorv.x;
             vec.y %= divisorv.y;
             return vec;
         }
 
-        public static Vector2i operator &(Vector2i vec, int and)
+        public static Vector2I operator &(Vector2I vec, int and)
         {
             vec.x &= and;
             vec.y &= and;
             return vec;
         }
 
-        public static Vector2i operator &(Vector2i vec, Vector2i andv)
+        public static Vector2I operator &(Vector2I vec, Vector2I andv)
         {
             vec.x &= andv.x;
             vec.y &= andv.y;
             return vec;
         }
 
-        public static bool operator ==(Vector2i left, Vector2i right)
+        public static bool operator ==(Vector2I left, Vector2I right)
         {
             return left.Equals(right);
         }
 
-        public static bool operator !=(Vector2i left, Vector2i right)
+        public static bool operator !=(Vector2I left, Vector2I right)
         {
             return !left.Equals(right);
         }
 
-        public static bool operator <(Vector2i left, Vector2i right)
+        public static bool operator <(Vector2I left, Vector2I right)
         {
             if (left.x.Equals(right.x))
             {
@@ -445,7 +445,7 @@ namespace ExtraMath
             return left.x < right.x;
         }
 
-        public static bool operator >(Vector2i left, Vector2i right)
+        public static bool operator >(Vector2I left, Vector2I right)
         {
             if (left.x.Equals(right.x))
             {
@@ -454,7 +454,7 @@ namespace ExtraMath
             return left.x > right.x;
         }
 
-        public static bool operator <=(Vector2i left, Vector2i right)
+        public static bool operator <=(Vector2I left, Vector2I right)
         {
             if (left.x.Equals(right.x))
             {
@@ -463,7 +463,7 @@ namespace ExtraMath
             return left.x <= right.x;
         }
 
-        public static bool operator >=(Vector2i left, Vector2i right)
+        public static bool operator >=(Vector2I left, Vector2I right)
         {
             if (left.x.Equals(right.x))
             {
@@ -472,39 +472,39 @@ namespace ExtraMath
             return left.x >= right.x;
         }
 
-        public static implicit operator Vector2(Vector2i value)
+        public static implicit operator Vector2(Vector2I value)
         {
             return new Vector2(value.x, value.y);
         }
 
-        public static explicit operator Vector2i(Vector2 value)
+        public static explicit operator Vector2I(Vector2 value)
         {
-            return new Vector2i(value);
+            return new Vector2I(value);
         }
 
 #if UNITY_5_3_OR_NEWER
-        public static implicit operator Vector2Int(Vector2i value)
+        public static implicit operator Vector2Int(Vector2I value)
         {
             return new Vector2Int(value.x, value.y);
         }
 
-        public static explicit operator Vector2i(Vector2Int value)
+        public static explicit operator Vector2I(Vector2Int value)
         {
-            return new Vector2i(value);
+            return new Vector2I(value);
         }
 #endif
 
         public override bool Equals(object obj)
         {
-            if (obj is Vector2i)
+            if (obj is Vector2I)
             {
-                return Equals((Vector2i)obj);
+                return Equals((Vector2I)obj);
             }
 
             return false;
         }
 
-        public bool Equals(Vector2i other)
+        public bool Equals(Vector2I other)
         {
             return x == other.x && y == other.y;
         }
