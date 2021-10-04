@@ -310,6 +310,15 @@ namespace ExtraMath
         /// <value>Equivalent to `new Vector2I(-1, 0)`</value>
         public static Vector2I Left { get { return _left; } }
 
+        public static Vector2I[] GetNeighbouringPositions(Vector2I pos)
+        {
+            return new Vector2I[]{Up, Right, Down, Left};
+        }
+        public Vector2I[] Neigbours
+        {
+            get => GetNeighbouringPositions(this);
+        }
+
         /// <summary>
         /// Constructs a new <see cref="Vector2I"/> with the given components.
         /// </summary>

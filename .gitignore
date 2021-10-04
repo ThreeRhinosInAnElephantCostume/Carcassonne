@@ -18,5 +18,11 @@ mono_crash.*.json
 .directory
 *~
 
+
 # Unity
 *.meta
+
+#ipython
+.ipynb_checkpoints/
+
+#other

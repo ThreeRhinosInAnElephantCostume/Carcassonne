@@ -20,8 +20,21 @@ using System.Runtime.CompilerServices;
 
 using static System.Math;
 
+using ExtraMath;
+
+using Expression = System.Linq.Expressions.Expression;
+
 public static partial class Utils
 {
+    static uint ID = 0;
+    public static uint CreateID()
+    {
+        return ++ID;
+    }
+    public static uint LastID()
+    {
+        return ID-1;
+    }
     public delegate object ObjectActivator(params object[] args);
     public static ObjectActivator GetActivator<T>(ConstructorInfo ctor)
     {

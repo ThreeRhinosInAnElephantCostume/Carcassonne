@@ -15,31 +15,23 @@ using static System.Math;
 
 using static Utils;
 
+using ExtraMath;
+
 public partial class Engine
 {
-    public struct Action
+    public State state{get; protected set;}
+
+    public static Engine CreateBaseGame()
     {
-        uint libraryid;
-        uint actionid;
-        byte[] actiondata;
+        Engine eng = new Engine();
+        State state = eng.state = new State(0);
+        Module bgm = new BaseGameModule(state, new List<Type>());
+        state.modules.Add(bgm);
+        state.Initialize();
+        return eng;
     }
-    public abstract class Governor
-    {
-        bool CanExecute(State state, Action move);
-        void Execute(State state, Action move);
-        List<Action> BasicActions();
-        List<Action> PossibleActions();
-    }
-    public abstract class PawnModule
-    {
-        
-    }
-    public class Meeple : PawnModule
+    protected Engine()
     {
 
     }
-    static List<Governor> possiblegovernors = new List<Governor>();
-    static List<Governor> possiblepawns = new List<PawnModule>();
-
-    State state = new State();
 }

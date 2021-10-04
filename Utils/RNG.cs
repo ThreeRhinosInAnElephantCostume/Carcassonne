@@ -162,7 +162,7 @@ public static partial class Utils
         public long NextLong(long min, long max)
         {
             long dif = max- min;
-            return min + (long)((double)dif * NextDouble());
+            return min + (NextLong() % dif);
         }
         public unsafe ulong NextULong()
         {
@@ -171,7 +171,7 @@ public static partial class Utils
         public ulong NextULong(ulong min, ulong max)
         {
             ulong dif = max - min;
-            return min + (ulong)((double)dif * NextDouble());
+            return min + (NextULong() % dif);
         }
         public RNG(ulong seed)
         {
