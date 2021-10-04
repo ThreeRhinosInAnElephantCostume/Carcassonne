@@ -21,19 +21,19 @@ public partial class Engine
 {
     public class Player
     {
-        State state{get;}
+        Engine eng{get;}
 
-        public int Score { get => state.GetPlayerScore(this); }
-        public int EndScore { get => state.GetPlayerEndScore(this); } 
+        public int Score { get => eng.GetPlayerScore(this); }
+        public int EndScore { get => eng.GetPlayerEndScore(this); } 
         public int ProbableScore 
         { 
-            get => state.GetPlayerProbableScore(this); 
-            set => state.SetPlayerScore(this, value);
+            get => eng.GetPlayerProbableScore(this); 
+            set => eng.SetPlayerScore(this, value);
         }
 
-        public Player(State state)
+        public Player(Engine eng)
         {
-            this.state = state;
+            this.eng = eng;
         }
     }   
 }
