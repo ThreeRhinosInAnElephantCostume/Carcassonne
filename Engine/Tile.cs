@@ -23,8 +23,6 @@ using ExtraMath;
 
 public partial class Engine
 {
-    public const uint N_SIDES = 4;
-    public const uint N_CONNECTORS = 3;
     public class Tile
     {
         public class NodeType
@@ -59,12 +57,12 @@ public partial class Engine
             {
                 return id.GetHashCode();
             }
-            NodeType(uint id, string name)
+            public NodeType(uint id, string name)
             {
                 this.id = id;
                 this.Name = name;
             }
-            NodeType(string name) : this(CreateID(), name) {}
+            public NodeType(string name) : this(CreateID(), name) {}
         }
         public abstract class InternalNode
         {
@@ -84,16 +82,17 @@ public partial class Engine
             }
             public virtual void Connect(Connection other)
             {
-                if(!CanConnect(other))
-                    throw new Exception("Attempting to connect incompatible connectors");
+                Debug.Assert(CanConnect(other), "Attempting to connect incompatible connectors");
+
                 this.other = other;
                 if(!other.IsConnected)
                     other.Connect(this);
             }
-            Connection(InternalNode node)
+            public Connection(InternalNode node)
             {
                 this.node = node;
-                node.connections.Add(this);
+                if(!node.connections.Contains(this))
+                    node.connections.Add(this);
             }
         }
         public class Side
@@ -132,12 +131,9 @@ public partial class Engine
             }
             public void Attach(Side side)
             {
-                if(this.IsAttached)
-                    throw new Exception("Attempting to connect a side that's already connected");
-                if(!CanAttach(side))
-                    throw new Exception("Attempting to connect incompatible/already connected sides");
-                if(side.owner == this.owner)
-                    throw new Exception("Attempting to connect a tile to itself");
+                Debug.Assert(!this.IsAttached, "Attempting to connect a side that's already connected");
+                Debug.Assert(CanAttach(side), "Attempting to connect incompatible/already connected sides");
+                Debug.Assert(side.owner != this.owner, "Attempting to connect a tile to itself");
                 this.attached = side.owner;
                 side.attached = this.owner;
                 for(uint i = 0; i < N_CONNECTORS; i++)
@@ -145,7 +141,13 @@ public partial class Engine
                     side.connectors[N_CONNECTORS-i-1].Connect(this.connectors[i]);
                 }
             }
+            public Side(Tile owner, Connection[] connections)
+            {
+                this.owner =owner;
+                this.connectors = connections;
+            }
         }
+        public InternalNode[] nodes{get; protected set;}
         public Connection[] connections {get; set;} = new Connection[N_SIDES*N_CONNECTORS];
         public Side[] sides {get; set;} = new Side[N_SIDES];
         public Tile[] neighbours {get; set;} = new Tile[N_SIDES];
@@ -168,6 +170,15 @@ public partial class Engine
                 }
             }
             sides = nsides;
+        }
+        public Tile( InternalNode[] nodes, Connection[] connections)
+        {
+            this.connections = connections;
+            this.nodes = nodes;
+            for(int i = 0; i < N_SIDES; i++)
+            {
+                sides[i] = new Side(this, connections.ToList().GetRange(i*N_CONNECTORS, i*N_CONNECTORS + N_CONNECTORS).ToArray()); // I know...
+            }
         }
     }
 }

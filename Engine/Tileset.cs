@@ -19,8 +19,29 @@ using ExtraMath;
 
 public partial class Engine
 {
+    public delegate Tile TileSourceDelegate(string name);
+    public static TileSourceDelegate tilesource;
+
+    protected static Tile GenerateTile(string name)
+    {
+        Tile r = tilesource(name);
+        Debug.Assert(r != null);
+        return r;
+    }
+    protected static Tile[] GenerateTiles(string name, int n)
+    {
+        Tile[] ret = new Tile[n];
+        for(int i = 0; i < n; i++)
+        {
+            ret[i] = GenerateTile(name);
+            Debug.Assert(ret[i] != null);
+        }
+        return ret;
+    }
     public abstract class Tileset
     {
+        public virtual bool HasStarter{get => false;}
+        public virtual Tile Starter{get => null;}
         public abstract uint NDefaultTiles{get;}
         public virtual uint NMaxTiles{get => NDefaultTiles;}
         public virtual uint NMinTiles{get => NDefaultTiles;}
@@ -30,12 +51,12 @@ public partial class Engine
         {
             if(n != NDefaultTiles)
             {
-                if(n > NMaxTiles || n < NMaxTiles)
-                    throw new Exception("Invalid number of tiles for this tileset");
-                if(Abs(n - NDefaultTiles) % NTileStep != 0)
-                    throw new Exception("Invalid number of tiles for this tileset (step size not respected)");
+                Debug.Assert(n <= NMaxTiles && n >= NMinTiles, "Invalid number of tiles for this tileset");
+                Debug.Assert(Abs(n - NDefaultTiles) % NTileStep == 0, "Invalid number of tiles for this tileset (step size not respected)");
             }
-            return _GenerateTiles(n);
+            var ret = _GenerateTiles(n);
+            Debug.Assert(ret.Count == n);
+            return ret;
         }
         public virtual List<Tile> GenerateTiles()
         {

@@ -22,7 +22,8 @@ public partial class Engine
     public class Map
     {
         Dictionary<Vector2I, Tile> tilesbyposition = new Dictionary<Vector2I, Tile>();
-        List<Tile> alltiles = new List<Tile>();
+        List<Tile> tiles = new List<Tile>();
+        public Tile root {get; protected set;}
         public Tile this[Vector2I pos]
         {
             get => (tilesbyposition.ContainsKey(pos))?tilesbyposition[pos] : null; 
@@ -33,12 +34,12 @@ public partial class Engine
         }
         public Tile this[int indx]
         {
-            get => alltiles[indx];
+            get => tiles[indx];
         }
-        public int Count {get=>alltiles.Count;}
+        public int Count {get=>tiles.Count;}
         public List<Tile> GetPlacedTiles()
         {
-            return alltiles.ToList();
+            return tiles.ToList();
         }
 
         public List<Tile> GetNeighbours(Vector2I pos)
@@ -55,14 +56,13 @@ public partial class Engine
         {
             return GetNeighbours(t.position);
         }
-
-        public void PlaceTile(Tile tile, Vector2I pos)
+        protected void PlaceTile(Tile tile, Vector2I pos, bool check)
         {
             if(tilesbyposition.ContainsKey(pos))
                 throw new Exception("Attempted to replace a tile!");
             if(!CanPlaceTile(tile, pos))
                 throw new Exception("Invalid tile placement!");
-            alltiles.Add(tile);
+            tiles.Add(tile);
             tilesbyposition.Add(pos, tile);
             tile.position = pos;
             Vector2I[] nepos = pos.Neigbours;
@@ -74,6 +74,10 @@ public partial class Engine
                 tile.sides[i].Attach(n.sides[(i+(N_SIDES/2)) % N_SIDES]);
                 tile.neighbours[i] = n;
             }
+        }
+        public void PlaceTile(Tile tile, Vector2I pos)
+        {
+            PlaceTile(tile, pos, true);
         }
         public bool CanPlaceTileVerbose(Tile tile, Vector2I pos, out List<List<int>> invalidconnectors, out bool isoutofbounds)
         {
@@ -112,20 +116,53 @@ public partial class Engine
             bool isoutofbounds;
             return CanPlaceTileVerbose(tile, pos, out invalidconnections, out isoutofbounds);
         }
-        public bool TryFindFit(Tile tile, Vector2I pos, out int rotation)
+        public (bool can, List<int> rots) TryFindFits(Tile tile, Vector2I pos, bool breakfast = false)
         {
-            rotation = 0;
+            int rotation = 0;
+            List<int> rots = new List<int>();
             for(uint i = 0; i < N_SIDES; i++)
             {
                 if(CanPlaceTile(tile, pos))
                 {
                     rotation = (int)i;
                     tile.Rotate(-rotation);
-                    return true;
+                    rots.Add(rotation);
+                    if(breakfast)
+                        return (true, rots);
                 }
                 tile.Rotate(1);
             }
-            return false;
+            return (rots.Count > 0, rots);
+        }
+        public (bool can, int rot) TryFindFit(Tile tile, Vector2I pos)
+        {
+            var f = TryFindFits(tile, pos, true);
+
+            Debug.Assert(f.can == (f.rots.Count > 0));
+
+            return (f.can, (f.rots.Count > 0) ? f.rots[0] : 0);
+        }
+        public List<(Vector2I pos, int rot)> TryFindAllFits(Tile tile)
+        {
+            List<(Vector2I, int)> ret = new List<(Vector2I, int)>(64);
+            foreach(var t in tiles)
+            {
+                (bool can, List<int> rots) fit = TryFindFits(tile, t.position);
+                if(fit.can)
+                {
+                    foreach(var it in fit.rots)
+                        ret.Add((t.position, it));
+                }
+            }
+            return ret;
+        }
+        void Update()
+        {
+            
+        }
+        public Map(Tile root)
+        {
+            PlaceTile(root, new Vector2I(0, 0), false);
         }
     }
 }

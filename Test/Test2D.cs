@@ -16,9 +16,8 @@ using static System.Math;
 using static Utils;
 
 
-public class test2D : Node2D
+public class Test2D : Node2D
 {
-
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {

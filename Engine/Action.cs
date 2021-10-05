@@ -1,5 +1,4 @@
-
-    using System.Reflection.Metadata;
+using System.Reflection.Metadata;
 using System.Net.NetworkInformation;
 using System.Threading.Tasks.Dataflow;
 using Godot;
@@ -23,24 +22,56 @@ using ExtraMath;
 
 public partial class Engine
 {
+    MethodInfo[] actionmethods = Assembly.GetAssembly(typeof(Engine)).GetTypes()
+                    .SelectMany(t => t.GetMethods())
+                    .Where(m => m.GetCustomAttributes(typeof(ActionExec), false).Length > 0)
+                    .ToArray();
     public abstract class Action
     {
         public bool IsFilled{get; protected set;} = false;
     }
-    void PlaceCurrentTile(Vector2I pos, int rot)
+    [System.AttributeUsage(System.AttributeTargets.Method)]
+    public class ActionExec : System.Attribute
     {
-        
+        public Type type{get; protected set;}
+        public ActionExec(Type type)
+        {
+            this.type = type;
+        }
     }
     public void ExecuteAction(Action action)
     {
+        Debug.Assert(actionmethods.Length > 0);
+        
         if(!action.IsFilled)
-            throw new Exception("Attempting to execute an empty action!");
-        History.Add(action);
-        switch(action)
+            throw new Exception("Attempting to execute an incomplete action!"); 
+
+        bool found = false;
+        foreach(var it in actionmethods)
         {
-            case PlaceTileAction act:
-                 PlaceCurrentTile(act.pos, act.rot);
-                 break;
-        };
+            if(((ActionExec)it.GetCustomAttribute(typeof(ActionExec))).type == action.GetType())
+            {
+                found = true;
+                it.Invoke(this, new object[]{action});
+            }
+        }
+        if(!found)
+            throw new Exception("Unsupported action!");
+        _history.Add(action);
+    }
+    public static Engine CreateFromAction(Action action)
+    {
+        Engine eng = new Engine();
+        eng.ExecuteAction(action);
+        return eng;
+    }
+    public static Engine CreateFromHistory(List<Action> history)
+    {
+        Engine eng = new Engine();
+        foreach(var it in history)
+        {
+            eng.ExecuteAction(it);
+        }
+        return eng;
     }
 }

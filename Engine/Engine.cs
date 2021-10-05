@@ -63,8 +63,8 @@ public partial class Engine
         }
         public Tile NextTile()
         {
-            if(NQueued == 0 && current == null)
-                throw new Exception("Attempting to retrieve more tiles than available!");
+            Debug.Assert(!(NQueued == 0 && current == null), "Attempting to retrieve a tile when there are none available!");
+
             if(NQueued == 0)
             {
                 current = null;
@@ -76,16 +76,16 @@ public partial class Engine
             }
             return current;
         }
-        public List<Tile> PeekTiles(uint n)
+        public List<Tile> PeekTiles(int n)
         {
-            if(TileQueue.Count == 0)
-                throw new Exception("Attempting to peek an empty tile queue");
-            return TileQueue.GetRange(0, (int)Min(n, TileQueue.Count)).ToList<Tile>();
+            Debug.Assert(TileQueue.Count >= n, "Attempting to peek more tiles than there are in queue");
+
+            return TileQueue.GetRange(0, n).ToList<Tile>();
         }
         public Tile PeekTile()
         {
-            if(TileQueue.Count == 0)
-                throw new Exception("Attempting to peek an empty tile queue");
+            Debug.Assert(TileQueue.Count > 0, "Attempting to peek an empty tile queue");
+
             return TileQueue[0];
         }
 
@@ -103,17 +103,21 @@ public partial class Engine
         PLACE_PAWN,
         GAME_OVER
     }
-    public TileManager tilemanager {get; protected set;}
-    public RNG rng{get; protected set;}
-    public bool IsGameOver { get; protected set; }
-    public State CurrentState{get; protected set;}
-    public uint turn = 0;
-    public List<Action> History{get; protected set;} = new List<Action>();
+    protected TileManager tilemanager {get; set;}
+    protected RNG rng{get; set;}
+    List<Action> _history = new List<Action>();
     protected Dictionary<Player, int> basescore = new Dictionary<Player, int>();
     protected List<Player> _players = new List<Player>();
-    public List<Player> Players {get => _players.ToList(); protected set => _players = value;}
     public Map map{get; protected set;}
     public Player CurrentPlayer{get; protected set;}
+    void AddPlayer()
+    {
+        Player p = new Player(this);
+        basescore.Add(p, 0);
+        _players.Add(p);
+        if(CurrentPlayer == null)
+            CurrentPlayer = p;
+    }
     void AssertState(Player curplayer, State state)
     {
         if(CurrentPlayer != curplayer)
@@ -130,26 +134,17 @@ public partial class Engine
     {
         AssertState(this.CurrentPlayer, state);
     }
-    public void SetPlayerScore(Player player, int val)
+    void SetPlayerScore(Player player, int val)
     {
         basescore[player] = val;
     }
-    public int GetPlayerScore(Player player)
+    Player NextPlayer()
     {
-        return basescore[player];
+        CurrentPlayer = PeekNextPlayer();
+        return CurrentPlayer;
     }
-    public int GetPlayerEndScore(Player player)
-    {
-        throw new NotImplementedException();
-    }
-    public int GetPlayerProbableScore(Player player)
-    {
-        throw new NotImplementedException();
-    }
-
-
     protected Engine()
-    {
-        this.rng = new RNG(0);
+    {   
+        Debug.Assert(Engine.tilesource != null);
     }
 }

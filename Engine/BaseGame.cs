@@ -1,3 +1,4 @@
+using System.Reflection.PortableExecutable;
 using Godot;
 
 
@@ -20,15 +21,53 @@ using ExtraMath;
 public partial class Engine
 {
 
+    public class RoadNode : Tile.InternalNode
+    {
+        public static Tile.NodeType t = new Tile.NodeType("Road");
+        public override Tile.NodeType type => t;
+    }
+    public class CityNode : Tile.InternalNode
+    {
+        public static Tile.NodeType t = new Tile.NodeType("City");
+        public override Tile.NodeType type => t;
+    }
+    public class FarmNode : Tile.InternalNode
+    {
+        public static Tile.NodeType t = new Tile.NodeType("Farm");
+        public override Tile.NodeType type => t;
+    }
     public class BaseGameTileset : Tileset
     {
-        public override uint NDefaultTiles {get => 72;}
+        public override bool HasStarter {get => true;}
+        public override Tile Starter => Engine.GenerateTile("Base/Starter");
+        public override uint NDefaultTiles {get => 71;}
         protected override List<Tile> _GenerateTiles(uint n)
         {
-            List<Tile> l = new List<Tile>()
-            {
-                new Tile()
-            };
+            List<Tile> l = new List<Tile>((int)NDefaultTiles);
+
+            l.AddRange(Engine.GenerateTiles("Base/RoadCross", 16));
+            l.AddRange(Engine.GenerateTiles("Base/RoadStraight", 31));
+            l.AddRange(Engine.GenerateTiles("Base/RoadTurn", 12));
+
+            // // 16
+            // l.AddRange(Engine.GenerateTiles("Base/CityBellend", 4));
+            // l.AddRange(Engine.GenerateTiles("Base/CityBellendRoadEnd", 4));
+            // l.AddRange(Engine.GenerateTiles("Base/CityBellendRoadStraight", 4));
+            // l.AddRange(Engine.GenerateTiles("Base/CityBellendRoadCross", 4));
+
+            // // 23
+            // l.AddRange(Engine.GenerateTiles("Base/CityCentre", 3));
+            // l.AddRange(Engine.GenerateTiles("Base/CityCorridor", 4));
+            // l.AddRange(Engine.GenerateTiles("Base/CityTurn", 8));
+            // l.AddRange(Engine.GenerateTiles("Base/CityOpening", 4));
+            // l.AddRange(Engine.GenerateTiles("Base/CityOpeningRoadEnd", 4));
+
+            // // 32
+            // l.AddRange(Engine.GenerateTiles("Base/RoadCross", 8));
+            // l.AddRange(Engine.GenerateTiles("Base/RoadStraight", 8));
+            // l.AddRange(Engine.GenerateTiles("Base/RoadTurn", 16));
+
+            Debug.Assert(l.Count == n);
             return l;
         }
         
@@ -37,16 +76,89 @@ public partial class Engine
     {
         public Vector2I pos;
         public int rot;
-        public void Fill(Vector2I pos, int rot)
+        public PlaceTileAction(Vector2I pos, int rot)
         {
             this.IsFilled = true;
             this.pos = pos;
             this.rot = rot;
         }
     }
-    public static Engine CreateBaseGame()
+    [ActionExec(typeof(PlaceTileAction))]
+    void PlaceCurrentTileExec(PlaceTileAction act)
+    {
+        AssertState(State.PLACE_TILE);
+        Tile c = tilemanager.CurrentTile();
+
+
+        if(tilemanager.NextTile() == null)
+        {
+            CurrentState = State.GAME_OVER;
+            CurrentPlayer = null;
+            return;
+        }
+
+        CurrentState = State.PLACE_PAWN;
+
+    }
+    public class SkipPawnAction : Action
+    {
+        public SkipPawnAction()
+        {
+            this.IsFilled = true;
+        }
+    }
+    [ActionExec(typeof(SkipPawnAction))]
+    void SkipPawnExec(SkipPawnAction act)
+    {
+        CurrentState = State.PLACE_TILE;
+
+        if(tilemanager.NextTile() == null)
+        {
+            CurrentState = State.GAME_OVER;
+            CurrentPlayer = null;
+            return;
+        }
+    }
+    protected class StartBaseGameAction : Action
+    {
+        public ulong seed;
+        public int players;
+        public StartBaseGameAction(ulong seed, int players)
+        {
+            IsFilled = true;
+            this.players = players;
+            this.seed = seed;
+        }
+    }
+    [ActionExec(typeof(StartBaseGameAction))]
+    void StartBaseGameExec(StartBaseGameAction act)
+    {
+        Debug.Assert(act.players >= MIN_PLAYERS && act.players <= MAX_PLAYERS);
+
+        tilemanager = new TileManager(this);
+
+        BaseGameTileset tileset = new BaseGameTileset();
+
+        tilemanager.AddTiles(tileset.GenerateTiles(), true);
+
+        tilemanager.NextTile();
+
+        for(int i = 0; i < act.players; i++)
+        {
+            AddPlayer();
+        }
+        CurrentPlayer = _players[0];
+
+        CurrentState = State.PLACE_TILE;
+
+        Debug.Assert(tileset.Starter != null && tileset.HasStarter);
+
+        map = new Map(tileset.Starter);
+    }
+    public static Engine CreateBaseGame(ulong seed, int players)
     {
         Engine eng = new Engine();
+        eng.ExecuteAction(new StartBaseGameAction(seed, players));
         return eng;
     }
 }
