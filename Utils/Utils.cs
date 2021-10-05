@@ -26,6 +26,31 @@ using Expression = System.Linq.Expressions.Expression;
 
 public static partial class Utils
 {
+    [System.Serializable]
+    public class AssertionFailureException : System.Exception
+    {
+        public AssertionFailureException() { }
+        public AssertionFailureException(string message) : base(message) { }
+        public AssertionFailureException(string message, System.Exception inner) : base(message, inner) { }
+        protected AssertionFailureException(
+            System.Runtime.Serialization.SerializationInfo info,
+            System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
+    }
+    [Conditional("DEBUG")]
+    public static void Assert(bool b, string msg)
+    {
+        if(b)
+            return;
+        GD.PrintErr("ASSERTION FAILURE:");
+        GD.PrintErr(msg);
+        //Debugger.Break();
+        throw new AssertionFailureException(msg);
+    }
+    [Conditional("DEBUG")]
+    public static void Assert(bool b)
+    {   
+        Assert(b, "An unspecified assertion failure has been triggered!");
+    }
     static uint ID = 0;
     public static uint CreateID()
     {

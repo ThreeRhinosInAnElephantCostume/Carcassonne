@@ -62,7 +62,7 @@ public partial class Engine
     public List<(Vector2I pos, int rot)> PossiblePlacements()
     {
         AssertState(State.PLACE_TILE);
-        Debug.Assert(tilemanager.CurrentTile() != null);
+        Assert(tilemanager.CurrentTile() != null);
 
         return map.TryFindAllFits(tilemanager.CurrentTile());
     }
@@ -71,7 +71,7 @@ public partial class Engine
     public Player PeekNextPlayer()
     {
         int indx = _players.IndexOf(CurrentPlayer);
-        Debug.Assert(indx >= 0);
+        Assert(indx >= 0);
         return _players[(indx+1) % _players.Count];
     }
 

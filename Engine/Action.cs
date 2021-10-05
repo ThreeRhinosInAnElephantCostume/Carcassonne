@@ -22,10 +22,9 @@ using ExtraMath;
 
 public partial class Engine
 {
-    MethodInfo[] actionmethods = Assembly.GetAssembly(typeof(Engine)).GetTypes()
-                    .SelectMany(t => t.GetMethods())
-                    .Where(m => m.GetCustomAttributes(typeof(ActionExec), false).Length > 0)
-                    .ToArray();
+    MethodInfo[] actionmethods = typeof(Engine).GetMethods(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance )
+        .Where(m => m.GetCustomAttributes(typeof(ActionExec), false).Length > 0)
+        .ToArray();
     public abstract class Action
     {
         public bool IsFilled{get; protected set;} = false;
@@ -39,9 +38,10 @@ public partial class Engine
             this.type = type;
         }
     }
+    protected delegate void ActionDelegate(Action act);
     public void ExecuteAction(Action action)
     {
-        Debug.Assert(actionmethods.Length > 0);
+        Assert(actionmethods.Length > 0);
         
         if(!action.IsFilled)
             throw new Exception("Attempting to execute an incomplete action!"); 
@@ -50,9 +50,12 @@ public partial class Engine
         foreach(var it in actionmethods)
         {
             if(((ActionExec)it.GetCustomAttribute(typeof(ActionExec))).type == action.GetType())
-            {
+            { 
                 found = true;
-                it.Invoke(this, new object[]{action});
+
+                ActionDelegate d = (ActionDelegate) Delegate.CreateDelegate(typeof(ActionDelegate), this, it, true);
+
+                d(action);
             }
         }
         if(!found)

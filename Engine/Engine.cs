@@ -28,7 +28,7 @@ public partial class Engine
         public int NQueued{get => TileQueue.Count;}
         public void AddTile(Tile tile, bool shuffle)
         {
-            if(shuffle)
+            if(shuffle && TileQueue.Count > 0)
                 TileQueue.Insert((int)eng.rng.NextLong(0, TileQueue.Count), tile);
             else
                 TileQueue.Add(tile);
@@ -63,7 +63,7 @@ public partial class Engine
         }
         public Tile NextTile()
         {
-            Debug.Assert(!(NQueued == 0 && current == null), "Attempting to retrieve a tile when there are none available!");
+            Assert(!(NQueued == 0 && current == null), "Attempting to retrieve a tile when there are none available!");
 
             if(NQueued == 0)
             {
@@ -71,20 +71,20 @@ public partial class Engine
             }
             else 
             {
-                current = TileList[0];
-                TileList.RemoveAt(0);
+                current = TileQueue[0];
+                TileQueue.RemoveAt(0);
             }
             return current;
         }
         public List<Tile> PeekTiles(int n)
         {
-            Debug.Assert(TileQueue.Count >= n, "Attempting to peek more tiles than there are in queue");
+            Assert(TileQueue.Count >= n, "Attempting to peek more tiles than there are in queue");
 
             return TileQueue.GetRange(0, n).ToList<Tile>();
         }
         public Tile PeekTile()
         {
-            Debug.Assert(TileQueue.Count > 0, "Attempting to peek an empty tile queue");
+            Assert(TileQueue.Count > 0, "Attempting to peek an empty tile queue");
 
             return TileQueue[0];
         }
@@ -145,6 +145,7 @@ public partial class Engine
     }
     protected Engine()
     {   
-        Debug.Assert(Engine.tilesource != null);
+        Assert(Engine.tilesource != null);
+        Assert(this.actionmethods.Length > 0);
     }
 }

@@ -60,7 +60,7 @@ public partial class Engine
         {
             if(tilesbyposition.ContainsKey(pos))
                 throw new Exception("Attempted to replace a tile!");
-            if(!CanPlaceTile(tile, pos))
+            if(check && !CanPlaceTile(tile, pos))
                 throw new Exception("Invalid tile placement!");
             tiles.Add(tile);
             tilesbyposition.Add(pos, tile);
@@ -68,7 +68,7 @@ public partial class Engine
             Vector2I[] nepos = pos.Neigbours;
             for(int i = 0; i < N_SIDES; i++)
             {
-                Tile n = this[pos];
+                Tile n = this[pos.Neigbours[i]];
                 if(n == null)
                     continue;
                 tile.sides[i].Attach(n.sides[(i+(N_SIDES/2)) % N_SIDES]);
@@ -94,13 +94,15 @@ public partial class Engine
             {
                 neighbours[i] = this[p];
                 if(this[p] != null)
+                {
                     ncount++;
+                    List<int> ic = new List<int>();
+                    if(!tile.sides[i].CanAttachVerbose(this[p].sides[(N_SIDES + (N_SIDES/2)) % N_SIDES], out ic, ref connindex))
+                        ret = false;
+                    invalidconnectors[i].AddRange(ic);
+                }
                 else
                     connindex += (int)N_CONNECTORS;
-                List<int> ic;
-                if(!tile.sides[i].CanAttachVerbose(this[p].sides[(N_SIDES + (N_SIDES/2)) % N_SIDES], out ic, ref connindex))
-                    ret = false;
-                invalidconnectors[i].AddRange(ic);
                 i++;
             }
             if(ncount == 0)
@@ -108,7 +110,7 @@ public partial class Engine
                 isoutofbounds = true;
                 return false;
             }
-            return true;
+            return ret;
         }
         public bool CanPlaceTile(Tile tile, Vector2I pos)
         {
@@ -138,7 +140,7 @@ public partial class Engine
         {
             var f = TryFindFits(tile, pos, true);
 
-            Debug.Assert(f.can == (f.rots.Count > 0));
+            Assert(f.can == (f.rots.Count > 0));
 
             return (f.can, (f.rots.Count > 0) ? f.rots[0] : 0);
         }
@@ -162,6 +164,7 @@ public partial class Engine
         }
         public Map(Tile root)
         {
+            this.root = root;
             PlaceTile(root, new Vector2I(0, 0), false);
         }
     }

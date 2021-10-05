@@ -47,7 +47,7 @@ public partial class Engine
 
             l.AddRange(Engine.GenerateTiles("Base/RoadCross", 16));
             l.AddRange(Engine.GenerateTiles("Base/RoadStraight", 31));
-            l.AddRange(Engine.GenerateTiles("Base/RoadTurn", 12));
+            l.AddRange(Engine.GenerateTiles("Base/RoadTurn", 24));
 
             // // 16
             // l.AddRange(Engine.GenerateTiles("Base/CityBellend", 4));
@@ -67,7 +67,7 @@ public partial class Engine
             // l.AddRange(Engine.GenerateTiles("Base/RoadStraight", 8));
             // l.AddRange(Engine.GenerateTiles("Base/RoadTurn", 16));
 
-            Debug.Assert(l.Count == n);
+            Assert(l.Count == n);
             return l;
         }
         
@@ -84,11 +84,12 @@ public partial class Engine
         }
     }
     [ActionExec(typeof(PlaceTileAction))]
-    void PlaceCurrentTileExec(PlaceTileAction act)
+    void PlaceCurrentTileExec(Action _act)
     {
+        var act = (PlaceTileAction) _act;
+
         AssertState(State.PLACE_TILE);
         Tile c = tilemanager.CurrentTile();
-
 
         if(tilemanager.NextTile() == null)
         {
@@ -108,8 +109,10 @@ public partial class Engine
         }
     }
     [ActionExec(typeof(SkipPawnAction))]
-    void SkipPawnExec(SkipPawnAction act)
+    void SkipPawnExec(Action _act)
     {
+        var act = (SkipPawnAction) _act;
+
         CurrentState = State.PLACE_TILE;
 
         if(tilemanager.NextTile() == null)
@@ -131,9 +134,13 @@ public partial class Engine
         }
     }
     [ActionExec(typeof(StartBaseGameAction))]
-    void StartBaseGameExec(StartBaseGameAction act)
+    void StartBaseGameExec(Action _act)
     {
-        Debug.Assert(act.players >= MIN_PLAYERS && act.players <= MAX_PLAYERS);
+        var act = (StartBaseGameAction)_act;
+
+        rng = new RNG(act.seed);
+
+        Assert(act.players >= MIN_PLAYERS && act.players <= MAX_PLAYERS);
 
         tilemanager = new TileManager(this);
 
@@ -151,7 +158,7 @@ public partial class Engine
 
         CurrentState = State.PLACE_TILE;
 
-        Debug.Assert(tileset.Starter != null && tileset.HasStarter);
+        Assert(tileset.Starter != null && tileset.HasStarter);
 
         map = new Map(tileset.Starter);
     }

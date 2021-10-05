@@ -25,7 +25,7 @@ public partial class Engine
     protected static Tile GenerateTile(string name)
     {
         Tile r = tilesource(name);
-        Debug.Assert(r != null);
+        Assert(r != null);
         return r;
     }
     protected static Tile[] GenerateTiles(string name, int n)
@@ -34,7 +34,7 @@ public partial class Engine
         for(int i = 0; i < n; i++)
         {
             ret[i] = GenerateTile(name);
-            Debug.Assert(ret[i] != null);
+            Assert(ret[i] != null);
         }
         return ret;
     }
@@ -51,11 +51,11 @@ public partial class Engine
         {
             if(n != NDefaultTiles)
             {
-                Debug.Assert(n <= NMaxTiles && n >= NMinTiles, "Invalid number of tiles for this tileset");
-                Debug.Assert(Abs(n - NDefaultTiles) % NTileStep == 0, "Invalid number of tiles for this tileset (step size not respected)");
+                Assert(n <= NMaxTiles && n >= NMinTiles, "Invalid number of tiles for this tileset");
+                Assert(Abs(n - NDefaultTiles) % NTileStep == 0, "Invalid number of tiles for this tileset (step size not respected)");
             }
             var ret = _GenerateTiles(n);
-            Debug.Assert(ret.Count == n);
+            Assert(ret.Count == n);
             return ret;
         }
         public virtual List<Tile> GenerateTiles()

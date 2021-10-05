@@ -82,7 +82,7 @@ public partial class Engine
             }
             public virtual void Connect(Connection other)
             {
-                Debug.Assert(CanConnect(other), "Attempting to connect incompatible connectors");
+                Assert(CanConnect(other), "Attempting to connect incompatible connectors");
 
                 this.other = other;
                 if(!other.IsConnected)
@@ -131,9 +131,9 @@ public partial class Engine
             }
             public void Attach(Side side)
             {
-                Debug.Assert(!this.IsAttached, "Attempting to connect a side that's already connected");
-                Debug.Assert(CanAttach(side), "Attempting to connect incompatible/already connected sides");
-                Debug.Assert(side.owner != this.owner, "Attempting to connect a tile to itself");
+                Assert(!this.IsAttached, "Attempting to connect a side that's already connected");
+                Assert(CanAttach(side), "Attempting to connect incompatible/already connected sides");
+                Assert(side.owner != this.owner, "Attempting to connect a tile to itself");
                 this.attached = side.owner;
                 side.attached = this.owner;
                 for(uint i = 0; i < N_CONNECTORS; i++)
@@ -177,7 +177,7 @@ public partial class Engine
             this.nodes = nodes;
             for(int i = 0; i < N_SIDES; i++)
             {
-                sides[i] = new Side(this, connections.ToList().GetRange(i*N_CONNECTORS, i*N_CONNECTORS + N_CONNECTORS).ToArray()); // I know...
+                sides[i] = new Side(this, connections.ToList().GetRange(i*N_CONNECTORS, N_CONNECTORS).ToArray()); // I know...
             }
         }
     }

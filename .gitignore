@@ -26,3 +26,5 @@ mono_crash.*.json
 .ipynb_checkpoints/
 
 #other
+.vscode/settings.json
+.vscode/launch.json

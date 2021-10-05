@@ -18,6 +18,7 @@ using static Utils;
 
 public class TileMap : Node2D
 {
+    static PackedScene placedtile = GD.Load<PackedScene>("res://Test/PlacedTile.tscn");
     public Engine game;
     public List<PlacedTile> tiledisplays = new List<PlacedTile>();
     public static Engine.Tile TileGenerator(string name)
@@ -30,12 +31,21 @@ public class TileMap : Node2D
                 nodes.Add(null);
             if(nodes[nodeindex] == null)
                 nodes[nodeindex] = new T();
-            Debug.Assert(nodes[nodeindex].type == new T().type);
+            Assert(nodes[nodeindex].type == new T().type);
             for(int i = 0; i < n; i++)
                 conns.Add(new Engine.Tile.Connection(nodes[nodeindex]));
         }
         switch(name)
         {
+            case "Base/Starter":
+                GenerateConns<Engine.FarmNode>(0, 4);
+                GenerateConns<Engine.RoadNode>(1, 1);
+                GenerateConns<Engine.FarmNode>(2, 2);
+                GenerateConns<Engine.RoadNode>(3, 1);
+                GenerateConns<Engine.FarmNode>(4, 2);
+                GenerateConns<Engine.RoadNode>(5, 1);
+                GenerateConns<Engine.FarmNode>(0, 1);
+                break;
             case "Base/RoadCross":
                 GenerateConns<Engine.FarmNode>(0, 4);
                 GenerateConns<Engine.RoadNode>(1, 1);
@@ -63,8 +73,8 @@ public class TileMap : Node2D
                 GD.PrintErr("Failed to find node " + name);
                 return null;
         }
-        Debug.Assert(!nodes.Contains(null));
-        Debug.Assert(conns.Count == Engine.N_CONNECTORS*Engine.N_SIDES);
+        Assert(!nodes.Contains(null));
+        Assert(conns.Count == Engine.N_CONNECTORS*Engine.N_SIDES);
         return new Engine.Tile(nodes.ToArray(), conns.ToArray());
     }
     public void UpdateDisplay()
@@ -82,16 +92,16 @@ public class TileMap : Node2D
             else
             {
                 unplaced.Remove(td.tile);
-                td.Position = PlacedTile.outersize * td.tile.position;
+                td.Position = td.outersize * td.tile.position;
             }
         }
         foreach(var t in unplaced)
         {
-            PlacedTile pt = new PlacedTile();
+            PlacedTile pt = (PlacedTile)placedtile.Instance();
             pt.tile = t;
             AddChild(pt);
             tiledisplays.Add(pt);
-            pt.Position = PlacedTile.outersize * t.position;
+            pt.Position = pt.outersize * t.position;
         }
     }
     public override void _Ready()
