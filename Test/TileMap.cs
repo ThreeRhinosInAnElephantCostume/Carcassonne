@@ -1,5 +1,5 @@
 using Godot;
-
+using System;
 
 using System;
 using System.Collections.Generic;
@@ -15,73 +15,51 @@ using static System.Math;
 
 using static Utils;
 
+using ExtraMath;
+
 
 public class TileMap : Node2D
 {
     static PackedScene placedtile = GD.Load<PackedScene>("res://Test/PlacedTile.tscn");
+    static PackedScene potentialtile = GD.Load<PackedScene>("res://Test/PotentialTile.tscn");
     public Engine game;
+    public PlacedTile tilesuggestion;
     public List<PlacedTile> tiledisplays = new List<PlacedTile>();
-    public static Engine.Tile TileGenerator(string name)
+    public Dictionary<Vector2I, PotentialTile> potentialtiles = new Dictionary<Vector2I, PotentialTile>();
+    public void TriggerPlacement(Vector2I pos, int rot)
     {
-        List<Engine.Tile.InternalNode> nodes = new List<Engine.Tile.InternalNode>();
-        List<Engine.Tile.Connection> conns  = new List<Engine.Tile.Connection>();
-        void GenerateConns<T>(int nodeindex, int n) where T : Engine.Tile.InternalNode, new()
-        {
-            while(nodeindex >= nodes.Count)
-                nodes.Add(null);
-            if(nodes[nodeindex] == null)
-                nodes[nodeindex] = new T();
-            Assert(nodes[nodeindex].type == new T().type);
-            for(int i = 0; i < n; i++)
-                conns.Add(new Engine.Tile.Connection(nodes[nodeindex]));
-        }
-        switch(name)
-        {
-            case "Base/Starter":
-                GenerateConns<Engine.FarmNode>(0, 4);
-                GenerateConns<Engine.RoadNode>(1, 1);
-                GenerateConns<Engine.FarmNode>(2, 2);
-                GenerateConns<Engine.RoadNode>(3, 1);
-                GenerateConns<Engine.FarmNode>(4, 2);
-                GenerateConns<Engine.RoadNode>(5, 1);
-                GenerateConns<Engine.FarmNode>(0, 1);
-                break;
-            case "Base/RoadCross":
-                GenerateConns<Engine.FarmNode>(0, 4);
-                GenerateConns<Engine.RoadNode>(1, 1);
-                GenerateConns<Engine.FarmNode>(2, 2);
-                GenerateConns<Engine.RoadNode>(3, 1);
-                GenerateConns<Engine.FarmNode>(4, 2);
-                GenerateConns<Engine.RoadNode>(5, 1);
-                GenerateConns<Engine.FarmNode>(0, 1);
-                break;
-            case "Base/RoadStraight":
-                GenerateConns<Engine.FarmNode>(0, 4);
-                GenerateConns<Engine.RoadNode>(1, 1);
-                GenerateConns<Engine.FarmNode>(2, 5);
-                GenerateConns<Engine.RoadNode>(1, 1);
-                GenerateConns<Engine.FarmNode>(0, 1);
-                break;
-            case "Base/RoadTurn":
-                GenerateConns<Engine.FarmNode>(0, 7);
-                GenerateConns<Engine.RoadNode>(1, 1);
-                GenerateConns<Engine.FarmNode>(2, 2);
-                GenerateConns<Engine.RoadNode>(1, 1);
-                GenerateConns<Engine.FarmNode>(0, 1);
-                break;
-            default:
-                GD.PrintErr("Failed to find node " + name);
-                return null;
-        }
-        Assert(!nodes.Contains(null));
-        Assert(conns.Count == Engine.N_CONNECTORS*Engine.N_SIDES);
-        return new Engine.Tile(nodes.ToArray(), conns.ToArray());
+        game.PlaceCurrentTile(pos, rot);
+        if(game.CurrentState == Engine.State.PLACE_PAWN)
+            game.SkipPlacingPawn();
+        CallDeferred("UpdateDisplay");
+    }
+    public void DisablePotentiaPlacement()
+    {
+        if(tilesuggestion == null)
+            return;
+        RemoveChild(tilesuggestion);
+        tilesuggestion.QueueFree();
+        tilesuggestion = null;
+    }
+    public void SetPotentiaPlacement(Vector2I pos, int rot)
+    {
+        if(game.CurrentState != Engine.State.PLACE_TILE)
+            return;
+        DisablePotentiaPlacement();
+        tilesuggestion = (PlacedTile)placedtile.Instance(PackedScene.GenEditState.Instance);
+        tilesuggestion.Rotation = (float) PI * rot * 0.5f;
+        tilesuggestion.tile = game.GetCurrentTile();
+        tilesuggestion.OpacityMP = 0.4f;
+        tilesuggestion.GridPosition = pos;
+
+        AddChild(tilesuggestion);
+
     }
     public void UpdateDisplay()
     {
         var tiles = game.map.GetPlacedTiles();
         var unplaced = tiles.ToList();
-        foreach(var td in tiledisplays)
+        foreach(var td in tiledisplays.ToList())
         {
             if(!td.tile.IsPlaced || !unplaced.Contains(td.tile))
             {
@@ -92,22 +70,52 @@ public class TileMap : Node2D
             else
             {
                 unplaced.Remove(td.tile);
-                td.Position = td.outersize * td.tile.position;
+                td.GridPosition = td.tile.position;
+                td.Update();
             }
         }
         foreach(var t in unplaced)
         {
-            PlacedTile pt = (PlacedTile)placedtile.Instance();
+            PlacedTile pt = (PlacedTile)placedtile.Instance(PackedScene.GenEditState.Instance);
             pt.tile = t;
             AddChild(pt);
             tiledisplays.Add(pt);
-            pt.Position = pt.outersize * t.position;
+            pt.GridPosition = t.position;
+        }
+        foreach(var it in potentialtiles)
+        {
+            RemoveChild(it.Value);
+            it.Value.QueueFree();
+        }
+        potentialtiles.Clear();
+        if(game.CurrentState == Engine.State.PLACE_TILE)
+        {
+            foreach(var it in game.PossiblePlacements())
+            {
+                PotentialTile potential;
+                if(potentialtiles.ContainsKey(it.pos))
+                {
+                    potential = potentialtiles[it.pos];
+                }
+                else
+                {
+                    potential = (PotentialTile)potentialtile.Instance(PackedScene.GenEditState.Instance);
+                    potential.map = this;
+                    potential.GridPosition = it.pos;
+                    this.AddChild(potential);
+                    potentialtiles[it.pos] = potential;
+                    potential.PossibleRots = new bool[4]{false, false, false, false};
+                }
+                potential.GridPosition = it.pos;
+                potential.PossibleRots[it.rot] = true;
+                potential.Update();
+            }
         }
     }
     public override void _Ready()
     {
-        Engine.tilesource = TileGenerator;
-        game = Engine.CreateBaseGame(0, 2);
+        Engine.tilesource = Test2D.TileGenerator;
+        game = Engine.CreateBaseGame(666, 2);
         UpdateDisplay();
     }
 

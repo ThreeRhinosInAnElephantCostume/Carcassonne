@@ -1,3 +1,4 @@
+using System.Xml.Linq;
 using System.Reflection.Metadata;
 using System.Net.NetworkInformation;
 using System.Threading.Tasks.Dataflow;
@@ -27,8 +28,9 @@ public partial class Engine
     {
         public class NodeType
         {
-            uint id;
-            string Name{get;}
+            public uint id{get;}
+            public string Name{get;}
+            public string Abrv{get;}
             public static bool operator ==(NodeType n0, NodeType n1)
             {
                 return n0.id == n1.id;
@@ -57,12 +59,13 @@ public partial class Engine
             {
                 return id.GetHashCode();
             }
-            public NodeType(uint id, string name)
+            public NodeType(uint id, string name, char abrv)
             {
                 this.id = id;
                 this.Name = name;
+                this.Abrv = "" + abrv;
             }
-            public NodeType(string name) : this(CreateID(), name) {}
+            public NodeType(string name, char abrv) : this(CreateID(), name, abrv) {}
         }
         public abstract class InternalNode
         {
@@ -78,7 +81,7 @@ public partial class Engine
             public NodeType Type{get => node.type;}
             public virtual bool CanConnect(Connection other)
             {
-                return this.Type.GetType() == other.Type.GetType();
+                return this.Type == other.Type;
             }
             public virtual void Connect(Connection other)
             {
@@ -157,22 +160,65 @@ public partial class Engine
         public Side Left {get => sides[3];}
         public Vector2I position {get; set;} = new Vector2I(0,0);
         public bool IsPlaced{get; protected set;} = false;
+        public string DebugRepresentation
+        {
+            get
+            {
+                Assert(N_CONNECTORS == 3);
+                Assert(N_SIDES == 4);
+                string ret = "";
+                ret += " ";
+                for(int i = 0; i < N_CONNECTORS; i++ )
+                {
+                    ret += sides[0].connectors[i].node.type.Abrv;
+                }
+                ret += "\n";
+                for(int i = 0; i < N_CONNECTORS; i++)
+                {
+                    ret += sides[3].connectors[i].node.type.Abrv;
+                    ret += "   ";
+                    ret += sides[1].connectors[i].node.type.Abrv;
+                    ret += "\n";
+                }
+                ret += " ";
+                for(int i = 0; i < N_CONNECTORS; i++ )
+                {
+                    ret += sides[2].connectors[i].node.type.Abrv;
+                }
+                ret += "\n";
+                return ret;
+            }
+        }
+        public void ReoderConnections()
+        {
+            for(int i = 0; i < N_SIDES; i++)
+            {
+                for(int ii = 0; ii < N_CONNECTORS; ii++)
+                {
+                    connections[i * N_CONNECTORS + ii] = sides[i].connectors[ii];
+                }
+            }
+        }
         public void Rotate(int r)
         {
-            r %= (int)N_SIDES;
+            r =  AbsMod(r, (int)N_SIDES);
+            if(r == 0)
+                return;
+            // GD.Print(r);
+            // GD.Print(DebugRepresentation);
             Side[] nsides = new Side[N_SIDES];
             for(uint i = 0; i < N_SIDES; i++)
             {
-                nsides[i] = sides[i + r];
-                for(uint ii = 0; ii < N_CONNECTORS; ii++)
-                {
-                    connections[i*3 + ii] = nsides[i].connectors[ii];
-                }
+                nsides[AbsMod((int)(i + r), N_SIDES)] = sides[i];
             }
             sides = nsides;
+            ReoderConnections();
+            // GD.Print(DebugRepresentation);
+            // GD.Print("----");
         }
         public Tile( InternalNode[] nodes, Connection[] connections)
         {
+            Assert(connections.Length == N_CONNECTORS * N_SIDES);
             this.connections = connections;
             this.nodes = nodes;
             for(int i = 0; i < N_SIDES; i++)

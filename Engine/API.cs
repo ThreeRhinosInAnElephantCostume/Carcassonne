@@ -46,15 +46,15 @@ public partial class Engine
     {
         ExecuteAction(new SkipPawnAction());
     }
-    Tile CurrentTile()
+    public Tile GetCurrentTile()
     {
         return tilemanager.CurrentTile();
     }
-    Tile UpcomingTile()
+    public Tile GetUpcomingTile()
     {
         return tilemanager.PeekTile();
     }
-    List<Tile> QueuedTiles()
+    public List<Tile> GetQueuedTiles()
     {
         return tilemanager.TileQueue.ToList();
     }

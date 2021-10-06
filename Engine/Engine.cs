@@ -28,6 +28,7 @@ public partial class Engine
         public int NQueued{get => TileQueue.Count;}
         public void AddTile(Tile tile, bool shuffle)
         {
+            TileList.Add(tile);
             if(shuffle && TileQueue.Count > 0)
                 TileQueue.Insert((int)eng.rng.NextLong(0, TileQueue.Count), tile);
             else
@@ -138,9 +139,11 @@ public partial class Engine
     {
         basescore[player] = val;
     }
-    Player NextPlayer()
+    Player NextPlayer(bool nextturn=true)
     {
         CurrentPlayer = PeekNextPlayer();
+        if(nextturn)
+            Turn++;
         return CurrentPlayer;
     }
     protected Engine()

@@ -312,9 +312,9 @@ namespace ExtraMath
 
         public static Vector2I[] GetNeighbouringPositions(Vector2I pos)
         {
-            return new Vector2I[]{Up, Right, Down, Left};
+            return new Vector2I[]{pos+Down, pos+Right, pos+Up, pos+Left};
         }
-        public Vector2I[] Neigbours
+        public Vector2I[] Neighbours
         {
             get => GetNeighbouringPositions(this);
         }

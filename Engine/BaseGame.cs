@@ -23,17 +23,17 @@ public partial class Engine
 
     public class RoadNode : Tile.InternalNode
     {
-        public static Tile.NodeType t = new Tile.NodeType("Road");
+        public static Tile.NodeType t = new Tile.NodeType("Road", 'R');
         public override Tile.NodeType type => t;
     }
     public class CityNode : Tile.InternalNode
     {
-        public static Tile.NodeType t = new Tile.NodeType("City");
+        public static Tile.NodeType t = new Tile.NodeType("City", 'C');
         public override Tile.NodeType type => t;
     }
     public class FarmNode : Tile.InternalNode
     {
-        public static Tile.NodeType t = new Tile.NodeType("Farm");
+        public static Tile.NodeType t = new Tile.NodeType("Farm", 'F');
         public override Tile.NodeType type => t;
     }
     public class BaseGameTileset : Tileset
@@ -91,6 +91,14 @@ public partial class Engine
         AssertState(State.PLACE_TILE);
         Tile c = tilemanager.CurrentTile();
 
+        c.Rotate(act.rot);
+        if(!map.CanPlaceTile(c, act.pos))
+        {
+            c.Rotate(-act.rot);
+            throw new Exception("INVALID TILE PLACEMENT");
+        }
+        map.PlaceTile(c, act.pos);
+
         if(tilemanager.NextTile() == null)
         {
             CurrentState = State.GAME_OVER;
@@ -121,6 +129,7 @@ public partial class Engine
             CurrentPlayer = null;
             return;
         }
+        NextPlayer();
     }
     protected class StartBaseGameAction : Action
     {

@@ -117,6 +117,7 @@ public static partial class Utils
             }
             public Xorshift64s(ulong seed)
             {
+                Assert(seed != 0);
                 this.seed = seed;
             }
         }
@@ -162,7 +163,7 @@ public static partial class Utils
         public long NextLong(long min, long max)
         {
             long dif = max- min;
-            return min + (NextLong() % dif);
+            return min + AbsMod(NextLong(), dif);
         }
         public unsafe ulong NextULong()
         {
@@ -171,7 +172,7 @@ public static partial class Utils
         public ulong NextULong(ulong min, ulong max)
         {
             ulong dif = max - min;
-            return min + (NextULong() % dif);
+            return min + NextULong() % dif;
         }
         public RNG(ulong seed)
         {

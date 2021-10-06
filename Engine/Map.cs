@@ -11,6 +11,8 @@ using System.Linq.Expressions;
 using System.Runtime;
 using System.Runtime.CompilerServices;
 
+using System.Dynamic;
+
 using static System.Math;
 
 using static Utils;
@@ -45,7 +47,7 @@ public partial class Engine
         public List<Tile> GetNeighbours(Vector2I pos)
         {   
             List<Tile> Neighbours =  new List<Tile>(4);
-            foreach(var p in pos.Neigbours)
+            foreach(var p in pos.Neighbours)
             {
                 if(this[p] != null)
                     Neighbours.Add(this[p]);
@@ -65,13 +67,13 @@ public partial class Engine
             tiles.Add(tile);
             tilesbyposition.Add(pos, tile);
             tile.position = pos;
-            Vector2I[] nepos = pos.Neigbours;
+            Vector2I[] nepos = pos.Neighbours;
             for(int i = 0; i < N_SIDES; i++)
             {
-                Tile n = this[pos.Neigbours[i]];
+                Tile n = this[pos.Neighbours[i]];
                 if(n == null)
                     continue;
-                tile.sides[i].Attach(n.sides[(i+(N_SIDES/2)) % N_SIDES]);
+                tile.sides[i].Attach(n.sides[ AbsMod((i+(N_SIDES/2)), N_SIDES)]);
                 tile.neighbours[i] = n;
             }
         }
@@ -90,14 +92,14 @@ public partial class Engine
             int ncount = 0;
             int i = 0;
             int connindex = 0;
-            foreach(var p in pos.Neigbours)
+            foreach(var p in pos.Neighbours)
             {
                 neighbours[i] = this[p];
                 if(this[p] != null)
                 {
                     ncount++;
                     List<int> ic = new List<int>();
-                    if(!tile.sides[i].CanAttachVerbose(this[p].sides[(N_SIDES + (N_SIDES/2)) % N_SIDES], out ic, ref connindex))
+                    if(!tile.sides[i].CanAttachVerbose(this[p].sides[(i + (N_SIDES/2)) % N_SIDES], out ic, ref connindex))
                         ret = false;
                     invalidconnectors[i].AddRange(ic);
                 }
@@ -120,17 +122,17 @@ public partial class Engine
         }
         public (bool can, List<int> rots) TryFindFits(Tile tile, Vector2I pos, bool breakfast = false)
         {
-            int rotation = 0;
             List<int> rots = new List<int>();
-            for(uint i = 0; i < N_SIDES; i++)
+            for(int i = 0; i < N_SIDES; i++)
             {
                 if(CanPlaceTile(tile, pos))
                 {
-                    rotation = (int)i;
-                    tile.Rotate(-rotation);
-                    rots.Add(rotation);
+                    rots.Add(i);
                     if(breakfast)
+                    {
+                        tile.Rotate(-i);
                         return (true, rots);
+                    }
                 }
                 tile.Rotate(1);
             }
@@ -149,11 +151,16 @@ public partial class Engine
             List<(Vector2I, int)> ret = new List<(Vector2I, int)>(64);
             foreach(var t in tiles)
             {
-                (bool can, List<int> rots) fit = TryFindFits(tile, t.position);
-                if(fit.can)
+                foreach(var n in t.position.Neighbours)
                 {
-                    foreach(var it in fit.rots)
-                        ret.Add((t.position, it));
+                    if(this[n] != null)
+                        continue;
+                    (bool can, List<int> rots) fit = TryFindFits(tile, n);
+                    if(fit.can)
+                    {
+                        foreach(var it in fit.rots)
+                            ret.Add((n, it));
+                    }
                 }
             }
             return ret;

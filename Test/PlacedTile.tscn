@@ -4,5 +4,5 @@
 
 [node name="PlacedTile" type="Node2D"]
 script = ExtResource( 1 )
-TileOverride = "Base/Starter"
 RoadColor = Color( 0.972549, 0.980392, 0.0196078, 1 )
+TileOverride = "Base/Starter"

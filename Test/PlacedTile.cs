@@ -20,18 +20,29 @@ using ExtraMath;
 
 
 [Tool]
-public class PlacedTile : Node2D
+public class PlacedTile : TestTile
 {
-    [Export]
-    public float size = 100;
-    public Vector2 outersize = new Vector2();
 
     [Export]
-    public int edgewidth = 5;
+    public float edgewidth = 5;
     [Export]
-    public Color edgecolor = new Color(0.9f, 0.9f, 0.9f, 0.9f);
+    public Color edgecolor  {get; set;} = new Color(0.9f, 0.9f, 0.9f, 0.9f);
+
+    string _tileoverride = "";
     [Export]
-    public string TileOverride{get; set;} = "";
+    public string TileOverride{
+        get => _tileoverride; 
+        set 
+        {
+            _tileoverride = value;
+            if(Godot.Engine.EditorHint)
+            {
+                var ntile = Test2D.TileGenerator(_tileoverride);
+                if(ntile != null)
+                    tile = ntile;
+            }
+        }
+    }
 
     [Export]
     public Color RoadColor{get; set;} = new Color(0.3f, 0.3f, 0.6f);
@@ -46,33 +57,29 @@ public class PlacedTile : Node2D
     [Export]
     public float terminsize = 5f;
     public Engine.Tile tile = null;
-    public override void _Ready()
-    {
-        outersize = new Vector2(size, size);
-    }
 
-    static int _ev = 0;
-    public override void _Process(float delta)
-    {
-        if(Godot.Engine.EditorHint)
-        {
-            if(TileOverride != "")
-                tile = TileMap.TileGenerator(TileOverride);
-            if(_ev >= 60)
-            {
-                Update();
-                _ev = 0;
-            }
-            _ev++;
-        }
-    }
+    float _unconnecteddiv = 2;
+    [Export(PropertyHint.Range, "1,10")]
+    public float unconnecteddiv {get => _unconnecteddiv; set { _unconnecteddiv=value; Update(); }}
+    float _connecteddiv = 2;
+    [Export(PropertyHint.Range, "1,10")]
+    public float connecteddiv {get => _connecteddiv; set { _connecteddiv=value; Update(); }}
+    [Export]
+    public float OpacityMP{get; set;} = 1.0f;
     public override void _Draw()
     {
-
+        Color edgecolor = new Color(this.edgecolor,  this.edgecolor.a * OpacityMP);
         DrawRect(new Rect2(-outersize/2, outersize), edgecolor, false, edgewidth);
 
         if(tile == null)
+        {   
+            if(Godot.Engine.EditorHint && TileOverride != "")
+            {
+                tile = Test2D.TileGenerator(TileOverride);
+            }
+            DrawCircle(new Vector2(0,0), 5, edgecolor);
             return;
+        }
 
         Vector2[] edges = new Vector2[4] {-outersize/2, new Vector2(outersize.x/2, -outersize.y/2),
              outersize/2, new Vector2(-outersize.x/2, outersize.y/2)};
@@ -93,7 +100,7 @@ public class PlacedTile : Node2D
                     Engine.CityNode _ => CityColor,
                     _ => throw new Exception(""),
                 };
-
+                c.a  *= OpacityMP;
                 Vector2 par = pars[i];
                 Vector2 origin = edges[i];
                 Vector2 start = origin + (par * ii * outersize / Engine.N_CONNECTORS);
@@ -115,17 +122,19 @@ public class PlacedTile : Node2D
                 Engine.CityNode _ => CityColor,
                 _ => throw new Exception(""),
             };
+            c.a *= OpacityMP;
             if(points[k].Count == 1)
             {
-                DrawLine(points[k][0]/2, points[k][0], c, nodeconsize);
-                DrawCircle(points[k][0]/2, terminsize, c);
+                DrawLine(points[k][0]/unconnecteddiv, points[k][0], c, nodeconsize);
+                DrawCircle(points[k][0]/unconnecteddiv, terminsize, c);
+                continue;
             }
             Vector2 centre = new Vector2();
             foreach(var it in points[k])
             {
                 centre += it / points[k].Count;
             }
-            centre /= 2;
+            centre /= connecteddiv;
             foreach(var it in points[k])
             {
 

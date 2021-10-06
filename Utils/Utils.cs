@@ -26,6 +26,15 @@ using Expression = System.Linq.Expressions.Expression;
 
 public static partial class Utils
 {
+    // Python-style division remainder, for instance: AbsMod(-1, 4) == 3
+    public static int AbsMod(int v, int d)
+    {
+        return (v % d + d) % d;
+    }
+    public static long AbsMod(long v, long d)
+    {
+        return (v % d + d) % d;
+    }
     [System.Serializable]
     public class AssertionFailureException : System.Exception
     {
