@@ -3,7 +3,4 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="System.Dynamic.Runtime" Version="4.3.0" />
-  </ItemGroup>
 </Project>
