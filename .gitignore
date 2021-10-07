@@ -31,3 +31,4 @@ mono_crash.*.json
 
 #binary files
 bin/
+temp/

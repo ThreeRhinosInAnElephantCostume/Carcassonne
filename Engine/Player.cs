@@ -25,11 +25,7 @@ public partial class Engine
 
         public int Score { get => eng.GetPlayerScore(this); }
         public int EndScore { get => eng.GetPlayerEndScore(this); } 
-        public int ProbableScore 
-        { 
-            get => eng.GetPlayerProbableScore(this); 
-            set => eng.SetPlayerScore(this, value);
-        }
+        public int ProbableScore { get => eng.GetPlayerProbableScore(this);  }
 
         public Player(Engine eng)
         {

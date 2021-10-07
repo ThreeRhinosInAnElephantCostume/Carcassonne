@@ -33,10 +33,14 @@ public partial class Engine
             public string Abrv{get;}
             public static bool operator ==(NodeType n0, NodeType n1)
             {
+                if (ReferenceEquals(null, n0) || ReferenceEquals(null, n1)) 
+                    return ReferenceEquals(n0, n1);
                 return n0.id == n1.id;
             }
             public static bool operator !=(NodeType n0, NodeType n1)
             {
+                if (ReferenceEquals(null, n0) || ReferenceEquals(null, n1)) 
+                    return !ReferenceEquals(n0, n1);
                 return n0.id != n1.id;
             }
             public bool Equals(NodeType other)
@@ -72,12 +76,14 @@ public partial class Engine
             public abstract NodeType type{get;}
             public List<Connection> connections = new List<Connection>();
             public Tile tile;
+            public Map.Graph graph;
+            public int mark;
         }
         public class Connection 
         { 
             public InternalNode node{get;}
-            Connection other = null;
-            public bool IsConnected{get => other != null;}
+            public Connection Other {get; protected set;} = null;
+            public bool IsConnected{get => Other != null;}
             public NodeType Type{get => node.type;}
             public virtual bool CanConnect(Connection other)
             {
@@ -87,7 +93,7 @@ public partial class Engine
             {
                 Assert(CanConnect(other), "Attempting to connect incompatible connectors");
 
-                this.other = other;
+                this.Other = other;
                 if(!other.IsConnected)
                     other.Connect(this);
             }

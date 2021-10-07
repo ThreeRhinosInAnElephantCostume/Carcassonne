@@ -21,11 +21,12 @@ using ExtraMath;
 
 public partial class Engine
 {
-    public class Map
+    public partial class Map
     {
         Dictionary<Vector2I, Tile> tilesbyposition = new Dictionary<Vector2I, Tile>();
         List<Tile> tiles = new List<Tile>();
         public Tile root {get; protected set;}
+        public List<Graph> Graphs = new List<Graph>();
         public Tile this[Vector2I pos]
         {
             get => (tilesbyposition.ContainsKey(pos))?tilesbyposition[pos] : null; 
@@ -76,6 +77,7 @@ public partial class Engine
                 tile.sides[i].Attach(n.sides[ AbsMod((i+(N_SIDES/2)), N_SIDES)]);
                 tile.neighbours[i] = n;
             }
+            UpdateGraphs(tile);
         }
         public void PlaceTile(Tile tile, Vector2I pos)
         {

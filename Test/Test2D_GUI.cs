@@ -26,7 +26,9 @@ public class Test2D_GUI : Control
     Camera2D camera;
     PlacedTile currenttile;
     List<Label> playerlabels = new List<Label>();
+    List<Label> graphlabels = new List<Label>();
     CanvasLayer cl;
+    Godot.Container sidecontainer;
     public override void _Ready()
     {
         cl = GetNode<CanvasLayer>("CanvasLayer");
@@ -42,13 +44,13 @@ public class Test2D_GUI : Control
         test2D.Position = camera.GetViewport().Size/2;
         this.MouseFilter = MouseFilterEnum.Ignore;
 
-        Godot.Container cont = cl.GetNode<Godot.Container>("PlayerDataContainer");
+        sidecontainer = cl.GetNode<Godot.Container>("PlayerDataContainer");
 
         foreach(var it in game.Players)
         {
             Label l = new Label();
             l.Align = Label.AlignEnum.Center;
-            cont.AddChild(l);
+            sidecontainer.AddChild(l);
             playerlabels.Add(l);
         }
         camera.Current = true;
@@ -65,15 +67,41 @@ public class Test2D_GUI : Control
             currenttile.tile = game.GetCurrentTile();
             currenttile.Update();
         }
-        int i = 0;
-        foreach(var it in game.Players)
         {
-            playerlabels[i].Text = "Player " + i.ToString() + "\n" + "Score: " + it.Score.ToString();
-            if(it == game.CurrentPlayer)
-                playerlabels[i].Modulate = new Color(1,1,1,1);
-            else
-                playerlabels[i].Modulate = new Color(0.9f,0.9f,0.9f,0.9f);
-            i++;
+            int i = 0;
+            foreach(var it in game.Players)
+            {
+                playerlabels[i].Text = "Player " + i.ToString() + "\n" + "Score: " + it.Score.ToString();
+                if(it == game.CurrentPlayer)
+                    playerlabels[i].Modulate = new Color(1,1,1,1);
+                else
+                    playerlabels[i].Modulate = new Color(0.9f,0.9f,0.9f,0.9f);
+                i++;
+            }
+        }
+        while(game.map.Graphs.Count > graphlabels.Count)
+        {
+            var l = new Label();
+            l.Align = Label.AlignEnum.Center;
+            sidecontainer.AddChild(l);
+            graphlabels.Add(l);
+        }
+        while(game.map.Graphs.Count < graphlabels.Count)
+        {
+            graphlabels.Last().GetParent().RemoveChild(graphlabels.Last());
+            graphlabels.Last().QueueFree();
+            graphlabels.Remove(graphlabels.Last());
+        }
+        for(int i = 0; i < game.map.Graphs.Count; i++)
+        {
+            var g = game.map.Graphs[i];
+            graphlabels[i].Text = 
+              "Graph " + g.ID 
+            + "\nTiles: " + g.tiles.Count 
+            + "\nNodes: " + g.nodes.Count
+            + "\nConnections: " + g.connections.Count
+            + "\nOpenconnections: " + g.openconnections.Count
+            + "\nIsClosed: " + g.IsClosed;
         }
     }
     public override void _Input(InputEvent @event)

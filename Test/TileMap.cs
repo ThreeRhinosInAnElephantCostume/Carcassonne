@@ -46,7 +46,7 @@ public class TileMap : Node2D
         if(game.CurrentState != Engine.State.PLACE_TILE)
             return;
         DisablePotentiaPlacement();
-        tilesuggestion = (PlacedTile)placedtile.Instance(PackedScene.GenEditState.Instance);
+        tilesuggestion = (PlacedTile)placedtile.Instance();
         tilesuggestion.Rotation = (float) PI * rot * 0.5f;
         tilesuggestion.tile = game.GetCurrentTile();
         tilesuggestion.OpacityMP = 0.4f;
@@ -76,7 +76,7 @@ public class TileMap : Node2D
         }
         foreach(var t in unplaced)
         {
-            PlacedTile pt = (PlacedTile)placedtile.Instance(PackedScene.GenEditState.Instance);
+            PlacedTile pt = (PlacedTile)placedtile.Instance();
             pt.tile = t;
             AddChild(pt);
             tiledisplays.Add(pt);
@@ -99,7 +99,7 @@ public class TileMap : Node2D
                 }
                 else
                 {
-                    potential = (PotentialTile)potentialtile.Instance(PackedScene.GenEditState.Instance);
+                    potential = (PotentialTile)potentialtile.Instance();
                     potential.map = this;
                     potential.GridPosition = it.pos;
                     this.AddChild(potential);
