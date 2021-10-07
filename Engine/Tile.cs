@@ -21,8 +21,11 @@ using static Utils;
 
 using ExtraMath;
 
+using Carcassonne;
+using static Carcassonne.GameEngine;
 
-public partial class Engine
+
+namespace Carcassonne
 {
     public class Tile
     {

@@ -15,14 +15,16 @@ using static System.Math;
 
 using static Utils;
 
+using Carcassonne;
+using static Carcassonne.GameEngine;
 
 public class Test2D : Node2D
 {
-    public static Engine.Tile TileGenerator(string name)
+    public static Tile TileGenerator(string name)
     {
-        List<Engine.Tile.InternalNode> nodes = new List<Engine.Tile.InternalNode>();
-        List<Engine.Tile.Connection> conns  = new List<Engine.Tile.Connection>();
-        void GenerateConns<T>(int nodeindex, int n) where T : Engine.Tile.InternalNode, new()
+        List<Tile.InternalNode> nodes = new List<Tile.InternalNode>();
+        List<Tile.Connection> conns  = new List<Tile.Connection>();
+        void GenerateConns<T>(int nodeindex, int n) where T : Tile.InternalNode, new()
         {
             while(nodeindex >= nodes.Count)
                 nodes.Add(null);
@@ -30,49 +32,49 @@ public class Test2D : Node2D
                 nodes[nodeindex] = new T();
             Assert(nodes[nodeindex].type == new T().type);
             for(int i = 0; i < n; i++)
-                conns.Add(new Engine.Tile.Connection(nodes[nodeindex]));
+                conns.Add(new Tile.Connection(nodes[nodeindex]));
         }
         switch(name)
         {
             case "Base/Starter":
-                GenerateConns<Engine.FarmNode>(0, 4);
-                GenerateConns<Engine.RoadNode>(1, 1);
-                GenerateConns<Engine.FarmNode>(2, 2);
-                GenerateConns<Engine.RoadNode>(3, 1);
-                GenerateConns<Engine.FarmNode>(4, 2);
-                GenerateConns<Engine.RoadNode>(5, 1);
-                GenerateConns<Engine.FarmNode>(0, 1);
+                GenerateConns<GameEngine.FarmNode>(0, 4);
+                GenerateConns<GameEngine.RoadNode>(1, 1);
+                GenerateConns<GameEngine.FarmNode>(2, 2);
+                GenerateConns<GameEngine.RoadNode>(3, 1);
+                GenerateConns<GameEngine.FarmNode>(4, 2);
+                GenerateConns<GameEngine.RoadNode>(5, 1);
+                GenerateConns<GameEngine.FarmNode>(0, 1);
                 break;
             case "Base/RoadCross":
-                GenerateConns<Engine.FarmNode>(0, 4);
-                GenerateConns<Engine.RoadNode>(1, 1);
-                GenerateConns<Engine.FarmNode>(2, 2);
-                GenerateConns<Engine.RoadNode>(3, 1);
-                GenerateConns<Engine.FarmNode>(4, 2);
-                GenerateConns<Engine.RoadNode>(5, 1);
-                GenerateConns<Engine.FarmNode>(0, 1);
+                GenerateConns<GameEngine.FarmNode>(0, 4);
+                GenerateConns<GameEngine.RoadNode>(1, 1);
+                GenerateConns<GameEngine.FarmNode>(2, 2);
+                GenerateConns<GameEngine.RoadNode>(3, 1);
+                GenerateConns<GameEngine.FarmNode>(4, 2);
+                GenerateConns<GameEngine.RoadNode>(5, 1);
+                GenerateConns<GameEngine.FarmNode>(0, 1);
                 break;
             case "Base/RoadStraight":
-                GenerateConns<Engine.FarmNode>(0, 4);
-                GenerateConns<Engine.RoadNode>(1, 1);
-                GenerateConns<Engine.FarmNode>(2, 5);
-                GenerateConns<Engine.RoadNode>(1, 1);
-                GenerateConns<Engine.FarmNode>(0, 1);
+                GenerateConns<GameEngine.FarmNode>(0, 4);
+                GenerateConns<GameEngine.RoadNode>(1, 1);
+                GenerateConns<GameEngine.FarmNode>(2, 5);
+                GenerateConns<GameEngine.RoadNode>(1, 1);
+                GenerateConns<GameEngine.FarmNode>(0, 1);
                 break;
             case "Base/RoadTurn":
-                GenerateConns<Engine.FarmNode>(0, 7);
-                GenerateConns<Engine.RoadNode>(1, 1);
-                GenerateConns<Engine.FarmNode>(2, 2);
-                GenerateConns<Engine.RoadNode>(1, 1);
-                GenerateConns<Engine.FarmNode>(0, 1);
+                GenerateConns<GameEngine.FarmNode>(0, 7);
+                GenerateConns<GameEngine.RoadNode>(1, 1);
+                GenerateConns<GameEngine.FarmNode>(2, 2);
+                GenerateConns<GameEngine.RoadNode>(1, 1);
+                GenerateConns<GameEngine.FarmNode>(0, 1);
                 break;
             default:
                 GD.PrintErr("Failed to find node " + name);
                 return null;
         }
         Assert(!nodes.Contains(null));
-        Assert(conns.Count == Engine.N_CONNECTORS*Engine.N_SIDES);
-        return new Engine.Tile(nodes.ToArray(), conns.ToArray());
+        Assert(conns.Count == GameEngine.N_CONNECTORS*GameEngine.N_SIDES);
+        return new Tile(nodes.ToArray(), conns.ToArray());
     }
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()

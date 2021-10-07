@@ -17,26 +17,32 @@ using static Utils;
 
 using ExtraMath;
 
-public partial class Engine
-{
-    public delegate Tile TileSourceDelegate(string name);
-    public static TileSourceDelegate tilesource;
+using Carcassonne;
+using static Carcassonne.GameEngine;
 
-    protected static Tile GenerateTile(string name)
+namespace Carcassonne
+{
+    public partial class GameEngine
     {
-        Tile r = tilesource(name);
-        Assert(r != null);
-        return r;
-    }
-    protected static Tile[] GenerateTiles(string name, int n)
-    {
-        Tile[] ret = new Tile[n];
-        for(int i = 0; i < n; i++)
+        public delegate Tile TileSourceDelegate(string name);
+        public static TileSourceDelegate tilesource;
+
+        public static Tile GenerateTile(string name)
         {
-            ret[i] = GenerateTile(name);
-            Assert(ret[i] != null);
+            Tile r = GameEngine.tilesource(name);
+            Assert(r != null);
+            return r;
         }
-        return ret;
+        public static Tile[] GenerateTiles(string name, int n)
+        {
+            Tile[] ret = new Tile[n];
+            for(int i = 0; i < n; i++)
+            {
+                ret[i] = GenerateTile(name);
+                Assert(ret[i] != null);
+            }
+            return ret;
+        }
     }
     public abstract class Tileset
     {

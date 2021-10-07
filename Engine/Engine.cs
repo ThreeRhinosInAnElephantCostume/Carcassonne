@@ -17,138 +17,144 @@ using static Utils;
 
 using ExtraMath;
 
-public partial class Engine
+using Carcassonne;
+using static Carcassonne.GameEngine;
+
+namespace Carcassonne
 {
-    public class TileManager
+    public partial class GameEngine
     {
-        Tile current = null;
-        Engine eng;
-        public List<Tile> TileList {get; protected set;}= new List<Tile>();
-        public List<Tile> TileQueue {get; protected set;} = new List<Tile>();
-        public int NQueued{get => TileQueue.Count;}
-        public void AddTile(Tile tile, bool shuffle)
+        public class TileManager
         {
-            TileList.Add(tile);
-            if(shuffle && TileQueue.Count > 0)
-                TileQueue.Insert((int)eng.rng.NextLong(0, TileQueue.Count), tile);
-            else
-                TileQueue.Add(tile);
-        }
-        public void AddTiles(List<Tile> tiles, bool shuffle)
-        {
-            foreach(var it in tiles)
-                AddTile(it, shuffle);
-        }
-        public void Shuffle()
-        {
-            List<Tile> res = new List<Tile>(TileQueue.Count);
-            while(TileQueue.Count > 0)
+            Tile current = null;
+            GameEngine eng;
+            public List<Tile> TileList {get; protected set;}= new List<Tile>();
+            public List<Tile> TileQueue {get; protected set;} = new List<Tile>();
+            public int NQueued{get => TileQueue.Count;}
+            public void AddTile(Tile tile, bool shuffle)
             {
-                int indx = (int)eng.rng.NextLong(0, TileQueue.Count);
-                res.Add(TileQueue[indx]);
-                TileQueue.RemoveAt(indx);
+                TileList.Add(tile);
+                if(shuffle && TileQueue.Count > 0)
+                    TileQueue.Insert((int)eng.rng.NextLong(0, TileQueue.Count), tile);
+                else
+                    TileQueue.Add(tile);
             }
-        }
-        public Tile CurrentTile()
-        {
-            return current;
-        }
-        public void SkipTile()
-        {
-            Tile c = current;
-            NextTile();
-            if(NQueued == 0)
-                TileQueue.Add(c);
-            else
-                TileQueue.Insert(1, c);
-        }
-        public Tile NextTile()
-        {
-            Assert(!(NQueued == 0 && current == null), "Attempting to retrieve a tile when there are none available!");
-
-            if(NQueued == 0)
+            public void AddTiles(List<Tile> tiles, bool shuffle)
             {
-                current = null;
+                foreach(var it in tiles)
+                    AddTile(it, shuffle);
             }
-            else 
+            public void Shuffle()
             {
-                current = TileQueue[0];
-                TileQueue.RemoveAt(0);
+                List<Tile> res = new List<Tile>(TileQueue.Count);
+                while(TileQueue.Count > 0)
+                {
+                    int indx = (int)eng.rng.NextLong(0, TileQueue.Count);
+                    res.Add(TileQueue[indx]);
+                    TileQueue.RemoveAt(indx);
+                }
             }
-            return current;
-        }
-        public List<Tile> PeekTiles(int n)
-        {
-            Assert(TileQueue.Count >= n, "Attempting to peek more tiles than there are in queue");
+            public Tile CurrentTile()
+            {
+                return current;
+            }
+            public void SkipTile()
+            {
+                Tile c = current;
+                NextTile();
+                if(NQueued == 0)
+                    TileQueue.Add(c);
+                else
+                    TileQueue.Insert(1, c);
+            }
+            public Tile NextTile()
+            {
+                Assert(!(NQueued == 0 && current == null), "Attempting to retrieve a tile when there are none available!");
 
-            return TileQueue.GetRange(0, n).ToList<Tile>();
-        }
-        public Tile PeekTile()
-        {
-            Assert(TileQueue.Count > 0, "Attempting to peek an empty tile queue");
+                if(NQueued == 0)
+                {
+                    current = null;
+                }
+                else 
+                {
+                    current = TileQueue[0];
+                    TileQueue.RemoveAt(0);
+                }
+                return current;
+            }
+            public List<Tile> PeekTiles(int n)
+            {
+                Assert(TileQueue.Count >= n, "Attempting to peek more tiles than there are in queue");
 
-            return TileQueue[0];
-        }
+                return TileQueue.GetRange(0, n).ToList<Tile>();
+            }
+            public Tile PeekTile()
+            {
+                Assert(TileQueue.Count > 0, "Attempting to peek an empty tile queue");
 
-        public TileManager(Engine eng)
-        {
-            this.eng = eng;
+                return TileQueue[0];
+            }
+
+            public TileManager(GameEngine eng)
+            {
+                this.eng = eng;
+            }
+            
         }
-        
-    }
-    public enum State
-    {
-        ERR=0,
-        NONE,
-        PLACE_TILE,
-        PLACE_PAWN,
-        GAME_OVER
-    }
-    protected TileManager tilemanager {get; set;}
-    protected RNG rng{get; set;}
-    List<Action> _history = new List<Action>();
-    protected Dictionary<Player, int> basescore = new Dictionary<Player, int>();
-    protected List<Player> _players = new List<Player>();
-    public Map map{get; protected set;}
-    public Player CurrentPlayer{get; protected set;}
-    void AddPlayer()
-    {
-        Player p = new Player(this);
-        basescore.Add(p, 0);
-        _players.Add(p);
-        if(CurrentPlayer == null)
-            CurrentPlayer = p;
-    }
-    void AssertState(Player curplayer, State state)
-    {
-        if(CurrentPlayer != curplayer)
-            throw new Exception("Player assertion failed!");
-        if(state != this.CurrentState)
-            throw new Exception("State assertion failed. Current state is " + this.CurrentState.ToString() 
-            + ", expected " + state.ToString());
-    }
-    void AssertState(Player curplayer)
-    {
-        AssertState(curplayer, this.CurrentState);
-    }
-    void AssertState(State state)
-    {
-        AssertState(this.CurrentPlayer, state);
-    }
-    void SetPlayerScore(Player player, int val)
-    {
-        basescore[player] = val;
-    }
-    Player NextPlayer(bool nextturn=true)
-    {
-        CurrentPlayer = PeekNextPlayer();
-        if(nextturn)
-            Turn++;
-        return CurrentPlayer;
-    }
-    protected Engine()
-    {   
-        Assert(Engine.tilesource != null);
-        Assert(this.actionmethods.Length > 0);
+        public enum State
+        {
+            ERR=0,
+            NONE,
+            PLACE_TILE,
+            PLACE_PAWN,
+            GAME_OVER
+        }
+        protected TileManager tilemanager {get; set;}
+        protected RNG rng{get; set;}
+        List<Action> _history = new List<Action>();
+        protected Dictionary<Player, int> basescore = new Dictionary<Player, int>();
+        protected List<Player> _players = new List<Player>();
+        public Map map{get; protected set;}
+        public Player CurrentPlayer{get; protected set;}
+        void AddPlayer()
+        {
+            Player p = new Player(this);
+            basescore.Add(p, 0);
+            _players.Add(p);
+            if(CurrentPlayer == null)
+                CurrentPlayer = p;
+        }
+        void AssertState(Player curplayer, State state)
+        {
+            if(CurrentPlayer != curplayer)
+                throw new Exception("Player assertion failed!");
+            if(state != this.CurrentState)
+                throw new Exception("State assertion failed. Current state is " + this.CurrentState.ToString() 
+                + ", expected " + state.ToString());
+        }
+        void AssertState(Player curplayer)
+        {
+            AssertState(curplayer, this.CurrentState);
+        }
+        void AssertState(State state)
+        {
+            AssertState(this.CurrentPlayer, state);
+        }
+        void SetPlayerScore(Player player, int val)
+        {
+            basescore[player] = val;
+        }
+        Player NextPlayer(bool nextturn=true)
+        {
+            CurrentPlayer = PeekNextPlayer();
+            if(nextturn)
+                Turn++;
+            return CurrentPlayer;
+        }
+        protected GameEngine()
+        {   
+            Assert(GameEngine.tilesource != null);
+            Assert(this.actionmethods.Length > 0);
+        }
     }
 }

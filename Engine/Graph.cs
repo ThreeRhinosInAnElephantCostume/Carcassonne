@@ -20,7 +20,10 @@ using static Utils;
 
 using ExtraMath;
 
-public partial class Engine
+using Carcassonne;
+using static Carcassonne.GameEngine;
+
+namespace Carcassonne
 {
     public partial class Map
     {

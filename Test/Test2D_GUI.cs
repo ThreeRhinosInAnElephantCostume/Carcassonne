@@ -18,11 +18,14 @@ using static Utils;
 
 using ExtraMath;
 
+using Carcassonne;
+using static Carcassonne.GameEngine;
+
 public class Test2D_GUI : Control
 {
     Test2D test2D;
     TileMap map;
-    Engine game;
+    GameEngine game;
     Camera2D camera;
     PlacedTile currenttile;
     List<Label> playerlabels = new List<Label>();
@@ -58,7 +61,7 @@ public class Test2D_GUI : Control
     public override void _Process(float delta)
     {
         camera.Offset = camera.GetViewport().Size/2;
-        if(game.CurrentState != Engine.State.PLACE_TILE)
+        if(game.CurrentState != GameEngine.State.PLACE_TILE)
         {
             currenttile.Visible = false;
         }

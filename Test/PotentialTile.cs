@@ -18,6 +18,9 @@ using static Utils;
 
 using ExtraMath;
 
+using Carcassonne;
+using static Carcassonne.GameEngine;
+
 public class PotentialTile : TestTile
 {
     public TileMap map;

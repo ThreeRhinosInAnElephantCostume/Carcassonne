@@ -17,19 +17,25 @@ using static Utils;
 
 using ExtraMath;
 
-public partial class Engine
+using Carcassonne;
+using static Carcassonne.GameEngine;
+
+namespace Carcassonne
 {
-    public class Player
+    public partial class GameEngine
     {
-        Engine eng{get;}
-
-        public int Score { get => eng.GetPlayerScore(this); }
-        public int EndScore { get => eng.GetPlayerEndScore(this); } 
-        public int ProbableScore { get => eng.GetPlayerProbableScore(this);  }
-
-        public Player(Engine eng)
+        public class Player
         {
-            this.eng = eng;
-        }
-    }   
+            GameEngine eng{get;}
+
+            public int Score { get => eng.GetPlayerScore(this); }
+            public int EndScore { get => eng.GetPlayerEndScore(this); } 
+            public int ProbableScore { get => eng.GetPlayerProbableScore(this);  }
+
+            public Player(GameEngine eng)
+            {
+                this.eng = eng;
+            }
+        }   
+    }
 }
