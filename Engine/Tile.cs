@@ -29,59 +29,6 @@ namespace Carcassonne
 {
     public class Tile
     {
-        public class NodeType
-        {
-            public uint id{get;}
-            public string Name{get;}
-            public string Abrv{get;}
-            public static bool operator ==(NodeType n0, NodeType n1)
-            {
-                if (ReferenceEquals(null, n0) || ReferenceEquals(null, n1)) 
-                    return ReferenceEquals(n0, n1);
-                return n0.id == n1.id;
-            }
-            public static bool operator !=(NodeType n0, NodeType n1)
-            {
-                if (ReferenceEquals(null, n0) || ReferenceEquals(null, n1)) 
-                    return !ReferenceEquals(n0, n1);
-                return n0.id != n1.id;
-            }
-            public bool Equals(NodeType other)
-            {
-                if (ReferenceEquals(other, null)) return false;
-                if (ReferenceEquals(other, this)) return true;
-                return this.id == other.id;
-            }
-
-            public override bool Equals(object obj)
-            {
-                if (ReferenceEquals(null, obj)) return false;
-                if (ReferenceEquals(this, obj)) return true;
-                if(!(obj is NodeType))
-                    return false;
-                return Equals(obj as NodeType);
-            }
-
-            public override int GetHashCode()
-            {
-                return id.GetHashCode();
-            }
-            public NodeType(uint id, string name, char abrv)
-            {
-                this.id = id;
-                this.Name = name;
-                this.Abrv = "" + abrv;
-            }
-            public NodeType(string name, char abrv) : this(CreateID(), name, abrv) {}
-        }
-        public abstract class InternalNode
-        {
-            public abstract NodeType type{get;}
-            public List<Connection> connections = new List<Connection>();
-            public Tile tile;
-            public Map.Graph graph;
-            public int mark;
-        }
         public class Connection 
         { 
             public InternalNode node{get;}

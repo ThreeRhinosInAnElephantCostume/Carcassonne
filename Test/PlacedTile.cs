@@ -39,7 +39,7 @@ public class PlacedTile : TestTile
             _tileoverride = value;
             if(Godot.Engine.EditorHint)
             {
-                var ntile = Test2D.TileGenerator(_tileoverride);
+                var ntile = TileGenerator.LoadPrototype(_tileoverride).Convert();
                 if(ntile != null)
                     tile = ntile;
             }
@@ -77,7 +77,7 @@ public class PlacedTile : TestTile
         {   
             if(Godot.Engine.EditorHint && TileOverride != "")
             {
-                tile = Test2D.TileGenerator(TileOverride);
+                tile = TileGenerator.LoadPrototype(TileOverride).Convert();
             }
             DrawCircle(new Vector2(0,0), 5, edgecolor);
             return;
@@ -88,18 +88,18 @@ public class PlacedTile : TestTile
         Vector2[] dirs = new Vector2[4]{Vector2.Up, Vector2.Right, Vector2.Down, Vector2.Left};     
         Vector2[] pars = new Vector2[4]{Vector2.Right, Vector2.Down, Vector2.Left, Vector2.Up};
 
-        var points = new Dictionary<Tile.InternalNode, List<Vector2>>();
+        var points = new Dictionary<InternalNode, List<Vector2>>();
 
         for(int i = 0; i < GameEngine.N_SIDES; i++)
         {
             for(int ii = 0; ii < N_CONNECTORS; ii++)
             {
                 Tile.Connection con = tile.sides[i].connectors[ii];
-                Color c = con.node switch 
+                Color c = (int)con.node.type.ID switch 
                 {
-                    FarmNode _ => FarmColor,
-                    RoadNode _ => RoadColor,
-                    CityNode _ => CityColor,
+                    FarmID => FarmColor,
+                    RoadID => RoadColor,
+                    CityID => CityColor,
                     _ => throw new Exception(""),
                 };
                 c.a  *= OpacityMP;
@@ -117,11 +117,11 @@ public class PlacedTile : TestTile
         }
         foreach(var k in points.Keys)
         {
-            Color c = k switch 
+            Color c = (int)k.type.ID switch 
             {
-                GameEngine.FarmNode _ => FarmColor,
-                GameEngine.RoadNode _ => RoadColor,
-                GameEngine.CityNode _ => CityColor,
+                FarmID => FarmColor,
+                RoadID => RoadColor,
+                CityID => CityColor,
                 _ => throw new Exception(""),
             };
             c.a *= OpacityMP;

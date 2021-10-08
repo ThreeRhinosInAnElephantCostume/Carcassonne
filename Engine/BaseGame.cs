@@ -26,57 +26,12 @@ namespace Carcassonne
     public partial class GameEngine
     {
 
-        public class RoadNode : Tile.InternalNode
-        {
-            public static Tile.NodeType t = new Tile.NodeType("Road", 'R');
-            public override Tile.NodeType type => t;
-        }
-        public class CityNode : Tile.InternalNode
-        {
-            public static Tile.NodeType t = new Tile.NodeType("City", 'C');
-            public override Tile.NodeType type => t;
-        }
-        public class FarmNode : Tile.InternalNode
-        {
-            public static Tile.NodeType t = new Tile.NodeType("Farm", 'F');
-            public override Tile.NodeType type => t;
-        }
-        public class BaseGameTileset : Tileset
-        {
-            public override bool HasStarter {get => true;}
-            public override Tile Starter => GameEngine.GenerateTile("Base/Starter");
-            public override uint NDefaultTiles {get => 71;}
-            protected override List<Tile> _GenerateTiles(uint n)
-            {
-                List<Tile> l = new List<Tile>((int)NDefaultTiles);
-
-                l.AddRange(GameEngine.GenerateTiles("Base/RoadCross", 16));
-                l.AddRange(GameEngine.GenerateTiles("Base/RoadStraight", 31));
-                l.AddRange(GameEngine.GenerateTiles("Base/RoadTurn", 24));
-
-                // // 16
-                // l.AddRange(Engine.GenerateTiles("Base/CityBellend", 4));
-                // l.AddRange(Engine.GenerateTiles("Base/CityBellendRoadEnd", 4));
-                // l.AddRange(Engine.GenerateTiles("Base/CityBellendRoadStraight", 4));
-                // l.AddRange(Engine.GenerateTiles("Base/CityBellendRoadCross", 4));
-
-                // // 23
-                // l.AddRange(Engine.GenerateTiles("Base/CityCentre", 3));
-                // l.AddRange(Engine.GenerateTiles("Base/CityCorridor", 4));
-                // l.AddRange(Engine.GenerateTiles("Base/CityTurn", 8));
-                // l.AddRange(Engine.GenerateTiles("Base/CityOpening", 4));
-                // l.AddRange(Engine.GenerateTiles("Base/CityOpeningRoadEnd", 4));
-
-                // // 32
-                // l.AddRange(Engine.GenerateTiles("Base/RoadCross", 8));
-                // l.AddRange(Engine.GenerateTiles("Base/RoadStraight", 8));
-                // l.AddRange(Engine.GenerateTiles("Base/RoadTurn", 16));
-
-                Assert(l.Count == n);
-                return l;
-            }
-            
-        }
+        public const int RoadID  = -1;
+        public const int CityID = -2;
+        public const int FarmID = -3;
+        public static NodeType RoadType = new NodeType(unchecked((uint)RoadID), "Road", 'R');
+        public static NodeType CityType = new NodeType(unchecked((uint)CityID), "City", 'C');
+        public static NodeType FarmType = new NodeType(unchecked((uint)FarmID), "Farm", 'F');
         public class PlaceTileAction : Action
         {
             public Vector2I pos;
@@ -140,11 +95,13 @@ namespace Carcassonne
         {
             public ulong seed;
             public int players;
-            public StartBaseGameAction(ulong seed, int players)
+            public ITileset tileset;
+            public StartBaseGameAction(ulong seed, ITileset tileset, int players)
             {
                 IsFilled = true;
                 this.players = players;
                 this.seed = seed;
+                this.tileset = tileset;
             }
         }
         [ActionExec(typeof(StartBaseGameAction))]
@@ -158,9 +115,7 @@ namespace Carcassonne
 
             tilemanager = new TileManager(this);
 
-            BaseGameTileset tileset = new BaseGameTileset();
-
-            tilemanager.AddTiles(tileset.GenerateTiles(), true);
+            tilemanager.AddTiles(act.tileset.GenerateTiles(rng), true);
 
             tilemanager.NextTile();
 
@@ -172,14 +127,22 @@ namespace Carcassonne
 
             CurrentState = State.PLACE_TILE;
 
-            Assert(tileset.Starter != null && tileset.HasStarter);
+            Assert(act.tileset.HasStarter);
 
-            map = new Map(tileset.Starter);
+            var starter = act.tileset.GenerateStarter(rng);
+
+            Assert(starter != null);
+
+            map = new Map(starter);
         }
-        public static GameEngine CreateBaseGame(ulong seed, int players)
+        public static GameEngine CreateBaseGame(ulong seed, int players, ITileset tileset)
         {
+            Assert(seed != 0, "Invalid seed - some random generators might not like it");
+            Assert(players > 1);
+            Assert(tileset != null);
+
             GameEngine eng = new GameEngine();
-            eng.ExecuteAction(new StartBaseGameAction(seed, players));
+            eng.ExecuteAction(new StartBaseGameAction(seed, tileset, players));
             return eng;
         }
     }

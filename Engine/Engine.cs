@@ -31,8 +31,22 @@ namespace Carcassonne
             public List<Tile> TileList {get; protected set;}= new List<Tile>();
             public List<Tile> TileQueue {get; protected set;} = new List<Tile>();
             public int NQueued{get => TileQueue.Count;}
+            public void SetNextTile(Tile tile, bool insert=true)
+            {
+                Assert(tile != null);
+
+                if(!TileList.Contains(tile))
+                    TileList.Add(tile);
+                if(insert || TileQueue.Count == 0)
+                    TileQueue.Insert(0, tile);
+                else
+                    TileQueue[0] = tile;
+
+            }
             public void AddTile(Tile tile, bool shuffle)
             {
+                Assert(tile != null);
+
                 TileList.Add(tile);
                 if(shuffle && TileQueue.Count > 0)
                     TileQueue.Insert((int)eng.rng.NextLong(0, TileQueue.Count), tile);
@@ -41,6 +55,8 @@ namespace Carcassonne
             }
             public void AddTiles(List<Tile> tiles, bool shuffle)
             {
+                Assert(tiles != null);
+
                 foreach(var it in tiles)
                     AddTile(it, shuffle);
             }
@@ -84,6 +100,7 @@ namespace Carcassonne
             }
             public List<Tile> PeekTiles(int n)
             {
+                Assert(n > 0);
                 Assert(TileQueue.Count >= n, "Attempting to peek more tiles than there are in queue");
 
                 return TileQueue.GetRange(0, n).ToList<Tile>();
@@ -97,6 +114,8 @@ namespace Carcassonne
 
             public TileManager(GameEngine eng)
             {
+                Assert(eng != null);
+
                 this.eng = eng;
             }
             
@@ -153,7 +172,6 @@ namespace Carcassonne
         }
         protected GameEngine()
         {   
-            Assert(GameEngine.tilesource != null);
             Assert(this.actionmethods.Length > 0);
         }
     }

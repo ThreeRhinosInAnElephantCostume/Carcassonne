@@ -117,8 +117,7 @@ public class TileMap : Node2D
     }
     public override void _Ready()
     {
-        GameEngine.tilesource = Test2D.TileGenerator;
-        game = GameEngine.CreateBaseGame(666, 2);
+        game = GameEngine.CreateBaseGame(666, 2, TileGenerator.debugtileset);
         UpdateDisplay();
     }
 
