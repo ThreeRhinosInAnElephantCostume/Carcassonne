@@ -1,25 +1,19 @@
-using System.Runtime.Versioning;
-using Godot;
-
-
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Threading;
-using System.Reflection;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Runtime;
 using System.Runtime.CompilerServices;
-
-using static System.Math;
-
-using static Utils;
-
-using ExtraMath;
-
+using System.Runtime.Versioning;
+using System.Threading;
 using Carcassonne;
+using ExtraMath;
+using Godot;
+using static System.Math;
 using static Carcassonne.GameEngine;
+using static Utils;
 
 public class TilePrototype : Resource
 {
@@ -41,12 +35,12 @@ public class TilePrototype : Resource
         List<InternalNode> nodes = new List<InternalNode>();
         List<Tile.Connection> connections = new List<Tile.Connection>();
 
-        foreach(var it in Nodes)
+        foreach (var it in Nodes)
         {
-            nodes.Add( new InternalNode (it.Convert()));
+            nodes.Add(new InternalNode(it.Convert()));
         }
 
-        foreach(var it in Assignments)
+        foreach (var it in Assignments)
         {
             Assert(it < nodes.Count && it >= 0);
             connections.Add(new Tile.Connection(nodes[it]));
@@ -57,9 +51,9 @@ public class TilePrototype : Resource
     }
     public TilePrototype(NodeTypePrototype[] nodes = null, int[] assignments = null)
     {
-        if(nodes == null)
+        if (nodes == null)
             nodes = new NodeTypePrototype[0];
-        if(assignments == null)
+        if (assignments == null)
             assignments = new int[0];
         this.Nodes = nodes;
         this.Assignments = assignments;

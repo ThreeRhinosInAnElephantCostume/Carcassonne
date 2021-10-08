@@ -1,34 +1,28 @@
-using Godot;
-
-
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Threading;
-using System.Reflection;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Runtime;
 using System.Runtime.CompilerServices;
-
-using static System.Math;
-
-using static Utils;
-
-using ExtraMath;
-
+using System.Threading;
 using Carcassonne;
+using ExtraMath;
+using Godot;
+using static System.Math;
 using static Carcassonne.GameEngine;
+using static Utils;
 
 namespace Carcassonne
 {
     public partial class GameEngine
     {
-        public State CurrentState{get; protected set;}
-        public bool IsGameOver { get => CurrentState == State.GAME_OVER;}
-        public uint Turn {get; protected set;}
-        public List<Player> Players {get => _players.ToList();}
-        public List<GameEngine.Action> History {get => History.ToList();}
+        public State CurrentState { get; protected set; }
+        public bool IsGameOver { get => CurrentState == State.GAME_OVER; }
+        public uint Turn { get; protected set; }
+        public List<Player> Players { get => _players.ToList(); }
+        public List<GameEngine.Action> History { get => History.ToList(); }
         public int GetPlayerScore(Player player)
         {
             return basescore[player];
@@ -76,7 +70,7 @@ namespace Carcassonne
         {
             int indx = _players.IndexOf(CurrentPlayer);
             Assert(indx >= 0);
-            return _players[(indx+1) % _players.Count];
+            return _players[(indx + 1) % _players.Count];
         }
 
 

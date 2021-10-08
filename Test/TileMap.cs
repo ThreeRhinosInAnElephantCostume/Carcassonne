@@ -1,24 +1,19 @@
-using Godot;
-using System;
-
+﻿using System;
 using System;
 using System.Collections.Generic;
-using System.Threading;
-using System.Reflection;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Runtime;
 using System.Runtime.CompilerServices;
-
-using static System.Math;
-
-using static Utils;
-
-using ExtraMath;
-
+using System.Threading;
 using Carcassonne;
+using ExtraMath;
+using Godot;
+using static System.Math;
 using static Carcassonne.GameEngine;
+using static Utils;
 
 
 public class TileMap : Node2D
@@ -32,13 +27,13 @@ public class TileMap : Node2D
     public void TriggerPlacement(Vector2I pos, int rot)
     {
         game.PlaceCurrentTile(pos, rot);
-        if(game.CurrentState == GameEngine.State.PLACE_PAWN)
+        if (game.CurrentState == GameEngine.State.PLACE_PAWN)
             game.SkipPlacingPawn();
         CallDeferred("UpdateDisplay");
     }
     public void DisablePotentiaPlacement()
     {
-        if(tilesuggestion == null)
+        if (tilesuggestion == null)
             return;
         RemoveChild(tilesuggestion);
         tilesuggestion.QueueFree();
@@ -46,11 +41,11 @@ public class TileMap : Node2D
     }
     public void SetPotentiaPlacement(Vector2I pos, int rot)
     {
-        if(game.CurrentState != GameEngine.State.PLACE_TILE)
+        if (game.CurrentState != GameEngine.State.PLACE_TILE)
             return;
         DisablePotentiaPlacement();
         tilesuggestion = (PlacedTile)placedtile.Instance();
-        tilesuggestion.Rotation = (float) PI * rot * 0.5f;
+        tilesuggestion.Rotation = (float)PI * rot * 0.5f;
         tilesuggestion.tile = game.GetCurrentTile();
         tilesuggestion.OpacityMP = 0.4f;
         tilesuggestion.GridPosition = pos;
@@ -62,9 +57,9 @@ public class TileMap : Node2D
     {
         var tiles = game.map.GetPlacedTiles();
         var unplaced = tiles.ToList();
-        foreach(var td in tiledisplays.ToList())
+        foreach (var td in tiledisplays.ToList())
         {
-            if(!td.tile.IsPlaced || !unplaced.Contains(td.tile))
+            if (!td.tile.IsPlaced || !unplaced.Contains(td.tile))
             {
                 RemoveChild(td);
                 td.QueueFree();
@@ -77,7 +72,7 @@ public class TileMap : Node2D
                 td.Update();
             }
         }
-        foreach(var t in unplaced)
+        foreach (var t in unplaced)
         {
             PlacedTile pt = (PlacedTile)placedtile.Instance();
             pt.tile = t;
@@ -85,18 +80,18 @@ public class TileMap : Node2D
             tiledisplays.Add(pt);
             pt.GridPosition = t.position;
         }
-        foreach(var it in potentialtiles)
+        foreach (var it in potentialtiles)
         {
             RemoveChild(it.Value);
             it.Value.QueueFree();
         }
         potentialtiles.Clear();
-        if(game.CurrentState == GameEngine.State.PLACE_TILE)
+        if (game.CurrentState == GameEngine.State.PLACE_TILE)
         {
-            foreach(var it in game.PossiblePlacements())
+            foreach (var it in game.PossiblePlacements())
             {
                 PotentialTile potential;
-                if(potentialtiles.ContainsKey(it.pos))
+                if (potentialtiles.ContainsKey(it.pos))
                 {
                     potential = potentialtiles[it.pos];
                 }
@@ -107,7 +102,7 @@ public class TileMap : Node2D
                     potential.GridPosition = it.pos;
                     this.AddChild(potential);
                     potentialtiles[it.pos] = potential;
-                    potential.PossibleRots = new bool[4]{false, false, false, false};
+                    potential.PossibleRots = new bool[4] { false, false, false, false };
                 }
                 potential.GridPosition = it.pos;
                 potential.PossibleRots[it.rot] = true;
@@ -124,6 +119,6 @@ public class TileMap : Node2D
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Process(float delta)
     {
-        
+
     }
 }

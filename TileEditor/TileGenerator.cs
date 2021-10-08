@@ -1,24 +1,18 @@
-using Godot;
-
-
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Threading;
-using System.Reflection;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Runtime;
 using System.Runtime.CompilerServices;
-
-using static System.Math;
-
-using static Utils;
-
-using ExtraMath;
-
+using System.Threading;
 using Carcassonne;
+using ExtraMath;
+using Godot;
+using static System.Math;
 using static Carcassonne.GameEngine;
+using static Utils;
 
 public static class TileGenerator
 {
@@ -29,18 +23,18 @@ public static class TileGenerator
         void GenerateConns(NodeType t, int nodeindex, int n)
         {
             NodeTypePrototype ntp = new NodeTypePrototype(t);
-            while(nodeindex >= nodes.Count)
+            while (nodeindex >= nodes.Count)
                 nodes.Add(null);
-            if(nodes[nodeindex] == null)
+            if (nodes[nodeindex] == null)
                 nodes[nodeindex] = ntp;
-            for(int i = 0; i < n; i++)
+            for (int i = 0; i < n; i++)
             {
                 assignments.Add(nodeindex);
             }
-            Assert(assignments.Count <= N_SIDES*N_CONNECTORS);
-            
+            Assert(assignments.Count <= N_SIDES * N_CONNECTORS);
+
         }
-        switch(name)
+        switch (name)
         {
             case "Base/Starter":
                 GenerateConns(GameEngine.FarmType, 0, 4);
@@ -79,20 +73,20 @@ public static class TileGenerator
                 return null;
         }
         Assert(!nodes.Contains(null));
-        Assert(assignments.Count == GameEngine.N_CONNECTORS*GameEngine.N_SIDES);
+        Assert(assignments.Count == GameEngine.N_CONNECTORS * GameEngine.N_SIDES);
         return new TilePrototype(nodes.ToArray(), assignments.ToArray());
     }
-    public static EditableTileset debugtileset 
+    public static EditableTileset debugtileset
     {
-        get 
+        get
         {
             EditableTileset et = new EditableTileset(true);
-            List<TilePrototype> tiles= new List<TilePrototype>();
+            List<TilePrototype> tiles = new List<TilePrototype>();
             void AddTiles(string name, int n)
             {
                 var tpt = LoadPrototype(name);
                 TilePrototype[] tpts = new TilePrototype[n];
-                for(int i = 0; i < n; i++)
+                for (int i = 0; i < n; i++)
                 {
                     tpts[i] = tpt;
                 }
@@ -104,9 +98,9 @@ public static class TileGenerator
             et.SingleStarter = true;
             et.NOutputTiles = 71;
             et.NPossibleTiles = 71;
-            et.StarterTiles = new TilePrototype[]{LoadPrototype("Base/Starter")};
+            et.StarterTiles = new TilePrototype[] { LoadPrototype("Base/Starter") };
             et.Tiles = tiles.ToArray();
             return et;
         }
-    } 
+    }
 }

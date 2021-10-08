@@ -1,26 +1,19 @@
-using Godot;
-
-
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Threading;
-using System.Reflection;
 using System.Diagnostics;
+using System.Dynamic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Runtime;
 using System.Runtime.CompilerServices;
-
-using System.Dynamic;
-
-using static System.Math;
-
-using static Utils;
-
-using ExtraMath;
-
+using System.Threading;
 using Carcassonne;
+using ExtraMath;
+using Godot;
+using static System.Math;
 using static Carcassonne.GameEngine;
+using static Utils;
 
 namespace Carcassonne
 {
@@ -28,13 +21,13 @@ namespace Carcassonne
     {
         Dictionary<Vector2I, Tile> tilesbyposition = new Dictionary<Vector2I, Tile>();
         List<Tile> tiles = new List<Tile>();
-        public Tile root {get; protected set;}
+        public Tile root { get; protected set; }
         public List<Graph> Graphs = new List<Graph>();
         public Tile this[Vector2I pos]
         {
-            get => (tilesbyposition.ContainsKey(pos))?tilesbyposition[pos] : null; 
-            protected set 
-            { 
+            get => (tilesbyposition.ContainsKey(pos)) ? tilesbyposition[pos] : null;
+            protected set
+            {
                 PlaceTile(value, pos);
             }
         }
@@ -42,42 +35,42 @@ namespace Carcassonne
         {
             get => tiles[indx];
         }
-        public int Count {get=>tiles.Count;}
+        public int Count { get => tiles.Count; }
         public List<Tile> GetPlacedTiles()
         {
             return tiles.ToList();
         }
 
         public List<Tile> GetNeighbours(Vector2I pos)
-        {   
-            List<Tile> Neighbours =  new List<Tile>(4);
-            foreach(var p in pos.Neighbours)
+        {
+            List<Tile> Neighbours = new List<Tile>(4);
+            foreach (var p in pos.Neighbours)
             {
-                if(this[p] != null)
+                if (this[p] != null)
                     Neighbours.Add(this[p]);
             }
             return Neighbours;
-        }   
+        }
         public List<Tile> GetNeighbours(Tile t)
         {
             return GetNeighbours(t.position);
         }
         protected void PlaceTile(Tile tile, Vector2I pos, bool check)
         {
-            if(tilesbyposition.ContainsKey(pos))
+            if (tilesbyposition.ContainsKey(pos))
                 throw new Exception("Attempted to replace a tile!");
-            if(check && !CanPlaceTile(tile, pos))
+            if (check && !CanPlaceTile(tile, pos))
                 throw new Exception("Invalid tile placement!");
             tiles.Add(tile);
             tilesbyposition.Add(pos, tile);
             tile.position = pos;
             Vector2I[] nepos = pos.Neighbours;
-            for(int i = 0; i < N_SIDES; i++)
+            for (int i = 0; i < N_SIDES; i++)
             {
                 Tile n = this[pos.Neighbours[i]];
-                if(n == null)
+                if (n == null)
                     continue;
-                tile.sides[i].Attach(n.sides[ AbsMod((i+(N_SIDES/2)), N_SIDES)]);
+                tile.sides[i].Attach(n.sides[AbsMod((i + (N_SIDES / 2)), N_SIDES)]);
                 tile.neighbours[i] = n;
             }
             UpdateGraphs(tile);
@@ -90,21 +83,21 @@ namespace Carcassonne
         {
             bool ret = true;
             invalidconnectors = new List<List<int>>((int)N_SIDES);
-            for(uint ii = 0; ii < N_SIDES; ii++)
+            for (uint ii = 0; ii < N_SIDES; ii++)
                 invalidconnectors.Add(new List<int>((int)N_CONNECTORS));
             isoutofbounds = false;
             Tile[] neighbours = new Tile[N_SIDES];
             int ncount = 0;
             int i = 0;
             int connindex = 0;
-            foreach(var p in pos.Neighbours)
+            foreach (var p in pos.Neighbours)
             {
                 neighbours[i] = this[p];
-                if(this[p] != null)
+                if (this[p] != null)
                 {
                     ncount++;
                     List<int> ic = new List<int>();
-                    if(!tile.sides[i].CanAttachVerbose(this[p].sides[(i + (N_SIDES/2)) % N_SIDES], out ic, ref connindex))
+                    if (!tile.sides[i].CanAttachVerbose(this[p].sides[(i + (N_SIDES / 2)) % N_SIDES], out ic, ref connindex))
                         ret = false;
                     invalidconnectors[i].AddRange(ic);
                 }
@@ -112,7 +105,7 @@ namespace Carcassonne
                     connindex += (int)N_CONNECTORS;
                 i++;
             }
-            if(ncount == 0)
+            if (ncount == 0)
             {
                 isoutofbounds = true;
                 return false;
@@ -128,12 +121,12 @@ namespace Carcassonne
         public (bool can, List<int> rots) TryFindFits(Tile tile, Vector2I pos, bool breakfast = false)
         {
             List<int> rots = new List<int>();
-            for(int i = 0; i < N_SIDES; i++)
+            for (int i = 0; i < N_SIDES; i++)
             {
-                if(CanPlaceTile(tile, pos))
+                if (CanPlaceTile(tile, pos))
                 {
                     rots.Add(i);
-                    if(breakfast)
+                    if (breakfast)
                     {
                         tile.Rotate(-i);
                         return (true, rots);
@@ -154,16 +147,16 @@ namespace Carcassonne
         public List<(Vector2I pos, int rot)> TryFindAllFits(Tile tile)
         {
             List<(Vector2I, int)> ret = new List<(Vector2I, int)>(64);
-            foreach(var t in tiles)
+            foreach (var t in tiles)
             {
-                foreach(var n in t.position.Neighbours)
+                foreach (var n in t.position.Neighbours)
                 {
-                    if(this[n] != null)
+                    if (this[n] != null)
                         continue;
                     (bool can, List<int> rots) fit = TryFindFits(tile, n);
-                    if(fit.can)
+                    if (fit.can)
                     {
-                        foreach(var it in fit.rots)
+                        foreach (var it in fit.rots)
                             ret.Add((n, it));
                     }
                 }
@@ -172,7 +165,7 @@ namespace Carcassonne
         }
         void Update()
         {
-            
+
         }
         public Map(Tile root)
         {

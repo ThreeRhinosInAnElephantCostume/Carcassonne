@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace ExtraMath
 {
@@ -9,13 +9,13 @@ namespace ExtraMath
         /// <summary>
         /// The circle constant, the circumference of the unit circle in radians.
         /// </summary>
-        public const double Tau = (double) 6.2831853071795864769252867666M; // 6.28318530717959
+        public const double Tau = (double)6.2831853071795864769252867666M; // 6.28318530717959
 
         /// <summary>
         /// Constant that represents how many times the diameter of a circle
         /// fits around its perimeter. This is equivalent to `Mathd.Tau / 2`.
         /// </summary>
-        public const double Pi = (double) 3.1415926535897932384626433833M; // 3.14159265358979
+        public const double Pi = (double)3.1415926535897932384626433833M; // 3.14159265358979
 
         /// <summary>
         /// Positive infinity. For negative infinity, use `-Mathd.Inf`.
@@ -29,8 +29,8 @@ namespace ExtraMath
         /// </summary>
         public const double NaN = double.NaN;
 
-        private const double Deg2RadConst = (double) 0.0174532925199432957692369077M; // 0.0174532925199433
-        private const double Rad2DegConst = (double) 57.295779513082320876798154814M; // 57.2957795130823
+        private const double Deg2RadConst = (double)0.0174532925199432957692369077M; // 0.0174532925199433
+        private const double Rad2DegConst = (double)57.295779513082320876798154814M; // 57.2957795130823
 
         /// <summary>
         /// Returns the absolute value of `s` (i.e. positive value).

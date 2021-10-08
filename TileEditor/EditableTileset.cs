@@ -1,51 +1,45 @@
-using Godot;
-
-
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Threading;
-using System.Reflection;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Runtime;
 using System.Runtime.CompilerServices;
-
-using static System.Math;
-
-using static Utils;
-
-using ExtraMath;
-
+using System.Threading;
 using Carcassonne;
+using ExtraMath;
+using Godot;
+using static System.Math;
 using static Carcassonne.GameEngine;
+using static Utils;
 
 public class EditableTileset : Resource, Carcassonne.ITileset
 {
     [Export]
-    public bool UserEditable{get; set;}
+    public bool UserEditable { get; set; }
     [Export]
-    public bool SingleStarter{get; set;}
+    public bool SingleStarter { get; set; }
     [Export]
-    public int NStarterTiles{get; set;}
+    public int NStarterTiles { get; set; }
     [Export]
-    public int NPossibleTiles{get; set;}
+    public int NPossibleTiles { get; set; }
     [Export]
-    public int NOutputTiles{get; set;}
+    public int NOutputTiles { get; set; }
     [Export]
-    public TilePrototype[] Tiles {get; set;}
+    public TilePrototype[] Tiles { get; set; }
     [Export]
-    public TilePrototype[] StarterTiles{get; set;}
+    public TilePrototype[] StarterTiles { get; set; }
 
     public void UpdateInternals()
     {
-        if(Tiles.Length > NPossibleTiles)
+        if (Tiles.Length > NPossibleTiles)
         {
             NPossibleTiles = Tiles.Length;
         }
-        if(SingleStarter)
+        if (SingleStarter)
         {
-            if(StarterTiles.Length > 1)
+            if (StarterTiles.Length > 1)
             {
                 SingleStarter = false;
                 NStarterTiles = 1;
@@ -57,7 +51,7 @@ public class EditableTileset : Resource, Carcassonne.ITileset
         }
         else
         {
-            if(NStarterTiles < 0)
+            if (NStarterTiles < 0)
                 NStarterTiles = (StarterTiles.Length > 0) ? 1 : 0;
         }
 
@@ -71,7 +65,7 @@ public class EditableTileset : Resource, Carcassonne.ITileset
         UpdateInternals();
         return r;
     }
-    
+
     public EditableTileset(bool UserEditable)
     {
         this.UserEditable = false;
@@ -94,12 +88,12 @@ public class EditableTileset : Resource, Carcassonne.ITileset
     Tile ITileset.GenerateStarter(RNG rng)
     {
         Assert(!(SingleStarter && NStarterTiles > 1));
-        if(SingleStarter)
+        if (SingleStarter)
         {
             Assert(StarterTiles.Length > 0 && StarterTiles[0] != null);
             return StarterTiles[0].Convert();
         }
-        else if(NStarterTiles == 0)
+        else if (NStarterTiles == 0)
         {
             return null;
         }
@@ -114,17 +108,17 @@ public class EditableTileset : Resource, Carcassonne.ITileset
         Assert(NPossibleTiles > 0);
 
         List<TilePrototype> tocreate = new List<TilePrototype>(NOutputTiles);
-        if(NOutputTiles >= Tiles.Length)   
+        if (NOutputTiles >= Tiles.Length)
         {
             tocreate.AddRange(Tiles);
         }
-        while(tocreate.Count < NOutputTiles)
+        while (tocreate.Count < NOutputTiles)
         {
             tocreate.Add(Tiles[rng.NextLong(0, Tiles.Length)]);
         }
 
         List<Tile> ret = new List<Tile>(tocreate.Count);
-        foreach(var it in tocreate)
+        foreach (var it in tocreate)
         {
             ret.Add(it.Convert());
         }

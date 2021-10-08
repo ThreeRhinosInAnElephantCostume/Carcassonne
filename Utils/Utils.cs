@@ -1,27 +1,22 @@
-
+﻿
 /* Utils.cs
 
 General utilities.
 
 */
 
-using Godot;
-
-
 using System;
 using System.Collections.Generic;
-using System.Threading;
-using System.Reflection;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Runtime;
 using System.Runtime.CompilerServices;
-
-using static System.Math;
-
+using System.Threading;
 using ExtraMath;
-
+using Godot;
+using static System.Math;
 using Expression = System.Linq.Expressions.Expression;
 
 public static partial class Utils
@@ -48,7 +43,7 @@ public static partial class Utils
     [Conditional("DEBUG")]
     public static void Assert(bool b, string msg)
     {
-        if(b)
+        if (b)
             return;
         GD.PrintErr("ASSERTION FAILURE:");
         GD.PrintErr(msg);
@@ -57,7 +52,7 @@ public static partial class Utils
     }
     [Conditional("DEBUG")]
     public static void Assert(bool b)
-    {   
+    {
         Assert(b, "An unspecified assertion failure has been triggered!");
     }
     static uint ID = 0;
@@ -67,45 +62,45 @@ public static partial class Utils
     }
     public static uint LastID()
     {
-        return ID-1;
+        return ID - 1;
     }
     public delegate object ObjectActivator(params object[] args);
     public static ObjectActivator GetActivator<T>(ConstructorInfo ctor)
     {
         Type type = ctor.DeclaringType;
-        ParameterInfo[] paramsInfo = ctor.GetParameters();                  
+        ParameterInfo[] paramsInfo = ctor.GetParameters();
 
         //create a single param of type object[]
         ParameterExpression param =
             Expression.Parameter(typeof(object[]), "args");
-    
+
         Expression[] argsExp =
-            new Expression[paramsInfo.Length];            
+            new Expression[paramsInfo.Length];
 
         //pick each arg from the params array 
         //and create a typed expression of them
         for (int i = 0; i < paramsInfo.Length; i++)
         {
             Expression index = Expression.Constant(i);
-            Type paramType = paramsInfo[i].ParameterType;              
+            Type paramType = paramsInfo[i].ParameterType;
 
             Expression paramAccessorExp =
-                Expression.ArrayIndex(param, index);              
+                Expression.ArrayIndex(param, index);
 
             Expression paramCastExp =
-                Expression.Convert (paramAccessorExp, paramType);              
+                Expression.Convert(paramAccessorExp, paramType);
 
             argsExp[i] = paramCastExp;
-        }                  
+        }
 
         //make a NewExpression that calls the
         //ctor with the args we just created
-        NewExpression newExp = Expression.New(ctor,argsExp);                  
+        NewExpression newExp = Expression.New(ctor, argsExp);
 
         //create a lambda with the New
         //Expression as body and our param object[] as arg
         LambdaExpression lambda =
-            Expression.Lambda(typeof(ObjectActivator), newExp, param);              
+            Expression.Lambda(typeof(ObjectActivator), newExp, param);
 
         //compile it
         ObjectActivator compiled = (ObjectActivator)lambda.Compile();

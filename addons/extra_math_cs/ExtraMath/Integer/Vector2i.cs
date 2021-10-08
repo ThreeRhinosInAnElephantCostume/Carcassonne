@@ -1,4 +1,4 @@
-#if GODOT
+﻿#if GODOT
 using Godot;
 #elif UNITY_5_3_OR_NEWER
 using UnityEngine;
@@ -312,7 +312,7 @@ namespace ExtraMath
 
         public static Vector2I[] GetNeighbouringPositions(Vector2I pos)
         {
-            return new Vector2I[]{pos+Down, pos+Right, pos+Up, pos+Left};
+            return new Vector2I[] { pos + Down, pos + Right, pos + Up, pos + Left };
         }
         public Vector2I[] Neighbours
         {

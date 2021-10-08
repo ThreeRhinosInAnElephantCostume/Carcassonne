@@ -1,27 +1,20 @@
-using System.Runtime.Serialization.Formatters;
-using Godot;
-
-
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Threading;
-using System.Reflection;
 using System.Diagnostics;
+using System.Dynamic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Runtime;
 using System.Runtime.CompilerServices;
-
-using System.Dynamic;
-
-using static System.Math;
-
-using static Utils;
-
-using ExtraMath;
-
+using System.Runtime.Serialization.Formatters;
+using System.Threading;
 using Carcassonne;
+using ExtraMath;
+using Godot;
+using static System.Math;
 using static Carcassonne.GameEngine;
+using static Utils;
 
 namespace Carcassonne
 {
@@ -33,25 +26,25 @@ namespace Carcassonne
             public List<Tile> tiles = new List<Tile>(64);
             public List<Tile.Connection> connections = new List<Tile.Connection>(128);
             List<Tile.Connection> _openconnections = new List<Tile.Connection>();
-            public List<Tile.Connection> openconnections 
+            public List<Tile.Connection> openconnections
             {
                 get
                 {
-                    if(Dirty)
+                    if (Dirty)
                         Check();
                     return _openconnections;
                 }
             }
-            public NodeType Type{get; protected set;}
-            public uint ID{get; protected set;}
+            public NodeType Type { get; protected set; }
+            public uint ID { get; protected set; }
             public List<object> Owners = new List<object>();
-            public bool Dirty{get; protected set;} = true;
+            public bool Dirty { get; protected set; } = true;
             bool _isclosed = true;
-            public bool IsClosed 
+            public bool IsClosed
             {
-                get 
+                get
                 {
-                    if(Dirty)
+                    if (Dirty)
                         Check();
                     return _isclosed;
                 }
@@ -61,14 +54,14 @@ namespace Carcassonne
             {
                 Dirty = false;
                 _openconnections = new List<Tile.Connection>(connections.Count);
-                foreach(var it in connections)
+                foreach (var it in connections)
                 {
                     Assert(it.node.graph == this, "Attempted to utilize an invalid graph!");
                     Assert(it.node.type == Type, "Attempted to utilize an invalid graph!");
-                    Assert(!it.IsConnected || (it.IsConnected && it.Other.node.graph == this), 
+                    Assert(!it.IsConnected || (it.IsConnected && it.Other.node.graph == this),
                         "Attempted to utilize an invalid graph!");
-                    
-                    if(!it.IsConnected)
+
+                    if (!it.IsConnected)
                     {
                         _openconnections.Add(it);
                     }
@@ -86,7 +79,7 @@ namespace Carcassonne
 
                 MakeDirty();
 
-                if(tiles.Contains(t))
+                if (tiles.Contains(t))
                     return false;
                 tiles.Add(t);
                 return true;
@@ -112,9 +105,9 @@ namespace Carcassonne
 
                 n.graph = this;
                 nodes.Add(n);
-                if(addconnections)
+                if (addconnections)
                 {
-                    foreach(var it in n.connections)
+                    foreach (var it in n.connections)
                         AddConnection(it);
                 }
             }
@@ -130,7 +123,7 @@ namespace Carcassonne
         {
             Assert(g != null);
 
-            if(Graphs.Contains(g))
+            if (Graphs.Contains(g))
                 return false;
             Graphs.Add(g);
             return true;
@@ -139,7 +132,7 @@ namespace Carcassonne
         {
             Assert(g != null);
 
-            if(!Graphs.Contains(g))
+            if (!Graphs.Contains(g))
                 return false;
             Graphs.Remove(g);
             return true;
@@ -151,10 +144,10 @@ namespace Carcassonne
 
             (Graph greater, Graph lesser) = (g0.nodes.Count > g1.nodes.Count) ? (g0, g1) : (g1, g0);
 
-            if(lesser.Owners.Count > 0)
+            if (lesser.Owners.Count > 0)
                 greater.Owners.AddRange(lesser.Owners);
 
-            foreach(var it in lesser.nodes)
+            foreach (var it in lesser.nodes)
             {
                 greater.AddNode(it);
             }
@@ -164,20 +157,20 @@ namespace Carcassonne
         }
         Graph ExtendGraph(Graph graph, InternalNode branch)
         {
-            Assert(graph != null && branch != null);    
+            Assert(graph != null && branch != null);
             Assert(branch.graph == null);
 
             graph.AddNode(branch, true);
 
-            foreach(var it in branch.connections)
+            foreach (var it in branch.connections)
             {
-                if(!it.IsConnected)
+                if (!it.IsConnected)
                     continue;
-                if(it.Other.node.graph == null)
+                if (it.Other.node.graph == null)
                 {
                     graph = ExtendGraph(graph, it.Other.node);
                 }
-                else if(it.Other.node.graph != graph)
+                else if (it.Other.node.graph != graph)
                 {
                     graph = MergeGraphs(graph, it.Other.node.graph);
                 }
@@ -197,14 +190,14 @@ namespace Carcassonne
             return g;
         }
         public List<Graph> UpdateGraphs(Tile tile)
-        {   
+        {
             Assert(tile != null);
 
             List<Graph> ngraphs = new List<Graph>();
-            foreach(var it in tile.nodes)
+            foreach (var it in tile.nodes)
             {
                 var cns = it.connections.Find((Tile.Connection c) => c.IsConnected && c.Other.node.graph != null);
-                if(cns != null)
+                if (cns != null)
                 {
                     ngraphs.Add(ExtendGraph(cns.Other.node.graph, it));
                 }
@@ -218,8 +211,8 @@ namespace Carcassonne
         }
         public List<Graph> UpdateGraphs()
         {
-            List<Graph> ngraphs = new List<Graph>(Graphs.Count*4);
-            foreach(var it in tiles)
+            List<Graph> ngraphs = new List<Graph>(Graphs.Count * 4);
+            foreach (var it in tiles)
             {
                 ngraphs.AddRange(UpdateGraphs(it));
             }
@@ -231,7 +224,7 @@ namespace Carcassonne
             Assert(graph != null);
             Assert(o != null);
 
-            if(!graph.Owners.Contains(o))
+            if (!graph.Owners.Contains(o))
                 graph.Owners.Add(o);
         }
         void AddOwners(Graph graph, List<object> o)
@@ -239,7 +232,7 @@ namespace Carcassonne
             Assert(graph != null);
             Assert(o != null);
 
-            foreach(var it in o)
+            foreach (var it in o)
             {
                 AddOwner(graph, it);
             }

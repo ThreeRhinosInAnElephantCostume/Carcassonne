@@ -1,28 +1,24 @@
-using System.ComponentModel;
-using Godot;
-using System;
-
+﻿using System;
 using System;
 using System.Collections.Generic;
-using System.Threading;
-using System.Reflection;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Runtime;
 using System.Runtime.CompilerServices;
-
-using static System.Math;
-
-using static Utils;
-
+using System.Threading;
 using ExtraMath;
+using Godot;
+using static System.Math;
+using static Utils;
 
 public class TestTile : Node2D
 {
     [Export]
     public float size = 100;
-    
+
     public Vector2 outersize = new Vector2();
     Vector2I _gridposition = new Vector2I();
     public Vector2I GridPosition
@@ -45,15 +41,15 @@ public class TestTile : Node2D
     public override void _Process(float delta)
     {
         outersize = new Vector2(size, size);
-        if(Godot.Engine.EditorHint)
+        if (Godot.Engine.EditorHint)
         {
-            if(_ev >= 15)
+            if (_ev >= 15)
             {
                 Update();
                 _ev = 0;
             }
             _ev++;
-        }    
+        }
     }
     public TestTile()
     {

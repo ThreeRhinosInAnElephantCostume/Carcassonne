@@ -1,32 +1,26 @@
-using System.Reflection.PortableExecutable;
-using Godot;
-
-
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Threading;
-using System.Reflection;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
+using System.Reflection.PortableExecutable;
 using System.Runtime;
 using System.Runtime.CompilerServices;
-
-using static System.Math;
-
-using static Utils;
-
-using ExtraMath;
-
+using System.Threading;
 using Carcassonne;
+using ExtraMath;
+using Godot;
+using static System.Math;
 using static Carcassonne.GameEngine;
+using static Utils;
 
 namespace Carcassonne
 {
     public partial class GameEngine
     {
 
-        public const int RoadID  = -1;
+        public const int RoadID = -1;
         public const int CityID = -2;
         public const int FarmID = -3;
         public static NodeType RoadType = new NodeType(unchecked((uint)RoadID), "Road", 'R');
@@ -46,20 +40,20 @@ namespace Carcassonne
         [ActionExec(typeof(PlaceTileAction))]
         void PlaceCurrentTileExec(Action _act)
         {
-            var act = (PlaceTileAction) _act;
+            var act = (PlaceTileAction)_act;
 
             AssertState(State.PLACE_TILE);
             Tile c = tilemanager.CurrentTile();
 
             c.Rotate(act.rot);
-            if(!map.CanPlaceTile(c, act.pos))
+            if (!map.CanPlaceTile(c, act.pos))
             {
                 c.Rotate(-act.rot);
                 throw new Exception("INVALID TILE PLACEMENT");
             }
             map.PlaceTile(c, act.pos);
 
-            if(tilemanager.NextTile() == null)
+            if (tilemanager.NextTile() == null)
             {
                 CurrentState = State.GAME_OVER;
                 CurrentPlayer = null;
@@ -79,11 +73,11 @@ namespace Carcassonne
         [ActionExec(typeof(SkipPawnAction))]
         void SkipPawnExec(Action _act)
         {
-            var act = (SkipPawnAction) _act;
+            var act = (SkipPawnAction)_act;
 
             CurrentState = State.PLACE_TILE;
 
-            if(tilemanager.NextTile() == null)
+            if (tilemanager.NextTile() == null)
             {
                 CurrentState = State.GAME_OVER;
                 CurrentPlayer = null;
@@ -119,7 +113,7 @@ namespace Carcassonne
 
             tilemanager.NextTile();
 
-            for(int i = 0; i < act.players; i++)
+            for (int i = 0; i < act.players; i++)
             {
                 AddPlayer();
             }

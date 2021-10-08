@@ -1,4 +1,4 @@
-
+﻿
 /* RNG.cs
 
 An abstract Random Number Generator interface, batteries included.
@@ -6,31 +6,28 @@ An abstract Random Number Generator interface, batteries included.
 */
 
 
-using Godot;
-
-
 using System;
 using System.Collections.Generic;
-using System.Threading;
-using System.Reflection;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Runtime;
 using System.Runtime.CompilerServices;
-
+using System.Threading;
+using Godot;
 using static System.Math;
 
 public static partial class Utils
 {
-    public class RNG 
+    public class RNG
     {
         public abstract class RNGGenerator
         {
             public abstract unsafe void GetBytes(byte* buf, int n);
             public virtual unsafe ulong GetLong()
             {
-                ulong ret=0;
+                ulong ret = 0;
                 GetBytes((byte*)&ret, 8);
                 return ret;
             }
@@ -43,10 +40,10 @@ public static partial class Utils
             {
                 byte[] bts = new byte[n];
                 rng.NextBytes(bts);
-                fixed(byte* btsp = bts)
+                fixed (byte* btsp = bts)
                 {
                     int i = 0;
-                    while(i < bts.Length)
+                    while (i < bts.Length)
                     {
                         buf[i] = btsp[i];
                         i++;
@@ -92,22 +89,22 @@ public static partial class Utils
             {
                 int i = 0;
                 int e = n - (n % 8);
-                while(i < e)
+                while (i < e)
                 {
                     *((ulong*)buf) = Generate();
-                    buf+=8;
-                    i+=8;
+                    buf += 8;
+                    i += 8;
                 }
-                if(i < n)
+                if (i < n)
                 {
                     ulong v = Generate();
                     byte* dt = (byte*)&v;
-                    while(i < n)
+                    while (i < n)
                     {
                         *buf = *dt;
                         dt++;
                         buf++;
-                        i++;   
+                        i++;
                     }
                 }
             }
@@ -127,7 +124,7 @@ public static partial class Utils
         {
             const double b = 1 / (uint.MaxValue + 1.0);
             double v;
-            uint u = (uint) rng.GetLong();
+            uint u = (uint)rng.GetLong();
             v = u * b;
             return v;
         }
@@ -142,11 +139,11 @@ public static partial class Utils
         }
         public unsafe long NextLong()
         {
-            return (long) rng.GetLong();
+            return (long)rng.GetLong();
         }
         public unsafe void NextBytes(byte[] buffer)
         {
-            fixed(byte* buf = buffer)
+            fixed (byte* buf = buffer)
             {
                 rng.GetBytes(buf, buffer.Length);
             }
@@ -154,7 +151,7 @@ public static partial class Utils
         public unsafe byte[] NextBytes(int len)
         {
             byte[] ret = new byte[len];
-            fixed(byte* buf = ret)
+            fixed (byte* buf = ret)
             {
                 rng.GetBytes(buf, ret.Length);
             }
@@ -162,7 +159,7 @@ public static partial class Utils
         }
         public long NextLong(long min, long max)
         {
-            long dif = max- min;
+            long dif = max - min;
             return min + AbsMod(NextLong(), dif);
         }
         public unsafe ulong NextULong()
@@ -178,16 +175,16 @@ public static partial class Utils
         {
             rng = new Xorshift64s(seed);
         }
-        public RNG() : this((ulong)DateTime.Now.Ticks){}
+        public RNG() : this((ulong)DateTime.Now.Ticks) { }
         public RNG(RNGGenerator rng)
         {
             this.rng = rng;
         }
         public RNG(Type tp, ulong seed)
         {
-            Activator.CreateInstance(tp, args: new object[]{seed});
+            Activator.CreateInstance(tp, args: new object[] { seed });
         }
-        public RNG(Type tp) : this(tp, (ulong)DateTime.Now.Ticks){}
+        public RNG(Type tp) : this(tp, (ulong)DateTime.Now.Ticks) { }
     }
     public class Span
     {
@@ -211,25 +208,25 @@ public static partial class Utils
             this.max = max;
         }
     }
-    
+
     public delegate T ElementGeneratorSimple<T>();
     public delegate T ElementGenerator<T>(int indx);
-    static public List<T> ListGenerator<T>(ElementGenerator<T> generator, int n) 
+    static public List<T> ListGenerator<T>(ElementGenerator<T> generator, int n)
     {
         List<T> ret = new List<T>(n);
         int i = 0;
-        while(i < n)
+        while (i < n)
         {
             ret.Add(generator(i));
             i++;
         }
         return ret;
     }
-    static public List<T> ListGenerator<T>(ElementGeneratorSimple<T> generator, int n) 
+    static public List<T> ListGenerator<T>(ElementGeneratorSimple<T> generator, int n)
     {
         List<T> ret = new List<T>(n);
         int i = 0;
-        while(i < n)
+        while (i < n)
         {
             ret.Add(generator());
             i++;

@@ -1,24 +1,18 @@
-using Godot;
-
-
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Threading;
-using System.Reflection;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Runtime;
 using System.Runtime.CompilerServices;
-
-using static System.Math;
-
-using static Utils;
-
-using ExtraMath;
-
+using System.Threading;
 using Carcassonne;
+using ExtraMath;
+using Godot;
+using static System.Math;
 using static Carcassonne.GameEngine;
+using static Utils;
 
 namespace Carcassonne
 {
@@ -28,16 +22,16 @@ namespace Carcassonne
         {
             Tile current = null;
             GameEngine eng;
-            public List<Tile> TileList {get; protected set;}= new List<Tile>();
-            public List<Tile> TileQueue {get; protected set;} = new List<Tile>();
-            public int NQueued{get => TileQueue.Count;}
-            public void SetNextTile(Tile tile, bool insert=true)
+            public List<Tile> TileList { get; protected set; } = new List<Tile>();
+            public List<Tile> TileQueue { get; protected set; } = new List<Tile>();
+            public int NQueued { get => TileQueue.Count; }
+            public void SetNextTile(Tile tile, bool insert = true)
             {
                 Assert(tile != null);
 
-                if(!TileList.Contains(tile))
+                if (!TileList.Contains(tile))
                     TileList.Add(tile);
-                if(insert || TileQueue.Count == 0)
+                if (insert || TileQueue.Count == 0)
                     TileQueue.Insert(0, tile);
                 else
                     TileQueue[0] = tile;
@@ -48,7 +42,7 @@ namespace Carcassonne
                 Assert(tile != null);
 
                 TileList.Add(tile);
-                if(shuffle && TileQueue.Count > 0)
+                if (shuffle && TileQueue.Count > 0)
                     TileQueue.Insert((int)eng.rng.NextLong(0, TileQueue.Count), tile);
                 else
                     TileQueue.Add(tile);
@@ -57,13 +51,13 @@ namespace Carcassonne
             {
                 Assert(tiles != null);
 
-                foreach(var it in tiles)
+                foreach (var it in tiles)
                     AddTile(it, shuffle);
             }
             public void Shuffle()
             {
                 List<Tile> res = new List<Tile>(TileQueue.Count);
-                while(TileQueue.Count > 0)
+                while (TileQueue.Count > 0)
                 {
                     int indx = (int)eng.rng.NextLong(0, TileQueue.Count);
                     res.Add(TileQueue[indx]);
@@ -78,7 +72,7 @@ namespace Carcassonne
             {
                 Tile c = current;
                 NextTile();
-                if(NQueued == 0)
+                if (NQueued == 0)
                     TileQueue.Add(c);
                 else
                     TileQueue.Insert(1, c);
@@ -87,11 +81,11 @@ namespace Carcassonne
             {
                 Assert(!(NQueued == 0 && current == null), "Attempting to retrieve a tile when there are none available!");
 
-                if(NQueued == 0)
+                if (NQueued == 0)
                 {
                     current = null;
                 }
-                else 
+                else
                 {
                     current = TileQueue[0];
                     TileQueue.RemoveAt(0);
@@ -118,37 +112,37 @@ namespace Carcassonne
 
                 this.eng = eng;
             }
-            
+
         }
         public enum State
         {
-            ERR=0,
+            ERR = 0,
             NONE,
             PLACE_TILE,
             PLACE_PAWN,
             GAME_OVER
         }
-        protected TileManager tilemanager {get; set;}
-        protected RNG rng{get; set;}
+        protected TileManager tilemanager { get; set; }
+        protected RNG rng { get; set; }
         List<Action> _history = new List<Action>();
         protected Dictionary<Player, int> basescore = new Dictionary<Player, int>();
         protected List<Player> _players = new List<Player>();
-        public Map map{get; protected set;}
-        public Player CurrentPlayer{get; protected set;}
+        public Map map { get; protected set; }
+        public Player CurrentPlayer { get; protected set; }
         void AddPlayer()
         {
             Player p = new Player(this);
             basescore.Add(p, 0);
             _players.Add(p);
-            if(CurrentPlayer == null)
+            if (CurrentPlayer == null)
                 CurrentPlayer = p;
         }
         void AssertState(Player curplayer, State state)
         {
-            if(CurrentPlayer != curplayer)
+            if (CurrentPlayer != curplayer)
                 throw new Exception("Player assertion failed!");
-            if(state != this.CurrentState)
-                throw new Exception("State assertion failed. Current state is " + this.CurrentState.ToString() 
+            if (state != this.CurrentState)
+                throw new Exception("State assertion failed. Current state is " + this.CurrentState.ToString()
                 + ", expected " + state.ToString());
         }
         void AssertState(Player curplayer)
@@ -163,15 +157,15 @@ namespace Carcassonne
         {
             basescore[player] = val;
         }
-        Player NextPlayer(bool nextturn=true)
+        Player NextPlayer(bool nextturn = true)
         {
             CurrentPlayer = PeekNextPlayer();
-            if(nextturn)
+            if (nextturn)
                 Turn++;
             return CurrentPlayer;
         }
         protected GameEngine()
-        {   
+        {
             Assert(this.actionmethods.Length > 0);
         }
     }

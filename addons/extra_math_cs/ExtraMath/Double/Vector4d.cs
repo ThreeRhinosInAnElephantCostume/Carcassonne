@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 
 #if GODOT_REAL_T_IS_DOUBLE

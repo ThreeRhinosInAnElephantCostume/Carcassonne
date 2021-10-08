@@ -1,25 +1,20 @@
-using System.ComponentModel;
-using Godot;
-using System;
-
+﻿using System;
 using System;
 using System.Collections.Generic;
-using System.Threading;
-using System.Reflection;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Runtime;
 using System.Runtime.CompilerServices;
-
-using static System.Math;
-
-using static Utils;
-
-using ExtraMath;
-
+using System.Threading;
 using Carcassonne;
+using ExtraMath;
+using Godot;
+using static System.Math;
 using static Carcassonne.GameEngine;
+using static Utils;
 
 public class Sidepiece : Area2D
 {
@@ -30,9 +25,9 @@ public class Sidepiece : Area2D
     CollisionPolygon2D collider;
     public override void _Input(InputEvent @event)
     {
-        if(@event is InputEventMouseButton e)
+        if (@event is InputEventMouseButton e)
         {
-            if(e.ButtonIndex == (int)ButtonList.Left && e.Pressed && mouseover)
+            if (e.ButtonIndex == (int)ButtonList.Left && e.Pressed && mouseover)
             {
                 potential.Trigger(indx);
             }

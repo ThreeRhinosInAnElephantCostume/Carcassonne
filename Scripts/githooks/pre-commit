@@ -1,0 +1,17 @@
+#!/bin/sh
+
+LC_ALL=C
+echo "running pre-commit formatting..."
+# Select files to format
+FILES=$(git diff --staged --name-only --diff-filter=ACM "*.cs" | sed 's| |\\ |g')
+[ -z "$FILES" ] && exit 0
+
+# Format all selected files
+echo "$FILES" | cat | xargs | xargs dotnet format Carcassonne.sln --include
+
+# Add back the modified files to staging
+echo "$FILES" | xargs git add
+
+echo "formatting complete"
+
+exit 0

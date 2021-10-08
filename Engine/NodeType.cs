@@ -1,46 +1,40 @@
-using System.Xml.Linq;
-using System.Reflection.Metadata;
-using System.Net.NetworkInformation;
-using System.Threading.Tasks.Dataflow;
-using Godot;
-
-
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Threading;
-using System.Reflection;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Net.NetworkInformation;
+using System.Reflection;
+using System.Reflection.Metadata;
 using System.Runtime;
 using System.Runtime.CompilerServices;
-
-using static System.Math;
-
-using static Utils;
-
-using ExtraMath;
-
+using System.Threading;
+using System.Threading.Tasks.Dataflow;
+using System.Xml.Linq;
 using Carcassonne;
+using ExtraMath;
+using Godot;
+using static System.Math;
 using static Carcassonne.GameEngine;
+using static Utils;
 
 
 namespace Carcassonne
 {
     public class NodeType
     {
-        public uint ID{get;}
-        public string Name{get;}
-        public string Abrv{get;}
+        public uint ID { get; }
+        public string Name { get; }
+        public string Abrv { get; }
         public static bool operator ==(NodeType n0, NodeType n1)
         {
-            if (ReferenceEquals(null, n0) || ReferenceEquals(null, n1)) 
+            if (ReferenceEquals(null, n0) || ReferenceEquals(null, n1))
                 return ReferenceEquals(n0, n1);
             return n0.ID == n1.ID;
         }
         public static bool operator !=(NodeType n0, NodeType n1)
         {
-            if (ReferenceEquals(null, n0) || ReferenceEquals(null, n1)) 
+            if (ReferenceEquals(null, n0) || ReferenceEquals(null, n1))
                 return !ReferenceEquals(n0, n1);
             return n0.ID != n1.ID;
         }
@@ -55,7 +49,7 @@ namespace Carcassonne
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if(!(obj is NodeType))
+            if (!(obj is NodeType))
                 return false;
             return Equals(obj as NodeType);
         }
@@ -73,6 +67,6 @@ namespace Carcassonne
             this.Name = name;
             this.Abrv = "" + abrv;
         }
-        public NodeType(string name, char abrv) : this(CreateID(), name, abrv) {}
+        public NodeType(string name, char abrv) : this(CreateID(), name, abrv) { }
     }
 }
