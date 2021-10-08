@@ -1,0 +1,18 @@
+{
+    "godot_tools.editor_path": "<Path-to-godot-executable>",
+    "mono-debug.exceptionOptions": {
+        "System.Exception": "unhandled",
+        "System.SystemException": "unhandled",
+        "System.ArithmeticException": "unhandled",
+        "System.ArrayTypeMismatchException": "unhandled",
+        "System.DivideByZeroException": "unhandled",
+        "System.IndexOutOfRangeException": "unhandled",
+        "System.InvalidCastException": "unhandled",
+        "System.NullReferenceException": "unhandled",
+        "System.OutOfMemoryException": "unhandled",
+        "System.OverflowException": "unhandled",
+        "System.StackOverflowException": "unhandled",
+        "System.TypeInitializationException": "unhandled"
+    },
+    "omnisharp.organizeImportsOnFormat": true
+}

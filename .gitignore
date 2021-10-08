@@ -32,3 +32,4 @@ mono_crash.*.json
 #binary files
 bin/
 temp/
+.setup.sh.kate-swp
