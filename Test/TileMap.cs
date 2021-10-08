@@ -17,19 +17,22 @@ using static Utils;
 
 using ExtraMath;
 
+using Carcassonne;
+using static Carcassonne.GameEngine;
+
 
 public class TileMap : Node2D
 {
     static PackedScene placedtile = GD.Load<PackedScene>("res://Test/PlacedTile.tscn");
     static PackedScene potentialtile = GD.Load<PackedScene>("res://Test/PotentialTile.tscn");
-    public Engine game;
+    public GameEngine game;
     public PlacedTile tilesuggestion;
     public List<PlacedTile> tiledisplays = new List<PlacedTile>();
     public Dictionary<Vector2I, PotentialTile> potentialtiles = new Dictionary<Vector2I, PotentialTile>();
     public void TriggerPlacement(Vector2I pos, int rot)
     {
         game.PlaceCurrentTile(pos, rot);
-        if(game.CurrentState == Engine.State.PLACE_PAWN)
+        if(game.CurrentState == GameEngine.State.PLACE_PAWN)
             game.SkipPlacingPawn();
         CallDeferred("UpdateDisplay");
     }
@@ -43,7 +46,7 @@ public class TileMap : Node2D
     }
     public void SetPotentiaPlacement(Vector2I pos, int rot)
     {
-        if(game.CurrentState != Engine.State.PLACE_TILE)
+        if(game.CurrentState != GameEngine.State.PLACE_TILE)
             return;
         DisablePotentiaPlacement();
         tilesuggestion = (PlacedTile)placedtile.Instance();
@@ -88,7 +91,7 @@ public class TileMap : Node2D
             it.Value.QueueFree();
         }
         potentialtiles.Clear();
-        if(game.CurrentState == Engine.State.PLACE_TILE)
+        if(game.CurrentState == GameEngine.State.PLACE_TILE)
         {
             foreach(var it in game.PossiblePlacements())
             {
@@ -114,8 +117,7 @@ public class TileMap : Node2D
     }
     public override void _Ready()
     {
-        Engine.tilesource = Test2D.TileGenerator;
-        game = Engine.CreateBaseGame(666, 2);
+        game = GameEngine.CreateBaseGame(666, 2, TileGenerator.debugtileset);
         UpdateDisplay();
     }
 

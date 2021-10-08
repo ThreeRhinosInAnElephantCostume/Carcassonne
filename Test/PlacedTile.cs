@@ -18,6 +18,8 @@ using static Utils;
 
 using ExtraMath;
 
+using Carcassonne;
+using static Carcassonne.GameEngine;
 
 [Tool]
 public class PlacedTile : TestTile
@@ -37,7 +39,7 @@ public class PlacedTile : TestTile
             _tileoverride = value;
             if(Godot.Engine.EditorHint)
             {
-                var ntile = Test2D.TileGenerator(_tileoverride);
+                var ntile = TileGenerator.LoadPrototype(_tileoverride).Convert();
                 if(ntile != null)
                     tile = ntile;
             }
@@ -56,7 +58,7 @@ public class PlacedTile : TestTile
     public float nodeconsize = 1.5f;
     [Export]
     public float terminsize = 5f;
-    public Engine.Tile tile = null;
+    public Tile tile = null;
 
     float _unconnecteddiv = 2;
     [Export(PropertyHint.Range, "1,10")]
@@ -75,7 +77,7 @@ public class PlacedTile : TestTile
         {   
             if(Godot.Engine.EditorHint && TileOverride != "")
             {
-                tile = Test2D.TileGenerator(TileOverride);
+                tile = TileGenerator.LoadPrototype(TileOverride).Convert();
             }
             DrawCircle(new Vector2(0,0), 5, edgecolor);
             return;
@@ -86,25 +88,25 @@ public class PlacedTile : TestTile
         Vector2[] dirs = new Vector2[4]{Vector2.Up, Vector2.Right, Vector2.Down, Vector2.Left};     
         Vector2[] pars = new Vector2[4]{Vector2.Right, Vector2.Down, Vector2.Left, Vector2.Up};
 
-        var points = new Dictionary<Engine.Tile.InternalNode, List<Vector2>>();
+        var points = new Dictionary<InternalNode, List<Vector2>>();
 
-        for(int i = 0; i < Engine.N_SIDES; i++)
+        for(int i = 0; i < GameEngine.N_SIDES; i++)
         {
-            for(int ii = 0; ii < Engine.N_CONNECTORS; ii++)
+            for(int ii = 0; ii < N_CONNECTORS; ii++)
             {
-                Engine.Tile.Connection con = tile.sides[i].connectors[ii];
-                Color c = con.node switch 
+                Tile.Connection con = tile.sides[i].connectors[ii];
+                Color c = (int)con.node.type.ID switch 
                 {
-                    Engine.FarmNode _ => FarmColor,
-                    Engine.RoadNode _ => RoadColor,
-                    Engine.CityNode _ => CityColor,
+                    FarmID => FarmColor,
+                    RoadID => RoadColor,
+                    CityID => CityColor,
                     _ => throw new Exception(""),
                 };
                 c.a  *= OpacityMP;
                 Vector2 par = pars[i];
                 Vector2 origin = edges[i];
-                Vector2 start = origin + (par * ii * outersize / Engine.N_CONNECTORS);
-                Vector2 end = origin + (par * (ii+1) * outersize / Engine.N_CONNECTORS);
+                Vector2 start = origin + (par * ii * outersize / N_CONNECTORS);
+                Vector2 end = origin + (par * (ii+1) * outersize / N_CONNECTORS);
 
                 DrawLine(start, end, c, consize);
 
@@ -115,11 +117,11 @@ public class PlacedTile : TestTile
         }
         foreach(var k in points.Keys)
         {
-            Color c = k switch 
+            Color c = (int)k.type.ID switch 
             {
-                Engine.FarmNode _ => FarmColor,
-                Engine.RoadNode _ => RoadColor,
-                Engine.CityNode _ => CityColor,
+                FarmID => FarmColor,
+                RoadID => RoadColor,
+                CityID => CityColor,
                 _ => throw new Exception(""),
             };
             c.a *= OpacityMP;

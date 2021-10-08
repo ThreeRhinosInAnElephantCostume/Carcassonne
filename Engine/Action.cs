@@ -20,61 +20,67 @@ using static Utils;
 
 using ExtraMath;
 
-public partial class Engine
+using Carcassonne;
+using static Carcassonne.GameEngine;
+
+namespace Carcassonne
 {
-    MethodInfo[] actionmethods = typeof(Engine).GetMethods(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance )
-        .Where(m => m.GetCustomAttributes(typeof(ActionExec), false).Length > 0)
-        .ToArray();
-    public abstract class Action
+    public partial class GameEngine
     {
-        public bool IsFilled{get; protected set;} = false;
-    }
-    [System.AttributeUsage(System.AttributeTargets.Method)]
-    public class ActionExec : System.Attribute
-    {
-        public Type type{get; protected set;}
-        public ActionExec(Type type)
+        MethodInfo[] actionmethods = typeof(GameEngine).GetMethods(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance )
+            .Where(m => m.GetCustomAttributes(typeof(ActionExec), false).Length > 0)
+            .ToArray();
+        public abstract class Action
         {
-            this.type = type;
+            public bool IsFilled{get; protected set;} = false;
         }
-    }
-    protected delegate void ActionDelegate(Action act);
-    public void ExecuteAction(Action action)
-    {
-        Assert(actionmethods.Length > 0);
-        
-        if(!action.IsFilled)
-            throw new Exception("Attempting to execute an incomplete action!"); 
-
-        bool found = false;
-        foreach(var it in actionmethods)
+        [System.AttributeUsage(System.AttributeTargets.Method)]
+        public class ActionExec : System.Attribute
         {
-            if(((ActionExec)it.GetCustomAttribute(typeof(ActionExec))).type == action.GetType())
-            { 
-                found = true;
-
-                ActionDelegate d = (ActionDelegate) Delegate.CreateDelegate(typeof(ActionDelegate), this, it, true);
-
-                d(action);
+            public Type type{get; protected set;}
+            public ActionExec(Type type)
+            {
+                this.type = type;
             }
         }
-        if(!found)
-            throw new Exception("Unsupported action!");
-        _history.Add(action);
-    }
-    public static Engine CreateFromAction(Action action)
-    {
-        Engine eng = new Engine();
-        eng.ExecuteAction(action);
-        return eng;
-    }
-    public static Engine CreateFromHistory(List<Action> history)
-    {
-        Engine eng = new Engine();
-        foreach(var it in history)
+        protected delegate void ActionDelegate(Action act);
+        public void ExecuteAction(Action action)
         {
-            eng.ExecuteAction(it);
+            Assert(actionmethods.Length > 0);
+            
+            if(!action.IsFilled)
+                throw new Exception("Attempting to execute an incomplete action!"); 
+
+            bool found = false;
+            foreach(var it in actionmethods)
+            {
+                if(((ActionExec)it.GetCustomAttribute(typeof(ActionExec))).type == action.GetType())
+                { 
+                    found = true;
+
+                    ActionDelegate d = (ActionDelegate) Delegate.CreateDelegate(typeof(ActionDelegate), this, it, true);
+
+                    d(action);
+                }
+            }
+            if(!found)
+                throw new Exception("Unsupported action!");
+            _history.Add(action);
         }
-        return eng;
+        public static GameEngine CreateFromAction(Action action)
+        {
+            GameEngine eng = new GameEngine();
+            eng.ExecuteAction(action);
+            return eng;
+        }
+        public static GameEngine CreateFromHistory(List<Action> history)
+        {
+            GameEngine eng = new GameEngine();
+            foreach(var it in history)
+            {
+                eng.ExecuteAction(it);
+            }
+            return eng;
+        }
     }
 }

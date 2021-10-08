@@ -20,13 +20,16 @@ using static Utils;
 
 using ExtraMath;
 
-public partial class Engine
+using Carcassonne;
+using static Carcassonne.GameEngine;
+
+namespace Carcassonne
 {
     public partial class Map
     {
         public class Graph
         {
-            public List<Tile.InternalNode> nodes = new List<Tile.InternalNode>(64);
+            public List<InternalNode> nodes = new List<InternalNode>(64);
             public List<Tile> tiles = new List<Tile>(64);
             public List<Tile.Connection> connections = new List<Tile.Connection>(128);
             List<Tile.Connection> _openconnections = new List<Tile.Connection>();
@@ -39,7 +42,7 @@ public partial class Engine
                     return _openconnections;
                 }
             }
-            public Tile.NodeType Type{get; protected set;}
+            public NodeType Type{get; protected set;}
             public uint ID{get; protected set;}
             public List<object> Owners = new List<object>();
             public bool Dirty{get; protected set;} = true;
@@ -99,7 +102,7 @@ public partial class Engine
 
                 connections.Add(c);
             }
-            public void AddNode(Tile.InternalNode n, bool addconnections = true)
+            public void AddNode(InternalNode n, bool addconnections = true)
             {
                 Assert(n != null);
                 Assert(!nodes.Contains(n));
@@ -115,7 +118,7 @@ public partial class Engine
                         AddConnection(it);
                 }
             }
-            public Graph(Tile.NodeType type)
+            public Graph(NodeType type)
             {
                 ID = CreateID();
                 this.Type = type;
@@ -159,7 +162,7 @@ public partial class Engine
             greater.Check();
             return greater;
         }
-        Graph ExtendGraph(Graph graph, Tile.InternalNode branch)
+        Graph ExtendGraph(Graph graph, InternalNode branch)
         {
             Assert(graph != null && branch != null);    
             Assert(branch.graph == null);
@@ -182,7 +185,7 @@ public partial class Engine
 
             return graph;
         }
-        Graph CreateGraph(Tile.InternalNode origin)
+        Graph CreateGraph(InternalNode origin)
         {
             Assert(origin.type != null);
             Assert(origin.graph == null);

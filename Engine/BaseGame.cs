@@ -18,163 +18,132 @@ using static Utils;
 
 using ExtraMath;
 
-public partial class Engine
+using Carcassonne;
+using static Carcassonne.GameEngine;
+
+namespace Carcassonne
 {
+    public partial class GameEngine
+    {
 
-    public class RoadNode : Tile.InternalNode
-    {
-        public static Tile.NodeType t = new Tile.NodeType("Road", 'R');
-        public override Tile.NodeType type => t;
-    }
-    public class CityNode : Tile.InternalNode
-    {
-        public static Tile.NodeType t = new Tile.NodeType("City", 'C');
-        public override Tile.NodeType type => t;
-    }
-    public class FarmNode : Tile.InternalNode
-    {
-        public static Tile.NodeType t = new Tile.NodeType("Farm", 'F');
-        public override Tile.NodeType type => t;
-    }
-    public class BaseGameTileset : Tileset
-    {
-        public override bool HasStarter {get => true;}
-        public override Tile Starter => Engine.GenerateTile("Base/Starter");
-        public override uint NDefaultTiles {get => 71;}
-        protected override List<Tile> _GenerateTiles(uint n)
+        public const int RoadID  = -1;
+        public const int CityID = -2;
+        public const int FarmID = -3;
+        public static NodeType RoadType = new NodeType(unchecked((uint)RoadID), "Road", 'R');
+        public static NodeType CityType = new NodeType(unchecked((uint)CityID), "City", 'C');
+        public static NodeType FarmType = new NodeType(unchecked((uint)FarmID), "Farm", 'F');
+        public class PlaceTileAction : Action
         {
-            List<Tile> l = new List<Tile>((int)NDefaultTiles);
-
-            l.AddRange(Engine.GenerateTiles("Base/RoadCross", 16));
-            l.AddRange(Engine.GenerateTiles("Base/RoadStraight", 31));
-            l.AddRange(Engine.GenerateTiles("Base/RoadTurn", 24));
-
-            // // 16
-            // l.AddRange(Engine.GenerateTiles("Base/CityBellend", 4));
-            // l.AddRange(Engine.GenerateTiles("Base/CityBellendRoadEnd", 4));
-            // l.AddRange(Engine.GenerateTiles("Base/CityBellendRoadStraight", 4));
-            // l.AddRange(Engine.GenerateTiles("Base/CityBellendRoadCross", 4));
-
-            // // 23
-            // l.AddRange(Engine.GenerateTiles("Base/CityCentre", 3));
-            // l.AddRange(Engine.GenerateTiles("Base/CityCorridor", 4));
-            // l.AddRange(Engine.GenerateTiles("Base/CityTurn", 8));
-            // l.AddRange(Engine.GenerateTiles("Base/CityOpening", 4));
-            // l.AddRange(Engine.GenerateTiles("Base/CityOpeningRoadEnd", 4));
-
-            // // 32
-            // l.AddRange(Engine.GenerateTiles("Base/RoadCross", 8));
-            // l.AddRange(Engine.GenerateTiles("Base/RoadStraight", 8));
-            // l.AddRange(Engine.GenerateTiles("Base/RoadTurn", 16));
-
-            Assert(l.Count == n);
-            return l;
+            public Vector2I pos;
+            public int rot;
+            public PlaceTileAction(Vector2I pos, int rot)
+            {
+                this.IsFilled = true;
+                this.pos = pos;
+                this.rot = rot;
+            }
         }
-        
-    }
-    public class PlaceTileAction : Action
-    {
-        public Vector2I pos;
-        public int rot;
-        public PlaceTileAction(Vector2I pos, int rot)
+        [ActionExec(typeof(PlaceTileAction))]
+        void PlaceCurrentTileExec(Action _act)
         {
-            this.IsFilled = true;
-            this.pos = pos;
-            this.rot = rot;
+            var act = (PlaceTileAction) _act;
+
+            AssertState(State.PLACE_TILE);
+            Tile c = tilemanager.CurrentTile();
+
+            c.Rotate(act.rot);
+            if(!map.CanPlaceTile(c, act.pos))
+            {
+                c.Rotate(-act.rot);
+                throw new Exception("INVALID TILE PLACEMENT");
+            }
+            map.PlaceTile(c, act.pos);
+
+            if(tilemanager.NextTile() == null)
+            {
+                CurrentState = State.GAME_OVER;
+                CurrentPlayer = null;
+                return;
+            }
+
+            CurrentState = State.PLACE_PAWN;
+
         }
-    }
-    [ActionExec(typeof(PlaceTileAction))]
-    void PlaceCurrentTileExec(Action _act)
-    {
-        var act = (PlaceTileAction) _act;
-
-        AssertState(State.PLACE_TILE);
-        Tile c = tilemanager.CurrentTile();
-
-        c.Rotate(act.rot);
-        if(!map.CanPlaceTile(c, act.pos))
+        public class SkipPawnAction : Action
         {
-            c.Rotate(-act.rot);
-            throw new Exception("INVALID TILE PLACEMENT");
+            public SkipPawnAction()
+            {
+                this.IsFilled = true;
+            }
         }
-        map.PlaceTile(c, act.pos);
-
-        if(tilemanager.NextTile() == null)
+        [ActionExec(typeof(SkipPawnAction))]
+        void SkipPawnExec(Action _act)
         {
-            CurrentState = State.GAME_OVER;
-            CurrentPlayer = null;
-            return;
+            var act = (SkipPawnAction) _act;
+
+            CurrentState = State.PLACE_TILE;
+
+            if(tilemanager.NextTile() == null)
+            {
+                CurrentState = State.GAME_OVER;
+                CurrentPlayer = null;
+                return;
+            }
+            NextPlayer();
         }
-
-        CurrentState = State.PLACE_PAWN;
-
-    }
-    public class SkipPawnAction : Action
-    {
-        public SkipPawnAction()
+        protected class StartBaseGameAction : Action
         {
-            this.IsFilled = true;
+            public ulong seed;
+            public int players;
+            public ITileset tileset;
+            public StartBaseGameAction(ulong seed, ITileset tileset, int players)
+            {
+                IsFilled = true;
+                this.players = players;
+                this.seed = seed;
+                this.tileset = tileset;
+            }
         }
-    }
-    [ActionExec(typeof(SkipPawnAction))]
-    void SkipPawnExec(Action _act)
-    {
-        var act = (SkipPawnAction) _act;
-
-        CurrentState = State.PLACE_TILE;
-
-        if(tilemanager.NextTile() == null)
+        [ActionExec(typeof(StartBaseGameAction))]
+        void StartBaseGameExec(Action _act)
         {
-            CurrentState = State.GAME_OVER;
-            CurrentPlayer = null;
-            return;
+            var act = (StartBaseGameAction)_act;
+
+            rng = new RNG(act.seed);
+
+            Assert(act.players >= MIN_PLAYERS && act.players <= MAX_PLAYERS);
+
+            tilemanager = new TileManager(this);
+
+            tilemanager.AddTiles(act.tileset.GenerateTiles(rng), true);
+
+            tilemanager.NextTile();
+
+            for(int i = 0; i < act.players; i++)
+            {
+                AddPlayer();
+            }
+            CurrentPlayer = _players[0];
+
+            CurrentState = State.PLACE_TILE;
+
+            Assert(act.tileset.HasStarter);
+
+            var starter = act.tileset.GenerateStarter(rng);
+
+            Assert(starter != null);
+
+            map = new Map(starter);
         }
-        NextPlayer();
-    }
-    protected class StartBaseGameAction : Action
-    {
-        public ulong seed;
-        public int players;
-        public StartBaseGameAction(ulong seed, int players)
+        public static GameEngine CreateBaseGame(ulong seed, int players, ITileset tileset)
         {
-            IsFilled = true;
-            this.players = players;
-            this.seed = seed;
+            Assert(seed != 0, "Invalid seed - some random generators might not like it");
+            Assert(players > 1);
+            Assert(tileset != null);
+
+            GameEngine eng = new GameEngine();
+            eng.ExecuteAction(new StartBaseGameAction(seed, tileset, players));
+            return eng;
         }
-    }
-    [ActionExec(typeof(StartBaseGameAction))]
-    void StartBaseGameExec(Action _act)
-    {
-        var act = (StartBaseGameAction)_act;
-
-        rng = new RNG(act.seed);
-
-        Assert(act.players >= MIN_PLAYERS && act.players <= MAX_PLAYERS);
-
-        tilemanager = new TileManager(this);
-
-        BaseGameTileset tileset = new BaseGameTileset();
-
-        tilemanager.AddTiles(tileset.GenerateTiles(), true);
-
-        tilemanager.NextTile();
-
-        for(int i = 0; i < act.players; i++)
-        {
-            AddPlayer();
-        }
-        CurrentPlayer = _players[0];
-
-        CurrentState = State.PLACE_TILE;
-
-        Assert(tileset.Starter != null && tileset.HasStarter);
-
-        map = new Map(tileset.Starter);
-    }
-    public static Engine CreateBaseGame(ulong seed, int players)
-    {
-        Engine eng = new Engine();
-        eng.ExecuteAction(new StartBaseGameAction(seed, players));
-        return eng;
     }
 }

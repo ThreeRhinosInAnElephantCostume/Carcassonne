@@ -18,11 +18,17 @@ using static Utils;
 
 using ExtraMath;
 
-public partial class Engine
+using Carcassonne;
+using static Carcassonne.GameEngine;
+
+namespace Carcassonne
 {
-    public const int N_SIDES = 4;
-    public const int N_CONNECTORS = 3;
-    public const int MIN_PLAYERS = 2;
-    public const int MAX_PLAYERS = 8;
+    public partial class GameEngine
+    {
+        public const int N_SIDES = 4;
+        public const int N_CONNECTORS = 3;
+        public const int MIN_PLAYERS = 2;
+        public const int MAX_PLAYERS = 8;
+    }
 
 }
