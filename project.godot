@@ -16,7 +16,7 @@ config/icon="res://icon.png"
 
 [editor_plugins]
 
-enabled=PoolStringArray(  )
+enabled=PoolStringArray( "res://addons/TileEditor/plugin.cfg", "res://addons/extra_math_cs/plugin.cfg" )
 
 [gdnative]
 
