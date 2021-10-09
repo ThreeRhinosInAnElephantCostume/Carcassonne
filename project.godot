@@ -14,6 +14,11 @@ config/name="Carcassonne"
 run/main_scene="res://Test/Test2D_GUI.tscn"
 config/icon="res://icon.png"
 
+[display]
+
+window/size/width=1280
+window/size/height=720
+
 [editor_plugins]
 
 enabled=PoolStringArray( "res://addons/TileEditor/plugin.cfg", "res://addons/extra_math_cs/plugin.cfg" )

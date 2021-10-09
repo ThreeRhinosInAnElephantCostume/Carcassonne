@@ -4,19 +4,17 @@ using System;
 [Tool]
 public class TileEditor : Control
 {
-    // Declare member variables here. Examples:
-    // private int a = 2;
-    // private string b = "text";
-
-    // Called when the node enters the scene tree for the first time.
+    enum Mode
+    {
+        TILES,
+        TILESETS
+    }
+    Mode _mode = Mode.TILES;
+    ItemBrowser _folderBrowser;
+    ItemBrowser _objectBrowser;
     public override void _Ready()
     {
-        GD.Print("test");   
+        _folderBrowser = (ItemBrowser) GetNode("MainContainer/BrowserContainer/FolderBrowser");
+        _objectBrowser = (ItemBrowser) GetNode("MainContainer/BrowserContainer/ObjectBrowser");
     }
-
-//  // Called every frame. 'delta' is the elapsed time since the previous frame.
-//  public override void _Process(float delta)
-//  {
-//      
-//  }
 }

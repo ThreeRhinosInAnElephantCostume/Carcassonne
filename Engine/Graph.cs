@@ -181,7 +181,7 @@ namespace Carcassonne
         }
         Graph CreateGraph(InternalNode origin)
         {
-            Assert(origin.type != null);
+            Assert(origin.type != NodeType.ERR);
             Assert(origin.graph == null);
 
             var g = new Graph(origin.type);

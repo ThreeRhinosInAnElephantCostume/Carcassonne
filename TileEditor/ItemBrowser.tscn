@@ -1,0 +1,24 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://TileEditor/ItemBrowser.cs" type="Script" id=1]
+
+[node name="ItemBrowser" type="VBoxContainer"]
+anchor_right = 0.2
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+margin_right = 256.0
+margin_bottom = 20.0
+
+[node name="ItemList" type="ItemList" parent="."]
+margin_top = 24.0
+margin_right = 256.0
+margin_bottom = 224.0
+rect_min_size = Vector2( 100, 200 )
+__meta__ = {
+"_edit_use_anchors_": false
+}

@@ -1,0 +1,51 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://TileEditor/NameDialog.cs" type="Script" id=1]
+
+[node name="Control" type="WindowDialog"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -880.0
+margin_bottom = -570.0
+rect_min_size = Vector2( 400, 150 )
+resizable = true
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_min_size = Vector2( 400, 150 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NameEdit" type="LineEdit" parent="VBoxContainer"]
+margin_right = 400.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 0, 50 )
+text = "text"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+margin_top = 54.0
+margin_right = 400.0
+margin_bottom = 94.0
+rect_min_size = Vector2( 0, 40 )
+custom_colors/font_color = Color( 0.737255, 0.156863, 0.156863, 1 )
+text = "text
+"
+align = 1
+valign = 1
+
+[node name="ConfirmButton" type="Button" parent="VBoxContainer"]
+margin_top = 98.0
+margin_right = 400.0
+margin_bottom = 148.0
+rect_min_size = Vector2( 0, 50 )
+text = "Confirm"

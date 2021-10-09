@@ -19,14 +19,18 @@ current = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="PlayerDataContainer" type="VBoxContainer" parent="CanvasLayer"]
-margin_left = 1.56123
-margin_top = 103.0
-margin_right = 68.5612
-margin_bottom = 299.0
+[node name="CurrentTile" parent="CanvasLayer" instance=ExtResource( 3 )]
+position = Vector2( 50, 50 )
+
+[node name="PlayerDataScroll" type="ScrollContainer" parent="CanvasLayer"]
+anchor_bottom = 1.0
+margin_top = 104.0
+margin_right = 150.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="CurrentTile" parent="CanvasLayer" instance=ExtResource( 3 )]
-position = Vector2( 50, 50 )
+[node name="PlayerDataContainer" type="VBoxContainer" parent="CanvasLayer/PlayerDataScroll"]
+__meta__ = {
+"_edit_use_anchors_": false
+}

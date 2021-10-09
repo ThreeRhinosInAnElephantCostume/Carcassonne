@@ -29,6 +29,7 @@ namespace Carcassonne
         public int mark;
         public InternalNode(NodeType type)
         {
+            Assert(type != NodeType.ERR);
             this.type = type;
         }
     }

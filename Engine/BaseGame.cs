@@ -19,13 +19,6 @@ namespace Carcassonne
 {
     public partial class GameEngine
     {
-
-        public const int RoadID = -1;
-        public const int CityID = -2;
-        public const int FarmID = -3;
-        public static NodeType RoadType = new NodeType(unchecked((uint)RoadID), "Road", 'R');
-        public static NodeType CityType = new NodeType(unchecked((uint)CityID), "City", 'C');
-        public static NodeType FarmType = new NodeType(unchecked((uint)FarmID), "Farm", 'F');
         public class PlaceTileAction : Action
         {
             public Vector2I pos;

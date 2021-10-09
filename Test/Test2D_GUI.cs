@@ -1,5 +1,4 @@
 using System;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -42,7 +41,7 @@ public class Test2D_GUI : Control
 		test2D.Position = camera.GetViewport().Size / 2;
 		this.MouseFilter = MouseFilterEnum.Ignore;
 
-		sidecontainer = cl.GetNode<Godot.Container>("PlayerDataContainer");
+		sidecontainer = cl.GetNode("PlayerDataScroll").GetNode<Godot.Container>("PlayerDataContainer");
 
 		foreach (var it in game.Players)
 		{
