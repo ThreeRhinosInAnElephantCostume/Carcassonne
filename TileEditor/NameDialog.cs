@@ -15,11 +15,11 @@ using static System.Math;
 using static Carcassonne.GameEngine;
 using static Utils;
 
-[Tool]
+//[Tool]
 public class NameDialog : WindowDialog
 {
     public Action<string> CompleteHandle = null;
-    Func<string, (bool res, string msg)> _isValid = s => (s.Length > 0, "Input at least one character."); 
+    Func<string, (bool res, string msg)> _isValid = s => (s != null && s.Length > 0, "Input at least one character."); 
     public Func<string, (bool res, string msg)> ChangedHandle {get => _isValid; set {_isValid = value; CheckValidity(_nameEdit.Text);}}
     [Export]
     public Color ValidColor = new Color(0.3f, 1.0f, 0.3f);

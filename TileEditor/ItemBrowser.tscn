@@ -12,13 +12,14 @@ __meta__ = {
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 margin_right = 256.0
-margin_bottom = 20.0
 
 [node name="ItemList" type="ItemList" parent="."]
-margin_top = 24.0
+margin_top = 4.0
 margin_right = 256.0
-margin_bottom = 224.0
+margin_bottom = 720.0
 rect_min_size = Vector2( 100, 200 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
 __meta__ = {
 "_edit_use_anchors_": false
 }

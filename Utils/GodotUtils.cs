@@ -14,6 +14,42 @@ using Expression = System.Linq.Expressions.Expression;
 
 public static partial class Utils
 {
+    public static List<string> ListDirectoryContents(string path, Func<string, bool> filter, bool skiphidden=true)
+    {
+        List<string> ret = new List<string>(8);
+        Directory dm = new Directory();
+        Assert(dm.Open(path) == Error.Ok);
+        dm.ListDirBegin(true, skiphidden);
+        while(true)
+        {
+            string s = dm.GetNext();
+            if(s == "")
+                break;
+            if(filter(ConcatPaths(path, s)))
+                ret.Add(s);
+        }
+        dm.ListDirEnd();
+        return ret;
+    }
+    public static List<string> ListDirectoryContents(string path, bool skiphidden=true)
+    {
+        return ListDirectoryContents(path, s => true, skiphidden);
+    }
+    public static List<string> ListDirectoryFiles(string path, bool skiphidden=true)
+    {
+        return ListDirectoryContents(path, s => 
+        {
+            return new Directory().FileExists(s);
+        } , skiphidden);
+    }
+    public static List<string> ListDirectorySubDirs(string path, bool skiphidden=true)
+    {
+        return ListDirectoryContents(path, s => 
+        {
+            return new Directory().DirExists(s);
+        } , skiphidden);
+    }
+
     public static T FindChild<T>(Node parent) 
     {
         foreach(var it in parent.GetChildren())
