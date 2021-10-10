@@ -15,12 +15,12 @@ using static System.Math;
 using static Carcassonne.GameEngine;
 using static Utils;
 
-[Tool]
+//[Tool]
 public class NameDialog : WindowDialog
 {
     public Action<string> CompleteHandle = null;
-    Func<string, (bool res, string msg)> _isValid = s => (s.Length > 0, "Input at least one character."); 
-    public Func<string, (bool res, string msg)> ChangedHandle {get => _isValid; set {_isValid = value; CheckValidity(_nameEdit.Text);}}
+    Func<string, (bool res, string msg)> _isValid = s => (s != null && s.Length > 0, "Input at least one character."); 
+    public Func<string, (bool res, string msg)> ChangedHandle {get => _isValid; set {_isValid = value; if(_nameEdit != null) CheckValidity(_nameEdit.Text);}}
     [Export]
     public Color ValidColor = new Color(0.3f, 1.0f, 0.3f);
     [Export]
@@ -41,7 +41,7 @@ public class NameDialog : WindowDialog
     }
     void ButtonPressed()
     {
-        var text = _confirmButton.Text;
+        var text = _nameEdit.Text;
         CheckValidity(text);
         if(_confirmButton.Disabled)
             return;
@@ -62,9 +62,10 @@ public class NameDialog : WindowDialog
         _confirmButton = FindChild<Button>(cont);
         _stateLabel = FindChild<Label>(cont);
         _stateLabel.Text = "";
-
-        _nameEdit.Connect("text_changed", this, "CheckValidity");
-        _confirmButton.Connect("pressed", this, "ButtonPressed");
+        if(!_nameEdit.IsConnected("text_changed", this, "CheckValidity"))
+            _nameEdit.Connect("text_changed", this, "CheckValidity");
+        if(!_confirmButton.IsConnected("pressed", this, "ButtonPressed"))
+            _confirmButton.Connect("pressed", this, "ButtonPressed");
 
         CheckValidity(_nameEdit.Text);
 

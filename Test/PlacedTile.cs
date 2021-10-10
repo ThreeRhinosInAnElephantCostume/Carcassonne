@@ -15,7 +15,7 @@ using static System.Math;
 using static Carcassonne.GameEngine;
 using static Utils;
 
-[Tool]
+//[Tool]
 public class PlacedTile : TestTile
 {
 

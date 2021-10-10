@@ -1,0 +1,31 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://TileEditor/GroupedFileManager.cs" type="Script" id=1]
+[ext_resource path="res://TileEditor/ItemBrowser.tscn" type="PackedScene" id=2]
+
+[node name="BrowserContainer" type="HBoxContainer"]
+margin_right = 364.0
+margin_bottom = 720.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="FolderBrowser" parent="." instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 180.0
+margin_bottom = 720.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ObjectBrowser" parent="." instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 184.0
+margin_right = 364.0
+margin_bottom = 720.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
