@@ -11,6 +11,7 @@ using System.Threading;
 using Carcassonne;
 using ExtraMath;
 using Godot;
+using Newtonsoft.Json;
 using static System.Math;
 using static Carcassonne.GameEngine;
 using static Utils;
@@ -29,28 +30,75 @@ public class TileEditor : Control
         Assert(_fileManager != null);
         Assert(_logicEditor != null);
 
+        _fileManager.Extension = ".json";
+
         _fileManager.FilterHandle = s =>
         {
-            if (!ResourceLoader.Exists(s))
+            // if (!ResourceLoader.Exists(s))
+            //     return false;
+            //TilePrototype r = ResourceLoader.Load<TilePrototype>(s, "res://TileEditor/TilePrototype.cs", true);
+            //TilePrototype r = GD.Load<TilePrototype>(s);
+            var dm = new Directory();
+            Assert(dm.FileExists(s));
+            var fm = new File();
+            Assert(fm.Open(s, File.ModeFlags.Read));
+            var dt = fm.GetAsText();
+            fm.Close();
+            try
+            {
+                var pt = JsonConvert.DeserializeObject<TilePrototype>(dt);
+                return pt != null;
+            }
+            catch (Exception)
+            {
                 return false;
-            Resource r = ResourceLoader.Load(s, "TilePrototype");
-            return (r != null && (r as TilePrototype) != null);
+            }
         };
         _fileManager.CreateFileHandle = s =>
         {
-            Resource r = new TilePrototype();
-            Error err = ResourceSaver.Save(s, r, ResourceSaver.SaverFlags.BundleResources);
-            Assert(err == Error.Ok);
+            TilePrototype r = new TilePrototype();
+            // r.ResourceLocalToScene = true;
+            // Error err = ResourceSaver.Save(s, r, ResourceSaver.SaverFlags.RelativePaths);
+            // Assert(err == Error.Ok);
+            // #if DEBUG
+            // TilePrototype _r = ResourceLoader.Load<TilePrototype>(s, "res://TileEditor/TilePrototype.cs", true);
+            // Assert(_r != null);
+            // #endif
+            string data = JsonConvert.SerializeObject(r);
+            var dm = new Directory();
+            Assert(!dm.FileExists(s));
+            var fm = new File();
+            fm.Open(s, File.ModeFlags.Write);
+            fm.StoreString(data);
+            fm.Close();
+
         };
         _fileManager.IsProtectedHandle = s =>
         {
-            Assert(ResourceLoader.Exists(s));
-            Resource r = ResourceLoader.Load(s, "TilePrototype");
-            Assert(r != null && (r as TilePrototype) != null);
+            //Assert(ResourceLoader.Exists(s));
+            // Resource r = ResourceLoader.Load<TilePrototype>(s, "res://TileEditor/TilePrototype.cs", true);
+            // Assert(r != null);
 
-            var tp = (TilePrototype)r;
+            // var tp = (TilePrototype)r;
+#if DEBUG
+            return false;
+#endif
 
-            return !tp.UserEditable;
+            var dm = new Directory();
+            Assert(dm.FileExists(s));
+            var fm = new File();
+            Assert(fm.Open(s, File.ModeFlags.Read));
+            var dt = fm.GetAsText();
+            fm.Close();
+            try
+            {
+                var pt = JsonConvert.DeserializeObject<TilePrototype>(dt);
+                return !pt.UserEditable;
+            }
+            catch (Exception)
+            {
+                return true;
+            }
 
         };
         _fileManager.FileOpenHandle = s =>

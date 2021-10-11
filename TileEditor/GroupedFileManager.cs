@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -20,38 +20,39 @@ public class GroupedFileManager : HBoxContainer
 {
     ItemBrowser _folderBrowser;
     ItemBrowser _objectBrowser;
-    public string CurrentDirectory {get; protected set;}
-    public string CurrentFile {get; protected set;} 
+    public string Extension { get => _objectBrowser.Extension; set => _objectBrowser.Extension = value; }
+    public string CurrentDirectory { get; protected set; }
+    public string CurrentFile { get; protected set; }
     public Func<string, bool> FilterHandle = s => s.Length > 0;
     public Action<string> _createFileHandle = s => throw new NotImplementedException();
-    public Action<string> CreateFileHandle 
+    public Action<string> CreateFileHandle
     {
-        get => _createFileHandle; 
-        set => _createFileHandle = s => value(EnsurePath(s)); 
+        get => _createFileHandle;
+        set => _createFileHandle = s => value(EnsurePath(s));
     }
     public Action<string> _fileOpenHandle = s => throw new NotImplementedException();
-    public Action<string> FileOpenHandle 
+    public Action<string> FileOpenHandle
     {
-        get => _fileOpenHandle; 
-        set => _fileOpenHandle = s => value(EnsurePath(s)); 
+        get => _fileOpenHandle;
+        set => _fileOpenHandle = s => value(EnsurePath(s));
     }
     public Action<string> _fileCloseHandle = s => throw new NotImplementedException();
     public Action<string> FileCloseHandle
     {
-        get => _fileCloseHandle; 
-        set => _fileCloseHandle = s => value(EnsurePath(s)); 
+        get => _fileCloseHandle;
+        set => _fileCloseHandle = s => value(EnsurePath(s));
     }
     public Func<string, bool> IsProtectedHandle = s => false;
-    string _path = ""; 
-    public string Path{get => _path; set { _path = value; SetPath(value);}}
+    string _path = "";
+    public string Path { get => _path; set { _path = value; SetPath(value); } }
     bool _browserEnabled = false;
     string EnsurePath(string p)
     {
         Assert(p != null);
 
-        if(p == "")
+        if (p == "")
             return p;
-        if(!p.Contains("res://"))
+        if (!p.Contains("res://"))
             p = ConcatPaths(Path, CurrentDirectory, p);
 
         return p;
@@ -62,11 +63,11 @@ public class GroupedFileManager : HBoxContainer
         _objectBrowser.Reset();
         _objectBrowser.Enabled = true;
 
-       List<string> files = ListDirectoryFiles(path).FindAll(s => FilterHandle(ConcatPaths(path, s)));
-       foreach(var it in files)
-       {
-           _objectBrowser.AddItem(it, IsProtectedHandle(ConcatPaths(path, it)));
-       }
+        List<string> files = ListDirectoryFiles(path).FindAll(s => FilterHandle(ConcatPaths(path, s)));
+        foreach (var it in files)
+        {
+            _objectBrowser.AddItem(it, !IsProtectedHandle(ConcatPaths(path, it)));
+        }
     }
     void LoadDirs(string path)
     {
@@ -74,14 +75,15 @@ public class GroupedFileManager : HBoxContainer
 
         _folderBrowser.Reset();
         _objectBrowser.Reset();
-        
+
         List<string> subdirs = ListDirectorySubDirs(path);
 
-        foreach(var it in subdirs)
+        foreach (var it in subdirs)
         {
-            _folderBrowser.AddItem(it, 
-                ListDirectoryFiles(ConcatPaths(path, it)).Find(
-                    s => FilterHandle(s) && IsProtectedHandle(s)) 
+            var p = ConcatPaths(path, it);
+            _folderBrowser.AddItem(it,
+                ListDirectoryFiles(p).Find(
+                    s => FilterHandle(ConcatPaths(p, s)) && IsProtectedHandle(ConcatPaths(p, s)))
                 == default(string));
         }
 
@@ -91,15 +93,15 @@ public class GroupedFileManager : HBoxContainer
     {
         _browserEnabled = false;
         _objectBrowser.Enabled = false;
-        
+
 
         _path = path;
-        
+
         _folderBrowser.Reset();
         _objectBrowser.Reset();
 
-        if(CurrentFile != null && CurrentFile != "")
-            FileCloseHandle(CurrentFile);    
+        if (CurrentFile != null && CurrentFile != "")
+            FileCloseHandle(CurrentFile);
 
         CurrentFile = "";
         CurrentDirectory = "";
@@ -119,7 +121,7 @@ public class GroupedFileManager : HBoxContainer
 
         _objectBrowser.Enabled = false;
         _folderBrowser.CloningEnabled = false;
-        
+
         _folderBrowser.CloneHandle = (string name, string nname) =>
         {
             return false;
@@ -127,7 +129,7 @@ public class GroupedFileManager : HBoxContainer
 
         _folderBrowser.NewHandle = (string nname) =>
         {
-            if(!_browserEnabled)
+            if (!_browserEnabled)
                 return false;
 
             string p = ConcatPaths(Path, nname);
@@ -136,13 +138,13 @@ public class GroupedFileManager : HBoxContainer
             Assert(!dm.DirExists(p));
 
             dm.MakeDir(p);
-            
+
             return true;
         };
 
-        _folderBrowser.DeleteHandle = (string name) => 
+        _folderBrowser.DeleteHandle = (string name) =>
         {
-            if(!_browserEnabled)
+            if (!_browserEnabled)
                 return false;
 
             string p = ConcatPaths(Path, CurrentDirectory, name);
@@ -155,9 +157,9 @@ public class GroupedFileManager : HBoxContainer
 
             Assert(files.FindAll(s => IsProtectedHandle(s)).Count == 0);
 
-            foreach(var it in files)
+            foreach (var it in files)
             {
-                if(it == CurrentFile)
+                if (it == CurrentFile)
                 {
                     FileCloseHandle(CurrentFile);
                     CurrentFile = "";
@@ -171,11 +173,11 @@ public class GroupedFileManager : HBoxContainer
         };
 
         _folderBrowser.SelectHandle = (string nname) =>
-        {   
-            if(nname == null)
+        {
+            if (nname == null)
                 nname = "";
-            if(CurrentFile != null && CurrentFile != "")
-                FileCloseHandle(CurrentFile);    
+            if (CurrentFile != null && CurrentFile != "")
+                FileCloseHandle(CurrentFile);
             CurrentFile = "";
 
             CurrentDirectory = nname;
@@ -184,13 +186,13 @@ public class GroupedFileManager : HBoxContainer
 
         _objectBrowser.CloneHandle = (string name, string nname) =>
         {
-            if(!_browserEnabled)
+            if (!_browserEnabled)
                 return false;
             Assert(CurrentDirectory != "");
             Assert(name != nname);
 
-            string from = ConcatPaths(Path, CurrentDirectory, nname);
-            string to = ConcatPaths(Path, CurrentDirectory, name);
+            string from = ConcatPaths(Path, CurrentDirectory, name);
+            string to = ConcatPaths(Path, CurrentDirectory, nname);
 
             Directory dm = new Directory();
 
@@ -198,12 +200,12 @@ public class GroupedFileManager : HBoxContainer
             Assert(dm.FileExists(from));
 
             dm.Copy(from, to);
-            return true;    
+            return true;
         };
 
         _objectBrowser.NewHandle = (string nname) =>
         {
-            if(!_browserEnabled)
+            if (!_browserEnabled)
                 return false;
 
             string p = ConcatPaths(Path, CurrentDirectory, nname);
@@ -212,15 +214,15 @@ public class GroupedFileManager : HBoxContainer
             Assert(!dm.FileExists(p));
 
             CreateFileHandle(p);
-            
+
             return true;
         };
 
-        _objectBrowser.DeleteHandle = (string name) => 
+        _objectBrowser.DeleteHandle = (string name) =>
         {
-            if(!_browserEnabled)
+            if (!_browserEnabled)
                 return false;
-            if(name == CurrentFile)
+            if (name == CurrentFile)
             {
                 FileCloseHandle(CurrentFile);
             }
@@ -237,22 +239,22 @@ public class GroupedFileManager : HBoxContainer
         };
 
         _objectBrowser.SelectHandle = (string nname) =>
-        {   
-            if(nname == null)
+        {
+            if (nname == null)
                 nname = "";
-            if(CurrentFile != null && CurrentFile != "")
-                FileCloseHandle(CurrentFile);    
+            if (CurrentFile != null && CurrentFile != "")
+                FileCloseHandle(CurrentFile);
             CurrentFile = nname;
-            if(CurrentFile != "")
+            if (CurrentFile != "")
                 FileOpenHandle(CurrentFile);
         };
 
 
     }
 
-//  // Called every frame. 'delta' is the elapsed time since the previous frame.
-//  public override void _Process(float delta)
-//  {
-//      
-//  }
+    //  // Called every frame. 'delta' is the elapsed time since the previous frame.
+    //  public override void _Process(float delta)
+    //  {
+    //      
+    //  }
 }

@@ -18,6 +18,7 @@ using static Utils;
 //[Tool]
 public class ItemBrowser : VBoxContainer
 {
+    public string Extension = "";
     public Func<string, string, bool> CloneHandle = (string s, string os) => false;
     public Func<string, bool> NewHandle = s => true;
     public Action<string> SelectHandle = s => { };
@@ -86,6 +87,7 @@ public class ItemBrowser : VBoxContainer
     {
         Assert(!_list.Items.Contains(name));
         _list.AddItem(name);
+        _deletability.Add(deletable);
         _items.Add(name);
     }
     public void AddItems(List<string> names, bool deletable = true)
@@ -97,6 +99,7 @@ public class ItemBrowser : VBoxContainer
     {
         Selected = _items[indx];
         _selectedIndex = indx;
+        _deleteButton.Disabled = !_deletability[indx];
         if (SelectHandle != null)
             SelectHandle(_items[indx]);
     }
@@ -120,36 +123,6 @@ public class ItemBrowser : VBoxContainer
             return false;
         return true;
     }
-    void CloneCurrent()
-    {
-        Assert(Selected != null && _selectedIndex != -1);
-
-        _dialog = new NameDialog();
-
-        _dialog.ChangedHandle = s => (IsValidName(s), "Single word, only letters, digits, and \'_\'");
-        _dialog.CompleteHandle = s =>
-        {
-            string os = s;
-            int i = 0;
-            do
-            {
-                os = s + "_" + i.ToString();
-                i++;
-            } while (_items.Contains(os));
-            if (CloneHandle(s, os))
-            {
-                AddItem(os);
-            }
-            SetInteractable(true);
-            _dialog.QueueFree();
-            RemoveChild(_dialog);
-            _dialog = null;
-        };
-        AddChild(_dialog);
-
-        SetInteractable(false);
-        _dialog.Popup_();
-    }
     void DeleteCurrent()
     {
         Assert(Selected != null && _selectedIndex != -1);
@@ -170,6 +143,17 @@ public class ItemBrowser : VBoxContainer
         _dialog = (NameDialog)GD.Load<PackedScene>("res://TileEditor/NameDialog.tscn").Instance();
         AddChild(_dialog);
 
+        _dialog.PostProcessHandle = (string s) =>
+        {
+            if (Extension == "")
+                return s;
+            string e = Extension;
+            if (e[0] != '.')
+                e = "." + e;
+            if (!s.EndsWith(e))
+                s = s + e;
+            return s;
+        };
         _dialog.ChangedHandle = s => (IsValidName(s), "Single word, only letters, digits, and \'_\'");
         _dialog.CompleteHandle = s =>
         {
@@ -182,6 +166,57 @@ public class ItemBrowser : VBoxContainer
             RemoveChild(_dialog);
             _dialog = null;
         };
+
+        SetInteractable(false);
+        _dialog.Popup_();
+    }
+    void CloneCurrent()
+    {
+        Assert(Selected != null && _selectedIndex != -1);
+
+        _dialog = (NameDialog)GD.Load<PackedScene>("res://TileEditor/NameDialog.tscn").Instance();
+        _dialog.PostProcessHandle = (string s) =>
+        {
+            if (Extension == "")
+                return s;
+            string e = Extension;
+            if (e[0] != '.')
+                e = "." + e;
+            if (!s.EndsWith(e))
+                s = s + e;
+            return s;
+        };
+        _dialog.PostProcessHandle = (string s) =>
+        {
+            if (Extension == "")
+                return s;
+            string e = Extension;
+            if (e[0] != '.')
+                e = "." + e;
+            if (!s.EndsWith(e))
+                s = s + e;
+            return s;
+        };
+        _dialog.ChangedHandle = s => (IsValidName(s) && !_items.Contains(s), "Single word, only letters, digits, and \'_\'; unique.");
+        _dialog.CompleteHandle = s =>
+        {
+            string ns = s;
+            int i = 0;
+            while (_items.Contains(ns)) // a tad retundant, don't you think?
+            {
+                ns = s + "_" + i.ToString();
+                i++;
+            }
+            if (CloneHandle(Selected, ns))
+            {
+                AddItem(ns);
+            }
+            SetInteractable(true);
+            _dialog.QueueFree();
+            RemoveChild(_dialog);
+            _dialog = null;
+        };
+        AddChild(_dialog);
 
         SetInteractable(false);
         _dialog.Popup_();

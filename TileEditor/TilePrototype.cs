@@ -15,15 +15,29 @@ using static System.Math;
 using static Carcassonne.GameEngine;
 using static Utils;
 
-public class TilePrototype : Resource
+[Serializable]
+public class TilePrototype
 {
     [Export]
-    public int[] NodeTypes;
+    public int[] NodeTypes { get; set; }
     [Export]
-    public int[] Assignments;
+    public int[] Assignments { get; set; }
     [Export]
-    public bool UserEditable;
-
+    public bool UserEditable { get; set; }
+    public Dictionary<int, List<int>> NodeAttributes = new Dictionary<int, List<int>>();
+    public List<int> TileAttributes = new List<int>();
+    public bool IsValid
+    {
+        get
+        {
+            return
+                (Assignments != null && NodeTypes != null) &&
+                (Assignments.Length == GameEngine.N_CONNECTORS * GameEngine.N_SIDES) &&
+                (NodeTypes.Length > 0) &&
+                (!NodeTypes.ToList().Contains((int)NodeType.ERR)) &&
+                (Assignments.ToList().FindAll(i => (i < 0 || i >= NodeTypes.Length)).Count == 0);
+        }
+    }
 
     public Tile Convert()
     {
@@ -48,21 +62,21 @@ public class TilePrototype : Resource
 
         var t = new Tile(nodes.ToArray(), connections.ToArray());
 
-        foreach(var it in nodes)
+        foreach (var it in nodes)
         {
             it.tile = t;
         }
 
         return t;
     }
-    public TilePrototype(NodeType[] nodes = null, int[] assignments = null)
+    public TilePrototype(NodeType[] nodes, int[] assignments)
     {
         if (nodes == null)
             NodeTypes = new int[0];
         else
         {
             NodeTypes = new int[nodes.Length];
-            for(int i = 0; i < NodeTypes.Length; i++)
+            for (int i = 0; i < NodeTypes.Length; i++)
             {
                 NodeTypes[i] = (int)nodes[i];
             }
@@ -72,5 +86,8 @@ public class TilePrototype : Resource
         this.Assignments = assignments;
         this.UserEditable = false;
     }
+    public TilePrototype() : this(null, null)
+    {
 
+    }
 }

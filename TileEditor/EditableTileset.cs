@@ -14,7 +14,8 @@ using static System.Math;
 using static Carcassonne.GameEngine;
 using static Utils;
 
-public class EditableTileset : Resource, Carcassonne.ITileset
+[Serializable]
+public class EditableTileset : Carcassonne.ITileset
 {
     [Export]
     public bool UserEditable { get; set; }
@@ -57,13 +58,6 @@ public class EditableTileset : Resource, Carcassonne.ITileset
 
 
 
-    }
-
-    public override bool _Set(string property, object value)
-    {
-        bool r = base._Set(property, value);
-        UpdateInternals();
-        return r;
     }
 
     public EditableTileset(bool UserEditable)

@@ -21,9 +21,20 @@ using static Utils;
 
 namespace Carcassonne
 {
+    public enum NodeAttribute
+    {
+        ERR = 0,
+        CITY_BONUS,
+        NEAR_CITY
+    }
+    public enum TileAttribute
+    {
+        ERR = 0,
+        MONASTERY,
+    }
     public enum NodeType
     {
-        ERR=0,
+        ERR = 0,
         FARM,
         ROAD,
         CITY,
@@ -38,13 +49,13 @@ namespace Carcassonne
                 NodeType.ROAD => "R",
                 NodeType.CITY => "C",
                 _ => "!",
-            };        
+            };
         }
         public static string GetTypeName(NodeType type)
         {
             string s = type.ToString().ToLower();
             Assert(s.Length > 0);
-            s = (s[0] + "").ToUpper() + s.Substr(1, s.Length-1);
+            s = (s[0] + "").ToUpper() + s.Substr(1, s.Length - 1);
             return s;
         }
     }

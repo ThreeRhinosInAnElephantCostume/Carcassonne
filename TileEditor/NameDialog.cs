@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Reflection.Metadata.Ecma335;
 using System.Runtime;
 using System.Runtime.CompilerServices;
 using System.Runtime.Versioning;
@@ -18,6 +19,7 @@ using static Utils;
 //[Tool]
 public class NameDialog : WindowDialog
 {
+    public Func<string, string> PostProcessHandle = s => s;
     public Action<string> CompleteHandle = null;
     Func<string, (bool res, string msg)> _isValid = s => (s != null && s.Length > 0, "Input at least one character.");
     public Func<string, (bool res, string msg)> ChangedHandle { get => _isValid; set { _isValid = value; if (_nameEdit != null) CheckValidity(_nameEdit.Text); } }
@@ -49,7 +51,7 @@ public class NameDialog : WindowDialog
         Hide();
         if (CompleteHandle != null)
         {
-            CompleteHandle(text);
+            CompleteHandle(PostProcessHandle(text));
         }
         else
             GD.PrintErr("NameDialog has no Complete handle");
