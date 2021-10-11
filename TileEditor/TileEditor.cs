@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -22,19 +22,19 @@ public class TileEditor : Control
     TileLogicEditor _logicEditor;
     public override void _Ready()
     {
-        _fileManager = (GroupedFileManager) GetNode("MainContainer/BrowserContainer");
+        _fileManager = (GroupedFileManager)GetNode("MainContainer/BrowserContainer");
 
-        _logicEditor = (TileLogicEditor) GetNode("MainContainer/TabContainer/TileLogicEditor");
+        _logicEditor = (TileLogicEditor)GetNode("MainContainer/TabContainer/TileLogicEditor");
 
         Assert(_fileManager != null);
         Assert(_logicEditor != null);
 
-        _fileManager.FilterHandle = s => 
+        _fileManager.FilterHandle = s =>
         {
-            if(!ResourceLoader.Exists(s))
+            if (!ResourceLoader.Exists(s))
                 return false;
             Resource r = ResourceLoader.Load(s, "TilePrototype");
-            return (r != null && (r as TilePrototype) != null);            
+            return (r != null && (r as TilePrototype) != null);
         };
         _fileManager.CreateFileHandle = s =>
         {
@@ -53,7 +53,7 @@ public class TileEditor : Control
             return !tp.UserEditable;
 
         };
-        _fileManager.FileOpenHandle = s => 
+        _fileManager.FileOpenHandle = s =>
         {
             Assert(new Directory().FileExists(s));
             _logicEditor.Path = s;

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -17,16 +17,16 @@ using static Utils;
 
 //[Tool]
 public class ItemBrowser : VBoxContainer
-{   
+{
     public Func<string, string, bool> CloneHandle = (string s, string os) => false;
     public Func<string, bool> NewHandle = s => true;
-    public Action<string> SelectHandle = s => {};
+    public Action<string> SelectHandle = s => { };
     public Func<string, bool> DeleteHandle;
     bool _cloningEnabled = true;
     public bool CloningEnabled
     {
         get => _cloningEnabled;
-        set 
+        set
         {
             _cloningEnabled = value;
             _cloneButton.Disabled = !value;
@@ -40,19 +40,19 @@ public class ItemBrowser : VBoxContainer
     List<bool> _deletability = new List<bool>();
     List<string> _items = new List<string>();
     string _selected = null;
-    public string Selected{get => _selected; protected set {_selected = value; SetEditable(_selected != null); }}
+    public string Selected { get => _selected; protected set { _selected = value; SetEditable(_selected != null); } }
     int _selectedIndex = -1;
     bool _enabled = true;
     public bool Enabled
     {
-        get => _enabled; 
-        set 
+        get => _enabled;
+        set
         {
-            if(_enabled == value)
+            if (_enabled == value)
                 return;
             _enabled = value;
-           _list.PauseMode = (_enabled) ? PauseModeEnum.Process : PauseModeEnum.Stop;
-            if(!_enabled)
+            _list.PauseMode = (_enabled) ? PauseModeEnum.Process : PauseModeEnum.Stop;
+            if (!_enabled)
             {
                 _deleteButton.Disabled = true;
                 _newButton.Disabled = true;
@@ -63,7 +63,7 @@ public class ItemBrowser : VBoxContainer
                 _newButton.Disabled = false;
                 _cloneButton.Disabled = true;
                 _cloneButton.Disabled = true;
-                if(_selectedIndex != -1)
+                if (_selectedIndex != -1)
                 {
                     _cloneButton.Disabled = false;
                     _deleteButton.Disabled = _deletability[_selectedIndex];
@@ -82,41 +82,41 @@ public class ItemBrowser : VBoxContainer
         _newButton.Disabled = !b;
         _list.PauseMode = (b) ? PauseModeEnum.Process : PauseModeEnum.Stop;
     }
-    public void AddItem(string name, bool deletable=true)
+    public void AddItem(string name, bool deletable = true)
     {
         Assert(!_list.Items.Contains(name));
         _list.AddItem(name);
         _items.Add(name);
     }
-    public void AddItems(List<string> names, bool deletable=true)
+    public void AddItems(List<string> names, bool deletable = true)
     {
-        foreach(var it in names)
+        foreach (var it in names)
             AddItem(it, deletable);
     }
     void ItemSelected(int indx)
     {
         Selected = _items[indx];
         _selectedIndex = indx;
-        if(SelectHandle != null)
+        if (SelectHandle != null)
             SelectHandle(_items[indx]);
     }
     void NothingSelected()
     {
         Selected = null;
         _selectedIndex = -1;
-        if(SelectHandle != null)
+        if (SelectHandle != null)
             SelectHandle(null);
     }
     bool IsValidName(string s)
     {
-        if(s == null)   
+        if (s == null)
             return false;
-        if(s.Length < 1)
+        if (s.Length < 1)
             return false;
         var l = s.ToList();
-        if(l.FindIndex(0, ch => char.IsWhiteSpace(ch)) != -1)
+        if (l.FindIndex(0, ch => char.IsWhiteSpace(ch)) != -1)
             return false;
-        if(l.FindIndex(0, ch => !char.IsLetterOrDigit(ch) && ch != '_') != -1)
+        if (l.FindIndex(0, ch => !char.IsLetterOrDigit(ch) && ch != '_') != -1)
             return false;
         return true;
     }
@@ -126,8 +126,8 @@ public class ItemBrowser : VBoxContainer
 
         _dialog = new NameDialog();
 
-        _dialog.ChangedHandle = s => (IsValidName(s) , "Single word, only letters, digits, and \'_\'");
-        _dialog.CompleteHandle = s => 
+        _dialog.ChangedHandle = s => (IsValidName(s), "Single word, only letters, digits, and \'_\'");
+        _dialog.CompleteHandle = s =>
         {
             string os = s;
             int i = 0;
@@ -135,8 +135,8 @@ public class ItemBrowser : VBoxContainer
             {
                 os = s + "_" + i.ToString();
                 i++;
-            }while(_items.Contains(os));
-            if(CloneHandle(s, os))
+            } while (_items.Contains(os));
+            if (CloneHandle(s, os))
             {
                 AddItem(os);
             }
@@ -154,7 +154,7 @@ public class ItemBrowser : VBoxContainer
     {
         Assert(Selected != null && _selectedIndex != -1);
 
-        if(_deletability[_selectedIndex] && DeleteHandle(Selected))
+        if (_deletability[_selectedIndex] && DeleteHandle(Selected))
         {
             int indx = _selectedIndex;
             _items.RemoveAt(indx);
@@ -170,10 +170,10 @@ public class ItemBrowser : VBoxContainer
         _dialog = (NameDialog)GD.Load<PackedScene>("res://TileEditor/NameDialog.tscn").Instance();
         AddChild(_dialog);
 
-        _dialog.ChangedHandle = s => (IsValidName(s) , "Single word, only letters, digits, and \'_\'");
-        _dialog.CompleteHandle = s => 
+        _dialog.ChangedHandle = s => (IsValidName(s), "Single word, only letters, digits, and \'_\'");
+        _dialog.CompleteHandle = s =>
         {
-            if(NewHandle(s))
+            if (NewHandle(s))
             {
                 AddItem(s);
             }
@@ -194,46 +194,46 @@ public class ItemBrowser : VBoxContainer
         _selectedIndex = -1;
 
         var buttoncontainer = FindChild<HBoxContainer>(this);
-        if(null == (_cloneButton = (Button)buttoncontainer.GetNodeOrNull("CloneButton")))
+        if (null == (_cloneButton = (Button)buttoncontainer.GetNodeOrNull("CloneButton")))
         {
             _cloneButton = new Button();
             _cloneButton.Name = "CloneButton";
             buttoncontainer.AddChild(_cloneButton);
         }
-        if(null == (_deleteButton = (Button)buttoncontainer.GetNodeOrNull("DeleteButton")))
+        if (null == (_deleteButton = (Button)buttoncontainer.GetNodeOrNull("DeleteButton")))
         {
             _deleteButton = new Button();
             _deleteButton.Name = "DeleteButton";
             buttoncontainer.AddChild(_deleteButton);
         }
-        if(null == (_newButton = (Button)buttoncontainer.GetNodeOrNull("NewButton")))
+        if (null == (_newButton = (Button)buttoncontainer.GetNodeOrNull("NewButton")))
         {
             _newButton = new Button();
             _newButton.Name = "NewButton";
             buttoncontainer.AddChild(_newButton);
         }
         _cloneButton.Text = "Clone";
-        if(_cloneButton.IsConnected("pressed", this, "CloneCurrent"))
+        if (_cloneButton.IsConnected("pressed", this, "CloneCurrent"))
             _cloneButton.Disconnect("pressed", this, "CloneCurrent");
         _cloneButton.Connect("pressed", this, "CloneCurrent");
         _cloneButton.Disabled = true;
 
         _deleteButton.Text = "Delete";
-        if(_deleteButton.IsConnected("pressed", this, "DeleteCurrent"))
+        if (_deleteButton.IsConnected("pressed", this, "DeleteCurrent"))
             _deleteButton.Disconnect("pressed", this, "DeleteCurrent");
         _deleteButton.Connect("pressed", this, "DeleteCurrent");
         _deleteButton.Disabled = true;
-        
+
         _newButton.Text = "New";
-        if(_newButton.IsConnected("pressed", this, "New"))
+        if (_newButton.IsConnected("pressed", this, "New"))
             _newButton.Disconnect("pressed", this, "New");
         _newButton.Connect("pressed", this, "New");
         //_newButton.Disabled = false;
 
         _list = FindChild<ItemList>(this);
-        if(_list.IsConnected("nothing_selected", this, "NothingSelected"))
+        if (_list.IsConnected("nothing_selected", this, "NothingSelected"))
             _list.Disconnect("nothing_selected", this, "NothingSelected");
-        if(_list.IsConnected("item_selected", this, "ItemSelected"))
+        if (_list.IsConnected("item_selected", this, "ItemSelected"))
             _list.Disconnect("item_selected", this, "ItemSelected");
         _list.Clear();
         _list.Connect("nothing_selected", this, "NothingSelected");
@@ -248,6 +248,6 @@ public class ItemBrowser : VBoxContainer
 
     public override void _Process(float delta)
     {
-        
+
     }
 }
