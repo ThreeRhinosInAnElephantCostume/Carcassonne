@@ -44,7 +44,7 @@ public class TileLogicEditor : Control
             SetPath(_path);
         }
     }
-    public Action<TilePrototype> TileChangedHandle;
+    public Action<TilePrototype, string> TileChangedHandle;
     TilePrototype _tile;
     public TilePrototype Tile
     {
@@ -79,7 +79,7 @@ public class TileLogicEditor : Control
     PlacedTile _placedTile;
     void TileChanged()
     {
-        TileChangedHandle(Tile);
+        TileChangedHandle(Tile, Path);
     }
     void UpdateCityTrack()
     {

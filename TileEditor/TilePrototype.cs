@@ -28,6 +28,27 @@ public class TilePrototype
     public List<int> TileAttributes { get; set; } = new List<int>();
     public List<string> AssociatedModels { get; set; } = new List<string>();
 
+    public static Vector2[] RelativeConnectorPositions
+    {
+        get
+        {
+            Vector2 size = new Vector2(1, 1);
+            Vector2[] ret = new Vector2[N_CONNECTORS * N_SIDES];
+            Vector2[] edges = new Vector2[4] {-size/2, new Vector2(size.x/2, -size.y/2),
+                size/2, new Vector2(-size.x/2, size.y/2)};
+            Vector2[] dirs = new Vector2[4] { Vector2.Right, Vector2.Down, Vector2.Left, Vector2.Up };
+
+            for (int i = 0; i < GameEngine.N_SIDES; i++)
+            {
+                for (int ii = 0; ii < GameEngine.N_CONNECTORS; ii++)
+                {
+                    ret[i * N_CONNECTORS + ii] = edges[i] + (((float)ii + 1) / ((float)N_CONNECTORS + 1)) * (dirs[i]);
+                }
+            }
+            return ret;
+        }
+    }
+
     public bool IsValid
     {
         get

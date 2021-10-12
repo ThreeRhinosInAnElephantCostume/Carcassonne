@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://TileEditor/TileEditor.cs" type="Script" id=1]
 [ext_resource path="res://TileEditor/GroupedFileManager.tscn" type="PackedScene" id=2]
 [ext_resource path="res://TileEditor/TileLogicEditor.cs" type="Script" id=3]
 [ext_resource path="res://TileEditor/TileGraphicsEditor.cs" type="Script" id=4]
+[ext_resource path="res://TileEditor/OrbitCamera.cs" type="Script" id=5]
 
 [node name="TileEditor" type="Control"]
 anchor_right = 1.0
@@ -25,133 +26,17 @@ __meta__ = {
 }
 
 [node name="BrowserContainer" parent="MainContainer" instance=ExtResource( 2 )]
-margin_bottom = 864.0
+margin_bottom = 724.0
 
 [node name="TabContainer" type="TabContainer" parent="MainContainer"]
 margin_left = 368.0
 margin_right = 1280.0
-margin_bottom = 864.0
+margin_bottom = 724.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 2.5
 
-[node name="TileGraphicsEditor" type="VBoxContainer" parent="MainContainer/TabContainer"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 4.0
-margin_top = 32.0
-margin_right = -4.0
-margin_bottom = -4.0
-script = ExtResource( 4 )
-
-[node name="ToolsContainer" type="HBoxContainer" parent="MainContainer/TabContainer/TileGraphicsEditor"]
-margin_right = 904.0
-margin_bottom = 20.0
-size_flags_horizontal = 3
-
-[node name="SaveButton" type="Button" parent="MainContainer/TabContainer/TileGraphicsEditor/ToolsContainer"]
-margin_right = 43.0
-margin_bottom = 20.0
-size_flags_vertical = 3
-text = "SAVE"
-
-[node name="ReloadButton" type="Button" parent="MainContainer/TabContainer/TileGraphicsEditor/ToolsContainer"]
-margin_left = 47.0
-margin_right = 111.0
-margin_bottom = 20.0
-text = "RELOAD"
-
-[node name="ResetButton" type="Button" parent="MainContainer/TabContainer/TileGraphicsEditor/ToolsContainer"]
-margin_left = 115.0
-margin_right = 163.0
-margin_bottom = 20.0
-rect_pivot_offset = Vector2( -869.658, 67.4173 )
-text = "RESET"
-
-[node name="OptionButton" type="OptionButton" parent="MainContainer/TabContainer/TileGraphicsEditor/ToolsContainer"]
-margin_left = 167.0
-margin_right = 356.0
-margin_bottom = 20.0
-text = "<Associated 3D models>"
-
-[node name="AddAssociationsButton" type="Button" parent="MainContainer/TabContainer/TileGraphicsEditor/ToolsContainer"]
-margin_left = 360.0
-margin_right = 380.0
-margin_bottom = 20.0
-text = "+"
-
-[node name="HBoxContainer" type="HBoxContainer" parent="MainContainer/TabContainer/TileGraphicsEditor"]
-margin_top = 24.0
-margin_right = 904.0
-margin_bottom = 828.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="VBoxContainer" type="VBoxContainer" parent="MainContainer/TabContainer/TileGraphicsEditor/HBoxContainer"]
-margin_right = 600.0
-margin_bottom = 804.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-size_flags_stretch_ratio = 2.0
-
-[node name="3DViewport" type="ViewportContainer" parent="MainContainer/TabContainer/TileGraphicsEditor/HBoxContainer/VBoxContainer"]
-margin_right = 600.0
-margin_bottom = 400.0
-rect_min_size = Vector2( 360, 360 )
-size_flags_horizontal = 3
-size_flags_vertical = 3
-stretch = true
-
-[node name="Viewport" type="Viewport" parent="MainContainer/TabContainer/TileGraphicsEditor/HBoxContainer/VBoxContainer/3DViewport"]
-size = Vector2( 360, 360 )
-
-[node name="3DRoot" type="Spatial" parent="MainContainer/TabContainer/TileGraphicsEditor/HBoxContainer/VBoxContainer/3DViewport/Viewport"]
-
-[node name="Camera3D" type="Camera" parent="MainContainer/TabContainer/TileGraphicsEditor/HBoxContainer/VBoxContainer/3DViewport/Viewport/3DRoot"]
-transform = Transform( 1, 0, 0, 0, 0.840046, 0.542515, 0, -0.542515, 0.840046, 0, 2, 2.5 )
-
-[node name="2DViewport" type="ViewportContainer" parent="MainContainer/TabContainer/TileGraphicsEditor/HBoxContainer/VBoxContainer"]
-margin_top = 404.0
-margin_right = 600.0
-margin_bottom = 804.0
-rect_min_size = Vector2( 360, 360 )
-size_flags_horizontal = 3
-size_flags_vertical = 3
-stretch = true
-
-[node name="Viewport" type="Viewport" parent="MainContainer/TabContainer/TileGraphicsEditor/HBoxContainer/VBoxContainer/2DViewport"]
-size = Vector2( 360, 360 )
-
-[node name="2DRoot" type="Node2D" parent="MainContainer/TabContainer/TileGraphicsEditor/HBoxContainer/VBoxContainer/2DViewport/Viewport"]
-
-[node name="Camera2D" type="Camera2D" parent="MainContainer/TabContainer/TileGraphicsEditor/HBoxContainer/VBoxContainer/2DViewport/Viewport/2DRoot"]
-
-[node name="VBoxContainer2" type="VBoxContainer" parent="MainContainer/TabContainer/TileGraphicsEditor/HBoxContainer"]
-margin_left = 604.0
-margin_right = 904.0
-margin_bottom = 804.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="VBoxContainer" type="VBoxContainer" parent="MainContainer/TabContainer/TileGraphicsEditor/HBoxContainer/VBoxContainer2"]
-margin_right = 300.0
-margin_bottom = 735.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Label" type="Label" parent="MainContainer/TabContainer/TileGraphicsEditor/HBoxContainer/VBoxContainer2"]
-margin_top = 739.0
-margin_right = 300.0
-margin_bottom = 804.0
-rect_min_size = Vector2( 0, 65 )
-size_flags_horizontal = 3
-text = "message 0
-message 1
-message 3
-"
-
 [node name="TileLogicEditor" type="VBoxContainer" parent="MainContainer/TabContainer"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -211,27 +96,27 @@ text = "User editable"
 [node name="VBoxContainer" type="VBoxContainer" parent="MainContainer/TabContainer/TileLogicEditor"]
 margin_top = 28.0
 margin_right = 904.0
-margin_bottom = 684.0
+margin_bottom = 688.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="UpperHalfContainer" type="HBoxContainer" parent="MainContainer/TabContainer/TileLogicEditor/VBoxContainer"]
 margin_right = 904.0
-margin_bottom = 326.0
+margin_bottom = 328.0
 size_flags_vertical = 3
 
 [node name="ViewportContainer" type="ViewportContainer" parent="MainContainer/TabContainer/TileLogicEditor/VBoxContainer/UpperHalfContainer"]
 margin_right = 450.0
-margin_bottom = 326.0
+margin_bottom = 328.0
 rect_min_size = Vector2( 300, 300 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
 stretch = true
 
 [node name="Viewport" type="Viewport" parent="MainContainer/TabContainer/TileLogicEditor/VBoxContainer/UpperHalfContainer/ViewportContainer"]
-size = Vector2( 450, 326 )
+size = Vector2( 450, 328 )
 handle_input_locally = false
-render_target_update_mode = 0
+render_target_update_mode = 3
 
 [node name="Camera2D" type="Camera2D" parent="MainContainer/TabContainer/TileLogicEditor/VBoxContainer/UpperHalfContainer/ViewportContainer/Viewport"]
 
@@ -240,27 +125,27 @@ render_target_update_mode = 0
 [node name="AttributableList" type="ItemList" parent="MainContainer/TabContainer/TileLogicEditor/VBoxContainer/UpperHalfContainer"]
 margin_left = 454.0
 margin_right = 904.0
-margin_bottom = 326.0
+margin_bottom = 328.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="BottomHalfContainer" type="HBoxContainer" parent="MainContainer/TabContainer/TileLogicEditor/VBoxContainer"]
-margin_top = 330.0
+margin_top = 332.0
 margin_right = 904.0
-margin_bottom = 656.0
+margin_bottom = 660.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="PossibleAttributeList" type="ItemList" parent="MainContainer/TabContainer/TileLogicEditor/VBoxContainer/BottomHalfContainer"]
 margin_right = 415.0
-margin_bottom = 326.0
+margin_bottom = 328.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="AttributeControlBox" type="VBoxContainer" parent="MainContainer/TabContainer/TileLogicEditor/VBoxContainer/BottomHalfContainer"]
 margin_left = 419.0
 margin_right = 484.0
-margin_bottom = 326.0
+margin_bottom = 328.0
 
 [node name="AddAttributeButton" type="Button" parent="MainContainer/TabContainer/TileLogicEditor/VBoxContainer/BottomHalfContainer/AttributeControlBox"]
 margin_right = 65.0
@@ -282,6 +167,183 @@ text = "RESET"
 [node name="CurrentAttributeList" type="ItemList" parent="MainContainer/TabContainer/TileLogicEditor/VBoxContainer/BottomHalfContainer"]
 margin_left = 488.0
 margin_right = 904.0
-margin_bottom = 326.0
+margin_bottom = 328.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+
+[node name="TileGraphicsEditor" type="VBoxContainer" parent="MainContainer/TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+script = ExtResource( 4 )
+
+[node name="ToolsContainer" type="HBoxContainer" parent="MainContainer/TabContainer/TileGraphicsEditor"]
+margin_right = 904.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+
+[node name="SaveButton" type="Button" parent="MainContainer/TabContainer/TileGraphicsEditor/ToolsContainer"]
+margin_right = 43.0
+margin_bottom = 20.0
+size_flags_vertical = 3
+text = "SAVE"
+
+[node name="ReloadButton" type="Button" parent="MainContainer/TabContainer/TileGraphicsEditor/ToolsContainer"]
+margin_left = 47.0
+margin_right = 111.0
+margin_bottom = 20.0
+text = "RELOAD"
+
+[node name="ResetButton" type="Button" parent="MainContainer/TabContainer/TileGraphicsEditor/ToolsContainer"]
+margin_left = 115.0
+margin_right = 163.0
+margin_bottom = 20.0
+rect_pivot_offset = Vector2( -869.658, 67.4173 )
+text = "RESET"
+
+[node name="AutoAssignButton" type="Button" parent="MainContainer/TabContainer/TileGraphicsEditor/ToolsContainer"]
+margin_left = 167.0
+margin_right = 268.0
+margin_bottom = 20.0
+text = "AUTO ASSIGN"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="OptionButton" type="OptionButton" parent="MainContainer/TabContainer/TileGraphicsEditor/ToolsContainer"]
+margin_left = 272.0
+margin_right = 461.0
+margin_bottom = 20.0
+text = "<Associated 3D models>"
+
+[node name="AddAssociationsButton" type="Button" parent="MainContainer/TabContainer/TileGraphicsEditor/ToolsContainer"]
+margin_left = 465.0
+margin_right = 485.0
+margin_bottom = 20.0
+text = "+"
+
+[node name="RemoveAssociationButton" type="Button" parent="MainContainer/TabContainer/TileGraphicsEditor/ToolsContainer"]
+margin_left = 489.0
+margin_right = 506.0
+margin_bottom = 20.0
+text = "-"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainContainer/TabContainer/TileGraphicsEditor"]
+margin_top = 24.0
+margin_right = 904.0
+margin_bottom = 688.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainContainer/TabContainer/TileGraphicsEditor/HBoxContainer"]
+margin_right = 600.0
+margin_bottom = 664.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 2.0
+
+[node name="3DViewport" type="ViewportContainer" parent="MainContainer/TabContainer/TileGraphicsEditor/HBoxContainer/VBoxContainer"]
+margin_right = 600.0
+margin_bottom = 360.0
+rect_min_size = Vector2( 360, 360 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+stretch = true
+
+[node name="Viewport" type="Viewport" parent="MainContainer/TabContainer/TileGraphicsEditor/HBoxContainer/VBoxContainer/3DViewport"]
+size = Vector2( 600, 360 )
+handle_input_locally = false
+render_target_update_mode = 0
+
+[node name="3DRoot" type="Spatial" parent="MainContainer/TabContainer/TileGraphicsEditor/HBoxContainer/VBoxContainer/3DViewport/Viewport"]
+
+[node name="CameraHolder" type="Spatial" parent="MainContainer/TabContainer/TileGraphicsEditor/HBoxContainer/VBoxContainer/3DViewport/Viewport/3DRoot"]
+
+[node name="Camera3D" type="Camera" parent="MainContainer/TabContainer/TileGraphicsEditor/HBoxContainer/VBoxContainer/3DViewport/Viewport/3DRoot/CameraHolder"]
+transform = Transform( 1, 0, 0, 0, 0.840046, 0.542515, 0, -0.542515, 0.840046, 0, 2, 2.5 )
+script = ExtResource( 5 )
+
+[node name="TileLogicOverlay" type="Sprite3D" parent="MainContainer/TabContainer/TileGraphicsEditor/HBoxContainer/VBoxContainer/3DViewport/Viewport/3DRoot"]
+transform = Transform( 0.33, 0, 0, 0, -1.44248e-08, -0.33, 0, 0.33, -1.44248e-08, 0, 0, 0 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="MainContainer/TabContainer/TileGraphicsEditor/HBoxContainer/VBoxContainer/3DViewport/Viewport"]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainContainer/TabContainer/TileGraphicsEditor/HBoxContainer/VBoxContainer/3DViewport/Viewport/CanvasLayer"]
+anchor_bottom = 1.0
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.0
+
+[node name="RotateTileButton" type="Button" parent="MainContainer/TabContainer/TileGraphicsEditor/HBoxContainer/VBoxContainer/3DViewport/Viewport/CanvasLayer/VBoxContainer"]
+margin_right = 61.0
+margin_bottom = 20.0
+text = "ROTATE"
+
+[node name="TileLogicOpacitySlider" type="VSlider" parent="MainContainer/TabContainer/TileGraphicsEditor/HBoxContainer/VBoxContainer/3DViewport/Viewport/CanvasLayer/VBoxContainer"]
+margin_top = 24.0
+margin_right = 16.0
+margin_bottom = 360.0
+size_flags_vertical = 3
+value = 50.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainContainer/TabContainer/TileGraphicsEditor/HBoxContainer/VBoxContainer"]
+margin_top = 364.0
+margin_right = 600.0
+margin_bottom = 664.0
+
+[node name="2DViewport" type="ViewportContainer" parent="MainContainer/TabContainer/TileGraphicsEditor/HBoxContainer/VBoxContainer/HBoxContainer"]
+margin_right = 300.0
+margin_bottom = 300.0
+rect_min_size = Vector2( 300, 300 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Viewport" type="Viewport" parent="MainContainer/TabContainer/TileGraphicsEditor/HBoxContainer/VBoxContainer/HBoxContainer/2DViewport"]
+size = Vector2( 300, 300 )
+handle_input_locally = false
+render_target_update_mode = 0
+
+[node name="2DRoot" type="Node2D" parent="MainContainer/TabContainer/TileGraphicsEditor/HBoxContainer/VBoxContainer/HBoxContainer/2DViewport/Viewport"]
+
+[node name="Camera2D" type="Camera2D" parent="MainContainer/TabContainer/TileGraphicsEditor/HBoxContainer/VBoxContainer/HBoxContainer/2DViewport/Viewport/2DRoot"]
+
+[node name="ToggleNodeContainer" type="VBoxContainer" parent="MainContainer/TabContainer/TileGraphicsEditor/HBoxContainer/VBoxContainer/HBoxContainer"]
+margin_left = 304.0
+margin_right = 600.0
+margin_bottom = 300.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="AssignlableList" type="ItemList" parent="MainContainer/TabContainer/TileGraphicsEditor/HBoxContainer/VBoxContainer/HBoxContainer/ToggleNodeContainer"]
+margin_right = 296.0
+margin_bottom = 300.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+allow_reselect = true
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MainContainer/TabContainer/TileGraphicsEditor/HBoxContainer"]
+margin_left = 604.0
+margin_right = 904.0
+margin_bottom = 664.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="AssignmentContainer" type="VBoxContainer" parent="MainContainer/TabContainer/TileGraphicsEditor/HBoxContainer/VBoxContainer2"]
+margin_right = 300.0
+margin_bottom = 595.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="StatusLabel" type="Label" parent="MainContainer/TabContainer/TileGraphicsEditor/HBoxContainer/VBoxContainer2"]
+margin_top = 599.0
+margin_right = 300.0
+margin_bottom = 664.0
+rect_min_size = Vector2( 0, 65 )
+size_flags_horizontal = 3
+text = "message 0
+message 1
+message 3
+"

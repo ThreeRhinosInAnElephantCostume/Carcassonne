@@ -14,6 +14,29 @@ using Expression = System.Linq.Expressions.Expression;
 
 public static partial class Utils
 {
+    public static List<T> GetChildrenRecrusively<T>(Node root, bool restrichtomatchingparents = false) where T : Node
+    {
+        List<T> ret = new List<T>(8);
+
+        void SearchRecursively(Node n)
+        {
+            foreach (var it in n.GetChildren())
+            {
+                Assert(it is Node);
+                if (it is T)
+                {
+                    ret.Add((T)it);
+                }
+                if (!restrichtomatchingparents || it is T)
+                {
+                    SearchRecursively((Node)it);
+                }
+            }
+        }
+        SearchRecursively(root);
+
+        return ret;
+    }
     [Conditional("DEBUG")]
     public static void Assert(Error b, string msg)
     {

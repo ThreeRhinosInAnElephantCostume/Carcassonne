@@ -22,24 +22,47 @@ public class TileEditor : Control
     GroupedFileManager _fileManager;
     TileLogicEditor _logicEditor;
     TileGraphicsEditor _graphicsEditor;
+    TabContainer _editorContainer;
+    public void TabChanged(int indx)
+    {
+        void SetInputRecursively(Node node, bool b)
+        {
+            node.SetProcessInput(b);
+            foreach (var it in node.GetChildren())
+            {
+                SetInputRecursively((Node)it, b);
+            }
+        }
+        foreach (var it in _editorContainer.GetChildren())
+        {
+            if (it is Control con)
+            {
+                SetInputRecursively(con, false);
+            }
+        }
+        var sel = _editorContainer.GetChild(indx);
+        Assert(sel is Control);
+        SetInputRecursively(sel, true);
+    }
     public override void _Ready()
     {
+        _editorContainer = (TabContainer)GetNode("MainContainer/TabContainer");
         _fileManager = (GroupedFileManager)GetNode("MainContainer/BrowserContainer");
         _logicEditor = (TileLogicEditor)GetNode("MainContainer/TabContainer/TileLogicEditor");
         _graphicsEditor = (TileGraphicsEditor)GetNode("MainContainer/TabContainer/TileGraphicsEditor");
 
+        Assert(_editorContainer != null);
         Assert(_fileManager != null);
         Assert(_logicEditor != null);
         Assert(_graphicsEditor != null);
+
+        _editorContainer.Connect("tab_changed", this, "TabChanged");
+        TabChanged(_editorContainer.CurrentTab);
 
         _fileManager.Extension = ".json";
 
         _fileManager.FilterHandle = s =>
         {
-            // if (!ResourceLoader.Exists(s))
-            //     return false;
-            //TilePrototype r = ResourceLoader.Load<TilePrototype>(s, "res://TileEditor/TilePrototype.cs", true);
-            //TilePrototype r = GD.Load<TilePrototype>(s);
             var dm = new Directory();
             Assert(dm.FileExists(s));
             var fm = new File();
@@ -59,13 +82,6 @@ public class TileEditor : Control
         _fileManager.CreateFileHandle = s =>
         {
             TilePrototype r = new TilePrototype();
-            // r.ResourceLocalToScene = true;
-            // Error err = ResourceSaver.Save(s, r, ResourceSaver.SaverFlags.RelativePaths);
-            // Assert(err == Error.Ok);
-            // #if DEBUG
-            // TilePrototype _r = ResourceLoader.Load<TilePrototype>(s, "res://TileEditor/TilePrototype.cs", true);
-            // Assert(_r != null);
-            // #endif
             string data = JsonConvert.SerializeObject(r);
             var dm = new Directory();
             Assert(!dm.FileExists(s));
@@ -77,11 +93,6 @@ public class TileEditor : Control
         };
         _fileManager.IsProtectedHandle = s =>
         {
-            //Assert(ResourceLoader.Exists(s));
-            // Resource r = ResourceLoader.Load<TilePrototype>(s, "res://TileEditor/TilePrototype.cs", true);
-            // Assert(r != null);
-
-            // var tp = (TilePrototype)r;
 #if DEBUG
             return false;
 #endif
@@ -107,15 +118,13 @@ public class TileEditor : Control
         {
             Assert(new Directory().FileExists(s));
             _logicEditor.Path = s;
-            _graphicsEditor.Path = s;
         };
         _fileManager.FileCloseHandle = s =>
         {
             _logicEditor.Path = "";
-            _graphicsEditor.Path = "";
         };
         _fileManager.Path = Constants.TILE_DIRECTORY;
 
-        _logicEditor.TileChangedHandle = t => _graphicsEditor.SetTile(t);
+        _logicEditor.TileChangedHandle = (t, p) => _graphicsEditor.SetTile(t, _logicEditor.Path);
     }
 }
