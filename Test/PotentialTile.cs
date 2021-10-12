@@ -1,5 +1,4 @@
 ﻿using System;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -71,7 +70,7 @@ public class PotentialTile : TestTile
 
         for (int i = 0; i < 4; i++)
         {
-            Polygon2D p = (Polygon2D)FindNode(i.ToString());
+            Polygon2D p = (Polygon2D)GetNode(i.ToString());
             foreach (Node it in p.GetChildren())
             {
                 if (it is Area)

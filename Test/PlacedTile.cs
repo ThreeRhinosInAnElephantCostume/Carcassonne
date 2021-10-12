@@ -1,5 +1,4 @@
 ﻿using System;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -25,6 +24,11 @@ public class PlacedTile : TestTile
     [Export]
     public Color edgecolor { get; set; } = new Color(0.9f, 0.9f, 0.9f, 0.9f);
 
+    [Export]
+    public int HighlightedNode { get; set; } = -1;
+    [Export]
+    public Color HighlightColor { get; set; } = new Color(0.9f, 0.2f, 0.2f, 0.9f);
+
     string _tileoverride = "";
     [Export]
     public string TileOverride
@@ -43,7 +47,7 @@ public class PlacedTile : TestTile
     }
 
     [Export]
-    public Color RoadColor { get; set; } = new Color(0.3f, 0.3f, 0.6f);
+    public Color RoadColor { get; set; } = new Color(0.9f, 0.9f, 0.05f);
     [Export]
     public Color FarmColor { get; set; } = new Color(0.3f, 0.95f, 0.3f);
     [Export]
@@ -64,6 +68,17 @@ public class PlacedTile : TestTile
     public float connecteddiv { get => _connecteddiv; set { _connecteddiv = value; Update(); } }
     [Export]
     public float OpacityMP { get; set; } = 1.0f;
+    Color GetTypeColor(NodeType tp)
+    {
+        return tp switch
+        {
+            NodeType.ERR => throw new NullReferenceException(),
+            NodeType.FARM => FarmColor,
+            NodeType.ROAD => RoadColor,
+            NodeType.CITY => CityColor,
+            _ => throw new Exception(),
+        };
+    }
     public override void _Draw()
     {
         Color edgecolor = new Color(this.edgecolor, this.edgecolor.a * OpacityMP);
@@ -91,13 +106,12 @@ public class PlacedTile : TestTile
             for (int ii = 0; ii < N_CONNECTORS; ii++)
             {
                 Tile.Connection con = tile.sides[i].connectors[ii];
-                Color c = (int)con.node.type.ID switch
-                {
-                    FarmID => FarmColor,
-                    RoadID => RoadColor,
-                    CityID => CityColor,
-                    _ => throw new Exception(""),
-                };
+                Color c = GetTypeColor(con.node.type);
+
+                int indx = tile.nodes.ToList().IndexOf(con.node);
+                if (indx == HighlightedNode)
+                    c = HighlightColor;
+
                 c.a *= OpacityMP;
                 Vector2 par = pars[i];
                 Vector2 origin = edges[i];
@@ -113,14 +127,13 @@ public class PlacedTile : TestTile
         }
         foreach (var k in points.Keys)
         {
-            Color c = (int)k.type.ID switch
-            {
-                FarmID => FarmColor,
-                RoadID => RoadColor,
-                CityID => CityColor,
-                _ => throw new Exception(""),
-            };
+            Color c = GetTypeColor(k.type);
             c.a *= OpacityMP;
+
+            int indx = tile.nodes.ToList().IndexOf(k);
+            if (indx == HighlightedNode)
+                c = HighlightColor;
+
             if (points[k].Count == 1)
             {
                 DrawLine(points[k][0] / unconnecteddiv, points[k][0], c, nodeconsize);

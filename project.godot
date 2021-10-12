@@ -11,16 +11,28 @@ config_version=4
 [application]
 
 config/name="Carcassonne"
-run/main_scene="res://Test/Test2D_GUI.tscn"
+run/main_scene="res://TileEditor/TileEditor.tscn"
 config/icon="res://icon.png"
+
+[display]
+
+window/size/width=1280
+window/size/height=720
 
 [editor_plugins]
 
-enabled=PoolStringArray(  )
+enabled=PoolStringArray( "res://addons/TileEditor/plugin.cfg", "res://addons/extra_math_cs/plugin.cfg" )
 
 [gdnative]
 
 singletons=[  ]
+
+[network]
+
+limits/debugger_stdout/max_chars_per_second=32768
+limits/debugger_stdout/max_messages_per_frame=100
+limits/debugger_stdout/max_errors_per_second=1000
+limits/debugger_stdout/max_warnings_per_second=1000
 
 [physics]
 

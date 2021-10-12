@@ -21,6 +21,65 @@ using Expression = System.Linq.Expressions.Expression;
 
 public static partial class Utils
 {
+    public static T EnumNext<T>(T e) where T : Enum
+    {
+        var l = Enum.GetValues(typeof(T));
+        bool f = false;
+        foreach (var it in l)
+        {
+            if (f)
+                return (T)it;
+            if (it.Equals(e))
+            {
+                f = true;
+            }
+        }
+        foreach (var it in l)
+        {
+            return (T)it;
+        }
+        throw new Exception();
+    }
+    public static string ConcatPaths(string p0, string p1)
+    {
+        Assert(p0 != null && p1 != null);
+        if (p0.Length == 0 || p0 == "/")
+            return p1;
+        if (p1.Length == 0 || p1 == "/")
+            return p0;
+        bool p0is = p0.Last() == '/';
+        bool p1is = p1.First() == '/';
+        if (p0is ^ p1is)
+            return p0 + p1;
+        if (p0is)
+            return p0.StripEdges(false, true) + p1;
+        return p0 + "/" + p1;
+    }
+    public static string ConcatPaths(string p0, string p1, string p2)
+    {
+        return ConcatPaths(ConcatPaths(p0, p1), p2);
+    }
+    public static string ConcatPaths(string p0, string p1, string p2, string p3)
+    {
+        return ConcatPaths(ConcatPaths(p0, p1, p2), p3);
+    }
+
+    public static string ConcatPaths(List<string> pl)
+    {
+        Assert(pl != null && pl.Count > 0);
+
+        if (pl.Count == 1)
+            return pl[0];
+        int i = 2;
+        string s = ConcatPaths(pl[0], pl[1]);
+        while (i < pl.Count)
+        {
+            s = ConcatPaths(s, pl[i]);
+            i++;
+        }
+        return s;
+    }
+
     // Python-style division remainder, for instance: AbsMod(-1, 4) == 3
     public static int AbsMod(int v, int d)
     {
@@ -54,6 +113,16 @@ public static partial class Utils
     public static void Assert(bool b)
     {
         Assert(b, "An unspecified assertion failure has been triggered!");
+    }
+    [Conditional("DEBUG")]
+    public static void AssertNot(bool b, string msg)
+    {
+        Assert(!b, msg);
+    }
+    [Conditional("DEBUG")]
+    public static void AssertNot(bool b)
+    {
+        Assert(!b);
     }
     static uint ID = 0;
     public static uint CreateID()

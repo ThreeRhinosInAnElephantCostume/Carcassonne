@@ -19,14 +19,13 @@ public static class TileGenerator
     public static TilePrototype LoadPrototype(string name)
     {
         List<int> assignments = new List<int>();
-        List<NodeTypePrototype> nodes = new List<NodeTypePrototype>();
+        List<NodeType> nodes = new List<NodeType>();
         void GenerateConns(NodeType t, int nodeindex, int n)
         {
-            NodeTypePrototype ntp = new NodeTypePrototype(t);
             while (nodeindex >= nodes.Count)
-                nodes.Add(null);
-            if (nodes[nodeindex] == null)
-                nodes[nodeindex] = ntp;
+                nodes.Add(NodeType.ERR);
+            if (nodes[nodeindex] == NodeType.ERR)
+                nodes[nodeindex] = t;
             for (int i = 0; i < n; i++)
             {
                 assignments.Add(nodeindex);
@@ -37,42 +36,42 @@ public static class TileGenerator
         switch (name)
         {
             case "Base/Starter":
-                GenerateConns(GameEngine.FarmType, 0, 4);
-                GenerateConns(GameEngine.RoadType, 1, 1);
-                GenerateConns(GameEngine.FarmType, 2, 2);
-                GenerateConns(GameEngine.RoadType, 3, 1);
-                GenerateConns(GameEngine.FarmType, 4, 2);
-                GenerateConns(GameEngine.RoadType, 5, 1);
-                GenerateConns(GameEngine.FarmType, 0, 1);
+                GenerateConns(NodeType.FARM, 0, 4);
+                GenerateConns(NodeType.ROAD, 1, 1);
+                GenerateConns(NodeType.FARM, 2, 2);
+                GenerateConns(NodeType.ROAD, 3, 1);
+                GenerateConns(NodeType.FARM, 4, 2);
+                GenerateConns(NodeType.ROAD, 5, 1);
+                GenerateConns(NodeType.FARM, 0, 1);
                 break;
             case "Base/RoadCross":
-                GenerateConns(GameEngine.FarmType, 0, 4);
-                GenerateConns(GameEngine.RoadType, 1, 1);
-                GenerateConns(GameEngine.FarmType, 2, 2);
-                GenerateConns(GameEngine.RoadType, 3, 1);
-                GenerateConns(GameEngine.FarmType, 4, 2);
-                GenerateConns(GameEngine.RoadType, 5, 1);
-                GenerateConns(GameEngine.FarmType, 0, 1);
+                GenerateConns(NodeType.FARM, 0, 4);
+                GenerateConns(NodeType.ROAD, 1, 1);
+                GenerateConns(NodeType.FARM, 2, 2);
+                GenerateConns(NodeType.ROAD, 3, 1);
+                GenerateConns(NodeType.FARM, 4, 2);
+                GenerateConns(NodeType.ROAD, 5, 1);
+                GenerateConns(NodeType.FARM, 0, 1);
                 break;
             case "Base/RoadStraight":
-                GenerateConns(GameEngine.FarmType, 0, 4);
-                GenerateConns(GameEngine.RoadType, 1, 1);
-                GenerateConns(GameEngine.FarmType, 2, 5);
-                GenerateConns(GameEngine.RoadType, 1, 1);
-                GenerateConns(GameEngine.FarmType, 0, 1);
+                GenerateConns(NodeType.FARM, 0, 4);
+                GenerateConns(NodeType.ROAD, 1, 1);
+                GenerateConns(NodeType.FARM, 2, 5);
+                GenerateConns(NodeType.ROAD, 1, 1);
+                GenerateConns(NodeType.FARM, 0, 1);
                 break;
             case "Base/RoadTurn":
-                GenerateConns(GameEngine.FarmType, 0, 7);
-                GenerateConns(GameEngine.RoadType, 1, 1);
-                GenerateConns(GameEngine.FarmType, 2, 2);
-                GenerateConns(GameEngine.RoadType, 1, 1);
-                GenerateConns(GameEngine.FarmType, 0, 1);
+                GenerateConns(NodeType.FARM, 0, 7);
+                GenerateConns(NodeType.ROAD, 1, 1);
+                GenerateConns(NodeType.FARM, 2, 2);
+                GenerateConns(NodeType.ROAD, 1, 1);
+                GenerateConns(NodeType.FARM, 0, 1);
                 break;
             default:
                 GD.PrintErr("Failed to find node " + name);
                 return null;
         }
-        Assert(!nodes.Contains(null));
+        Assert(!nodes.Contains(NodeType.ERR));
         Assert(assignments.Count == GameEngine.N_CONNECTORS * GameEngine.N_SIDES);
         return new TilePrototype(nodes.ToArray(), assignments.ToArray());
     }

@@ -120,20 +120,20 @@ namespace Carcassonne
                 ret += " ";
                 for (int i = 0; i < N_CONNECTORS; i++)
                 {
-                    ret += sides[0].connectors[i].node.type.Abrv;
+                    ret += GameEngine.GetTypeAbrv(sides[0].connectors[i].node.type);
                 }
                 ret += "\n";
                 for (int i = 0; i < N_CONNECTORS; i++)
                 {
-                    ret += sides[3].connectors[i].node.type.Abrv;
+                    ret += GameEngine.GetTypeAbrv(sides[3].connectors[i].node.type);
                     ret += "   ";
-                    ret += sides[1].connectors[i].node.type.Abrv;
+                    ret += GameEngine.GetTypeAbrv(sides[1].connectors[i].node.type);
                     ret += "\n";
                 }
                 ret += " ";
                 for (int i = 0; i < N_CONNECTORS; i++)
                 {
-                    ret += sides[2].connectors[i].node.type.Abrv;
+                    ret += GameEngine.GetTypeAbrv(sides[2].connectors[i].node.type);
                 }
                 ret += "\n";
                 return ret;

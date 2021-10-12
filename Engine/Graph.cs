@@ -22,11 +22,11 @@ namespace Carcassonne
     {
         public class Graph
         {
-            public List<InternalNode> nodes = new List<InternalNode>(64);
-            public List<Tile> tiles = new List<Tile>(64);
-            public List<Tile.Connection> connections = new List<Tile.Connection>(128);
+            public List<InternalNode> Nodes = new List<InternalNode>(64);
+            public List<Tile> Tiles = new List<Tile>(64);
+            public List<Tile.Connection> Connections = new List<Tile.Connection>(128);
             List<Tile.Connection> _openconnections = new List<Tile.Connection>();
-            public List<Tile.Connection> openconnections
+            public List<Tile.Connection> OpenConnections
             {
                 get
                 {
@@ -53,8 +53,8 @@ namespace Carcassonne
             public void Check()
             {
                 Dirty = false;
-                _openconnections = new List<Tile.Connection>(connections.Count);
-                foreach (var it in connections)
+                _openconnections = new List<Tile.Connection>(Connections.Count);
+                foreach (var it in Connections)
                 {
                     Assert(it.node.graph == this, "Attempted to utilize an invalid graph!");
                     Assert(it.node.type == Type, "Attempted to utilize an invalid graph!");
@@ -79,9 +79,9 @@ namespace Carcassonne
 
                 MakeDirty();
 
-                if (tiles.Contains(t))
+                if (Tiles.Contains(t))
                     return false;
-                tiles.Add(t);
+                Tiles.Add(t);
                 return true;
             }
             void AddConnection(Tile.Connection c)
@@ -89,27 +89,28 @@ namespace Carcassonne
                 Assert(c != null && c.node != null);
                 Assert(c.node.graph == this);
                 Assert(c.node.type == Type);
-                Assert(!connections.Contains(c));
+                Assert(!Connections.Contains(c));
 
                 MakeDirty();
 
-                connections.Add(c);
+                Connections.Add(c);
             }
             public void AddNode(InternalNode n, bool addconnections = true)
             {
                 Assert(n != null);
-                Assert(!nodes.Contains(n));
+                Assert(!Nodes.Contains(n));
                 Assert(n.type == Type);
 
                 MakeDirty();
 
                 n.graph = this;
-                nodes.Add(n);
+                Nodes.Add(n);
                 if (addconnections)
                 {
                     foreach (var it in n.connections)
                         AddConnection(it);
                 }
+                AddUniqueTile(n.tile);
             }
             public Graph(NodeType type)
             {
@@ -142,12 +143,12 @@ namespace Carcassonne
             Assert(g0 != g1);
             Assert(g0 != null && g1 != null);
 
-            (Graph greater, Graph lesser) = (g0.nodes.Count > g1.nodes.Count) ? (g0, g1) : (g1, g0);
+            (Graph greater, Graph lesser) = (g0.Nodes.Count > g1.Nodes.Count) ? (g0, g1) : (g1, g0);
 
             if (lesser.Owners.Count > 0)
                 greater.Owners.AddRange(lesser.Owners);
 
-            foreach (var it in lesser.nodes)
+            foreach (var it in lesser.Nodes)
             {
                 greater.AddNode(it);
             }
@@ -180,7 +181,7 @@ namespace Carcassonne
         }
         Graph CreateGraph(InternalNode origin)
         {
-            Assert(origin.type != null);
+            Assert(origin.type != NodeType.ERR);
             Assert(origin.graph == null);
 
             var g = new Graph(origin.type);

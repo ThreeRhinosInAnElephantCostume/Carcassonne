@@ -28,6 +28,7 @@ mono_crash.*.json
 #other
 .vscode/settings.json
 .vscode/launch.json
+Data/Tiles/test/
 
 #binary files
 bin/
