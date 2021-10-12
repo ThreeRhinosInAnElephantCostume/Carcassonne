@@ -56,6 +56,11 @@ public class NameDialog : WindowDialog
         else
             GD.PrintErr("NameDialog has no Complete handle");
     }
+    void EnterPressed(string text)
+    {
+        if (!_confirmButton.Disabled)
+            ButtonPressed();
+    }
     public void Reset()
     {
         var cont = FindChild<VBoxContainer>(this);
@@ -68,6 +73,8 @@ public class NameDialog : WindowDialog
             _nameEdit.Connect("text_changed", this, "CheckValidity");
         if (!_confirmButton.IsConnected("pressed", this, "ButtonPressed"))
             _confirmButton.Connect("pressed", this, "ButtonPressed");
+        if (!_nameEdit.IsConnected("text_entered", this, "EnterPressed"))
+            _nameEdit.Connect("text_entered", this, "EnterPressed");
 
         CheckValidity(_nameEdit.Text);
 

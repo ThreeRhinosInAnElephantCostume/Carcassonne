@@ -83,12 +83,17 @@ public class ItemBrowser : VBoxContainer
         _newButton.Disabled = !b;
         _list.PauseMode = (b) ? PauseModeEnum.Process : PauseModeEnum.Stop;
     }
-    public void AddItem(string name, bool deletable = true)
+    public void AddItem(string name, bool deletable = true, bool select = false)
     {
         Assert(!_list.Items.Contains(name));
         _list.AddItem(name);
         _deletability.Add(deletable);
         _items.Add(name);
+        if (select)
+        {
+            _list.Select(_items.Count - 1);
+            CallDeferred("ItemSelected", _items.Count - 1);
+        }
     }
     public void AddItems(List<string> names, bool deletable = true)
     {
@@ -159,7 +164,7 @@ public class ItemBrowser : VBoxContainer
         {
             if (NewHandle(s))
             {
-                AddItem(s);
+                AddItem(s, true, true);
             }
             SetInteractable(true);
             _dialog.QueueFree();
