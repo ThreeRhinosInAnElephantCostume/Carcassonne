@@ -72,6 +72,12 @@ public class NameDialog : WindowDialog
         CheckValidity(_nameEdit.Text);
 
     }
+    public void AboutToShow()
+    {
+        _nameEdit.GrabFocus();
+        _nameEdit.GrabClickFocus();
+        _nameEdit.CallDeferred("grab_focus");
+    }
     LineEdit _nameEdit;
     Button _confirmButton;
     Label _stateLabel;
@@ -81,6 +87,7 @@ public class NameDialog : WindowDialog
         this.GetCloseButton().Disabled = true;
         this.PopupExclusive = true;
         Reset();
+        Connect("about_to_show", this, "AboutToShow");
     }
 
     //  // Called every frame. 'delta' is the elapsed time since the previous frame.

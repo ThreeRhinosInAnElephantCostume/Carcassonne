@@ -127,9 +127,9 @@ public class ItemBrowser : VBoxContainer
     {
         Assert(Selected != null && _selectedIndex != -1);
 
-        if (_deletability[_selectedIndex] && DeleteHandle(Selected))
+        int indx = _selectedIndex;
+        if (_deletability[indx] && DeleteHandle(Selected))
         {
-            int indx = _selectedIndex;
             _items.RemoveAt(indx);
             _deletability.RemoveAt(indx);
             _selectedIndex = -1;
@@ -154,7 +154,7 @@ public class ItemBrowser : VBoxContainer
                 s = s + e;
             return s;
         };
-        _dialog.ChangedHandle = s => (IsValidName(s), "Single word, only letters, digits, and \'_\'");
+        _dialog.ChangedHandle = s => (IsValidName(s) && !_items.Contains(s), "Single word, only letters, digits, and \'_\'");
         _dialog.CompleteHandle = s =>
         {
             if (NewHandle(s))

@@ -147,13 +147,13 @@ public class GroupedFileManager : HBoxContainer
             if (!_browserEnabled)
                 return false;
 
-            string p = ConcatPaths(Path, CurrentDirectory, name);
+            string p = ConcatPaths(Path, name);
 
             Directory dm = new Directory();
-            Assert(dm.FileExists(p));
+            Assert(dm.DirExists(p));
             Assert(!IsProtectedHandle(name));
 
-            List<string> files = ListDirectoryFiles(p).FindAll(s => FilterHandle(s));
+            List<string> files = ListDirectoryFiles(p).FindAll(s => FilterHandle(ConcatPaths(p, s)));
 
             Assert(files.FindAll(s => IsProtectedHandle(s)).Count == 0);
 
@@ -164,10 +164,14 @@ public class GroupedFileManager : HBoxContainer
                     FileCloseHandle(CurrentFile);
                     CurrentFile = "";
                 }
-                dm.Remove(it);
+                Assert(dm.Remove(ConcatPaths(p, it)));
             }
 
-            dm.Remove(p);
+            Assert(dm.Remove(p));
+
+            _objectBrowser.Reset();
+            if (CurrentDirectory == name)
+                CurrentDirectory = "";
 
             return true;
         };
@@ -211,6 +215,7 @@ public class GroupedFileManager : HBoxContainer
             string p = ConcatPaths(Path, CurrentDirectory, nname);
 
             Directory dm = new Directory();
+
             Assert(!dm.FileExists(p));
 
             CreateFileHandle(p);

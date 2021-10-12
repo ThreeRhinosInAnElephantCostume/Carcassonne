@@ -674,7 +674,7 @@ public class TileGraphicsEditor : VBoxContainer
         _tileLogicOverlay = (Sprite3D)GetNode("HBoxContainer/VBoxContainer/3DViewport/Viewport/3DRoot/TileLogicOverlay");
 
         _tileLogicOverlay.Scale = new Vector3(1f / 3f, 1f / 3f, 1f / 3f);
-        _tileLogicOverlay.Translation += new Vector3(0, Constants.TILE_HEIGHT * 1.1f, 0);
+        _tileLogicOverlay.Translation = new Vector3(0, Constants.TILE_HEIGHT * 2f, 0);
 
         _logicOpacitySlider = (Slider)GetNode("HBoxContainer/VBoxContainer/3DViewport/Viewport/CanvasLayer/VBoxContainer/TileLogicOpacitySlider");
         _logicOpacitySlider.Value = _logicOpacitySlider.MaxValue / 2;

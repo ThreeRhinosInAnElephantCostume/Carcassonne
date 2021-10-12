@@ -35,8 +35,6 @@ public class OrbitCamera : Camera
         Translation = new Vector3(0, 0, 0);
         var pos = -Direction * Distance;
         LookAtFromPosition(pos, new Vector3(0, 0, 0), Vector3.Forward);
-        GD.Print("tra: ", Translation);
-        GD.Print("rot: ", RotationDegrees);
     }
     public void Rotate(Vector3 rot)
     {

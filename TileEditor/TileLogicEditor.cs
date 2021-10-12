@@ -81,10 +81,19 @@ public class TileLogicEditor : Control
     {
         TileChangedHandle(Tile, Path);
     }
-    void UpdateCityTrack()
+    void UpdateCityTrack(bool force = false)
     {
+        if (!AutoTrackCityConnections && !force)
+            return;
         bool changed = false;
         NodeType prev = NodeType.ERR;
+        foreach (var it in Tile.NodeAttributes.Keys)
+        {
+            if (Tile.NodeTypes[it] == (int)NodeType.FARM && Tile.NodeAttributes[it].Contains((int)NodeAttribute.NEAR_CITY))
+            {
+                Tile.NodeAttributes[it].Remove((int)NodeAttribute.NEAR_CITY);
+            }
+        }
         for (int i = 0; i < Tile.Assignments.Length; i++)
         {
             int it = Tile.Assignments[i];
@@ -94,17 +103,10 @@ public class TileLogicEditor : Control
 
 
             NodeType tp = (NodeType)Tile.NodeTypes[it];
-            if (tp == NodeType.FARM && Tile.NodeAttributes[it].Contains((int)NodeAttribute.NEAR_CITY))
+            if (tp != NodeType.FARM || Tile.NodeAttributes[it].Contains((int)NodeAttribute.NEAR_CITY))
             {
-                int p = Tile.Assignments[AbsMod(i - 1, Tile.Assignments.Length)];
-                int n = Tile.Assignments[AbsMod(i + 1, Tile.Assignments.Length)];
-                if (!Tile.NodeAttributes.ContainsKey(n))
-                    Tile.NodeAttributes.Add(n, new List<int>());
-                if (!Tile.NodeAttributes[p].Contains((int)NodeAttribute.NEAR_CITY) && !Tile.NodeAttributes[n].Contains((int)NodeAttribute.NEAR_CITY))
-                {
-                    Tile.NodeAttributes[it].Remove((int)NodeAttribute.NEAR_CITY);
-                    changed = true;
-                }
+                prev = tp;
+                continue;
             }
             int attrindx = -1;
             if (tp == NodeType.CITY && prev == NodeType.FARM)
@@ -202,7 +204,7 @@ public class TileLogicEditor : Control
         Assert(_attributableList.IsAnythingSelected());
         Assert(_possibleAttributeList.IsAnythingSelected());
 
-        string name = (string)_possibleAttributeList.Items[indx];
+        string name = (string)_possibleAttributeList.GetItemText(indx);
         int sel = _attributableList.GetSelectedItems()[0];
         if (sel == 0)
         {
@@ -225,7 +227,7 @@ public class TileLogicEditor : Control
     {
         Assert(_attributableList.IsAnythingSelected());
 
-        string name = (string)_currentAttributeList.Items[indx];
+        string name = (string)_currentAttributeList.GetItemText(indx);
         int sel = _attributableList.GetSelectedItems()[0];
         if (sel == 0)
         {
@@ -247,7 +249,7 @@ public class TileLogicEditor : Control
     }
     void ResetAttributePressed()
     {
-        while (_currentAttributeList.Items.Count > 0)
+        while (_currentAttributeList.GetItemCount() > 0)
         {
             RemoveAttributePressed(0);
         }
@@ -335,12 +337,21 @@ public class TileLogicEditor : Control
         }
         UpdateTileDisplay();
         ResetLists();
+        UpdateCityTrack();
     }
     void RemoveNode(int indx)
     {
         if (Tile.NodeAttributes.ContainsKey(indx))
             Tile.NodeAttributes.Remove(indx);
         var l = Tile.NodeTypes.ToList();
+        for (int i = indx; i < Tile.NodeTypes.Length; i++)
+        {
+            if (Tile.NodeAttributes.ContainsKey(i))
+            {
+                Tile.NodeAttributes[i - 1] = Tile.NodeAttributes[i];
+                Tile.NodeAttributes.Remove(i);
+            }
+        }
         l.RemoveAt(indx);
         Tile.NodeTypes = l.ToArray();
         for (int i = 0; i < Tile.Assignments.Length; i++)
@@ -373,6 +384,7 @@ public class TileLogicEditor : Control
             Tile.Assignments[indx] = 0;
             UpdateTileDisplay();
             EnsureNoEmptyNodes();
+            UpdateCityTrack();
             return;
         }
         int nindx = -1;
@@ -489,6 +501,7 @@ public class TileLogicEditor : Control
                 Tile.NodeTypes[i] = (int)NodeType.FARM;
         }
         UpdateTileDisplay();
+        UpdateCityTrack();
     }
     void ResetPressed()
     {
@@ -559,13 +572,7 @@ public class TileLogicEditor : Control
         {
             int indx = Tile.Assignments[i];
             _connectorButtons[i].Text = ((NodeType)Tile.NodeTypes[indx]).ToString();
-            int nodeindx = 0;
-            for (int ii = 0; ii < indx; ii++)
-            {
-                if (Tile.NodeTypes[ii] == Tile.NodeTypes[indx])
-                    nodeindx++;
-            }
-            _connectorButtons[i].Text += $"({nodeindx})";
+            _connectorButtons[i].Text += $"({indx})";
         }
         if (Tile.IsValid)
         {
