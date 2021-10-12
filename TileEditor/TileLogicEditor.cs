@@ -44,7 +44,16 @@ public class TileLogicEditor : Control
             SetPath(_path);
         }
     }
+    public Action<TilePrototype> TileChangedHandle;
     TilePrototype _tile;
+    public TilePrototype Tile
+    {
+        get => _tile; protected set
+        {
+            _tile = value;
+            TileChanged();
+        }
+    }
     Camera2D camera;
     Node2D root;
     bool loaded = false;
@@ -68,34 +77,38 @@ public class TileLogicEditor : Control
     CheckBox _userEditableCheck;
 
     PlacedTile _placedTile;
+    void TileChanged()
+    {
+        TileChangedHandle(Tile);
+    }
     void UpdateCityTrack()
     {
         bool changed = false;
         NodeType prev = NodeType.ERR;
-        for (int i = 0; i < _tile.Assignments.Length; i++)
+        for (int i = 0; i < Tile.Assignments.Length; i++)
         {
-            int it = _tile.Assignments[i];
+            int it = Tile.Assignments[i];
 
-            if (!_tile.NodeAttributes.ContainsKey(it))
-                _tile.NodeAttributes.Add(it, new List<int>());
+            if (!Tile.NodeAttributes.ContainsKey(it))
+                Tile.NodeAttributes.Add(it, new List<int>());
 
 
-            NodeType tp = (NodeType)_tile.NodeTypes[it];
-            if (tp == NodeType.FARM && _tile.NodeAttributes[it].Contains((int)NodeAttribute.NEAR_CITY))
+            NodeType tp = (NodeType)Tile.NodeTypes[it];
+            if (tp == NodeType.FARM && Tile.NodeAttributes[it].Contains((int)NodeAttribute.NEAR_CITY))
             {
-                int p = _tile.Assignments[AbsMod(i - 1, _tile.Assignments.Length)];
-                int n = _tile.Assignments[AbsMod(i + 1, _tile.Assignments.Length)];
-                if (!_tile.NodeAttributes.ContainsKey(n))
-                    _tile.NodeAttributes.Add(n, new List<int>());
-                if (!_tile.NodeAttributes[p].Contains((int)NodeAttribute.NEAR_CITY) && !_tile.NodeAttributes[n].Contains((int)NodeAttribute.NEAR_CITY))
+                int p = Tile.Assignments[AbsMod(i - 1, Tile.Assignments.Length)];
+                int n = Tile.Assignments[AbsMod(i + 1, Tile.Assignments.Length)];
+                if (!Tile.NodeAttributes.ContainsKey(n))
+                    Tile.NodeAttributes.Add(n, new List<int>());
+                if (!Tile.NodeAttributes[p].Contains((int)NodeAttribute.NEAR_CITY) && !Tile.NodeAttributes[n].Contains((int)NodeAttribute.NEAR_CITY))
                 {
-                    _tile.NodeAttributes[it].Remove((int)NodeAttribute.NEAR_CITY);
+                    Tile.NodeAttributes[it].Remove((int)NodeAttribute.NEAR_CITY);
                     changed = true;
                 }
             }
             int attrindx = -1;
             if (tp == NodeType.CITY && prev == NodeType.FARM)
-                attrindx = _tile.Assignments[i - 1];
+                attrindx = Tile.Assignments[i - 1];
             else if (tp == NodeType.FARM && prev == NodeType.CITY)
                 attrindx = it;
             else
@@ -104,11 +117,14 @@ public class TileLogicEditor : Control
                 continue;
             }
             changed = true;
-            _tile.NodeAttributes[attrindx].Add((int)NodeAttribute.NEAR_CITY);
+            Tile.NodeAttributes[attrindx].Add((int)NodeAttribute.NEAR_CITY);
             prev = tp;
         }
         if (changed)
+        {
             ResetLists();
+            UpdateTileDisplay();
+        }
     }
     void CityTrackToggled(bool b)
     {
@@ -118,7 +134,8 @@ public class TileLogicEditor : Control
     }
     void AutoEditableToggled(bool b)
     {
-        _tile.UserEditable = b;
+        Tile.UserEditable = b;
+        TileChanged();
     }
     void CurrentNodeSelected(int indx)
     {
@@ -132,7 +149,7 @@ public class TileLogicEditor : Control
                 if (it == TileAttribute.ERR)
                     continue;
                 string s = it.ToString();
-                if (_tile.TileAttributes.Contains((int)it))
+                if (Tile.TileAttributes.Contains((int)it))
                     _currentAttributeList.AddItem(s);
                 else
                     _possibleAttributeList.AddItem(s);
@@ -145,9 +162,9 @@ public class TileLogicEditor : Control
         {
             if (it == NodeAttribute.ERR)
                 continue;
-            if (!_tile.NodeAttributes.ContainsKey(indx))
-                _tile.NodeAttributes.Add(indx, new List<int>());
-            var l = _tile.NodeAttributes[indx];
+            if (!Tile.NodeAttributes.ContainsKey(indx))
+                Tile.NodeAttributes.Add(indx, new List<int>());
+            var l = Tile.NodeAttributes[indx];
             string s = it.ToString();
             if (l.Contains((int)it))
                 _currentAttributeList.AddItem(s);
@@ -192,16 +209,16 @@ public class TileLogicEditor : Control
             var ta = Enum.Parse<TileAttribute>(name, true);
             _currentAttributeList.AddItem(ta.ToString());
             _possibleAttributeList.RemoveItem(indx);
-            Assert(!_tile.TileAttributes.Contains((int)ta));
-            _tile.TileAttributes.Add((int)ta);
+            Assert(!Tile.TileAttributes.Contains((int)ta));
+            Tile.TileAttributes.Add((int)ta);
             return;
         }
         sel -= 1;
         var na = Enum.Parse<NodeAttribute>(name, true);
         _currentAttributeList.AddItem(na.ToString());
         _possibleAttributeList.RemoveItem(indx);
-        Assert(!_tile.NodeAttributes[sel].Contains((int)na));
-        _tile.NodeAttributes[sel].Add((int)na);
+        Assert(!Tile.NodeAttributes[sel].Contains((int)na));
+        Tile.NodeAttributes[sel].Add((int)na);
         return;
     }
     void RemoveAttributePressed(int indx)
@@ -215,16 +232,16 @@ public class TileLogicEditor : Control
             var ta = Enum.Parse<TileAttribute>(name, true);
             _currentAttributeList.RemoveItem(indx);
             _possibleAttributeList.AddItem(ta.ToString());
-            Assert(_tile.TileAttributes.Contains((int)ta));
-            _tile.TileAttributes.Remove((int)ta);
+            Assert(Tile.TileAttributes.Contains((int)ta));
+            Tile.TileAttributes.Remove((int)ta);
             return;
         }
         sel -= 1;
         var na = Enum.Parse<NodeAttribute>(name, true);
         _currentAttributeList.RemoveItem(indx);
         _possibleAttributeList.AddItem(na.ToString());
-        Assert(_tile.NodeAttributes[sel].Contains((int)na));
-        _tile.NodeAttributes[sel].Remove((int)na);
+        Assert(Tile.NodeAttributes[sel].Contains((int)na));
+        Tile.NodeAttributes[sel].Remove((int)na);
         return;
 
     }
@@ -251,13 +268,13 @@ public class TileLogicEditor : Control
         _addAttributeButton.Disabled = true;
         _removeAttributeButton.Disabled = true;
         _resetAttributeButton.Disabled = true;
-        if (_tile == null)
+        if (Tile == null)
         {
             return;
         }
         _attributableList.AddItem("<<TILE>>");
         int i = 0;
-        foreach (var it in _tile.NodeTypes)
+        foreach (var it in Tile.NodeTypes)
         {
             if (it == (int)NodeType.ERR)
                 continue;
@@ -279,8 +296,8 @@ public class TileLogicEditor : Control
     void ButtonPressed(int indx)
     {
         Button b = _connectorButtons[indx];
-        NodeType ctype = (NodeType)_tile.NodeTypes[_tile.Assignments[indx]];
-        int cass = _tile.Assignments[indx];
+        NodeType ctype = (NodeType)Tile.NodeTypes[Tile.Assignments[indx]];
+        int cass = Tile.Assignments[indx];
         if (Input.IsMouseButtonPressed((int)ButtonList.Left))
         {
             NodeType next = EnumNext(ctype);
@@ -290,9 +307,9 @@ public class TileLogicEditor : Control
         }
         else if (Input.IsMouseButtonPressed((int)ButtonList.Right) && ctype != NodeType.ERR)
         {
-            var ntl = _tile.NodeTypes.ToList();
+            var ntl = Tile.NodeTypes.ToList();
             var samenodes = ntl.FindAll(t => t == (int)ctype);
-            var samecons = _tile.Assignments.ToList().FindAll(a => a == cass);
+            var samecons = Tile.Assignments.ToList().FindAll(a => a == cass);
             if (samecons.Count == 1 && samenodes.Count == 1)
                 return;
             int start = (samecons.Count == 1) ? 0 : cass + 1;
@@ -308,12 +325,12 @@ public class TileLogicEditor : Control
             if (next == -1)
             {
                 ntl.Add((int)ctype);
-                _tile.Assignments[indx] = ntl.Count - 1;
-                _tile.NodeTypes = ntl.ToArray();
+                Tile.Assignments[indx] = ntl.Count - 1;
+                Tile.NodeTypes = ntl.ToArray();
             }
             else
             {
-                _tile.Assignments[indx] = next;
+                Tile.Assignments[indx] = next;
             }
         }
         UpdateTileDisplay();
@@ -321,16 +338,16 @@ public class TileLogicEditor : Control
     }
     void RemoveNode(int indx)
     {
-        if (_tile.NodeAttributes.ContainsKey(indx))
-            _tile.NodeAttributes.Remove(indx);
-        var l = _tile.NodeTypes.ToList();
+        if (Tile.NodeAttributes.ContainsKey(indx))
+            Tile.NodeAttributes.Remove(indx);
+        var l = Tile.NodeTypes.ToList();
         l.RemoveAt(indx);
-        _tile.NodeTypes = l.ToArray();
-        for (int i = 0; i < _tile.Assignments.Length; i++)
+        Tile.NodeTypes = l.ToArray();
+        for (int i = 0; i < Tile.Assignments.Length; i++)
         {
-            if (_tile.Assignments[i] >= indx)
+            if (Tile.Assignments[i] >= indx)
             {
-                _tile.Assignments[i] -= 1;
+                Tile.Assignments[i] -= 1;
             }
         }
         UpdateTileDisplay();
@@ -339,9 +356,9 @@ public class TileLogicEditor : Control
     }
     void EnsureNoEmptyNodes()
     {
-        for (int i = 0; i < _tile.NodeTypes.Length; i++)
+        for (int i = 0; i < Tile.NodeTypes.Length; i++)
         {
-            if (!_tile.Assignments.Contains(i))
+            if (!Tile.Assignments.Contains(i))
             {
                 RemoveNode(i);
                 i--;
@@ -350,18 +367,18 @@ public class TileLogicEditor : Control
     }
     void SetTileType(int indx, NodeType nt)
     {
-        if (_tile.NodeTypes.Length == 1 && (NodeType)_tile.NodeTypes[0] == NodeType.ERR)
+        if (Tile.NodeTypes.Length == 1 && (NodeType)Tile.NodeTypes[0] == NodeType.ERR)
         {
-            _tile.NodeTypes[0] = (int)nt;
-            _tile.Assignments[indx] = 0;
+            Tile.NodeTypes[0] = (int)nt;
+            Tile.Assignments[indx] = 0;
             UpdateTileDisplay();
             EnsureNoEmptyNodes();
             return;
         }
         int nindx = -1;
-        for (int i = 0; i < _tile.NodeTypes.Length; i++)
+        for (int i = 0; i < Tile.NodeTypes.Length; i++)
         {
-            if (nt == (NodeType)_tile.NodeTypes[i])
+            if (nt == (NodeType)Tile.NodeTypes[i])
             {
                 nindx = i;
                 break;
@@ -369,15 +386,15 @@ public class TileLogicEditor : Control
         }
         if (nindx == -1)
         {
-            var l = _tile.NodeTypes.ToList();
+            var l = Tile.NodeTypes.ToList();
             l.Add((int)nt);
-            _tile.Assignments[indx] = l.Count - 1;
-            _tile.NodeTypes = l.ToArray();
+            Tile.Assignments[indx] = l.Count - 1;
+            Tile.NodeTypes = l.ToArray();
             _attributableList.AddItem(((NodeType)nt).ToString() + $"({l.Count - 1})");
         }
         else
         {
-            _tile.Assignments[indx] = nindx;
+            Tile.Assignments[indx] = nindx;
         }
         EnsureNoEmptyNodes();
         UpdateCityTrack();
@@ -466,10 +483,10 @@ public class TileLogicEditor : Control
     }
     void FillPressed()
     {
-        for (int i = 0; i < _tile.NodeTypes.Length; i++)
+        for (int i = 0; i < Tile.NodeTypes.Length; i++)
         {
-            if (_tile.NodeTypes[i] == (int)NodeType.ERR)
-                _tile.NodeTypes[i] = (int)NodeType.FARM;
+            if (Tile.NodeTypes[i] == (int)NodeType.ERR)
+                Tile.NodeTypes[i] = (int)NodeType.FARM;
         }
         UpdateTileDisplay();
     }
@@ -485,7 +502,7 @@ public class TileLogicEditor : Control
     }
     void SavePressed()
     {
-        string data = JsonConvert.SerializeObject(_tile);
+        string data = JsonConvert.SerializeObject(Tile);
         var fm = new File();
         fm.Open(Path, File.ModeFlags.Write);
         fm.StoreString(data);
@@ -495,12 +512,13 @@ public class TileLogicEditor : Control
     void SetTile(TilePrototype tile)
     {
         UnloadView();
-        this._tile = tile;
+        this.Tile = tile;
         _userEditableCheck.Pressed = false;
 
-        if (_tile == null)
+        if (Tile == null)
         {
             ResetLists();
+            TileChanged();
             return;
         }
         _userEditableCheck.Pressed = tile.UserEditable;
@@ -521,6 +539,7 @@ public class TileLogicEditor : Control
         ResetLists();
         UpdateTileDisplay();
 
+
     }
     void UpdateTileDisplay()
     {
@@ -532,29 +551,30 @@ public class TileLogicEditor : Control
             return;
         int tc = GameEngine.N_CONNECTORS * GameEngine.N_SIDES;
 
-        Assert(_tile.NodeTypes != null && _tile.NodeTypes.Length > 0);
-        Assert(_tile.Assignments.Length == tc);
+        Assert(Tile.NodeTypes != null && Tile.NodeTypes.Length > 0);
+        Assert(Tile.Assignments.Length == tc);
         Assert(_connectorButtons.Count == tc);
 
         for (int i = 0; i < tc; i++)
         {
-            int indx = _tile.Assignments[i];
-            _connectorButtons[i].Text = ((NodeType)_tile.NodeTypes[indx]).ToString();
+            int indx = Tile.Assignments[i];
+            _connectorButtons[i].Text = ((NodeType)Tile.NodeTypes[indx]).ToString();
             int nodeindx = 0;
             for (int ii = 0; ii < indx; ii++)
             {
-                if (_tile.NodeTypes[ii] == _tile.NodeTypes[indx])
+                if (Tile.NodeTypes[ii] == Tile.NodeTypes[indx])
                     nodeindx++;
             }
             _connectorButtons[i].Text += $"({nodeindx})";
         }
-        if (_tile.IsValid)
+        if (Tile.IsValid)
         {
-            _placedTile.tile = (_tile.Convert());
+            _placedTile.tile = (Tile.Convert());
         }
         else
             _placedTile.tile = null;
         _placedTile.Update();
+        TileChanged();
     }
     void SetPath(string path)
     {

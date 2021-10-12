@@ -24,8 +24,10 @@ public class TilePrototype
     public int[] Assignments { get; set; }
     [Export]
     public bool UserEditable { get; set; }
-    public Dictionary<int, List<int>> NodeAttributes = new Dictionary<int, List<int>>();
-    public List<int> TileAttributes = new List<int>();
+    public Dictionary<int, List<int>> NodeAttributes { get; set; } = new Dictionary<int, List<int>>();
+    public List<int> TileAttributes { get; set; } = new List<int>();
+    public List<string> AssociatedModels { get; set; } = new List<string>();
+
     public bool IsValid
     {
         get

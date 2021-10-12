@@ -21,14 +21,16 @@ public class TileEditor : Control
 {
     GroupedFileManager _fileManager;
     TileLogicEditor _logicEditor;
+    TileGraphicsEditor _graphicsEditor;
     public override void _Ready()
     {
         _fileManager = (GroupedFileManager)GetNode("MainContainer/BrowserContainer");
-
         _logicEditor = (TileLogicEditor)GetNode("MainContainer/TabContainer/TileLogicEditor");
+        _graphicsEditor = (TileGraphicsEditor)GetNode("MainContainer/TabContainer/TileGraphicsEditor");
 
         Assert(_fileManager != null);
         Assert(_logicEditor != null);
+        Assert(_graphicsEditor != null);
 
         _fileManager.Extension = ".json";
 
@@ -105,11 +107,15 @@ public class TileEditor : Control
         {
             Assert(new Directory().FileExists(s));
             _logicEditor.Path = s;
+            _graphicsEditor.Path = s;
         };
         _fileManager.FileCloseHandle = s =>
         {
             _logicEditor.Path = "";
+            _graphicsEditor.Path = "";
         };
         _fileManager.Path = Constants.TILE_DIRECTORY;
+
+        _logicEditor.TileChangedHandle = t => _graphicsEditor.SetTile(t);
     }
 }

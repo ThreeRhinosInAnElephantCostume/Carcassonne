@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -19,5 +19,7 @@ public static class Constants
 {
     public const string TILE_DIRECTORY = "res://Data/Tiles";
     public const string TILESET_DIRECTORY = "res://Data/Tilesets";
+
+    public const string TILE_MODEL_DIRECTORY = "res://Models/Tiles";
 
 }

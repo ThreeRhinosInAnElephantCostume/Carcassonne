@@ -78,6 +78,7 @@ public class NameDialog : WindowDialog
 
     public override void _Ready()
     {
+        this.GetCloseButton().Disabled = true;
         this.PopupExclusive = true;
         Reset();
     }
