@@ -199,7 +199,7 @@ public class TilesetEditor : Control
     {
         string visstr = path.Replace(Constants.TILE_DIRECTORY, "");
         if (visstr[0] == '/')
-            visstr = visstr.StripEdges(true, false);
+            visstr = visstr.Substring(1);
         return ($"{visstr} " + ((starter) ? ("STARTER") : "") + ((n > 1) ? ("(" + n.ToString() + ")") : ""));
     }
     void RemoveNTiles(int n)
@@ -297,7 +297,7 @@ public class TilesetEditor : Control
         {
             string visstr = it.Replace(Constants.TILE_DIRECTORY, "");
             if (visstr[0] == '/')
-                visstr = visstr.StripEdges(true, false);
+                visstr = visstr.Substring(1);
             if (filter != "" && !visstr.ToLower().Contains(filter))
             {
                 continue;
@@ -329,7 +329,7 @@ public class TilesetEditor : Control
         {
             string visstr = it.Key;
             if (visstr[0] == '/')
-                visstr = visstr.StripEdges(true, false);
+                visstr = visstr.Substring(1);
             if (filter != "" && !visstr.ToLower().Contains(filter))
             {
                 continue;
@@ -340,7 +340,7 @@ public class TilesetEditor : Control
         {
             string visstr = it;
             if (visstr[0] == '/')
-                visstr = visstr.StripEdges(true, false);
+                visstr = visstr.Substring(1);
             if (filter != "" && !visstr.ToLower().Contains(filter))
             {
                 continue;

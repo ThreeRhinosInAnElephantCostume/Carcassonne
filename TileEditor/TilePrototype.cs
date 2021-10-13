@@ -92,6 +92,16 @@ public class TilePrototype
 
         return t;
     }
+    public void Check()
+    {
+        for (int i = 0; i < NodeTypes.Length; i++)
+        {
+            if (!NodeAttributes.ContainsKey(i))
+            {
+                NodeAttributes.Add(i, new List<int>());
+            }
+        }
+    }
     public TilePrototype(NodeType[] nodes, int[] assignments)
     {
         if (nodes == null)
@@ -108,6 +118,7 @@ public class TilePrototype
             assignments = new int[0];
         this.Assignments = assignments;
         this.UserEditable = false;
+        Check();
     }
     public TilePrototype() : this(null, null)
     {
