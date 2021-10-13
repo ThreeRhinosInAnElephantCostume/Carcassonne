@@ -52,7 +52,7 @@ public static partial class Utils
         if (p0is ^ p1is)
             return p0 + p1;
         if (p0is)
-            return p0.StripEdges(false, true) + p1;
+            return p0.Remove(p0.Length-1) + p1;
         return p0 + "/" + p1;
     }
     public static string ConcatPaths(string p0, string p1, string p2)
