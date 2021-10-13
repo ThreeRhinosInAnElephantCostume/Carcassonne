@@ -111,7 +111,7 @@ public class TileMap : Node2D
     }
     public override void _Ready()
     {
-        game = GameEngine.CreateBaseGame(666, 2, TileGenerator.debugtileset);
+        game = GameEngine.CreateBaseGame(666, 2, TileDataLoader.LoadTileset("BaseGame/BaseTileset.json"));
         UpdateDisplay();
     }
 

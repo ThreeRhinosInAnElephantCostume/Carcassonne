@@ -46,7 +46,7 @@ namespace Carcassonne
             }
             map.PlaceTile(c, act.pos);
 
-            if (tilemanager.NextTile() == null)
+            if (tilemanager.PeekTile() == null)
             {
                 CurrentState = State.GAME_OVER;
                 CurrentPlayer = null;

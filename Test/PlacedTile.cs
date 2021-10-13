@@ -39,7 +39,7 @@ public class PlacedTile : TestTile
             _tileoverride = value;
             if (Godot.Engine.EditorHint)
             {
-                var ntile = TileGenerator.LoadPrototype(_tileoverride).Convert();
+                var ntile = TileDataLoader.LoadTilePrototype(_tileoverride).Convert();
                 if (ntile != null)
                     tile = ntile;
             }
@@ -88,7 +88,7 @@ public class PlacedTile : TestTile
         {
             if (Godot.Engine.EditorHint && TileOverride != "")
             {
-                tile = TileGenerator.LoadPrototype(TileOverride).Convert();
+                tile = TileDataLoader.LoadTilePrototype(TileOverride).Convert();
             }
             DrawCircle(new Vector2(0, 0), 5, edgecolor);
             return;
