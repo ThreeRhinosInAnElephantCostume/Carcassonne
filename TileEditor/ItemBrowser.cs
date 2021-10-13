@@ -15,7 +15,7 @@ using static System.Math;
 using static Carcassonne.GameEngine;
 using static Utils;
 
-//[Tool]
+[Tool]
 public class ItemBrowser : VBoxContainer
 {
     public string Extension = "";

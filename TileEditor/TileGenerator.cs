@@ -79,6 +79,7 @@ public static class TileGenerator
     {
         get
         {
+            throw new NotImplementedException();
             EditableTileset et = new EditableTileset(true);
             List<TilePrototype> tiles = new List<TilePrototype>();
             void AddTiles(string name, int n)
@@ -97,8 +98,8 @@ public static class TileGenerator
             et.SingleStarter = true;
             et.NOutputTiles = 71;
             et.NPossibleTiles = 71;
-            et.StarterTiles = new TilePrototype[] { LoadPrototype("Base/Starter") };
-            et.Tiles = tiles.ToArray();
+            //et.StarterTiles = new TilePrototype[] { LoadPrototype("Base/Starter") };
+            //et.Tiles = tiles.ToArray();
             return et;
         }
     }

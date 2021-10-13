@@ -15,7 +15,7 @@ using static System.Math;
 using static Carcassonne.GameEngine;
 using static Utils;
 
-//[Tool]
+[Tool]
 public class GroupedFileManager : HBoxContainer
 {
     ItemBrowser _folderBrowser;
@@ -63,7 +63,7 @@ public class GroupedFileManager : HBoxContainer
         _objectBrowser.Reset();
         _objectBrowser.Enabled = true;
 
-        List<string> files = ListDirectoryFiles(path).FindAll(s => FilterHandle(ConcatPaths(path, s)));
+        List<string> files = ListDirectoryFiles(path, true).FindAll(s => FilterHandle(ConcatPaths(path, s)));
         foreach (var it in files)
         {
             _objectBrowser.AddItem(it, !IsProtectedHandle(ConcatPaths(path, it)));
@@ -76,13 +76,13 @@ public class GroupedFileManager : HBoxContainer
         _folderBrowser.Reset();
         _objectBrowser.Reset();
 
-        List<string> subdirs = ListDirectorySubDirs(path);
+        List<string> subdirs = ListDirectorySubDirs(path, true);
 
         foreach (var it in subdirs)
         {
             var p = ConcatPaths(path, it);
             _folderBrowser.AddItem(it,
-                ListDirectoryFiles(p).Find(
+                ListDirectoryFiles(p, true).Find(
                     s => FilterHandle(ConcatPaths(p, s)) && IsProtectedHandle(ConcatPaths(p, s)))
                 == default(string));
         }
@@ -153,7 +153,7 @@ public class GroupedFileManager : HBoxContainer
             Assert(dm.DirExists(p));
             Assert(!IsProtectedHandle(name));
 
-            List<string> files = ListDirectoryFiles(p).FindAll(s => FilterHandle(ConcatPaths(p, s)));
+            List<string> files = ListDirectoryFiles(p, true).FindAll(s => FilterHandle(ConcatPaths(p, s)));
 
             Assert(files.FindAll(s => IsProtectedHandle(s)).Count == 0);
 

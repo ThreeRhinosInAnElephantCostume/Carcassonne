@@ -16,7 +16,7 @@ using static System.Math;
 using static Carcassonne.GameEngine;
 using static Utils;
 
-//[Tool]
+[Tool]
 public class NameDialog : WindowDialog
 {
     public Func<string, string> PostProcessHandle = s => s;
