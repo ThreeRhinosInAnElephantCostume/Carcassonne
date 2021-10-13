@@ -7,7 +7,7 @@ This is a heavily WIP project. Nothing much to see here.
 
 ### Requirements:
 
-1. [Godot 3.3.4 or newer](https://godotengine.org/download/) (4.x is not supported).
+1. [Godot 3.3.4 or newer](https://godotengine.org/download/) (4.x is not supported) - Mono version.
 2. mono and dotnet-sdk. [See the relevant Godot documentation](https://docs.godotengine.org/en/stable/getting_started/scripting/c_sharp/c_sharp_basics.html).
 3. [dotnet-format](https://www.nuget.org/packages/dotnet-format/).
 4. (vscode) [C#](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp), [godot-tools](https://marketplace.visualstudio.com/items?itemName=geequlim.godot-tools), [C# tools for godot](https://marketplace.visualstudio.com/items?itemName=neikeq.godot-csharp-vscode), as well as [gdscript](https://marketplace.visualstudio.com/items?itemName=jjkim.gdscript) extensions.
