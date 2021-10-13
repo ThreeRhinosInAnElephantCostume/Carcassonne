@@ -139,6 +139,12 @@ public class TilesetEditor : Control
     void SaveButtonPressed()
     {
         Assert(Tileset != null && CurrentPath != "");
+
+        Tileset.NPossibleTiles = Tileset.Tiles.Count;
+        Tileset.NOutputTiles = Tileset.Tiles.Count; // TODO: support partial outputs
+        Tileset.SingleStarter = true; // TODO: support multiple starters
+        Tileset.NStarterTiles = Tileset.NStarterTiles;
+
         SerializeToFile(CurrentPath, Tileset);
     }
     void ResetButtonPressed()

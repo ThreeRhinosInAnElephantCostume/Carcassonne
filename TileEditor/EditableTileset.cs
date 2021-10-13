@@ -20,11 +20,11 @@ namespace Carcassonne
     [Serializable]
     public class EditableTileset : Carcassonne.ITileset
     {
-        public bool UserEditable { get; set; }
-        public bool SingleStarter { get; set; }
-        public int NStarterTiles { get; set; }
-        public int NPossibleTiles { get; set; }
-        public int NOutputTiles { get; set; }
+        public bool UserEditable { get; set; } = false;
+        public bool SingleStarter { get; set; } = true;
+        public int NStarterTiles { get; set; } = 0;
+        public int NPossibleTiles { get; set; } = 0;
+        public int NOutputTiles { get; set; } = 0;
         public List<string> Tiles { get; set; }
         public List<string> StarterTiles { get; set; }
 
@@ -46,7 +46,6 @@ namespace Carcassonne
         int ITileset.NPossibleTiles => NPossibleTiles;
 
         int ITileset.NTiles => NOutputTiles;
-
         Tile ITileset.GenerateStarter(RNG rng)
         {
             Assert(!(SingleStarter && NStarterTiles > 1));
