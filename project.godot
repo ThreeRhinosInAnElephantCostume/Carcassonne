@@ -11,7 +11,7 @@ config_version=4
 [application]
 
 config/name="Carcassonne"
-run/main_scene="res://TileEditor/TileEditor.tscn"
+run/main_scene="res://TilesetEditor/TilesetEditor.tscn"
 config/icon="res://icon.png"
 
 [display]
@@ -21,7 +21,7 @@ window/size/height=720
 
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/TileEditor/plugin.cfg", "res://addons/extra_math_cs/plugin.cfg" )
+enabled=PoolStringArray( "res://addons/extra_math_cs/plugin.cfg" )
 
 [gdnative]
 

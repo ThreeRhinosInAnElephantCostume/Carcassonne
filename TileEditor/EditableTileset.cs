@@ -10,112 +10,81 @@ using System.Threading;
 using Carcassonne;
 using ExtraMath;
 using Godot;
+using Newtonsoft.Json;
 using static System.Math;
 using static Carcassonne.GameEngine;
 using static Utils;
 
-[Serializable]
-public class EditableTileset : Carcassonne.ITileset
+namespace Carcassonne
 {
-    [Export]
-    public bool UserEditable { get; set; }
-    [Export]
-    public bool SingleStarter { get; set; }
-    [Export]
-    public int NStarterTiles { get; set; }
-    [Export]
-    public int NPossibleTiles { get; set; }
-    [Export]
-    public int NOutputTiles { get; set; }
-    [Export]
-    public TilePrototype[] Tiles { get; set; }
-    [Export]
-    public TilePrototype[] StarterTiles { get; set; }
-
-    public void UpdateInternals()
+    [Serializable]
+    public class EditableTileset : Carcassonne.ITileset
     {
-        if (Tiles.Length > NPossibleTiles)
+        public bool UserEditable { get; set; }
+        public bool SingleStarter { get; set; }
+        public int NStarterTiles { get; set; }
+        public int NPossibleTiles { get; set; }
+        public int NOutputTiles { get; set; }
+        public List<string> Tiles { get; set; }
+        public List<string> StarterTiles { get; set; }
+
+        public EditableTileset(bool UserEditable)
         {
-            NPossibleTiles = Tiles.Length;
+            this.UserEditable = false;
+            SingleStarter = true;
+            NStarterTiles = -1;
+            NPossibleTiles = 0;
+            NOutputTiles = 0;
+            Tiles = new List<string>(8);
+            StarterTiles = new List<string>(8);
         }
-        if (SingleStarter)
+
+        bool ITileset.HasStarter => (NStarterTiles > 0 || (SingleStarter && StarterTiles.Count > 0));
+
+        int ITileset.NPossibleStarters => (SingleStarter && StarterTiles.Count > 0) ? 1 : StarterTiles.Count;
+
+        int ITileset.NPossibleTiles => NPossibleTiles;
+
+        int ITileset.NTiles => NOutputTiles;
+
+        Tile ITileset.GenerateStarter(RNG rng)
         {
-            if (StarterTiles.Length > 1)
+            Assert(!(SingleStarter && NStarterTiles > 1));
+            if (SingleStarter)
             {
-                SingleStarter = false;
-                NStarterTiles = 1;
+                Assert(StarterTiles.Count > 0 && StarterTiles[0] != null);
+                return TileDataLoader.LoadTile(StarterTiles[0]);
             }
-            else
+            else if (NStarterTiles == 0)
             {
-                NStarterTiles = -1;
+                return null;
             }
+            return TileDataLoader.LoadTile(StarterTiles[(int)rng.NextLong(0, StarterTiles.Count) % StarterTiles.Count]);
         }
-        else
+
+        List<Tile> ITileset.GenerateTiles(RNG rng)
         {
-            if (NStarterTiles < 0)
-                NStarterTiles = (StarterTiles.Length > 0) ? 1 : 0;
+            Assert(Tiles != null);
+            Assert(Tiles.Count > 0);
+            Assert(NOutputTiles > 0);
+            Assert(NPossibleTiles > 0);
+
+            List<TilePrototype> tocreate = new List<TilePrototype>(NOutputTiles);
+            if (NOutputTiles >= Tiles.Count)
+            {
+                tocreate.AddRange(Tiles.ConvertAll(s => TileDataLoader.LoadTilePrototype(s)));
+            }
+            while (tocreate.Count < NOutputTiles)
+            {
+                tocreate.Add(TileDataLoader.LoadTilePrototype(Tiles[(int)rng.NextLong(0, Tiles.Count)]));
+            }
+
+            List<Tile> ret = new List<Tile>(tocreate.Count);
+            foreach (var it in tocreate)
+            {
+                ret.Add(it.Convert());
+            }
+            return ret;
         }
-
-
-
-    }
-
-    public EditableTileset(bool UserEditable)
-    {
-        this.UserEditable = false;
-        SingleStarter = true;
-        NStarterTiles = -1;
-        NPossibleTiles = 0;
-        NOutputTiles = 0;
-        Tiles = new TilePrototype[0];
-        StarterTiles = new TilePrototype[0];
-    }
-
-    bool ITileset.HasStarter => (NStarterTiles > 0 || (SingleStarter && StarterTiles.Length > 0));
-
-    int ITileset.NPossibleStarters => (SingleStarter && StarterTiles.Length > 0) ? 1 : StarterTiles.Length;
-
-    int ITileset.NPossibleTiles => NPossibleTiles;
-
-    int ITileset.NTiles => NOutputTiles;
-
-    Tile ITileset.GenerateStarter(RNG rng)
-    {
-        Assert(!(SingleStarter && NStarterTiles > 1));
-        if (SingleStarter)
-        {
-            Assert(StarterTiles.Length > 0 && StarterTiles[0] != null);
-            return StarterTiles[0].Convert();
-        }
-        else if (NStarterTiles == 0)
-        {
-            return null;
-        }
-        return StarterTiles[rng.NextLong(0, StarterTiles.Length) % StarterTiles.Length].Convert();
-    }
-
-    List<Tile> ITileset.GenerateTiles(RNG rng)
-    {
-        Assert(Tiles != null);
-        Assert(Tiles.Length > 0);
-        Assert(NOutputTiles > 0);
-        Assert(NPossibleTiles > 0);
-
-        List<TilePrototype> tocreate = new List<TilePrototype>(NOutputTiles);
-        if (NOutputTiles >= Tiles.Length)
-        {
-            tocreate.AddRange(Tiles);
-        }
-        while (tocreate.Count < NOutputTiles)
-        {
-            tocreate.Add(Tiles[rng.NextLong(0, Tiles.Length)]);
-        }
-
-        List<Tile> ret = new List<Tile>(tocreate.Count);
-        foreach (var it in tocreate)
-        {
-            ret.Add(it.Convert());
-        }
-        return ret;
     }
 }

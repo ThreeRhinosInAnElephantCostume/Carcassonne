@@ -41,7 +41,7 @@ public class FastSearchFilesPopup : WindowDialog
         Directory dm = new Directory();
         void LookRecursively(string path)
         {
-            foreach (var it in ListDirectoryContents(path))
+            foreach (var it in ListDirectoryContents(path, true))
             {
                 string itpath = ConcatPaths(path, it);
                 if (dm.DirExists(itpath))
