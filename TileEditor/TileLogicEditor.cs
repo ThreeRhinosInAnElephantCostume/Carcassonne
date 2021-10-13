@@ -81,46 +81,51 @@ public class TileLogicEditor : Control
     {
         TileChangedHandle(Tile, Path);
     }
-    void UpdateCityTrack(bool force = false)
+    void UpdateNearCityTrack(bool force = false)
     {
         if (!AutoTrackCityConnections && !force)
             return;
         bool changed = false;
         NodeType prev = NodeType.ERR;
-        foreach (var it in Tile.NodeAttributes.Keys)
+
+        for (int i = 0; i < Tile.NodeTypes.Length; i++)
         {
-            if (Tile.NodeTypes[it] == (int)NodeType.FARM && Tile.NodeAttributes[it].Contains((int)NodeAttribute.NEAR_CITY))
+            if (!Tile.NodeAttributes.ContainsKey(i))
             {
-                Tile.NodeAttributes[it].Remove((int)NodeAttribute.NEAR_CITY);
+                Tile.NodeAttributes.Add(i, new List<int>());
             }
-        }
-        for (int i = 0; i < Tile.Assignments.Length; i++)
-        {
-            int it = Tile.Assignments[i];
-
-            if (!Tile.NodeAttributes.ContainsKey(it))
-                Tile.NodeAttributes.Add(it, new List<int>());
-
-
-            NodeType tp = (NodeType)Tile.NodeTypes[it];
-            if (tp != NodeType.FARM || Tile.NodeAttributes[it].Contains((int)NodeAttribute.NEAR_CITY))
-            {
-                prev = tp;
+            var tp = Tile.NodeTypes[i];
+            if (tp != (int)NodeType.FARM)
                 continue;
+            bool b = false;
+            for (int ii = 0; ii < Tile.Assignments.Length; ii++)
+            {
+                if (Tile.Assignments[ii] != i)
+                    continue;
+                var p = Tile.NodeTypes[Tile.Assignments[AbsMod(ii - 1, Tile.Assignments.Length)]];
+                var n = Tile.NodeTypes[Tile.Assignments[AbsMod(ii + 1, Tile.Assignments.Length)]];
+                if (p == (int)NodeType.CITY || n == (int)NodeType.CITY)
+                {
+                    b = true;
+                    break;
+                }
             }
-            int attrindx = -1;
-            if (tp == NodeType.CITY && prev == NodeType.FARM)
-                attrindx = Tile.Assignments[i - 1];
-            else if (tp == NodeType.FARM && prev == NodeType.CITY)
-                attrindx = it;
+            if (b)
+            {
+                if (!Tile.NodeAttributes[i].Contains((int)NodeAttribute.NEAR_CITY))
+                {
+                    Tile.NodeAttributes[i].Add((int)NodeAttribute.NEAR_CITY);
+                    changed = true;
+                }
+            }
             else
             {
-                prev = tp;
-                continue;
+                if (Tile.NodeAttributes[i].Contains((int)NodeAttribute.NEAR_CITY))
+                {
+                    Tile.NodeAttributes[i].Remove((int)NodeAttribute.NEAR_CITY);
+                    changed = true;
+                }
             }
-            changed = true;
-            Tile.NodeAttributes[attrindx].Add((int)NodeAttribute.NEAR_CITY);
-            prev = tp;
         }
         if (changed)
         {
@@ -132,7 +137,7 @@ public class TileLogicEditor : Control
     {
         AutoTrackCityConnections = b;
         if (b)
-            UpdateCityTrack();
+            UpdateNearCityTrack();
     }
     void AutoEditableToggled(bool b)
     {
@@ -337,7 +342,7 @@ public class TileLogicEditor : Control
         }
         UpdateTileDisplay();
         ResetLists();
-        UpdateCityTrack();
+        UpdateNearCityTrack();
     }
     void RemoveNode(int indx)
     {
@@ -363,7 +368,7 @@ public class TileLogicEditor : Control
         }
         UpdateTileDisplay();
         ResetLists();
-        UpdateCityTrack();
+        UpdateNearCityTrack();
     }
     void EnsureNoEmptyNodes()
     {
@@ -384,7 +389,7 @@ public class TileLogicEditor : Control
             Tile.Assignments[indx] = 0;
             UpdateTileDisplay();
             EnsureNoEmptyNodes();
-            UpdateCityTrack();
+            UpdateNearCityTrack();
             return;
         }
         int nindx = -1;
@@ -409,7 +414,7 @@ public class TileLogicEditor : Control
             Tile.Assignments[indx] = nindx;
         }
         EnsureNoEmptyNodes();
-        UpdateCityTrack();
+        UpdateNearCityTrack();
         UpdateTileDisplay();
     }
     void UnloadView()
@@ -501,7 +506,7 @@ public class TileLogicEditor : Control
                 Tile.NodeTypes[i] = (int)NodeType.FARM;
         }
         UpdateTileDisplay();
-        UpdateCityTrack();
+        UpdateNearCityTrack();
     }
     void ResetPressed()
     {
