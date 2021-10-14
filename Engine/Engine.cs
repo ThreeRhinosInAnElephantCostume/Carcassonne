@@ -125,14 +125,17 @@ namespace Carcassonne
         protected TileManager tilemanager { get; set; }
         protected RNG rng { get; set; }
         List<Action> _history = new List<Action>();
-        protected Dictionary<Player, int> basescore = new Dictionary<Player, int>();
         protected List<Player> _players = new List<Player>();
         public Map map { get; protected set; }
         public Player CurrentPlayer { get; protected set; }
+        private int _nextUniqueID = 0;
+        public int NextUniqueID()
+        {
+            return _nextUniqueID++;
+        }
         void AddPlayer()
         {
-            Player p = new Player(this);
-            basescore.Add(p, 0);
+            Player p = new Player(this, _players.Count);
             _players.Add(p);
             if (CurrentPlayer == null)
                 CurrentPlayer = p;
@@ -152,10 +155,6 @@ namespace Carcassonne
         void AssertState(State state)
         {
             AssertState(this.CurrentPlayer, state);
-        }
-        void SetPlayerScore(Player player, int val)
-        {
-            basescore[player] = val;
         }
         Player NextPlayer(bool nextturn = true)
         {

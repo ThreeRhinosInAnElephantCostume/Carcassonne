@@ -10,19 +10,25 @@ using System.Threading;
 using Carcassonne;
 using ExtraMath;
 using Godot;
-using Newtonsoft.Json;
 using static System.Math;
 using static Carcassonne.GameEngine;
 using static Utils;
 
-
 namespace Carcassonne
 {
-    public abstract class Pawn
+    public partial class GameEngine
     {
-        public bool HasOwner { get => Owner != null; }
-        public Agent Owner { get; protected set; }
-        public Tile CurrentTile { get; set; }
-        public abstract bool IsInPlay { get; }
+        public abstract class Agent
+        {
+            public long ID { get; protected set; }
+            public Agent(long id)
+            {
+                this.ID = id;
+            }
+            public Agent(RNG rng) : this(rng.NextLong())
+            {
+
+            }
+        }
     }
 }

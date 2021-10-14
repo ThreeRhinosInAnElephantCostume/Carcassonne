@@ -184,7 +184,7 @@ public class TilesetEditor : Control
             {
                 foreach (var it in _tilePrototype.TileAttributes)
                 {
-                    _attributeList.AddItem(((TileAttribute)it).ToString());
+                    _attributeList.AddItem(((TileAttributeType)it).ToString());
                 }
             }
             return;
@@ -192,7 +192,7 @@ public class TilesetEditor : Control
         indx -= 1;
         if (indx >= _tilePrototype.NodeAttributes.Count)
             return;
-        _tilePrototype.NodeAttributes[indx].ForEach(it => _attributeList.AddItem(((NodeAttribute)it).ToString()));
+        _tilePrototype.NodeAttributes[indx].ForEach(it => _attributeList.AddItem(((NodeAttributeType)it).ToString()));
         _placedTile.HighlightedNode = indx;
     }
     void AttributeListSelected(int indx)

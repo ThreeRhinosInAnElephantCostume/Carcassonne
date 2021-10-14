@@ -21,6 +21,20 @@ using Expression = System.Linq.Expressions.Expression;
 
 public static partial class Utils
 {
+    public static void RepeatN(int n, Action act)
+    {
+        for (int i = 0; i < n; i++)
+        {
+            act();
+        }
+    }
+    public static void RepeatN(int n, Action<int> act)
+    {
+        for (int i = 0; i < n; i++)
+        {
+            act(i);
+        }
+    }
     public static T EnumNext<T>(T e) where T : Enum
     {
         var l = Enum.GetValues(typeof(T));

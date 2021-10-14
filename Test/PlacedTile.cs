@@ -58,6 +58,8 @@ public class PlacedTile : TestTile
     public float nodeconsize = 1.5f;
     [Export]
     public float terminsize = 5f;
+    [Export]
+    public float meeplesize = 15.0f;
     public Tile tile = null;
 
     float _unconnecteddiv = 2;
@@ -78,6 +80,28 @@ public class PlacedTile : TestTile
             NodeType.CITY => CityColor,
             _ => throw new Exception(),
         };
+    }
+    Color GetPlayerColor(int indx)
+    {
+        Color[] lookup = new Color[]
+        {
+            new Color(1f, 0.3f, 0.3f),
+            new Color(0.5f, 0.5f, 1f),
+            new Color(1, 0.5f, 1f),
+            new Color(0.7f, 1, 0.7f),
+            new Color(1f, 1f, 1f),
+            new Color(0.5f, 0.5f, 0.5f),
+        };
+        if (lookup.Length <= indx)
+        {
+            return new Color(0, 0, 0, 1);
+        }
+        return lookup[indx];
+    }
+    void DrawMeeple(Vector2 pos, Color color)
+    {
+        float sz = meeplesize;
+        DrawRect(new Rect2(pos, new Vector2(sz, sz)), color);
     }
     public override void _Draw()
     {
@@ -133,10 +157,22 @@ public class PlacedTile : TestTile
             int indx = tile.Nodes.ToList().IndexOf(k);
             if (indx == HighlightedNode)
                 c = HighlightColor;
-
+            bool drawmeeple = false;
+            Color meeplecolor = new Color();
+            if (k.Graph != null)
+            {
+                object mo = k.Graph.Owners.Find(o => o is Meeple m && m.IsConnectedToNode(k));
+                if (mo != null && mo is Meeple m)
+                {
+                    drawmeeple = true;
+                    meeplecolor = GetPlayerColor((int)m.Owner.ID);
+                }
+            }
             if (points[k].Count == 1)
             {
                 DrawLine(points[k][0] / unconnecteddiv, points[k][0], c, nodeconsize);
+                if (drawmeeple)
+                    DrawMeeple((points[k][0] + points[k][0] / unconnecteddiv) / 2, meeplecolor);
                 DrawCircle(points[k][0] / unconnecteddiv, terminsize, c);
                 continue;
             }
@@ -148,9 +184,10 @@ public class PlacedTile : TestTile
             centre /= connecteddiv;
             foreach (var it in points[k])
             {
-
                 DrawLine(centre, it, c, nodeconsize);
             }
+            if (drawmeeple)
+                DrawMeeple(centre, meeplecolor);
         }
     }
 }

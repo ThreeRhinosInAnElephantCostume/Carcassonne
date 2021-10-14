@@ -23,6 +23,17 @@ namespace Carcassonne
 {
     public class Tile
     {
+        public class TileAttribute
+        {
+            public Tile tile { get; protected set; }
+            public TileAttributeType type { get; protected set; }
+
+            public TileAttribute(Tile tile, TileAttributeType tp)
+            {
+                this.tile = tile;
+                this.type = tp;
+            }
+        }
         public class Connection
         {
             public InternalNode INode { get; }
@@ -57,8 +68,8 @@ namespace Carcassonne
             public Connection(InternalNode node)
             {
                 this.INode = node;
-                if (!node.Connections.Contains(this))
-                    node.Connections.Add(this);
+                Assert(!node.Connections.Contains(this));
+                node.Connections.Add(this);
             }
         }
         public class Side
@@ -113,9 +124,9 @@ namespace Carcassonne
                 this.Connections = connections;
             }
         }
-        public InternalNode[] Nodes { get; protected set; }
-        public Connection[] Connections { get; set; } = new Connection[N_SIDES * N_CONNECTORS];
-        public Side[] Sides { get; set; } = new Side[N_SIDES];
+        public List<InternalNode> Nodes { get; protected set; }
+        public List<Connection> Connections { get; protected set; }
+        public Side[] Sides { get; protected set; } = new Side[N_SIDES];
         public Tile[] Neighbours { get; set; } = new Tile[N_SIDES];
         public Side Up { get => Sides[0]; }
         public Side Right { get => Sides[1]; }
@@ -152,6 +163,14 @@ namespace Carcassonne
                 return ret;
             }
         }
+
+        public List<TileAttribute> Attributes { get; protected set; } = new List<TileAttribute>();
+        public TileAttribute GenerateAttribute(TileAttributeType tp)
+        {
+            if (tp == TileAttributeType.MONASTERY)
+                return new TileMonasteryAttribute(this);
+            return new TileAttribute(this, tp);
+        }
         public void ReoderConnections()
         {
             for (int i = 0; i < N_SIDES; i++)
@@ -167,8 +186,6 @@ namespace Carcassonne
             r = AbsMod(r, (int)N_SIDES);
             if (r == 0)
                 return;
-            // GD.Print(r);
-            // GD.Print(DebugRepresentation);
             Side[] nsides = new Side[N_SIDES];
             for (uint i = 0; i < N_SIDES; i++)
             {
@@ -176,18 +193,27 @@ namespace Carcassonne
             }
             Sides = nsides;
             ReoderConnections();
-            // GD.Print(DebugRepresentation);
-            // GD.Print("----");
         }
-        public Tile(InternalNode[] nodes, Connection[] connections)
+        public Tile(List<(NodeType tp, List<NodeAttributeType> attrs)> nodetypes, List<int> assignments, List<TileAttributeType> attrs)
         {
-            Assert(connections.Length == N_CONNECTORS * N_SIDES);
-            this.Connections = connections;
-            this.Nodes = nodes;
-            for (int i = 0; i < N_SIDES; i++)
+            Assert(assignments.Count == N_CONNECTORS * N_SIDES);
+            Assert(nodetypes.Count > 0);
+            Assert(nodetypes.TrueForAll(nt => nt.tp != NodeType.ERR));
+
+            int i = 0;
+
+            Nodes = nodetypes.ConvertAll<InternalNode>(nt => new InternalNode(this, i++, nt.tp, nt.attrs));
+
+            Connections = assignments.ConvertAll<Connection>(it => new Connection(Nodes[it]));
+
+            for (i = 0; i < N_SIDES; i++)
             {
-                Sides[i] = new Side(this, connections.ToList().GetRange(i * N_CONNECTORS, N_CONNECTORS).ToArray()); // I know...
+                Sides[i] = new Side(this, Connections.ToList().GetRange(i * N_CONNECTORS, N_CONNECTORS).ToArray()); // I know...
             }
+
+            Attributes = attrs.ConvertAll<TileAttribute>(it => GenerateAttribute(it));
+
+            Assert(Nodes.ToList().TrueForAll(n => n.Connections.Count > 0));
         }
     }
 }

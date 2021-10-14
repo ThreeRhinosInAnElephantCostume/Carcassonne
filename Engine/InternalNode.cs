@@ -22,12 +22,34 @@ namespace Carcassonne
 {
     public class InternalNode
     {
+        // Extensibility required for potential expansions
+        public class InternalNodeAttribute
+        {
+            public NodeAttributeType type { get; protected set; }
+
+            public InternalNodeAttribute(NodeAttributeType type)
+            {
+                this.type = type;
+            }
+        }
         public NodeType Type { get; }
-        public List<Tile.Connection> Connections = new List<Tile.Connection>();
-        public Tile ParentTile { get; set; }
+        public Tile ParentTile { get; protected set; }
+        public int Index { get; protected set; }
+        public List<Tile.Connection> Connections { get; set; } = new List<Tile.Connection>();
         public Map.Graph Graph { get; set; }
         public object Mark { get; set; } // potentially useful for certain search algorithms 
-        void DebugValidate()
+        public List<InternalNodeAttribute> Attributes { get; protected set; } = new List<InternalNodeAttribute>();
+
+        // This is here for the sake of potential expansions 
+        InternalNodeAttribute GenerateAttribute(NodeAttributeType tp)
+        {
+            return new InternalNodeAttribute(tp);
+        }
+        public List<NodeAttributeType> GetAttributeTypes()
+        {
+            return Attributes.ConvertAll<NodeAttributeType>(it => it.type);
+        }
+        public void DebugValidate()
         {
             Assert(Type != NodeType.ERR);
             Assert(ParentTile != null);
@@ -38,10 +60,13 @@ namespace Carcassonne
             Assert(Connections.TrueForAll(c => !c.IsConnected || c.Other.INode.Graph == this.Graph));
             Connections.ForEach(c => c.DebugValidate());
         }
-        public InternalNode(NodeType type)
+        public InternalNode(Tile tile, int indx, NodeType type, List<NodeAttributeType> attributetypes)
         {
             Assert(type != NodeType.ERR);
+            this.ParentTile = tile;
+            this.Index = indx;
             this.Type = type;
+            attributetypes.ForEach(it => Attributes.Add(GenerateAttribute(it)));
         }
     }
 }

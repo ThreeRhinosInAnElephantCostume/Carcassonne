@@ -23,12 +23,15 @@ public class TileMap : Node2D
     public PlacedTile tilesuggestion;
     public List<PlacedTile> tiledisplays = new List<PlacedTile>();
     public Dictionary<Vector2I, PotentialTile> potentialtiles = new Dictionary<Vector2I, PotentialTile>();
+
+    public System.Action UpdateHandle = null;
     public void TriggerPlacement(Vector2I pos, int rot)
     {
+        Assert(game.CurrentState == State.PLACE_TILE);
         game.PlaceCurrentTile(pos, rot);
-        if (game.CurrentState == GameEngine.State.PLACE_PAWN)
-            game.SkipPlacingPawn();
         CallDeferred("UpdateDisplay");
+        if (UpdateHandle != null)
+            UpdateHandle();
     }
     public void DisablePotentiaPlacement()
     {
@@ -87,7 +90,7 @@ public class TileMap : Node2D
         potentialtiles.Clear();
         if (game.CurrentState == GameEngine.State.PLACE_TILE)
         {
-            foreach (var it in game.PossiblePlacements())
+            foreach (var it in game.PossibleTilePlacements())
             {
                 PotentialTile potential;
                 if (potentialtiles.ContainsKey(it.pos))

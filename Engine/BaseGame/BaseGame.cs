@@ -19,108 +19,180 @@ namespace Carcassonne
 {
     public partial class GameEngine
     {
-        public class PlaceTileAction : Action
+        Tile _lastTile;
+        List<TileMonasteryAttribute> _activeMonasteries = new List<TileMonasteryAttribute>();
+        void EndGame()
         {
-            public Vector2I pos;
-            public int rot;
-            public PlaceTileAction(Vector2I pos, int rot)
+            UpdatePoints();
+            CurrentState = State.GAME_OVER;
+            CurrentPlayer = null;
+            return;
+        }
+        public int CalculateScore(Map.Graph g)
+        {
+            if (g.Type == NodeType.FARM)
             {
-                this.IsFilled = true;
-                this.pos = pos;
-                this.rot = rot;
+                List<Map.Graph> completedcities = new List<Map.Graph>();
+                g.Nodes.FindAll(it => it.GetAttributeTypes().Contains(NodeAttributeType.NEAR_CITY)).ForEach
+                (
+                    it =>
+                    {
+                        it.Connections.ForEach
+                        (
+                            c =>
+                            {
+                                int indx = it.ParentTile.Connections.IndexOf(c);
+                                var p = AbsMod(indx - 1, N_CONNECTORS * N_SIDES);
+                                var n = AbsMod(indx + 1, N_CONNECTORS * N_SIDES);
+                                void f(Map.Graph g)
+                                {
+                                    if (!completedcities.Contains(g) && g.Type == NodeType.CITY && g.IsClosed)
+                                        completedcities.Add(g);
+                                };
+                                f(it.ParentTile.Connections[p].INode.Graph);
+                                f(it.ParentTile.Connections[n].INode.Graph);
+                            }
+                        );
+                    }
+                );
+                Assert(completedcities.TrueForAll(it => it.Type == NodeType.CITY && it.IsClosed));
+                return FARM_PER_CITY_POINTS * completedcities.Count;
+            }
+            bool closed = g.IsClosed;
+            int n = g.Tiles.Count;
+            int points = 0;
+            if (g.Type == NodeType.CITY && g.Tiles.Count < CITY_SMALL_THRESHOLD)
+            {
+                points = CITY_SMALL_POINTS * n +
+                CITY_COMPLETE_BONUS_POINTS * g.Nodes.Count(n => n.GetAttributeTypes().Contains(NodeAttributeType.CITY_BONUS));
+            }
+            else
+            {
+                points = (g.Type, closed) switch
+                {
+                    (NodeType.CITY, true) =>
+                        n * CITY_COMPLETE_POINTS +
+                        CITY_COMPLETE_BONUS_POINTS * g.Nodes.Count(n => n.GetAttributeTypes().Contains(NodeAttributeType.CITY_BONUS)),
+                    (NodeType.CITY, false) =>
+                        n * CITY_INCOMPLETE_POINTS +
+                        CITY_INCOMPLETE_BONUS_POINTS * g.Nodes.Count(n => n.GetAttributeTypes().Contains(NodeAttributeType.CITY_BONUS)),
+                    (NodeType.ROAD, true) =>
+                        n * ROAD_COMPLETE_POINTS,
+                    (NodeType.ROAD, false) =>
+                        n * ROAD_INCOMPLETE_POINTS,
+                    _ => throw new Exception(),
+                };
+            }
+            return points;
+        }
+        public void UpdatePoints()
+        {
+            foreach (var it in Players)
+                it.PotentialScore = 0;
+            foreach (var g in map.Graphs)
+            {
+                if (g.Owners.Count == 0)
+                    continue;
+                int score = CalculateScore(g);
+                bool complete = (g.IsClosed && g.Type != NodeType.FARM);
+                foreach (var owner in GetGraphOwners(g))
+                {
+                    Assert(owner is Player);
+                    Player p = (Player)owner;
+                    if (complete)
+                    {
+                        p.Score += score;
+                    }
+                    else
+                    {
+                        p.PotentialScore += score;
+                    }
+                }
+                if (complete)
+                {
+                    g.Owners.FindAll(o => (o is Meeple)).ForEach(m => ((Meeple)m).Remove());
+                }
+            }
+            foreach (var it in _activeMonasteries.FindAll(o => (o.Owner is Meeple)))
+            {
+                Assert(it.Owner != null);
+                int n = MONASTERY_NEIGHBOURS.Count(pos => map[pos] != null);
+                var m = (Meeple)it.Owner;
+                Player p = (Player)m.Owner;
+                if (n == MONASTERY_NEIGHBOURS.Count)
+                {
+                    _activeMonasteries.Remove(it);
+                    m.Remove();
+                    p.Score += n * MONASTERY_COMPLETE_POINTS;
+                }
+                else
+                {
+                    p.PotentialScore += n * MONASTERY_INCOMPLETE_POINTS;
+                }
             }
         }
-        [ActionExec(typeof(PlaceTileAction))]
-        void PlaceCurrentTileExec(Action _act)
+        List<(Agent agent, int stake)> GetGraphStakeholders(Map.Graph g)
         {
-            var act = (PlaceTileAction)_act;
-
-            AssertState(State.PLACE_TILE);
-            Tile c = tilemanager.CurrentTile();
-
-            c.Rotate(act.rot);
-            if (!map.CanPlaceTile(c, act.pos))
-            {
-                c.Rotate(-act.rot);
-                throw new Exception("INVALID TILE PLACEMENT");
-            }
-            map.PlaceTile(c, act.pos);
-
-            if (tilemanager.PeekTile() == null)
-            {
-                CurrentState = State.GAME_OVER;
-                CurrentPlayer = null;
-                return;
-            }
-
-            CurrentState = State.PLACE_PAWN;
-
+            List<(Agent owner, int stake)> owners = new List<(Agent, int)>();
+            g.Owners.ForEach
+            (
+                it =>
+                {
+                    if (it is Occupier occupier)
+                    {
+                        Assert(occupier.HasOwner);
+                        int indx = owners.FindIndex(it => it.owner == occupier.Owner);
+                        if (indx == -1)
+                            owners.Add((occupier.Owner, occupier.Weight));
+                        else
+                        {
+                            var dt = owners[indx];
+                            owners[indx] = (dt.owner, dt.stake + occupier.Weight);
+                        }
+                    }
+                }
+            );
+            owners.Sort((v0, v1) => (-v0.stake).CompareTo(-v1.stake)); // reverse sort (descending)
+            return owners;
         }
-        public class SkipPawnAction : Action
+        List<Agent> GetGraphOwners(Map.Graph g)
         {
-            public SkipPawnAction()
+            var ret = new List<Agent>();
+            var stakeholders = GetGraphStakeholders(g);
+            if (stakeholders.Count > 0)
             {
-                this.IsFilled = true;
+                foreach (var it in stakeholders)
+                {
+                    if (it.stake < stakeholders[0].stake)
+                        break;
+                    ret.Add(it.agent);
+                }
             }
+            return ret;
         }
-        [ActionExec(typeof(SkipPawnAction))]
-        void SkipPawnExec(Action _act)
+        int GetFreeMeepleCount(Player player)
         {
-            var act = (SkipPawnAction)_act;
-
-            CurrentState = State.PLACE_TILE;
-
-            if (tilemanager.NextTile() == null)
-            {
-                CurrentState = State.GAME_OVER;
-                CurrentPlayer = null;
-                return;
-            }
-            NextPlayer();
+            return player.Pawns.Count(it => it is Meeple && !it.IsInPlay);
         }
-        protected class StartBaseGameAction : Action
+        Meeple GetFreeMeeple(Player player)
         {
-            public ulong seed;
-            public int players;
-            public ITileset tileset;
-            public StartBaseGameAction(ulong seed, ITileset tileset, int players)
-            {
-                IsFilled = true;
-                this.players = players;
-                this.seed = seed;
-                this.tileset = tileset;
-            }
+            var ret = player.Pawns.Find(it => it is Meeple && !it.IsInPlay);
+            Assert(ret != null);
+            return (Meeple)ret;
         }
-        [ActionExec(typeof(StartBaseGameAction))]
-        void StartBaseGameExec(Action _act)
+        List<object> GetPossibleMeeplePlacements(Tile tile)
         {
-            var act = (StartBaseGameAction)_act;
-
-            rng = new RNG(act.seed);
-
-            Assert(act.players >= MIN_PLAYERS && act.players <= MAX_PLAYERS);
-
-            tilemanager = new TileManager(this);
-
-            tilemanager.AddTiles(act.tileset.GenerateTiles(rng), true);
-
-            tilemanager.NextTile();
-
-            for (int i = 0; i < act.players; i++)
+            var nodes = tile.Nodes.FindAll((InternalNode n) => GetGraphOwners(n.Graph).Count == 0).ToList<object>();
+            var mons = tile.Attributes.FindAll(it => it is TileMonasteryAttribute && ((TileMonasteryAttribute)it).Owner == null).ToList<object>();
+            return nodes.Concat(mons).ToList();
+        }
+        public class TileMonasteryAttribute : Tile.TileAttribute
+        {
+            public Occupier Owner { get; set; } = null;
+            public TileMonasteryAttribute(Tile tile) : base(tile, TileAttributeType.MONASTERY)
             {
-                AddPlayer();
+
             }
-            CurrentPlayer = _players[0];
-
-            CurrentState = State.PLACE_TILE;
-
-            Assert(act.tileset.HasStarter);
-
-            var starter = act.tileset.GenerateStarter(rng);
-
-            Assert(starter != null);
-
-            map = new Map(starter);
         }
         public static GameEngine CreateBaseGame(ulong seed, int players, ITileset tileset)
         {
