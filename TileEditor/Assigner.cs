@@ -106,7 +106,7 @@ class Assigner : HBoxContainer
         int i = 0;
         foreach (var it in _tile.TileAttributes)
         {
-            _options.AddItem($"{(TileAttribute)it} ({i})");
+            _options.AddItem($"{(TileAttributeType)it} ({i})");
             i++;
         }
         if (_config.NodeAssociations.ContainsKey(_group))

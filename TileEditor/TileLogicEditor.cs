@@ -112,17 +112,17 @@ public class TileLogicEditor : Control
             }
             if (b)
             {
-                if (!Tile.NodeAttributes[i].Contains((int)NodeAttribute.NEAR_CITY))
+                if (!Tile.NodeAttributes[i].Contains((int)NodeAttributeType.NEAR_CITY))
                 {
-                    Tile.NodeAttributes[i].Add((int)NodeAttribute.NEAR_CITY);
+                    Tile.NodeAttributes[i].Add((int)NodeAttributeType.NEAR_CITY);
                     changed = true;
                 }
             }
             else
             {
-                if (Tile.NodeAttributes[i].Contains((int)NodeAttribute.NEAR_CITY))
+                if (Tile.NodeAttributes[i].Contains((int)NodeAttributeType.NEAR_CITY))
                 {
-                    Tile.NodeAttributes[i].Remove((int)NodeAttribute.NEAR_CITY);
+                    Tile.NodeAttributes[i].Remove((int)NodeAttributeType.NEAR_CITY);
                     changed = true;
                 }
             }
@@ -151,9 +151,9 @@ public class TileLogicEditor : Control
         _placedTile.HighlightedNode = indx - 1;
         if (indx == 0)
         {
-            foreach (TileAttribute it in Enum.GetValues(typeof(TileAttribute)))
+            foreach (TileAttributeType it in Enum.GetValues(typeof(TileAttributeType)))
             {
-                if (it == TileAttribute.ERR)
+                if (it == TileAttributeType.ERR)
                     continue;
                 string s = it.ToString();
                 if (Tile.TileAttributes.Contains((int)it))
@@ -165,9 +165,9 @@ public class TileLogicEditor : Control
             return;
         }
         indx -= 1;
-        foreach (NodeAttribute it in Enum.GetValues(typeof(NodeAttribute)))
+        foreach (NodeAttributeType it in Enum.GetValues(typeof(NodeAttributeType)))
         {
-            if (it == NodeAttribute.ERR)
+            if (it == NodeAttributeType.ERR)
                 continue;
             if (!Tile.NodeAttributes.ContainsKey(indx))
                 Tile.NodeAttributes.Add(indx, new List<int>());
@@ -213,7 +213,7 @@ public class TileLogicEditor : Control
         int sel = _attributableList.GetSelectedItems()[0];
         if (sel == 0)
         {
-            var ta = Enum.Parse<TileAttribute>(name, true);
+            var ta = Enum.Parse<TileAttributeType>(name, true);
             _currentAttributeList.AddItem(ta.ToString());
             _possibleAttributeList.RemoveItem(indx);
             Assert(!Tile.TileAttributes.Contains((int)ta));
@@ -221,7 +221,7 @@ public class TileLogicEditor : Control
             return;
         }
         sel -= 1;
-        var na = Enum.Parse<NodeAttribute>(name, true);
+        var na = Enum.Parse<NodeAttributeType>(name, true);
         _currentAttributeList.AddItem(na.ToString());
         _possibleAttributeList.RemoveItem(indx);
         Assert(!Tile.NodeAttributes[sel].Contains((int)na));
@@ -236,7 +236,7 @@ public class TileLogicEditor : Control
         int sel = _attributableList.GetSelectedItems()[0];
         if (sel == 0)
         {
-            var ta = Enum.Parse<TileAttribute>(name, true);
+            var ta = Enum.Parse<TileAttributeType>(name, true);
             _currentAttributeList.RemoveItem(indx);
             _possibleAttributeList.AddItem(ta.ToString());
             Assert(Tile.TileAttributes.Contains((int)ta));
@@ -244,7 +244,7 @@ public class TileLogicEditor : Control
             return;
         }
         sel -= 1;
-        var na = Enum.Parse<NodeAttribute>(name, true);
+        var na = Enum.Parse<NodeAttributeType>(name, true);
         _currentAttributeList.RemoveItem(indx);
         _possibleAttributeList.AddItem(na.ToString());
         Assert(Tile.NodeAttributes[sel].Contains((int)na));

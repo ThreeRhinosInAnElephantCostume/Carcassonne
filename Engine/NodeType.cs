@@ -21,13 +21,13 @@ using static Utils;
 
 namespace Carcassonne
 {
-    public enum NodeAttribute
+    public enum NodeAttributeType
     {
         ERR = 0,
         CITY_BONUS,
         NEAR_CITY
     }
-    public enum TileAttribute
+    public enum TileAttributeType
     {
         ERR = 0,
         MONASTERY,

@@ -56,9 +56,9 @@ namespace Carcassonne
                 _openconnections = new List<Tile.Connection>(Connections.Count);
                 foreach (var it in Connections)
                 {
-                    Assert(it.node.graph == this, "Attempted to utilize an invalid graph!");
-                    Assert(it.node.type == Type, "Attempted to utilize an invalid graph!");
-                    Assert(!it.IsConnected || (it.IsConnected && it.Other.node.graph == this),
+                    Assert(it.INode.Graph == this, "Attempted to utilize an invalid graph!");
+                    Assert(it.INode.Type == Type, "Attempted to utilize an invalid graph!");
+                    Assert(!it.IsConnected || (it.IsConnected && it.Other.INode.Graph == this),
                         "Attempted to utilize an invalid graph!");
 
                     if (!it.IsConnected)
@@ -86,9 +86,9 @@ namespace Carcassonne
             }
             void AddConnection(Tile.Connection c)
             {
-                Assert(c != null && c.node != null);
-                Assert(c.node.graph == this);
-                Assert(c.node.type == Type);
+                Assert(c != null && c.INode != null);
+                Assert(c.INode.Graph == this);
+                Assert(c.INode.Type == Type);
                 Assert(!Connections.Contains(c));
 
                 MakeDirty();
@@ -99,18 +99,18 @@ namespace Carcassonne
             {
                 Assert(n != null);
                 Assert(!Nodes.Contains(n));
-                Assert(n.type == Type);
+                Assert(n.Type == Type);
 
                 MakeDirty();
 
-                n.graph = this;
+                n.Graph = this;
                 Nodes.Add(n);
                 if (addconnections)
                 {
-                    foreach (var it in n.connections)
+                    foreach (var it in n.Connections)
                         AddConnection(it);
                 }
-                AddUniqueTile(n.tile);
+                AddUniqueTile(n.ParentTile);
             }
             public Graph(NodeType type)
             {
@@ -153,27 +153,26 @@ namespace Carcassonne
                 greater.AddNode(it);
             }
             RemoveGraph(lesser);
-            greater.Check();
             return greater;
         }
         Graph ExtendGraph(Graph graph, InternalNode branch)
         {
             Assert(graph != null && branch != null);
-            Assert(branch.graph == null);
+            Assert(branch.Graph == null);
 
             graph.AddNode(branch, true);
 
-            foreach (var it in branch.connections)
+            foreach (var it in branch.Connections)
             {
                 if (!it.IsConnected)
                     continue;
-                if (it.Other.node.graph == null)
+                if (it.Other.INode.Graph == null)
                 {
-                    graph = ExtendGraph(graph, it.Other.node);
+                    graph = ExtendGraph(graph, it.Other.INode);
                 }
-                else if (it.Other.node.graph != graph)
+                else if (it.Other.INode.Graph != graph)
                 {
-                    graph = MergeGraphs(graph, it.Other.node.graph);
+                    graph = MergeGraphs(graph, it.Other.INode.Graph);
                 }
             }
 
@@ -181,10 +180,10 @@ namespace Carcassonne
         }
         Graph CreateGraph(InternalNode origin)
         {
-            Assert(origin.type != NodeType.ERR);
-            Assert(origin.graph == null);
+            Assert(origin.Type != NodeType.ERR);
+            Assert(origin.Graph == null);
 
-            var g = new Graph(origin.type);
+            var g = new Graph(origin.Type);
             g = ExtendGraph(g, origin);
             AddUniqueGraph(g);
 
@@ -195,12 +194,12 @@ namespace Carcassonne
             Assert(tile != null);
 
             List<Graph> ngraphs = new List<Graph>();
-            foreach (var it in tile.nodes)
+            foreach (var it in tile.Nodes)
             {
-                var cns = it.connections.Find((Tile.Connection c) => c.IsConnected && c.Other.node.graph != null);
+                var cns = it.Connections.Find((Tile.Connection c) => c.IsConnected && c.Other.INode.Graph != null);
                 if (cns != null)
                 {
-                    ngraphs.Add(ExtendGraph(cns.Other.node.graph, it));
+                    ngraphs.Add(ExtendGraph(cns.Other.INode.Graph, it));
                 }
                 else
                 {
@@ -208,16 +207,18 @@ namespace Carcassonne
                 }
             }
             ngraphs = ngraphs.FindAll((g) => Graphs.Contains(g)).Distinct().ToList();
+            ngraphs.ForEach(it => it.Check());
             return ngraphs;
         }
         public List<Graph> UpdateGraphs()
         {
             List<Graph> ngraphs = new List<Graph>(Graphs.Count * 4);
-            foreach (var it in tiles)
+            foreach (var it in _tiles)
             {
                 ngraphs.AddRange(UpdateGraphs(it));
             }
             ngraphs = ngraphs.FindAll((g) => Graphs.Contains(g)).Distinct().ToList();
+            ngraphs.ForEach(it => it.Check());
             return ngraphs;
         }
         void AddOwner(Graph graph, object o)

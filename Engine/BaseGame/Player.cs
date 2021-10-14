@@ -18,15 +18,17 @@ namespace Carcassonne
 {
     public partial class GameEngine
     {
-        public class Player
+        public class Player : Agent
         {
             GameEngine eng { get; }
 
-            public int Score { get => eng.GetPlayerScore(this); }
-            public int EndScore { get => eng.GetPlayerEndScore(this); }
-            public int ProbableScore { get => eng.GetPlayerProbableScore(this); }
+            public int Score { get; set; }
+            public int PotentialScore { get; set; }
+            public int EndScore => Score+PotentialScore;
 
-            public Player(GameEngine eng)
+            public List<Pawn> Pawns {get; set;} = new List<Pawn>();
+
+            public Player(GameEngine eng, int ID) : base(ID)
             {
                 this.eng = eng;
             }

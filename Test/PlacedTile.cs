@@ -53,11 +53,21 @@ public class PlacedTile : TestTile
     [Export]
     public Color CityColor { get; set; } = new Color(0.4f, 0.4f, 0.1f);
     [Export]
+    public Color MonasteryColor { get; set; } = new Color(0.4f, 0.4f, 0f);
+    [Export]
+    public Color CityBonusColor { get; set; } = new Color(0.1f, 0.1f, 1.0f);
+    [Export]
     public float consize = 3.0f;
     [Export]
     public float nodeconsize = 1.5f;
     [Export]
     public float terminsize = 5f;
+    [Export]
+    public float meeplesize = 15.0f;
+    [Export]
+    public float monasterysize = 20.0f;
+    [Export]
+    public float citybonussize = 10.0f;
     public Tile tile = null;
 
     float _unconnecteddiv = 2;
@@ -78,6 +88,43 @@ public class PlacedTile : TestTile
             NodeType.CITY => CityColor,
             _ => throw new Exception(),
         };
+    }
+    Color GetPlayerColor(int indx)
+    {
+        Color[] lookup = new Color[]
+        {
+            new Color(1f, 0.3f, 0.3f),
+            new Color(0.5f, 0.5f, 1f),
+            new Color(1, 0.5f, 1f),
+            new Color(0.7f, 1, 0.7f),
+            new Color(1f, 1f, 1f),
+            new Color(0.5f, 0.5f, 0.5f),
+        };
+        if (lookup.Length <= indx)
+        {
+            return new Color(0, 0, 0, 1);
+        }
+        return lookup[indx];
+    }
+    void DrawMeeple(Vector2 pos, Color color)
+    {
+        float sz = meeplesize;
+        DrawRect(new Rect2(pos, new Vector2(sz, sz)), color);
+    }
+    void DrawMonastery(Vector2 pos, Color color)
+    {
+        DrawRect(new Rect2(pos + (new Vector2(monasterysize, monasterysize) / 2), new Vector2(monasterysize / 3, monasterysize)), color);
+        DrawRect(new Rect2(pos, new Vector2(monasterysize, monasterysize / 3)), color);
+    }
+    void DrawCityBonus(Vector2 pos, Color color)
+    {
+        var prim = new Vector2[]
+        {
+            new Vector2(-1, -1)*citybonussize + pos,
+            new Vector2(1, -1)*citybonussize + pos,
+            new Vector2(0, 0)*citybonussize + pos,
+        };
+        DrawPrimitive(prim, new Color[] { color, color, color }, prim);
     }
     public override void _Draw()
     {
@@ -105,10 +152,10 @@ public class PlacedTile : TestTile
         {
             for (int ii = 0; ii < N_CONNECTORS; ii++)
             {
-                Tile.Connection con = tile.sides[i].connectors[ii];
-                Color c = GetTypeColor(con.node.type);
+                Tile.Connection con = tile.Sides[i].Connections[ii];
+                Color c = GetTypeColor(con.INode.Type);
 
-                int indx = tile.nodes.ToList().IndexOf(con.node);
+                int indx = tile.Nodes.ToList().IndexOf(con.INode);
                 if (indx == HighlightedNode)
                     c = HighlightColor;
 
@@ -120,23 +167,35 @@ public class PlacedTile : TestTile
 
                 DrawLine(start, end, c, consize);
 
-                if (!points.ContainsKey(con.node))
-                    points.Add(con.node, new List<Vector2>());
-                points[con.node].Add((start + end) / 2);
+                if (!points.ContainsKey(con.INode))
+                    points.Add(con.INode, new List<Vector2>());
+                points[con.INode].Add((start + end) / 2);
             }
         }
         foreach (var k in points.Keys)
         {
-            Color c = GetTypeColor(k.type);
+            Color c = GetTypeColor(k.Type);
             c.a *= OpacityMP;
 
-            int indx = tile.nodes.ToList().IndexOf(k);
+            int indx = tile.Nodes.ToList().IndexOf(k);
             if (indx == HighlightedNode)
                 c = HighlightColor;
-
+            bool drawmeeple = false;
+            Color meeplecolor = new Color();
+            if (k.Graph != null)
+            {
+                object mo = k.Graph.Owners.Find(o => o is Meeple m && m.IsConnectedToNode(k));
+                if (mo != null && mo is Meeple m)
+                {
+                    drawmeeple = true;
+                    meeplecolor = GetPlayerColor((int)m.Owner.ID);
+                }
+            }
             if (points[k].Count == 1)
             {
                 DrawLine(points[k][0] / unconnecteddiv, points[k][0], c, nodeconsize);
+                if (drawmeeple)
+                    DrawMeeple((points[k][0] + points[k][0] / unconnecteddiv) / 2, meeplecolor);
                 DrawCircle(points[k][0] / unconnecteddiv, terminsize, c);
                 continue;
             }
@@ -148,9 +207,19 @@ public class PlacedTile : TestTile
             centre /= connecteddiv;
             foreach (var it in points[k])
             {
-
                 DrawLine(centre, it, c, nodeconsize);
             }
+            if (k.AttributeTypes.Contains(NodeAttributeType.CITY_BONUS))
+            {
+                DrawCityBonus(centre + (points[k][0] - centre) * 0.1f, CityBonusColor);
+            }
+            if (drawmeeple)
+                DrawMeeple(centre, meeplecolor);
+        }
+        if (tile.AttributeTypes.Contains(TileAttributeType.MONASTERY))
+        {
+            TileMonasteryAttribute mon = (TileMonasteryAttribute)tile.Attributes.Find(it => it.Type == TileAttributeType.MONASTERY);
+            DrawMonastery(new Vector2(0, 0), (mon.Owner != null) ? (GetPlayerColor((int)(mon.Owner as Meeple).Owner.ID)) : MonasteryColor);
         }
     }
 }

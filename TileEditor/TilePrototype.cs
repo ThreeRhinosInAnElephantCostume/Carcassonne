@@ -64,33 +64,22 @@ public class TilePrototype
 
     public Tile Convert()
     {
+        Check();
+
         Assert(NodeTypes != null);
         Assert(NodeTypes.Length > 0);
         Assert(Assignments != null);
         Assert(Assignments.Length == 12);
 
-        List<InternalNode> nodes = new List<InternalNode>();
-        List<Tile.Connection> connections = new List<Tile.Connection>();
+        List<(NodeType tp, List<NodeAttributeType> attrs)> nodetypes = new List<(NodeType tp, List<NodeAttributeType> attrs)>();
 
-        foreach (var it in NodeTypes)
+        for (int i = 0; i < NodeTypes.Length; i++)
         {
-            nodes.Add(new InternalNode((NodeType)it));
+            nodetypes.Add(((NodeType)NodeTypes[i],
+                NodeAttributes[i].ConvertAll(it => (NodeAttributeType)it)));
         }
 
-        foreach (var it in Assignments)
-        {
-            Assert(it < nodes.Count && it >= 0);
-            connections.Add(new Tile.Connection(nodes[it]));
-        }
-
-        var t = new Tile(nodes.ToArray(), connections.ToArray());
-
-        foreach (var it in nodes)
-        {
-            it.tile = t;
-        }
-
-        return t;
+        return new Tile(nodetypes, Assignments.ToList(), TileAttributes.ConvertAll(it => (TileAttributeType)it));
     }
     public void Check()
     {

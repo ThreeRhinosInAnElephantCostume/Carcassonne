@@ -19,18 +19,75 @@ current = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="CurrentTile" parent="CanvasLayer" instance=ExtResource( 3 )]
-position = Vector2( 50, 50 )
-
-[node name="PlayerDataScroll" type="ScrollContainer" parent="CanvasLayer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer"]
+anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = 104.0
-margin_right = 150.0
+margin_right = 4.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="PlayerDataContainer" type="VBoxContainer" parent="CanvasLayer/PlayerDataScroll"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/HBoxContainer"]
+margin_right = 104.0
+margin_bottom = 720.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/HBoxContainer/VBoxContainer"]
+margin_right = 104.0
+margin_bottom = 104.0
+rect_min_size = Vector2( 104, 104 )
+
+[node name="CurrentTile" parent="CanvasLayer/HBoxContainer/VBoxContainer/PanelContainer" instance=ExtResource( 3 )]
+position = Vector2( 52, 52 )
+monasterysize = 10.0
+
+[node name="PlayerDataScroll" type="ScrollContainer" parent="CanvasLayer/HBoxContainer/VBoxContainer"]
+margin_top = 108.0
+margin_right = 104.0
+margin_bottom = 720.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="PlayerDataContainer" type="VBoxContainer" parent="CanvasLayer/HBoxContainer/VBoxContainer/PlayerDataScroll"]
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/HBoxContainer"]
+show_behind_parent = true
+margin_left = 108.0
+margin_right = 1082.0
+margin_bottom = 720.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 10.28
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/HBoxContainer"]
+margin_left = 1086.0
+margin_right = 1284.0
+margin_bottom = 720.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 2.08
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MainButtonContainer" type="VBoxContainer" parent="CanvasLayer/HBoxContainer/VBoxContainer2"]
+margin_right = 198.0
+size_flags_horizontal = 3
+
+[node name="PlayerTabs" type="TabContainer" parent="CanvasLayer/HBoxContainer/VBoxContainer2"]
+margin_top = 4.0
+margin_right = 198.0
+margin_bottom = 720.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
