@@ -22,15 +22,26 @@ namespace Carcassonne
 {
     public class InternalNode
     {
-        public NodeType type { get; }
-        public List<Tile.Connection> connections = new List<Tile.Connection>();
-        public Tile tile;
-        public Map.Graph graph;
-        public int mark;
+        public NodeType Type { get; }
+        public List<Tile.Connection> Connections = new List<Tile.Connection>();
+        public Tile ParentTile { get; set; }
+        public Map.Graph Graph { get; set; }
+        public object Mark { get; set; } // potentially useful for certain search algorithms 
+        void DebugValidate()
+        {
+            Assert(Type != NodeType.ERR);
+            Assert(ParentTile != null);
+            Assert(Connections != null);
+            Assert(Graph == null || Graph.Nodes.Contains(this));
+            Assert(ParentTile.Nodes.Contains(this));
+            Assert(Connections.TrueForAll(c => ParentTile.Connections.Contains(c)));
+            Assert(Connections.TrueForAll(c => !c.IsConnected || c.Other.INode.Graph == this.Graph));
+            Connections.ForEach(c => c.DebugValidate());
+        }
         public InternalNode(NodeType type)
         {
             Assert(type != NodeType.ERR);
-            this.type = type;
+            this.Type = type;
         }
     }
 }

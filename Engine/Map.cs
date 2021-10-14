@@ -19,13 +19,13 @@ namespace Carcassonne
 {
     public partial class Map
     {
-        Dictionary<Vector2I, Tile> tilesbyposition = new Dictionary<Vector2I, Tile>();
-        List<Tile> tiles = new List<Tile>();
-        public Tile root { get; protected set; }
+        Dictionary<Vector2I, Tile> _tilesByPosition = new Dictionary<Vector2I, Tile>();
+        List<Tile> _tiles = new List<Tile>();
+        public Tile Root { get; protected set; }
         public List<Graph> Graphs = new List<Graph>();
         public Tile this[Vector2I pos]
         {
-            get => (tilesbyposition.ContainsKey(pos)) ? tilesbyposition[pos] : null;
+            get => (_tilesByPosition.ContainsKey(pos)) ? _tilesByPosition[pos] : null;
             protected set
             {
                 PlaceTile(value, pos);
@@ -33,12 +33,12 @@ namespace Carcassonne
         }
         public Tile this[int indx]
         {
-            get => tiles[indx];
+            get => _tiles[indx];
         }
-        public int Count { get => tiles.Count; }
+        public int Count { get => _tiles.Count; }
         public List<Tile> GetPlacedTiles()
         {
-            return tiles.ToList();
+            return _tiles.ToList();
         }
 
         public List<Tile> GetNeighbours(Vector2I pos)
@@ -53,25 +53,25 @@ namespace Carcassonne
         }
         public List<Tile> GetNeighbours(Tile t)
         {
-            return GetNeighbours(t.position);
+            return GetNeighbours(t.Position);
         }
         protected void PlaceTile(Tile tile, Vector2I pos, bool check)
         {
-            if (tilesbyposition.ContainsKey(pos))
+            if (_tilesByPosition.ContainsKey(pos))
                 throw new Exception("Attempted to replace a tile!");
             if (check && !CanPlaceTile(tile, pos))
                 throw new Exception("Invalid tile placement!");
-            tiles.Add(tile);
-            tilesbyposition.Add(pos, tile);
-            tile.position = pos;
+            _tiles.Add(tile);
+            _tilesByPosition.Add(pos, tile);
+            tile.Position = pos;
             Vector2I[] nepos = pos.Neighbours;
             for (int i = 0; i < N_SIDES; i++)
             {
                 Tile n = this[pos.Neighbours[i]];
                 if (n == null)
                     continue;
-                tile.sides[i].Attach(n.sides[AbsMod((i + (N_SIDES / 2)), N_SIDES)]);
-                tile.neighbours[i] = n;
+                tile.Sides[i].Attach(n.Sides[AbsMod((i + (N_SIDES / 2)), N_SIDES)]);
+                tile.Neighbours[i] = n;
             }
             UpdateGraphs(tile);
         }
@@ -97,7 +97,7 @@ namespace Carcassonne
                 {
                     ncount++;
                     List<int> ic = new List<int>();
-                    if (!tile.sides[i].CanAttachVerbose(this[p].sides[(i + (N_SIDES / 2)) % N_SIDES], out ic, ref connindex))
+                    if (!tile.Sides[i].CanAttachVerbose(this[p].Sides[(i + (N_SIDES / 2)) % N_SIDES], out ic, ref connindex))
                         ret = false;
                     invalidconnectors[i].AddRange(ic);
                 }
@@ -147,9 +147,9 @@ namespace Carcassonne
         public List<(Vector2I pos, int rot)> TryFindAllFits(Tile tile)
         {
             List<(Vector2I, int)> ret = new List<(Vector2I, int)>(64);
-            foreach (var t in tiles)
+            foreach (var t in _tiles)
             {
-                foreach (var n in t.position.Neighbours)
+                foreach (var n in t.Position.Neighbours)
                 {
                     if (this[n] != null)
                         continue;
@@ -169,7 +169,7 @@ namespace Carcassonne
         }
         public Map(Tile root)
         {
-            this.root = root;
+            this.Root = root;
             PlaceTile(root, new Vector2I(0, 0), false);
         }
     }

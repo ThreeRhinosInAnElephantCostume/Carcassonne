@@ -25,15 +25,28 @@ namespace Carcassonne
     {
         public class Connection
         {
-            public InternalNode node { get; }
+            public InternalNode INode { get; }
             public Connection Other { get; protected set; } = null;
             public bool IsConnected { get => Other != null; }
-            public NodeType Type { get => node.type; }
-            public virtual bool CanConnect(Connection other)
+            public NodeType Type { get => INode.Type; }
+            public void DebugValidate()
+            {
+                Assert(INode != null);
+                if (Other != null)
+                {
+                    Assert(Other.IsConnected);
+                    Assert(Other.Other == this);
+                    Assert(Other.Type == this.Type);
+                    Assert(Other.INode != this.INode);
+                    Assert(this.INode.Graph != null);
+                    Assert(Other.INode.Graph == this.INode.Graph);
+                }
+            }
+            public bool CanConnect(Connection other)
             {
                 return this.Type == other.Type;
             }
-            public virtual void Connect(Connection other)
+            public void Connect(Connection other)
             {
                 Assert(CanConnect(other), "Attempting to connect incompatible connectors");
 
@@ -43,17 +56,17 @@ namespace Carcassonne
             }
             public Connection(InternalNode node)
             {
-                this.node = node;
-                if (!node.connections.Contains(this))
-                    node.connections.Add(this);
+                this.INode = node;
+                if (!node.Connections.Contains(this))
+                    node.Connections.Add(this);
             }
         }
         public class Side
         {
-            public Connection[] connectors { get; protected set; } = new Connection[N_CONNECTORS];
-            public Tile owner { get; protected set; }
-            public Tile attached { get; protected set; } = null;
-            public bool IsAttached { get => attached != null; }
+            public Connection[] Connections { get; protected set; } = new Connection[N_CONNECTORS];
+            public Tile Owner { get; protected set; }
+            public Tile Other { get; protected set; } = null;
+            public bool IsAttached { get => Other != null; }
             public bool CanAttachVerbose(Side side, out List<int> invalidconnections, ref int conindex)
             {
                 invalidconnections = new List<int>((int)N_SIDES);
@@ -62,7 +75,7 @@ namespace Carcassonne
                     return false;
                 for (uint i = 0; i < N_CONNECTORS; i++)
                 {
-                    if (!side.connectors[N_CONNECTORS - i - 1].CanConnect(connectors[i]))
+                    if (!side.Connections[N_CONNECTORS - i - 1].CanConnect(Connections[i]))
                     {
                         can = false;
                         invalidconnections.Add(conindex);
@@ -77,7 +90,7 @@ namespace Carcassonne
                     return false;
                 for (uint i = 0; i < N_CONNECTORS; i++)
                 {
-                    if (!side.connectors[N_CONNECTORS - i - 1].CanConnect(connectors[i]))
+                    if (!side.Connections[N_CONNECTORS - i - 1].CanConnect(Connections[i]))
                         return false;
                 }
                 return true;
@@ -86,29 +99,29 @@ namespace Carcassonne
             {
                 Assert(!this.IsAttached, "Attempting to connect a side that's already connected");
                 Assert(CanAttach(side), "Attempting to connect incompatible/already connected sides");
-                Assert(side.owner != this.owner, "Attempting to connect a tile to itself");
-                this.attached = side.owner;
-                side.attached = this.owner;
+                Assert(side.Owner != this.Owner, "Attempting to connect a tile to itself");
+                this.Other = side.Owner;
+                side.Other = this.Owner;
                 for (uint i = 0; i < N_CONNECTORS; i++)
                 {
-                    side.connectors[N_CONNECTORS - i - 1].Connect(this.connectors[i]);
+                    side.Connections[N_CONNECTORS - i - 1].Connect(this.Connections[i]);
                 }
             }
             public Side(Tile owner, Connection[] connections)
             {
-                this.owner = owner;
-                this.connectors = connections;
+                this.Owner = owner;
+                this.Connections = connections;
             }
         }
-        public InternalNode[] nodes { get; protected set; }
-        public Connection[] connections { get; set; } = new Connection[N_SIDES * N_CONNECTORS];
-        public Side[] sides { get; set; } = new Side[N_SIDES];
-        public Tile[] neighbours { get; set; } = new Tile[N_SIDES];
-        public Side Up { get => sides[0]; }
-        public Side Right { get => sides[1]; }
-        public Side Down { get => sides[2]; }
-        public Side Left { get => sides[3]; }
-        public Vector2I position { get; set; } = new Vector2I(0, 0);
+        public InternalNode[] Nodes { get; protected set; }
+        public Connection[] Connections { get; set; } = new Connection[N_SIDES * N_CONNECTORS];
+        public Side[] Sides { get; set; } = new Side[N_SIDES];
+        public Tile[] Neighbours { get; set; } = new Tile[N_SIDES];
+        public Side Up { get => Sides[0]; }
+        public Side Right { get => Sides[1]; }
+        public Side Down { get => Sides[2]; }
+        public Side Left { get => Sides[3]; }
+        public Vector2I Position { get; set; } = new Vector2I(0, 0);
         public bool IsPlaced { get; protected set; } = false;
         public string DebugRepresentation
         {
@@ -120,20 +133,20 @@ namespace Carcassonne
                 ret += " ";
                 for (int i = 0; i < N_CONNECTORS; i++)
                 {
-                    ret += GameEngine.GetTypeAbrv(sides[0].connectors[i].node.type);
+                    ret += GameEngine.GetTypeAbrv(Sides[0].Connections[i].INode.Type);
                 }
                 ret += "\n";
                 for (int i = 0; i < N_CONNECTORS; i++)
                 {
-                    ret += GameEngine.GetTypeAbrv(sides[3].connectors[i].node.type);
+                    ret += GameEngine.GetTypeAbrv(Sides[3].Connections[i].INode.Type);
                     ret += "   ";
-                    ret += GameEngine.GetTypeAbrv(sides[1].connectors[i].node.type);
+                    ret += GameEngine.GetTypeAbrv(Sides[1].Connections[i].INode.Type);
                     ret += "\n";
                 }
                 ret += " ";
                 for (int i = 0; i < N_CONNECTORS; i++)
                 {
-                    ret += GameEngine.GetTypeAbrv(sides[2].connectors[i].node.type);
+                    ret += GameEngine.GetTypeAbrv(Sides[2].Connections[i].INode.Type);
                 }
                 ret += "\n";
                 return ret;
@@ -145,7 +158,7 @@ namespace Carcassonne
             {
                 for (int ii = 0; ii < N_CONNECTORS; ii++)
                 {
-                    connections[i * N_CONNECTORS + ii] = sides[i].connectors[ii];
+                    Connections[i * N_CONNECTORS + ii] = Sides[i].Connections[ii];
                 }
             }
         }
@@ -159,9 +172,9 @@ namespace Carcassonne
             Side[] nsides = new Side[N_SIDES];
             for (uint i = 0; i < N_SIDES; i++)
             {
-                nsides[AbsMod((int)(i + r), N_SIDES)] = sides[i];
+                nsides[AbsMod((int)(i + r), N_SIDES)] = Sides[i];
             }
-            sides = nsides;
+            Sides = nsides;
             ReoderConnections();
             // GD.Print(DebugRepresentation);
             // GD.Print("----");
@@ -169,11 +182,11 @@ namespace Carcassonne
         public Tile(InternalNode[] nodes, Connection[] connections)
         {
             Assert(connections.Length == N_CONNECTORS * N_SIDES);
-            this.connections = connections;
-            this.nodes = nodes;
+            this.Connections = connections;
+            this.Nodes = nodes;
             for (int i = 0; i < N_SIDES; i++)
             {
-                sides[i] = new Side(this, connections.ToList().GetRange(i * N_CONNECTORS, N_CONNECTORS).ToArray()); // I know...
+                Sides[i] = new Side(this, connections.ToList().GetRange(i * N_CONNECTORS, N_CONNECTORS).ToArray()); // I know...
             }
         }
     }

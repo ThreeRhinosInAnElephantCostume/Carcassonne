@@ -23,7 +23,7 @@ public static class TileDataLoader
             path = ConcatPaths(Constants.TILE_DIRECTORY, path);
 
         Assert(path.EndsWith(".json"));
-        Assert(new Directory().FileExists(path));
+        Assert(FileExists(path));
 
         string data = ReadFile(path);
         TilePrototype tp = JsonConvert.DeserializeObject<TilePrototype>(data);
@@ -42,7 +42,7 @@ public static class TileDataLoader
             path = ConcatPaths(Constants.TILESET_DIRECTORY, path);
 
         Assert(path.EndsWith(".json"));
-        Assert(new Directory().FileExists(path));
+        Assert(FileExists(path));
 
         string data = ReadFile(path);
         EditableTileset tp = JsonConvert.DeserializeObject<EditableTileset>(data);

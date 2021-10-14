@@ -67,7 +67,7 @@ public class TileMap : Node2D
             else
             {
                 unplaced.Remove(td.tile);
-                td.GridPosition = td.tile.position;
+                td.GridPosition = td.tile.Position;
                 td.Update();
             }
         }
@@ -77,7 +77,7 @@ public class TileMap : Node2D
             pt.tile = t;
             AddChild(pt);
             tiledisplays.Add(pt);
-            pt.GridPosition = t.position;
+            pt.GridPosition = t.Position;
         }
         foreach (var it in potentialtiles)
         {

@@ -105,10 +105,10 @@ public class PlacedTile : TestTile
         {
             for (int ii = 0; ii < N_CONNECTORS; ii++)
             {
-                Tile.Connection con = tile.sides[i].connectors[ii];
-                Color c = GetTypeColor(con.node.type);
+                Tile.Connection con = tile.Sides[i].Connections[ii];
+                Color c = GetTypeColor(con.INode.Type);
 
-                int indx = tile.nodes.ToList().IndexOf(con.node);
+                int indx = tile.Nodes.ToList().IndexOf(con.INode);
                 if (indx == HighlightedNode)
                     c = HighlightColor;
 
@@ -120,17 +120,17 @@ public class PlacedTile : TestTile
 
                 DrawLine(start, end, c, consize);
 
-                if (!points.ContainsKey(con.node))
-                    points.Add(con.node, new List<Vector2>());
-                points[con.node].Add((start + end) / 2);
+                if (!points.ContainsKey(con.INode))
+                    points.Add(con.INode, new List<Vector2>());
+                points[con.INode].Add((start + end) / 2);
             }
         }
         foreach (var k in points.Keys)
         {
-            Color c = GetTypeColor(k.type);
+            Color c = GetTypeColor(k.Type);
             c.a *= OpacityMP;
 
-            int indx = tile.nodes.ToList().IndexOf(k);
+            int indx = tile.Nodes.ToList().IndexOf(k);
             if (indx == HighlightedNode)
                 c = HighlightColor;
 

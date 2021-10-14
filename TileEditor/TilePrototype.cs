@@ -87,7 +87,7 @@ public class TilePrototype
 
         foreach (var it in nodes)
         {
-            it.tile = t;
+            it.ParentTile = t;
         }
 
         return t;
