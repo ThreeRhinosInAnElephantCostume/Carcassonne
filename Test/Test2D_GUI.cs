@@ -26,24 +26,31 @@ public class Test2D_GUI : Control
     CanvasLayer _cl;
     Godot.Container _sidecontainer;
     TabContainer _playerTabContainer;
-    VBoxContainer _mainButtonContaienr;
+    VBoxContainer _mainButtonContainer;
     List<VBoxContainer> _playerDataContainers = new List<VBoxContainer>();
+    List<Button> _pawnPlaceButtons = new List<Button>();
     class PlacePawnButton : Button
     {
         GameEngine _game;
-        InternalNode _node;
+        object o;
         int _indx;
-        PlacedTile _placedTile => _gui._tileMap.tiledisplays.Find(it => it.tile == _node.ParentTile);
+        PlacedTile _placedTile => _gui._tileMap.tiledisplays.Find(it => it.tile == ((InternalNode)o).ParentTile);
         Test2D_GUI _gui;
         void MouseEntered()
         {
-            _placedTile.HighlightedNode = _indx;
-            _placedTile.CallDeferred("update");
+            if (o is InternalNode)
+            {
+                _placedTile.HighlightedNode = _indx;
+                _placedTile.CallDeferred("update");
+            }
         }
         void MouseExited()
         {
-            _placedTile.HighlightedNode = -1;
-            _placedTile.CallDeferred("update");
+            if (o is InternalNode)
+            {
+                _placedTile.HighlightedNode = -1;
+                _placedTile.CallDeferred("update");
+            }
         }
         public override void _Pressed()
         {
@@ -52,33 +59,44 @@ public class Test2D_GUI : Control
             {
                 _game.SkipPlacingPawn();
             }
-            else
+            else if (o is InternalNode n)
             {
                 _placedTile.HighlightedNode = -1;
                 _game.PlacePawnOnNode(_indx);
             }
+            else if (o is Tile.TileAttribute a)
+            {
+                _game.PlacePawnOnAttribute(_indx);
+            }
             _gui._tileMap.UpdateDisplay();
             _gui.UpdateInterface();
         }
-        public PlacePawnButton(Test2D_GUI gui, GameEngine game, InternalNode node, int indx)
+        public PlacePawnButton(Test2D_GUI gui, GameEngine game, object o, int indx, int hotkey)
         {
             Assert(gui != null);
-            Assert(node != null || indx == -1);
+            Assert(o != null || indx == -1);
 
             this._gui = gui;
             this._game = game;
-            this._node = node;
+            this.o = o;
             this._indx = indx;
 
             if (indx == -1)
             {
-                this.Text = "SKIP";
+                this.Text = $"{hotkey}. SKIP";
             }
             else
             {
-                this.Text = $"{node.Type} ({node.ParentTile.Nodes.IndexOf(node)})";
-                this.Connect("mouse_entered", this, "MouseEntered");
-                this.Connect("mouse_exited", this, "MouseExited");
+                if (o is InternalNode node)
+                {
+                    this.Connect("mouse_entered", this, "MouseEntered");
+                    this.Connect("mouse_exited", this, "MouseExited");
+                    this.Text = $"{hotkey}. {node.Type} ({node.ParentTile.Nodes.IndexOf(node)})";
+                }
+                else if (o is Tile.TileAttribute attr)
+                {
+                    this.Text = $"{hotkey}. {attr.Type}";
+                }
             }
         }
     }
@@ -90,21 +108,32 @@ public class Test2D_GUI : Control
             _currenttile.tile = _game.GetCurrentTile();
             _currenttile.CallDeferred("update");
         }
-        foreach (Node n in _mainButtonContaienr.GetChildren())
+        foreach (Node n in _mainButtonContainer.GetChildren())
         {
             n.GetParent().RemoveChild(n);
             n.QueueFree();
         }
+        _pawnPlaceButtons.Clear();
         if (_game.CurrentState == GameEngine.State.PLACE_PAWN)
         {
-            int i = 0;
+            int i = 1;
             Tile tile = _game.map[_game.CurrentPawnTarget()];
-            _mainButtonContaienr.AddChild(new PlacePawnButton(this, _game, null, -1));
+            PlacePawnButton button;
+            _mainButtonContainer.AddChild(button = new PlacePawnButton(this, _game, null, -1, i++));
+            _pawnPlaceButtons.Add(button);
+            foreach (var it in _game.PossibleMeepleAttributePlacements())
+            {
+                button = new PlacePawnButton(this, _game, tile.Attributes[it], it, i);
+                _mainButtonContainer.AddChild(button);
+                _pawnPlaceButtons.Add(button);
+                i++;
+            }
             foreach (var it in _game.PossibleMeepleNodePlacements())
             {
                 InternalNode node = tile.Nodes[it];
-                PlacePawnButton button = new PlacePawnButton(this, _game, node, it);
-                _mainButtonContaienr.AddChild(button);
+                button = new PlacePawnButton(this, _game, node, it, i);
+                _mainButtonContainer.AddChild(button);
+                _pawnPlaceButtons.Add(button);
                 i++;
             }
         }
@@ -131,7 +160,7 @@ public class Test2D_GUI : Control
                 foreach ((Map.Graph graph, bool iscontested) in _game.GetGraphsOwnedBy(it))
                 {
                     var l = new Label();
-                    l.Text = $"ID: {graph.ID}\nType: {graph.Type}\nTiles: {graph.Tiles.Count}\nIsContested: {iscontested}";
+                    l.Text = $"ID: {graph.ID}\nType: {graph.Type}\nTiles: {graph.Tiles.Count}\nIsContested: {iscontested}\n";
                     _playerDataContainers[i].AddChild(l);
                 }
                 i++;
@@ -148,7 +177,7 @@ public class Test2D_GUI : Control
         _sidecontainer = _cl.GetNode("HBoxContainer/VBoxContainer/PlayerDataScroll")
             .GetNode<Godot.Container>("PlayerDataContainer");
 
-        _mainButtonContaienr = _cl.GetNode<VBoxContainer>("HBoxContainer/VBoxContainer2/MainButtonContainer");
+        _mainButtonContainer = _cl.GetNode<VBoxContainer>("HBoxContainer/VBoxContainer2/MainButtonContainer");
         _playerTabContainer = _cl.GetNode<TabContainer>("HBoxContainer/VBoxContainer2/PlayerTabs");
 
 
@@ -206,6 +235,23 @@ public class Test2D_GUI : Control
                         _camera.Zoom = new Vector2(1, 1) * (float)Min(_camera.Zoom.x * 1.1f, 5f);
                     }
 
+                    break;
+                }
+            case InputEventKey ev:
+                {
+                    uint codestart = (uint)KeyList.Key1;
+                    uint codesend = (uint)KeyList.Key9;
+                    if (ev.Scancode >= codestart && ev.Scancode <= codesend)
+                    {
+                        uint v = ev.Scancode - codestart;
+                        if (_game.CurrentState == GameEngine.State.PLACE_PAWN)
+                        {
+                            if (v < _pawnPlaceButtons.Count)
+                            {
+                                _pawnPlaceButtons[(int)v]._Pressed();
+                            }
+                        }
+                    }
                     break;
                 }
         }

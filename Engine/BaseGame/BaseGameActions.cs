@@ -38,7 +38,7 @@ namespace Carcassonne
             var act = (PlaceTileAction)_act;
 
             AssertState(State.PLACE_TILE);
-            Tile c = tilemanager.CurrentTile();
+            Tile c = _tileManager.CurrentTile();
 
             _lastTile = c;
 
@@ -50,10 +50,10 @@ namespace Carcassonne
             }
             map.PlaceTile(c, act.pos);
 
-            if (GetPossibleMeeplePlacements(c).Count == 0)
+            if (GetPossibleMeeplePlacements(CurrentPlayer, c).Count == 0)
             {
                 UpdatePoints();
-                if (tilemanager.NextTile() == null)
+                if (_tileManager.NextTile() == null)
                     EndGame();
 
                 NextPlayer();
@@ -81,7 +81,7 @@ namespace Carcassonne
 
             CurrentState = State.PLACE_TILE;
 
-            if (tilemanager.NextTile() == null)
+            if (_tileManager.NextTile() == null)
             {
                 EndGame();
                 return;
@@ -119,7 +119,7 @@ namespace Carcassonne
             {
                 Tile.TileAttribute attr = _lastTile.Attributes[act.indx];
 
-                Assert(GetPossibleMeeplePlacements(_lastTile).Contains(attr));
+                Assert(GetPossibleMeeplePlacements(CurrentPlayer, _lastTile).Contains(attr));
 
                 meeple.Place(_lastTile, attr);
 
@@ -130,7 +130,7 @@ namespace Carcassonne
             {
                 InternalNode node = _lastTile.Nodes[act.indx];
 
-                Assert(GetPossibleMeeplePlacements(_lastTile).Contains(node));
+                Assert(GetPossibleMeeplePlacements(CurrentPlayer, _lastTile).Contains(node));
 
                 meeple.Place(node);
             }
@@ -138,7 +138,7 @@ namespace Carcassonne
 
             UpdatePoints();
 
-            if (tilemanager.NextTile() == null)
+            if (_tileManager.NextTile() == null)
             {
                 EndGame();
                 return;
@@ -167,15 +167,15 @@ namespace Carcassonne
         {
             var act = (StartBaseGameAction)_act;
 
-            rng = new RNG(act.seed);
+            _rng = new RNG(act.seed);
 
             Assert(act.players >= MIN_PLAYERS && act.players <= MAX_PLAYERS);
 
-            tilemanager = new TileManager(this);
+            _tileManager = new TileManager(this);
 
-            tilemanager.AddTiles(act.tileset.GenerateTiles(rng), true);
+            _tileManager.AddTiles(act.tileset.GenerateTiles(_rng), true);
 
-            tilemanager.NextTile();
+            _tileManager.NextTile();
 
             for (int i = 0; i < act.players; i++)
             {
@@ -187,7 +187,7 @@ namespace Carcassonne
 
             Assert(act.tileset.HasStarter);
 
-            var starter = act.tileset.GenerateStarter(rng);
+            var starter = act.tileset.GenerateStarter(_rng);
 
             Assert(starter != null);
 

@@ -35,15 +35,15 @@ namespace Carcassonne
         }
         public Tile GetCurrentTile()
         {
-            return tilemanager.CurrentTile();
+            return _tileManager.CurrentTile();
         }
         public Tile GetUpcomingTile()
         {
-            return tilemanager.PeekTile();
+            return _tileManager.PeekTile();
         }
         public List<Tile> GetQueuedTiles()
         {
-            return tilemanager.TileQueue.ToList();
+            return _tileManager.TileQueue.ToList();
         }
         public List<Player> GetWinners()
         {
@@ -54,16 +54,16 @@ namespace Carcassonne
         public List<(Vector2I pos, int rot)> PossibleTilePlacements()
         {
             AssertState(State.PLACE_TILE);
-            Assert(tilemanager.CurrentTile() != null);
+            Assert(_tileManager.CurrentTile() != null);
 
-            return map.TryFindAllFits(tilemanager.CurrentTile());
+            return map.TryFindAllFits(_tileManager.CurrentTile());
         }
 
         public List<int> PossibleMeepleNodePlacements()
         {
             AssertState(State.PLACE_PAWN);
 
-            return GetPossibleMeeplePlacements(_lastTile)
+            return GetPossibleMeeplePlacements(CurrentPlayer, _lastTile)
                 .FindAll(o => o is InternalNode)
                 .ConvertAll(o => ((InternalNode)o).Index);
         }
@@ -71,7 +71,7 @@ namespace Carcassonne
         {
             AssertState(State.PLACE_PAWN);
 
-            return GetPossibleMeeplePlacements(_lastTile)
+            return GetPossibleMeeplePlacements(CurrentPlayer, _lastTile)
                 .FindAll(o => o is Tile.TileAttribute)
                 .ConvertAll(o => _lastTile.Attributes.IndexOf((Tile.TileAttribute)o));
         }
@@ -89,7 +89,7 @@ namespace Carcassonne
         }
         public void PlacePawnOnAttribute(int index)
         {
-            var act = new PlacePawnAction(index, false);
+            var act = new PlacePawnAction(index, true);
             ExecuteAction(act);
         }
 

@@ -26,12 +26,12 @@ namespace Carcassonne
         public class TileAttribute
         {
             public Tile tile { get; protected set; }
-            public TileAttributeType type { get; protected set; }
+            public TileAttributeType Type { get; protected set; }
 
             public TileAttribute(Tile tile, TileAttributeType tp)
             {
                 this.tile = tile;
-                this.type = tp;
+                this.Type = tp;
             }
         }
         public class Connection
@@ -171,6 +171,7 @@ namespace Carcassonne
                 return new TileMonasteryAttribute(this);
             return new TileAttribute(this, tp);
         }
+        public List<TileAttributeType> AttributeTypes => Attributes.ConvertAll(it => it.Type);
         public void ReoderConnections()
         {
             for (int i = 0; i < N_SIDES; i++)

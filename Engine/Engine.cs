@@ -43,7 +43,7 @@ namespace Carcassonne
 
                 TileList.Add(tile);
                 if (shuffle && TileQueue.Count > 0)
-                    TileQueue.Insert((int)eng.rng.NextLong(0, TileQueue.Count), tile);
+                    TileQueue.Insert((int)eng._rng.NextLong(0, TileQueue.Count), tile);
                 else
                     TileQueue.Add(tile);
             }
@@ -59,7 +59,7 @@ namespace Carcassonne
                 List<Tile> res = new List<Tile>(TileQueue.Count);
                 while (TileQueue.Count > 0)
                 {
-                    int indx = (int)eng.rng.NextLong(0, TileQueue.Count);
+                    int indx = (int)eng._rng.NextLong(0, TileQueue.Count);
                     res.Add(TileQueue[indx]);
                     TileQueue.RemoveAt(indx);
                 }
@@ -122,8 +122,8 @@ namespace Carcassonne
             PLACE_PAWN,
             GAME_OVER
         }
-        protected TileManager tilemanager { get; set; }
-        protected RNG rng { get; set; }
+        protected TileManager _tileManager { get; set; }
+        protected RNG _rng { get; set; }
         List<Action> _history = new List<Action>();
         protected List<Player> _players = new List<Player>();
         public Map map { get; protected set; }

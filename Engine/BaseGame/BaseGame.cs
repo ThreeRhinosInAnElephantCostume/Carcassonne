@@ -33,7 +33,7 @@ namespace Carcassonne
             if (g.Type == NodeType.FARM)
             {
                 List<Map.Graph> completedcities = new List<Map.Graph>();
-                g.Nodes.FindAll(it => it.GetAttributeTypes().Contains(NodeAttributeType.NEAR_CITY)).ForEach
+                g.Nodes.FindAll(it => it.AttributeTypes.Contains(NodeAttributeType.NEAR_CITY)).ForEach
                 (
                     it =>
                     {
@@ -64,7 +64,7 @@ namespace Carcassonne
             if (g.Type == NodeType.CITY && g.Tiles.Count < CITY_SMALL_THRESHOLD)
             {
                 points = CITY_SMALL_POINTS * n +
-                CITY_COMPLETE_BONUS_POINTS * g.Nodes.Count(n => n.GetAttributeTypes().Contains(NodeAttributeType.CITY_BONUS));
+                CITY_COMPLETE_BONUS_POINTS * g.Nodes.Count(n => n.AttributeTypes.Contains(NodeAttributeType.CITY_BONUS));
             }
             else
             {
@@ -72,10 +72,10 @@ namespace Carcassonne
                 {
                     (NodeType.CITY, true) =>
                         n * CITY_COMPLETE_POINTS +
-                        CITY_COMPLETE_BONUS_POINTS * g.Nodes.Count(n => n.GetAttributeTypes().Contains(NodeAttributeType.CITY_BONUS)),
+                        CITY_COMPLETE_BONUS_POINTS * g.Nodes.Count(n => n.AttributeTypes.Contains(NodeAttributeType.CITY_BONUS)),
                     (NodeType.CITY, false) =>
                         n * CITY_INCOMPLETE_POINTS +
-                        CITY_INCOMPLETE_BONUS_POINTS * g.Nodes.Count(n => n.GetAttributeTypes().Contains(NodeAttributeType.CITY_BONUS)),
+                        CITY_INCOMPLETE_BONUS_POINTS * g.Nodes.Count(n => n.AttributeTypes.Contains(NodeAttributeType.CITY_BONUS)),
                     (NodeType.ROAD, true) =>
                         n * ROAD_COMPLETE_POINTS,
                     (NodeType.ROAD, false) =>
@@ -180,8 +180,10 @@ namespace Carcassonne
             Assert(ret != null);
             return (Meeple)ret;
         }
-        List<object> GetPossibleMeeplePlacements(Tile tile)
+        List<object> GetPossibleMeeplePlacements(Player player, Tile tile)
         {
+            if (GetFreeMeepleCount(player) == 0)
+                return new List<object>();
             var nodes = tile.Nodes.FindAll((InternalNode n) => GetGraphOwners(n.Graph).Count == 0).ToList<object>();
             var mons = tile.Attributes.FindAll(it => it is TileMonasteryAttribute && ((TileMonasteryAttribute)it).Owner == null).ToList<object>();
             return nodes.Concat(mons).ToList();

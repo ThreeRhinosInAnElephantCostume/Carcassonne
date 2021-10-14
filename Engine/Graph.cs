@@ -153,7 +153,6 @@ namespace Carcassonne
                 greater.AddNode(it);
             }
             RemoveGraph(lesser);
-            greater.Check();
             return greater;
         }
         Graph ExtendGraph(Graph graph, InternalNode branch)
@@ -208,6 +207,7 @@ namespace Carcassonne
                 }
             }
             ngraphs = ngraphs.FindAll((g) => Graphs.Contains(g)).Distinct().ToList();
+            ngraphs.ForEach(it => it.Check());
             return ngraphs;
         }
         public List<Graph> UpdateGraphs()
@@ -218,6 +218,7 @@ namespace Carcassonne
                 ngraphs.AddRange(UpdateGraphs(it));
             }
             ngraphs = ngraphs.FindAll((g) => Graphs.Contains(g)).Distinct().ToList();
+            ngraphs.ForEach(it => it.Check());
             return ngraphs;
         }
         void AddOwner(Graph graph, object o)

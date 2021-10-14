@@ -25,11 +25,11 @@ namespace Carcassonne
         // Extensibility required for potential expansions
         public class InternalNodeAttribute
         {
-            public NodeAttributeType type { get; protected set; }
+            public NodeAttributeType Type { get; protected set; }
 
             public InternalNodeAttribute(NodeAttributeType type)
             {
-                this.type = type;
+                this.Type = type;
             }
         }
         public NodeType Type { get; }
@@ -45,10 +45,7 @@ namespace Carcassonne
         {
             return new InternalNodeAttribute(tp);
         }
-        public List<NodeAttributeType> GetAttributeTypes()
-        {
-            return Attributes.ConvertAll<NodeAttributeType>(it => it.type);
-        }
+        public List<NodeAttributeType> AttributeTypes => Attributes.ConvertAll(it => it.Type);
         public void DebugValidate()
         {
             Assert(Type != NodeType.ERR);

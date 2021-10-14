@@ -90,7 +90,7 @@ namespace Carcassonne
             var mon = (TileMonasteryAttribute)attr;
             mon.Owner = this;
             _place = mon;
-            this.CurrentRole = MatchRole(attr.type);
+            this.CurrentRole = MatchRole(attr.Type);
         }
         public void Remove()
         {
