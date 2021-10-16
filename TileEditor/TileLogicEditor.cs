@@ -351,6 +351,7 @@ public class TileLogicEditor : Control
             {
                 Tile.Assignments[indx] = next;
             }
+            EnsureNoEmptyNodes();
         }
         UpdateTileDisplay();
         ResetLists();
