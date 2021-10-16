@@ -23,10 +23,10 @@ __meta__ = {
 }
 
 [node name="FileSelector" parent="HBoxContainer" instance=ExtResource( 2 )]
-margin_right = 255.0
+margin_right = 306.0
 
 [node name="MainContainer" type="HBoxContainer" parent="HBoxContainer"]
-margin_left = 259.0
+margin_left = 310.0
 margin_right = 1280.0
 margin_bottom = 720.0
 size_flags_horizontal = 3
@@ -34,25 +34,25 @@ size_flags_vertical = 3
 size_flags_stretch_ratio = 4.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/MainContainer"]
-margin_right = 327.0
+margin_right = 310.0
 margin_bottom = 720.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="PotentialSearchBar" type="LineEdit" parent="HBoxContainer/MainContainer/VBoxContainer"]
-margin_right = 327.0
+margin_right = 310.0
 margin_bottom = 24.0
 
 [node name="PotentialTiles" type="ItemList" parent="HBoxContainer/MainContainer/VBoxContainer"]
 margin_top = 28.0
-margin_right = 327.0
+margin_right = 310.0
 margin_bottom = 720.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="VBoxContainer3" type="VBoxContainer" parent="HBoxContainer/MainContainer"]
-margin_left = 331.0
-margin_right = 359.0
+margin_left = 314.0
+margin_right = 342.0
 margin_bottom = 720.0
 size_flags_vertical = 3
 alignment = 1
@@ -88,55 +88,55 @@ margin_bottom = 418.0
 text = "+S"
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="HBoxContainer/MainContainer"]
-margin_left = 363.0
-margin_right = 690.0
+margin_left = 346.0
+margin_right = 656.0
 margin_bottom = 720.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="CurrentSearchBar" type="LineEdit" parent="HBoxContainer/MainContainer/VBoxContainer2"]
-margin_right = 327.0
+margin_right = 310.0
 margin_bottom = 24.0
 
 [node name="CurrentTiles" type="ItemList" parent="HBoxContainer/MainContainer/VBoxContainer2"]
 margin_top = 28.0
-margin_right = 327.0
+margin_right = 310.0
 margin_bottom = 632.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/MainContainer/VBoxContainer2"]
 margin_top = 636.0
-margin_right = 327.0
+margin_right = 310.0
 margin_bottom = 720.0
 size_flags_horizontal = 3
 
 [node name="HBoxContainer4" type="HBoxContainer" parent="HBoxContainer/MainContainer/VBoxContainer2/VBoxContainer"]
-margin_right = 327.0
+margin_right = 310.0
 margin_bottom = 20.0
 alignment = 1
 
 [node name="SaveButton" type="Button" parent="HBoxContainer/MainContainer/VBoxContainer2/VBoxContainer/HBoxContainer4"]
-margin_left = 82.0
-margin_right = 125.0
+margin_left = 73.0
+margin_right = 116.0
 margin_bottom = 20.0
 text = "SAVE"
 
 [node name="ResetButton" type="Button" parent="HBoxContainer/MainContainer/VBoxContainer2/VBoxContainer/HBoxContainer4"]
-margin_left = 129.0
-margin_right = 177.0
+margin_left = 120.0
+margin_right = 168.0
 margin_bottom = 20.0
 text = "RESET"
 
 [node name="ReloadButton" type="Button" parent="HBoxContainer/MainContainer/VBoxContainer2/VBoxContainer/HBoxContainer4"]
-margin_left = 181.0
-margin_right = 245.0
+margin_left = 172.0
+margin_right = 236.0
 margin_bottom = 20.0
 text = "RELOAD"
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="HBoxContainer/MainContainer/VBoxContainer2/VBoxContainer"]
 margin_top = 24.0
-margin_right = 327.0
+margin_right = 310.0
 margin_bottom = 48.0
 alignment = 1
 
@@ -154,17 +154,17 @@ text = "NOutputTiles: "
 
 [node name="NOutputTilesEdit" type="LineEdit" parent="HBoxContainer/MainContainer/VBoxContainer2/VBoxContainer/HBoxContainer3"]
 margin_left = 218.0
-margin_right = 327.0
+margin_right = 310.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="HBoxContainer/MainContainer/VBoxContainer2/VBoxContainer"]
 margin_top = 52.0
-margin_right = 327.0
+margin_right = 310.0
 margin_bottom = 66.0
 
 [node name="NTilesLabel" type="Label" parent="HBoxContainer/MainContainer/VBoxContainer2/VBoxContainer/HBoxContainer2"]
-margin_right = 161.0
+margin_right = 153.0
 margin_bottom = 14.0
 size_flags_horizontal = 3
 size_flags_vertical = 5
@@ -172,8 +172,8 @@ text = "NTiles: xxx"
 align = 1
 
 [node name="NStarterLabel" type="Label" parent="HBoxContainer/MainContainer/VBoxContainer2/VBoxContainer/HBoxContainer2"]
-margin_left = 165.0
-margin_right = 327.0
+margin_left = 157.0
+margin_right = 310.0
 margin_bottom = 14.0
 size_flags_horizontal = 3
 size_flags_vertical = 5
@@ -185,20 +185,20 @@ __meta__ = {
 
 [node name="StatusLabel" type="Label" parent="HBoxContainer/MainContainer/VBoxContainer2/VBoxContainer"]
 margin_top = 70.0
-margin_right = 327.0
+margin_right = 310.0
 margin_bottom = 84.0
 text = "status"
 align = 1
 
 [node name="VisualisationBox" type="VBoxContainer" parent="HBoxContainer/MainContainer"]
-margin_left = 694.0
-margin_right = 1021.0
+margin_left = 660.0
+margin_right = 970.0
 margin_bottom = 720.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="ViewportContainer" type="ViewportContainer" parent="HBoxContainer/MainContainer/VisualisationBox"]
-margin_right = 327.0
+margin_right = 310.0
 margin_bottom = 358.0
 rect_min_size = Vector2( 300, 300 )
 size_flags_horizontal = 3
@@ -206,7 +206,7 @@ size_flags_vertical = 3
 stretch = true
 
 [node name="Viewport" type="Viewport" parent="HBoxContainer/MainContainer/VisualisationBox/ViewportContainer"]
-size = Vector2( 327, 358 )
+size = Vector2( 310, 358 )
 handle_input_locally = false
 render_target_update_mode = 3
 
@@ -216,13 +216,13 @@ render_target_update_mode = 3
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/MainContainer/VisualisationBox"]
 margin_top = 362.0
-margin_right = 327.0
+margin_right = 310.0
 margin_bottom = 720.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="NodeList" type="ItemList" parent="HBoxContainer/MainContainer/VisualisationBox/HBoxContainer"]
-margin_right = 161.0
+margin_right = 153.0
 margin_bottom = 358.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -231,8 +231,8 @@ __meta__ = {
 }
 
 [node name="AttributeList" type="ItemList" parent="HBoxContainer/MainContainer/VisualisationBox/HBoxContainer"]
-margin_left = 165.0
-margin_right = 327.0
+margin_left = 157.0
+margin_right = 310.0
 margin_bottom = 358.0
 size_flags_horizontal = 3
 size_flags_vertical = 3

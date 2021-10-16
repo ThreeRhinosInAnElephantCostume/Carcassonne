@@ -79,6 +79,17 @@ public class TilesetEditor : Control
         LoadTile(_possibleTilePaths[indx]);
         UpdateInterface();
     }
+    void PossibleListDeselected()
+    {
+        _listMode = ListMode.NOTHING;
+        _listIndex = -1;
+        UpdateInterface();
+    }
+    void PossibleListActivated(int indx)
+    {
+        PossibleListSelected(indx);
+        AddButtonPressed();
+    }
     void CurrentSearchChanged(string text)
     {
         UnloadTile();
@@ -93,6 +104,17 @@ public class TilesetEditor : Control
         _listIndex = indx;
         LoadTile(_currentTileData[indx].path);
         UpdateInterface();
+    }
+    void CurrentListDeselected()
+    {
+        _listMode = ListMode.NOTHING;
+        _listIndex = -1;
+        UpdateInterface();
+    }
+    void CurrentListActivated(int indx)
+    {
+        CurrentListSelected(indx);
+        RemoveButtonPressed();
     }
     void AddButtonPressed()
     {
@@ -299,7 +321,9 @@ public class TilesetEditor : Control
         filter = filter.ToLower();
         _possibleTilePaths.Clear();
         _possibleTileList.Clear();
-        foreach (var it in ListDirectoryFilesRecursively(Constants.TILE_DIRECTORY, s => s.EndsWith(".json")))
+        var files = ListDirectoryFilesRecursively(Constants.TILE_DIRECTORY, s => s.EndsWith(".json"));
+        files.Sort();
+        foreach (var it in files)
         {
             string visstr = it.Replace(Constants.TILE_DIRECTORY, "");
             if (visstr[0] == '/')
@@ -331,7 +355,9 @@ public class TilesetEditor : Control
             else
                 dt.Add(it, 1);
         }
-        foreach (var it in dt)
+        var kvs = dt.ToList();
+        kvs.Sort((kv0, kv1) => kv0.Key.CompareTo(kv1.Key));
+        foreach (var it in kvs)
         {
             string visstr = it.Key;
             if (visstr[0] == '/')
@@ -540,6 +566,8 @@ public class TilesetEditor : Control
             _possibleSearchEdit.Connect("text_changed", this, "PossibleSearchChanged");
             _possibleTileList = GetNode<ItemList>("HBoxContainer/MainContainer/VBoxContainer/PotentialTiles");
             _possibleTileList.Connect("item_selected", this, "PossibleListSelected");
+            _possibleTileList.Connect("nothing_selected", this, "PossibleListDeselected");
+            _possibleTileList.Connect("item_activated", this, "PossibleListActivated");
 
         }
         {
@@ -561,6 +589,8 @@ public class TilesetEditor : Control
             _currentSearchEdit.Connect("text_changed", this, "CurrentSearchChanged");
             _currentTileList = GetNode<ItemList>("HBoxContainer/MainContainer/VBoxContainer2/CurrentTiles");
             _currentTileList.Connect("item_selected", this, "CurrentListSelected");
+            _currentTileList.Connect("nothing_selected", this, "CurrentListDeselected");
+            _currentTileList.Connect("item_activated", this, "CurrentListActivated");
         }
 
         {
