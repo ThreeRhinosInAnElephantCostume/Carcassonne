@@ -299,7 +299,9 @@ public class TilesetEditor : Control
         filter = filter.ToLower();
         _possibleTilePaths.Clear();
         _possibleTileList.Clear();
-        foreach (var it in ListDirectoryFilesRecursively(Constants.TILE_DIRECTORY, s => s.EndsWith(".json")))
+        var files = ListDirectoryFilesRecursively(Constants.TILE_DIRECTORY, s => s.EndsWith(".json"));
+        files.Sort();
+        foreach (var it in files)
         {
             string visstr = it.Replace(Constants.TILE_DIRECTORY, "");
             if (visstr[0] == '/')
@@ -331,7 +333,9 @@ public class TilesetEditor : Control
             else
                 dt.Add(it, 1);
         }
-        foreach (var it in dt)
+        var kvs = dt.ToList();
+        kvs.Sort((kv0, kv1) => kv0.Key.CompareTo(kv1.Key));
+        foreach (var it in kvs)
         {
             string visstr = it.Key;
             if (visstr[0] == '/')
