@@ -1,1 +1,1 @@
-{"NodeTypes":[1,2,2,2,1,1],"Assignments":[4,2,5,5,3,0,0,0,0,0,1,4],"UserEditable":false,"NodeAttributes":{"0":[],"1":[],"4":[],"2":[],"3":[],"5":[]},"TileAttributes":[],"AssociatedModels":[],"IsValid":true}
+{"NodeTypes":[1,2,2,2,1,1],"Assignments":[4,2,5,5,3,0,0,0,0,0,1,4],"UserEditable":false,"NodeAttributes":{"0":[],"1":[],"4":[],"2":[],"3":[],"5":[]},"TileAttributes":[],"AssociatedModels":["res://Models/Tiles/BaseGame/RoadCross3.tscn"],"IsValid":true}

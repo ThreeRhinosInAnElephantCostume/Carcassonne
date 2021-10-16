@@ -1,1 +1,1 @@
-{"NodeTypes":[1,2,2,2,2,1,1,1],"Assignments":[0,1,7,7,3,6,6,4,5,5,2,0],"UserEditable":false,"NodeAttributes":{"0":[],"1":[],"2":[],"3":[],"4":[],"5":[],"6":[],"7":[]},"TileAttributes":[],"AssociatedModels":[],"IsValid":true}
+{"NodeTypes":[1,2,2,2,2,1,1,1],"Assignments":[0,1,7,7,3,6,6,4,5,5,2,0],"UserEditable":false,"NodeAttributes":{"0":[],"1":[],"2":[],"3":[],"4":[],"5":[],"6":[],"7":[]},"TileAttributes":[],"AssociatedModels":["res://Models/Tiles/BaseGame/RoadCross4.tscn"],"IsValid":true}
