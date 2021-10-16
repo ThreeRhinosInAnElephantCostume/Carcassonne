@@ -28,6 +28,8 @@ public class TilePrototype
     public List<int> TileAttributes { get; set; } = new List<int>();
     public List<string> AssociatedModels { get; set; } = new List<string>();
 
+    public object MetaData;
+
     public static Vector2[] RelativeConnectorPositions
     {
         get
@@ -79,7 +81,9 @@ public class TilePrototype
                 NodeAttributes[i].ConvertAll(it => (NodeAttributeType)it)));
         }
 
-        return new Tile(nodetypes, Assignments.ToList(), TileAttributes.ConvertAll(it => (TileAttributeType)it));
+        var t = new Tile(nodetypes, Assignments.ToList(), TileAttributes.ConvertAll(it => (TileAttributeType)it));
+        t.MetaData = MetaData;
+        return t;
     }
     public void Check()
     {

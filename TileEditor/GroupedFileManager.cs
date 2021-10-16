@@ -195,8 +195,14 @@ public class GroupedFileManager : HBoxContainer
             Assert(CurrentDirectory != "");
             Assert(name != nname);
 
+
+
             string from = ConcatPaths(Path, CurrentDirectory, name);
             string to = ConcatPaths(Path, CurrentDirectory, nname);
+
+
+            if(FileExists(to))
+                return false;
 
             Directory dm = new Directory();
 
@@ -214,9 +220,8 @@ public class GroupedFileManager : HBoxContainer
 
             string p = ConcatPaths(Path, CurrentDirectory, nname);
 
-            Directory dm = new Directory();
-
-            Assert(!dm.FileExists(p));
+            if(FileExists(p))
+                return false;
 
             CreateFileHandle(p);
 

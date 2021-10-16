@@ -184,6 +184,8 @@ public class TileLogicEditor : Control
     }
     void CurrentNodeDeselected()
     {
+        if(!loaded)
+            return;
         _placedTile.HighlightedNode = -1;
         ResetLists();
         _resetAttributeButton.Disabled = true;
@@ -195,6 +197,8 @@ public class TileLogicEditor : Control
     }
     void PossibleAttributeDeselected()
     {
+        if(!loaded)
+            return;
         _addAttributeButton.Disabled = true;
     }
     void CurrentAttributeSelect(int indx)
@@ -347,6 +351,7 @@ public class TileLogicEditor : Control
             {
                 Tile.Assignments[indx] = next;
             }
+            EnsureNoEmptyNodes();
         }
         UpdateTileDisplay();
         ResetLists();
