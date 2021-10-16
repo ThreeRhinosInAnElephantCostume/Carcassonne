@@ -56,6 +56,8 @@ public class TileGraphicsEditor : VBoxContainer
     List<string> _modelGroups = new List<string>();
     Dictionary<string, bool> _groupAssigned = new System.Collections.Generic.Dictionary<string, bool>();
     Dictionary<string, Vector3> _groupAveragePosition = new Dictionary<string, Vector3>();
+
+    int _graphicsRotation = 0;
     void AssignableSelected(int indx)
     {
         if (!_loaded)
@@ -355,8 +357,9 @@ public class TileGraphicsEditor : VBoxContainer
     {
         _tileLogicOverlay.Opacity = val / (float)_logicOpacitySlider.MaxValue;
     }
-    void SetGroupPositionRotations(int rot)
+    void RotateGroupPositions(int rot)
     {
+        _graphicsRotation += rot;
         float r = ((float)PI / 2) * (float)rot;
         foreach (var it in _groupAveragePosition.Keys.ToList())
         {
@@ -365,18 +368,19 @@ public class TileGraphicsEditor : VBoxContainer
     }
     void SetRotation(int rot)
     {
+        RotateGroupPositions(-_graphicsRotation);
+        rot = _config.Rotation = (rot) % GameEngine.N_SIDES;
         float r = ((float)PI / 2) * (float)rot;
         _modelRoot.Rotation = new Vector3(0, 0, 0);
         _modelRoot.Rotate(Vector3.Up, r);
-        SetGroupPositionRotations(_config.Rotation);
+        RotateGroupPositions(rot);
     }
     void RotatePressed()
     {
         Assert(_modelRoot != null);
         Assert(_config != null);
 
-        _config.Rotation = (_config.Rotation + 1) % GameEngine.N_SIDES;
-        SetRotation(_config.Rotation);
+        SetRotation(_config.Rotation+1);
     }
     void AddModelPressed()
     {
