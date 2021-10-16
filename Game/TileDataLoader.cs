@@ -30,6 +30,8 @@ public static class TileDataLoader
 
         Assert(tp != null);
 
+        tp.MetaData = path;
+
         return tp;
     }
     public static Tile LoadTile(string path)

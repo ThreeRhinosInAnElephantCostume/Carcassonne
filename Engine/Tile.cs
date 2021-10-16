@@ -133,6 +133,7 @@ namespace Carcassonne
         public Side Down { get => Sides[2]; }
         public Side Left { get => Sides[3]; }
         public Vector2I Position { get; set; } = new Vector2I(0, 0);
+        public object MetaData{get; set;}
         public bool IsPlaced { get; protected set; } = false;
         public string DebugRepresentation
         {
