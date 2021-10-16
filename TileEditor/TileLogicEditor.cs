@@ -594,10 +594,10 @@ public class TileLogicEditor : Control
         }
         if (Tile.IsValid)
         {
-            _placedTile.tile = (Tile.Convert());
+            _placedTile.RenderedTile = (Tile.Convert());
         }
         else
-            _placedTile.tile = null;
+            _placedTile.RenderedTile = null;
         _placedTile.Update();
         TileChanged();
     }

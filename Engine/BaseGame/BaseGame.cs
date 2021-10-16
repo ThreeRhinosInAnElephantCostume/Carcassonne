@@ -116,7 +116,7 @@ namespace Carcassonne
             foreach (var it in _activeMonasteries.FindAll(o => (o.Owner is Meeple)))
             {
                 Assert(it.Owner != null);
-                int n = MONASTERY_NEIGHBOURS.Count(pos => map[pos] != null);
+                int n = MONASTERY_NEIGHBOURS.Count(pos => map[it.tile.Position+pos] != null);
                 var m = (Meeple)it.Owner;
                 Player p = (Player)m.Owner;
                 if (n == MONASTERY_NEIGHBOURS.Count)

@@ -29,12 +29,39 @@ public class Test2D_GUI : Control
     VBoxContainer _mainButtonContainer;
     List<VBoxContainer> _playerDataContainers = new List<VBoxContainer>();
     List<Button> _pawnPlaceButtons = new List<Button>();
+    class GraphLabel : Label 
+    {
+        TileMap _tilemap;
+        Map.Graph _graph;
+        void MouseEntered()
+        {
+            _tilemap.tiledisplays.ForEach(td => 
+                RepeatN(td.RenderedTile.Nodes.Count, i => 
+                    {if(td.RenderedTile.Nodes[i].Graph==_graph)td.HighlightedNodes.Add(i); td.CallDeferred("update");}));
+        }
+        void MouseExited()
+        {
+            _tilemap.tiledisplays.ForEach(td => 
+                RepeatN(td.RenderedTile.Nodes.Count, i => 
+                    {if(td.RenderedTile.Nodes[i].Graph==_graph)td.HighlightedNode=-1; td.CallDeferred("update");}));
+        }
+        public GraphLabel(TileMap _tilemap, Map.Graph _graph, bool iscontested)
+        {
+            this._tilemap = _tilemap;    
+            this._graph = _graph;
+            Text = $"ID: {_graph.ID}\nType: {_graph.Type}\nTiles: {_graph.Tiles.Count}\nIsContested: {iscontested}\n";
+            this.Connect("mouse_entered", this, "MouseEntered");
+            this.Connect("mouse_exited", this, "MouseExited");
+            this.MouseFilter = MouseFilterEnum.Stop;
+            this.SetProcessInput(true);
+        }
+    }
     class PlacePawnButton : Button
     {
         GameEngine _game;
         object o;
         int _indx;
-        PlacedTile _placedTile => _gui._tileMap.tiledisplays.Find(it => it.tile == ((InternalNode)o).ParentTile);
+        PlacedTile _placedTile => _gui._tileMap.tiledisplays.Find(it => it.RenderedTile == ((InternalNode)o).ParentTile);
         Test2D_GUI _gui;
         void MouseEntered()
         {
@@ -103,9 +130,9 @@ public class Test2D_GUI : Control
     public void UpdateInterface()
     {
         _currenttile.Visible = _game.CurrentState == GameEngine.State.PLACE_TILE;
-        if (_game.GetCurrentTile() != _currenttile.tile)
+        if (_game.GetCurrentTile() != _currenttile.RenderedTile)
         {
-            _currenttile.tile = _game.GetCurrentTile();
+            _currenttile.RenderedTile = _game.GetCurrentTile();
             _currenttile.CallDeferred("update");
         }
         foreach (Node n in _mainButtonContainer.GetChildren())
@@ -157,10 +184,10 @@ public class Test2D_GUI : Control
                     n.GetParent().RemoveChild(n);
                     n.QueueFree();
                 }
+                _tileMap.tiledisplays.ForEach(td => td.HighlightedNode=-1);
                 foreach ((Map.Graph graph, bool iscontested) in _game.GetGraphsOwnedBy(it))
                 {
-                    var l = new Label();
-                    l.Text = $"ID: {graph.ID}\nType: {graph.Type}\nTiles: {graph.Tiles.Count}\nIsContested: {iscontested}\n";
+                    var l = new GraphLabel(_tileMap, graph, iscontested);
                     _playerDataContainers[i].AddChild(l);
                 }
                 i++;

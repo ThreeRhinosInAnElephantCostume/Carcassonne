@@ -48,7 +48,7 @@ public class TileMap : Node2D
         DisablePotentiaPlacement();
         tilesuggestion = (PlacedTile)placedtile.Instance();
         tilesuggestion.Rotation = (float)PI * rot * 0.5f;
-        tilesuggestion.tile = game.GetCurrentTile();
+        tilesuggestion.RenderedTile = game.GetCurrentTile();
         tilesuggestion.OpacityMP = 0.4f;
         tilesuggestion.GridPosition = pos;
 
@@ -61,7 +61,7 @@ public class TileMap : Node2D
         var unplaced = tiles.ToList();
         foreach (var td in tiledisplays.ToList())
         {
-            if (!td.tile.IsPlaced || !unplaced.Contains(td.tile))
+            if (!td.RenderedTile.IsPlaced || !unplaced.Contains(td.RenderedTile))
             {
                 RemoveChild(td);
                 td.QueueFree();
@@ -69,15 +69,15 @@ public class TileMap : Node2D
             }
             else
             {
-                unplaced.Remove(td.tile);
-                td.GridPosition = td.tile.Position;
+                unplaced.Remove(td.RenderedTile);
+                td.GridPosition = td.RenderedTile.Position;
                 td.Update();
             }
         }
         foreach (var t in unplaced)
         {
             PlacedTile pt = (PlacedTile)placedtile.Instance();
-            pt.tile = t;
+            pt.RenderedTile = t;
             AddChild(pt);
             tiledisplays.Add(pt);
             pt.GridPosition = t.Position;
@@ -114,7 +114,7 @@ public class TileMap : Node2D
     }
     public override void _Ready()
     {
-        game = GameEngine.CreateBaseGame(666, 2, TileDataLoader.LoadTileset("BaseGame/BaseTileset.json"));
+        game = GameEngine.CreateBaseGame(666, 5, TileDataLoader.LoadTileset("BaseGame/BaseTileset.json"));
         UpdateDisplay();
     }
 
