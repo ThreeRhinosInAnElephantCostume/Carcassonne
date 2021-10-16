@@ -415,6 +415,7 @@ public class TilesetEditor : Control
                 }
             }
             _listMode = ListMode.NOTHING;
+            return;
         }
         foreach (var it in GetChildrenRecrusively<Control>(_mainContainer))
         {
@@ -618,7 +619,7 @@ public class TilesetEditor : Control
             _attributeList = GetNode<ItemList>("HBoxContainer/MainContainer/VisualisationBox/HBoxContainer/AttributeList");
             _attributeList.Connect("item_selected", this, "AttributeListSelected");
         }
-
+        LoadInterface();
     }
     public override void _Process(float delta)
     {
