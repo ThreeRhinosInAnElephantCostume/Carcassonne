@@ -70,6 +70,7 @@ public class TileLogicEditor : Control
     ItemList _possibleAttributeList;
     ItemList _currentAttributeList;
 
+    Container _attributeButtonContainer;
     Button _addAttributeButton;
     Button _removeAttributeButton;
     Button _resetAttributeButton;
@@ -226,6 +227,10 @@ public class TileLogicEditor : Control
         _possibleAttributeList.RemoveItem(indx);
         Assert(!Tile.NodeAttributes[sel].Contains((int)na));
         Tile.NodeAttributes[sel].Add((int)na);
+        if(!_currentAttributeList.IsAnythingSelected())
+            _removeAttributeButton.Disabled = true;
+        if(!_possibleAttributeList.IsAnythingSelected())
+            _addAttributeButton.Disabled = true;
         return;
     }
     void RemoveAttributePressed(int indx)
@@ -249,6 +254,10 @@ public class TileLogicEditor : Control
         _possibleAttributeList.AddItem(na.ToString());
         Assert(Tile.NodeAttributes[sel].Contains((int)na));
         Tile.NodeAttributes[sel].Remove((int)na);
+        if(!_currentAttributeList.IsAnythingSelected())
+            _removeAttributeButton.Disabled = true;
+        if(!_possibleAttributeList.IsAnythingSelected())
+            _addAttributeButton.Disabled = true;
         return;
 
     }
@@ -292,13 +301,12 @@ public class TileLogicEditor : Control
     }
     void SetInterfaceActive(bool b)
     {
-        foreach (var it in _toolboxContainer.GetChildren())
+        void togglebuttons(Container con)
         {
-            Button button = it as Button;
-            if (button == null)
-                continue;
-            button.Disabled = !b;
+            GetChildrenRecrusively<Button>(con).ForEach(bt => bt.Disabled=!b);
         }
+        togglebuttons(_toolboxContainer);
+        togglebuttons(_attributeButtonContainer);
     }
     void ButtonPressed(int indx)
     {
@@ -631,7 +639,8 @@ public class TileLogicEditor : Control
         _currentAttributeList.Connect("item_selected", this, "CurrentAttributeSelect");
         _currentAttributeList.Connect("nothing_selected", this, "CurrentAttributeDeselect");
         _currentAttributeList.Connect("item_activated", this, "RemoveAttributePressed");
-
+        
+        _attributeButtonContainer = (Container)GetNode("VBoxContainer/BottomHalfContainer/AttributeControlBox");
         _addAttributeButton = (Button)GetNode("VBoxContainer/BottomHalfContainer/AttributeControlBox/AddAttributeButton");
         _removeAttributeButton = (Button)GetNode("VBoxContainer/BottomHalfContainer/AttributeControlBox/RemoveAttributeButton");
         _resetAttributeButton = (Button)GetNode("VBoxContainer/BottomHalfContainer/AttributeControlBox/ResetAttributesbutton");
