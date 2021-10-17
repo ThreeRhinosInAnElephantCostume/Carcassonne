@@ -100,7 +100,7 @@ class Assigner : HBoxContainer
         _visibleCheck.Connect("toggled", this, "VisibilityToggled");
         int tindx = -1;
         if (_config.AttributeAssociations.ContainsKey(_group))
-            tindx = _config.AttributeAssociations[_group] + 2;
+            tindx = _tile.TileAttributes.IndexOf(_config.AttributeAssociations[_group]) + 2;
         _options.AddItem("<NOTHING>");
         _options.AddItem("Unassociated");
         int i = 0;

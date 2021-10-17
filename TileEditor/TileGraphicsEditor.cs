@@ -272,14 +272,6 @@ public class TileGraphicsEditor : VBoxContainer
         if (unassigned.Count == 0)
             return;
 
-        foreach (var it in unassigned.FindAll(s => s.ToLower().Contains("base")))
-        {
-            _config.Unassociated.Add(it);
-            _groupAssigned[it] = true;
-
-            unassigned.Remove(it);
-        }
-
         Dictionary<string, int> typeassociations = new Dictionary<string, int>()
         {
             {"farm", (int)NodeType.FARM},
@@ -289,6 +281,39 @@ public class TileGraphicsEditor : VBoxContainer
             {"street", (int)NodeType.ROAD},
             {"city", (int)NodeType.CITY},
         };
+
+
+        Dictionary<string, int> attributeassociations = new Dictionary<string, int>()
+        {
+            {"monastery", (int)TileAttributeType.MONASTERY},
+        };
+
+        List<string> unassignedassociations = new List<string>()
+        {
+            "base",
+        };
+
+
+        foreach (var it in unassigned.FindAll(s => -1 != unassignedassociations.FindIndex(it => s.ToLower().Contains(it))))
+        {
+            _config.Unassociated.Add(it);
+            _groupAssigned[it] = true;
+
+            unassigned.Remove(it);
+        }
+
+        var kl = attributeassociations.Keys.ToList();
+        foreach (var it in unassigned.ToList())
+        {
+            int indx = kl.FindIndex(s => it.ToLower().Contains(s));
+            if(indx == -1)
+                continue;
+            _config.AttributeAssociations.Add(it, attributeassociations[kl[indx]]);
+            _groupAssigned[it] = true;
+            
+
+            unassigned.Remove(it);
+        }
 
         List<int> assignednodes = new List<int>();
         Dictionary<int, (Vector2 p, int n)> nodeposdict = new Dictionary<int, (Vector2, int)>();
