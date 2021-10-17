@@ -478,7 +478,7 @@ public class TilesetEditor : Control
         _tilePrototype = TileDataLoader.LoadTilePrototype(path);
 
         _placedTile = new PlacedTile();
-        _placedTile.tile = _tilePrototype.Convert();
+        _placedTile.RenderedTile = _tilePrototype.Convert();
         var vsize = _camera.GetViewport().Size;
 
         _placedTile.size = Min(vsize.x, vsize.y);

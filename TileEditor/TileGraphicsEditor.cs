@@ -585,7 +585,7 @@ public class TileGraphicsEditor : VBoxContainer
         _3DRoot.AddChild(_modelRoot);
 
         _placedTile = new PlacedTile();
-        _placedTile.tile = _tile.Convert();
+        _placedTile.RenderedTile = _tile.Convert();
         _placedTile.size = 300.0f;
         _placedTile.outersize = new Vector2(_placedTile.size, _placedTile.size);
 
@@ -620,7 +620,7 @@ public class TileGraphicsEditor : VBoxContainer
     }
     void ActuallyUpdateDisplays()
     {
-        _placedTile.tile = _tile.Convert();
+        _placedTile.RenderedTile = _tile.Convert();
         _placedTile.Update();
         SetInterfaceActive(true);
     }
