@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -74,6 +74,12 @@ public class TileGraphicsEditor : VBoxContainer
             return;
         }
         indx -= 2;
+        if(indx < _tile.TileAttributes.Count)
+        {
+            _modelGroups.FindAll(s => _config.AttributeAssociations.ContainsKey(s) && _config.AttributeAssociations[s] == indx).ForEach(s => HighlightGroup(s, true));
+            return;
+        }
+        indx -= _tile.TileAttributes.Count;
         _modelGroups.FindAll(s => _config.NodeAssociations.ContainsKey(s) && _config.NodeAssociations[s] == indx).ForEach(s => HighlightGroup(s, true));
         _placedTile.HighlightedNode = indx;
     }
@@ -166,6 +172,12 @@ public class TileGraphicsEditor : VBoxContainer
         _assignableList.AddItem("<NOTHING>");
         _assignableList.AddItem("Unassigned");
         int i = 0;
+        foreach(var it in _tile.TileAttributes)
+        {
+            _assignableList.AddItem($"{(TileAttributeType)it} ({i})");
+            i++;
+        }
+        i = 0;
         foreach (var it in _tile.NodeTypes)
         {
             _assignableList.AddItem($"{(NodeType)it} ({i})");
@@ -417,8 +429,10 @@ public class TileGraphicsEditor : VBoxContainer
             return;
         Assert(new Directory().FileExists(_modelPath));
         _tileGraphicsConfig.Configs.Remove(_path);
+        if(_tile.AssociatedModels.Contains(_modelPath))
+           _tile.AssociatedModels.Remove(_modelPath);
         _config = null;
-        _modelSelector.RemoveItem(_modelSelector.Items.IndexOf(_modelPath));
+        _modelSelector.RemoveItem(_modelSelector.Items.IndexOf(_modelPath.Split("/").Last()));
         SetModel("");
     }
     void SetModel(string path)
@@ -427,8 +441,6 @@ public class TileGraphicsEditor : VBoxContainer
         Assert(_tile != null);
 
         _modelPath = path;
-
-
 
         UnloadDisplays();
         if (path == "")
