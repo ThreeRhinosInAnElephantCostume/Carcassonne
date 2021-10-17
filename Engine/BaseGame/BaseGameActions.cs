@@ -53,8 +53,11 @@ namespace Carcassonne
             if (GetPossibleMeeplePlacements(CurrentPlayer, c).Count == 0)
             {
                 UpdatePoints();
-                if (_tileManager.NextTile() == null)
+                if (!NextTileEnsurePlaceable())
+                {
                     EndGame();
+                    return;
+                }
 
                 NextPlayer();
             }
@@ -81,7 +84,7 @@ namespace Carcassonne
 
             CurrentState = State.PLACE_TILE;
 
-            if (_tileManager.NextTile() == null)
+            if (!NextTileEnsurePlaceable())
             {
                 EndGame();
                 return;
@@ -137,16 +140,17 @@ namespace Carcassonne
 
 
             UpdatePoints();
+            
+            NextPlayer();
 
-            if (_tileManager.NextTile() == null)
+            CurrentState = State.PLACE_TILE;
+
+            if (!NextTileEnsurePlaceable())
             {
                 EndGame();
                 return;
             }
 
-            NextPlayer();
-
-            CurrentState = State.PLACE_TILE;
         }
         [Serializable]
         protected class StartBaseGameAction : Action
@@ -175,7 +179,7 @@ namespace Carcassonne
 
             _tileManager.AddTiles(act.tileset.GenerateTiles(_rng), true);
 
-            _tileManager.NextTile();
+            CurrentState = State.PLACE_TILE;
 
             for (int i = 0; i < act.players; i++)
             {
@@ -183,7 +187,6 @@ namespace Carcassonne
             }
             CurrentPlayer = _players[0];
 
-            CurrentState = State.PLACE_TILE;
 
             Assert(act.tileset.HasStarter);
 
@@ -197,6 +200,8 @@ namespace Carcassonne
             {
                 RepeatN(STARTER_MEEPLES, () => it.Pawns.Add(new Meeple(it)));
             }
+
+            Assert(NextTileEnsurePlaceable(), "Cannot attach the first tile to the starter tile");
         }
     }
 }

@@ -43,7 +43,6 @@ rect_min_size = Vector2( 104, 104 )
 
 [node name="CurrentTile" parent="CanvasLayer/HBoxContainer/VBoxContainer/PanelContainer" instance=ExtResource( 3 )]
 position = Vector2( 52, 52 )
-monasterysize = 10.0
 
 [node name="PlayerDataScroll" type="ScrollContainer" parent="CanvasLayer/HBoxContainer/VBoxContainer"]
 margin_top = 108.0

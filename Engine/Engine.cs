@@ -92,6 +92,22 @@ namespace Carcassonne
                 }
                 return current;
             }
+            public Tile SwapTile()
+            {
+                Assert(!(NQueued == 0 && current == null));
+                if(NQueued <= 1)
+                {
+                    current = null;
+                    if(NQueued > 0)
+                        TileQueue.RemoveAt(0);
+                }
+                else 
+                {
+                    TileQueue.Add(current);
+                    NextTile();
+                }
+                return current;
+            }
             public List<Tile> PeekTiles(int n)
             {
                 Assert(n > 0);

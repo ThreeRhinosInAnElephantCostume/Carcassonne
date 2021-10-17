@@ -21,6 +21,21 @@ namespace Carcassonne
     {
         Tile _lastTile;
         List<TileMonasteryAttribute> _activeMonasteries = new List<TileMonasteryAttribute>();
+        bool NextTileEnsurePlaceable()
+        {
+            if(_tileManager.NextTile() == null)
+                return false;
+            int tries = 0;
+            while(PossibleTilePlacements().Count == 0)
+            {
+                if(_tileManager.NQueued < tries)
+                    return false;
+                if(_tileManager.SwapTile() == null)
+                    return false;
+                tries++;
+            }
+            return true;
+        }
         void EndGame()
         {
             UpdatePoints();
