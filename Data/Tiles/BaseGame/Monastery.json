@@ -1,1 +1,1 @@
-{"NodeTypes":[1],"Assignments":[0,0,0,0,0,0,0,0,0,0,0,0],"UserEditable":false,"NodeAttributes":{"0":[]},"TileAttributes":[1],"AssociatedModels":[],"IsValid":true}
+{"NodeTypes":[1],"Assignments":[0,0,0,0,0,0,0,0,0,0,0,0],"UserEditable":false,"NodeAttributes":{"0":[]},"TileAttributes":[1],"AssociatedModels":["res://Models/Tiles/BaseGame/Monastery.tscn"],"IsValid":true}
