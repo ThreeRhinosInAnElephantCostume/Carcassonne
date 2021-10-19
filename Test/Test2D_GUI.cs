@@ -29,25 +29,26 @@ public class Test2D_GUI : Control
     VBoxContainer _mainButtonContainer;
     List<VBoxContainer> _playerDataContainers = new List<VBoxContainer>();
     List<Button> _pawnPlaceButtons = new List<Button>();
-    class GraphLabel : Label 
+    Button _saveButton;
+    class GraphLabel : Label
     {
         TileMap _tilemap;
         Map.Graph _graph;
         void MouseEntered()
         {
-            _tilemap.tiledisplays.ForEach(td => 
-                RepeatN(td.RenderedTile.Nodes.Count, i => 
-                    {if(td.RenderedTile.Nodes[i].Graph==_graph)td.HighlightedNodes.Add(i); td.CallDeferred("update");}));
+            _tilemap.tiledisplays.ForEach(td =>
+                RepeatN(td.RenderedTile.Nodes.Count, i =>
+                    { if (td.RenderedTile.Nodes[i].Graph == _graph) td.HighlightedNodes.Add(i); td.CallDeferred("update"); }));
         }
         void MouseExited()
         {
-            _tilemap.tiledisplays.ForEach(td => 
-                RepeatN(td.RenderedTile.Nodes.Count, i => 
-                    {if(td.RenderedTile.Nodes[i].Graph==_graph)td.HighlightedNode=-1; td.CallDeferred("update");}));
+            _tilemap.tiledisplays.ForEach(td =>
+                RepeatN(td.RenderedTile.Nodes.Count, i =>
+                    { if (td.RenderedTile.Nodes[i].Graph == _graph) td.HighlightedNode = -1; td.CallDeferred("update"); }));
         }
         public GraphLabel(TileMap _tilemap, Map.Graph _graph, bool iscontested)
         {
-            this._tilemap = _tilemap;    
+            this._tilemap = _tilemap;
             this._graph = _graph;
             Text = $"ID: {_graph.ID}\nType: {_graph.Type}\nTiles: {_graph.Tiles.Count}\nIsContested: {iscontested}\n";
             this.Connect("mouse_entered", this, "MouseEntered");
@@ -184,7 +185,7 @@ public class Test2D_GUI : Control
                     n.GetParent().RemoveChild(n);
                     n.QueueFree();
                 }
-                _tileMap.tiledisplays.ForEach(td => td.HighlightedNode=-1);
+                _tileMap.tiledisplays.ForEach(td => td.HighlightedNode = -1);
                 foreach ((Map.Graph graph, bool iscontested) in _game.GetGraphsOwnedBy(it))
                 {
                     var l = new GraphLabel(_tileMap, graph, iscontested);
@@ -193,6 +194,14 @@ public class Test2D_GUI : Control
                 i++;
             }
         }
+    }
+    void SavePressed()
+    {
+        File f = new File();
+        Assert(f.Open("res://Test/Saves/save.carcassonne", File.ModeFlags.Write));
+        var dt = _game.Serialize();
+        f.StoreBuffer(dt);
+        f.Close();
     }
     public override void _Ready()
     {
@@ -207,6 +216,16 @@ public class Test2D_GUI : Control
         _mainButtonContainer = _cl.GetNode<VBoxContainer>("HBoxContainer/VBoxContainer2/MainButtonContainer");
         _playerTabContainer = _cl.GetNode<TabContainer>("HBoxContainer/VBoxContainer2/PlayerTabs");
 
+        _saveButton = GetNode<Button>("CanvasLayer/HBoxContainer/VBoxContainer/SaveButton");
+        _saveButton.Connect("pressed", this, "SavePressed");
+
+        if (_tileMap.game == null)
+        {
+            if (Test2D_MM.GlobalGame == null)
+                _tileMap.SetGame(GameEngine.CreateBaseGame(new GameExternalDataLoader(), 666, 5, "BaseGame/BaseTileset.json"));
+            else
+                _tileMap.SetGame(Test2D_MM.GlobalGame);
+        }
 
         var cc = GetNode<CenterContainer>("CanvasLayer/HBoxContainer/CenterContainer");
         cc.MouseFilter = MouseFilterEnum.Ignore;

@@ -95,13 +95,13 @@ namespace Carcassonne
             public Tile SwapTile()
             {
                 Assert(!(NQueued == 0 && current == null));
-                if(NQueued <= 1)
+                if (NQueued <= 1)
                 {
                     current = null;
-                    if(NQueued > 0)
+                    if (NQueued > 0)
                         TileQueue.RemoveAt(0);
                 }
-                else 
+                else
                 {
                     TileQueue.Add(current);
                     NextTile();
@@ -145,6 +145,8 @@ namespace Carcassonne
         public Map map { get; protected set; }
         public Player CurrentPlayer { get; protected set; }
         private int _nextUniqueID = 0;
+        protected IExternalDataSource _dataSource;
+        protected ITileset _tileset;
         public int NextUniqueID()
         {
             return _nextUniqueID++;
@@ -179,8 +181,19 @@ namespace Carcassonne
                 Turn++;
             return CurrentPlayer;
         }
-        protected GameEngine()
+        public GameEngine Clone()
         {
+            return CreateFromHistory(_dataSource, this.History);
+        }
+        public GameEngine StepBack(int steps = 1)
+        {
+            Assert(steps < this.History.Count);
+            return CreateFromHistory(_dataSource, this.History.GetRange(0, this.History.Count - steps));
+        }
+
+        protected GameEngine(IExternalDataSource source)
+        {
+            this._dataSource = source;
             Assert(this.actionmethods.Length > 0);
         }
     }

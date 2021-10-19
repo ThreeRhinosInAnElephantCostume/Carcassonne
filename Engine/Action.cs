@@ -61,15 +61,20 @@ namespace Carcassonne
                 throw new Exception("Unsupported action!");
             _history.Add(action);
         }
-        public static GameEngine CreateFromAction(Action action)
+        static Type[] GetAllActionTypes()
         {
-            GameEngine eng = new GameEngine();
+            return typeof(GameEngine).GetNestedTypes(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance)
+            .Where(t => (typeof(Action).IsAssignableFrom(t))).ToArray();
+        }
+        public static GameEngine CreateFromAction(IExternalDataSource datasource, Action action)
+        {
+            GameEngine eng = new GameEngine(datasource);
             eng.ExecuteAction(action);
             return eng;
         }
-        public static GameEngine CreateFromHistory(List<Action> history)
+        public static GameEngine CreateFromHistory(IExternalDataSource datasource, List<Action> history)
         {
-            GameEngine eng = new GameEngine();
+            GameEngine eng = new GameEngine(datasource);
             foreach (var it in history)
             {
                 eng.ExecuteAction(it);
