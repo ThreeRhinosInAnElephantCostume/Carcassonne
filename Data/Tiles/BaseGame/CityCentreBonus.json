@@ -1,1 +1,1 @@
-{"NodeTypes":[3],"Assignments":[0,0,0,0,0,0,0,0,0,0,0,0],"UserEditable":false,"NodeAttributes":{"0":[1]},"TileAttributes":[],"AssociatedModels":[],"IsValid":true}
+{"MetaData":null,"NodeTypes":[3],"Assignments":[0,0,0,0,0,0,0,0,0,0,0,0],"UserEditable":false,"NodeAttributes":{"0":[1]},"TileAttributes":[],"AssociatedModels":["res://Models/Tiles/BaseGame/CityWhole.tscn"],"IsValid":true}
