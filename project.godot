@@ -14,6 +14,10 @@ config/name="Carcassonne"
 run/main_scene="res://Test/Test2D_MM.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+GlobalScript="*res://Game/GlobalScript.cs"
+
 [display]
 
 window/size/width=1280

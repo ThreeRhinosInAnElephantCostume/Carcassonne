@@ -64,6 +64,8 @@ public class Test2D_MM : Control
 
     public override void _Ready()
     {
+        EnsurePathExists("res://Test/Saves");
+
         _tilesetSelector = GetNode<OptionButton>("HBoxContainer/VBoxContainer/StartGameContainer/OptionButton");
         _nPlayersEdit = GetNode<LineEdit>("HBoxContainer/VBoxContainer/StartGameContainer/LineEdit");
         _nPlayersEdit.Text = nplayers.ToString();
