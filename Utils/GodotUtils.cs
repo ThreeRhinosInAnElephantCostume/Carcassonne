@@ -15,6 +15,35 @@ using Expression = System.Linq.Expressions.Expression;
 
 public static partial class Utils
 {
+    public static string EnsurePathExists(string path)
+    {
+        Assert(!FileExists(path), "This function is meant for directories, not files");
+        if (DirectoryExists(path))
+            return "";
+        string dif = "";
+        List<string> parts = new List<string>();
+        while (!DirectoryExists(path))
+        {
+            string subpath = "";
+            if (path.Last() == '/')
+                path = path.Remove(path.Length - 1);
+            while (path.Last() != '/')
+            {
+                subpath += path.Last();
+                path = path.Remove(path.Length - 1);
+            }
+            parts.Add(new string(subpath.Reverse().ToArray()));
+        }
+        var dm = new Directory();
+        parts.Reverse();
+        foreach (var it in parts)
+        {
+            path = ConcatPaths(path, it);
+            dm.MakeDir(path);
+            dif = ConcatPaths(dif, it);
+        }
+        return dif;
+    }
     public static T DeserializeFromFile<T>(string path, bool failsafe = false) where T : class
     {
         Assert(FileExists(path));
@@ -42,7 +71,6 @@ public static partial class Utils
         var data = JsonConvert.SerializeObject(o);
         WriteFile(path, data);
     }
-
     public static bool FileExists(string path)
     {
         return new Directory().FileExists(path);
