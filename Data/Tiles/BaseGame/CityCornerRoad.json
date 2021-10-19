@@ -1,1 +1,1 @@
-{"NodeTypes":[1,3,2,1],"Assignments":[1,1,1,0,2,3,3,2,0,1,1,1],"UserEditable":false,"NodeAttributes":{"0":[2],"1":[],"2":[],"3":[]},"TileAttributes":[],"AssociatedModels":[],"IsValid":true}
+{"MetaData":null,"NodeTypes":[1,3,2,1],"Assignments":[1,1,1,0,2,3,3,2,0,1,1,1],"UserEditable":false,"NodeAttributes":{"0":[2],"1":[],"2":[],"3":[]},"TileAttributes":[],"AssociatedModels":["res://Models/Tiles/BaseGame/CitySideRoad.tscn"],"IsValid":true}
