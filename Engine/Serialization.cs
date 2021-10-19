@@ -76,7 +76,10 @@ namespace Carcassonne
         public static byte[] Serialize(GameEngine engine)
         {
             Assert(engine.History.Count > 0);
-            List<byte> output = new List<byte>(engine.History.Count * 64);
+            byte[] hash = engine.GetHash();
+            List<byte> output = new List<byte>(engine.History.Count * 64 + hash.Length + 4);
+            output.AddRange(BitConverter.GetBytes((int)hash.Length));
+            output.AddRange(hash);
             foreach (var act in engine.History)
             {
                 byte[] dt = SerializeAction(act);
@@ -143,10 +146,6 @@ namespace Carcassonne
 
             Action act = (Action)JsonConvert.DeserializeObject(sv, type);
 
-            //Action act = (Action) Activator.CreateInstance(type, true);
-
-            //FromDictionaryRecursively(act, dict);
-
             Assert(act != null);
 
             foreach (var it in act.GetType().GetProperties())
@@ -185,18 +184,17 @@ namespace Carcassonne
             Assert(act.IsFilled);
 
             return act;
-
-
-
-            //var sw = new StringReader(str);
-            //Action act = (Action)ser.Deserialize(sw);
-            //Assert(act.IsFilled);
-            //return act;
         }
-        public static GameEngine Deserialize(IExternalDataSource dataSource, byte[] data)
+        public static GameEngine Deserialize(IExternalDataSource dataSource, byte[] data, bool checkhash = true)
         {
             List<Action> actions = new List<Action>();
             int i = 0;
+            Assert(i + sizeof(int) < data.Length);
+            int hashlen = BitConverter.ToInt32(data, i);
+            i += sizeof(int);
+            Assert(i + hashlen < data.Length);
+            byte[] hash = data.Skip(i).Take(hashlen).ToArray();
+            i += hashlen;
             while (i < data.Length)
             {
                 Assert(i + sizeof(int) < data.Length);
@@ -209,7 +207,14 @@ namespace Carcassonne
                 actions.Add(act);
                 i += len;
             }
-            return CreateFromHistory(dataSource, actions);
+            var eng = CreateFromHistory(dataSource, actions);
+            if (checkhash)
+            {
+                var nhash = eng.GetHash();
+                Assert(nhash.Length == hash.Length);
+                RepeatN(hash.Length, (i) => Assert(nhash[i] == hash[i]));
+            }
+            return eng;
         }
     }
 }

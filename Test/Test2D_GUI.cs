@@ -7,6 +7,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime;
 using System.Runtime.CompilerServices;
+using System.Text;
 using System.Threading;
 using Carcassonne;
 using ExtraMath;
@@ -30,6 +31,9 @@ public class Test2D_GUI : Control
     List<VBoxContainer> _playerDataContainers = new List<VBoxContainer>();
     List<Button> _pawnPlaceButtons = new List<Button>();
     Button _saveButton;
+    Button _undoButton;
+    Button _redoButton;
+    Label _hashLabel;
     class GraphLabel : Label
     {
         TileMap _tilemap;
@@ -128,6 +132,14 @@ public class Test2D_GUI : Control
             }
         }
     }
+    public void UndoPressed()
+    {
+
+    }
+    public void RedoPressed()
+    {
+
+    }
     public void UpdateInterface()
     {
         _currenttile.Visible = _game.CurrentState == GameEngine.State.PLACE_TILE;
@@ -167,6 +179,7 @@ public class Test2D_GUI : Control
         }
 
         {
+            _hashLabel.Text = _game.GetHashBase16();
             int i = 0;
             foreach (var it in _game.Players)
             {
@@ -216,8 +229,13 @@ public class Test2D_GUI : Control
         _mainButtonContainer = _cl.GetNode<VBoxContainer>("HBoxContainer/VBoxContainer2/MainButtonContainer");
         _playerTabContainer = _cl.GetNode<TabContainer>("HBoxContainer/VBoxContainer2/PlayerTabs");
 
-        _saveButton = GetNode<Button>("CanvasLayer/HBoxContainer/VBoxContainer/SaveButton");
+        _saveButton = GetNode<Button>("CanvasLayer/HBoxContainer/VBoxContainer/HBoxContainer/SaveButton");
         _saveButton.Connect("pressed", this, "SavePressed");
+        _undoButton = GetNode<Button>("CanvasLayer/HBoxContainer/VBoxContainer/HBoxContainer/UndoButton");
+        _undoButton.Connect("pressed", this, "UndoPressed");
+        _redoButton = GetNode<Button>("CanvasLayer/HBoxContainer/VBoxContainer/HBoxContainer/RedoButton");
+        _redoButton.Connect("pressed", this, "RedoPressed");
+        _hashLabel = GetNode<Label>("CanvasLayer/HashLabel");
 
         if (_tileMap.game == null)
         {
