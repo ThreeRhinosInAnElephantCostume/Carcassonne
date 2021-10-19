@@ -23,14 +23,14 @@ namespace Carcassonne
         List<TileMonasteryAttribute> _activeMonasteries = new List<TileMonasteryAttribute>();
         bool NextTileEnsurePlaceable()
         {
-            if(_tileManager.NextTile() == null)
+            if (_tileManager.NextTile() == null)
                 return false;
             int tries = 0;
-            while(PossibleTilePlacements().Count == 0)
+            while (PossibleTilePlacements().Count == 0)
             {
-                if(_tileManager.NQueued < tries)
+                if (_tileManager.NQueued < tries)
                     return false;
-                if(_tileManager.SwapTile() == null)
+                if (_tileManager.SwapTile() == null)
                     return false;
                 tries++;
             }
@@ -131,7 +131,7 @@ namespace Carcassonne
             foreach (var it in _activeMonasteries.FindAll(o => (o.Owner is Meeple)))
             {
                 Assert(it.Owner != null);
-                int n = MONASTERY_NEIGHBOURS.Count(pos => map[it.tile.Position+pos] != null);
+                int n = MONASTERY_NEIGHBOURS.Count(pos => map[it.tile.Position + pos] != null);
                 var m = (Meeple)it.Owner;
                 Player p = (Player)m.Owner;
                 if (n == MONASTERY_NEIGHBOURS.Count)
@@ -211,13 +211,13 @@ namespace Carcassonne
 
             }
         }
-        public static GameEngine CreateBaseGame(ulong seed, int players, ITileset tileset)
+        public static GameEngine CreateBaseGame(IExternalDataSource datasource, ulong seed, int players, string tileset)
         {
             Assert(seed != 0, "Invalid seed - some random generators might not like it");
             Assert(players > 1);
             Assert(tileset != null);
 
-            GameEngine eng = new GameEngine();
+            GameEngine eng = new GameEngine(datasource);
             eng.ExecuteAction(new StartBaseGameAction(seed, tileset, players));
             return eng;
         }

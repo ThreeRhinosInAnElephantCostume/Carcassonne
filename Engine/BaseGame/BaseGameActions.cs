@@ -25,6 +25,7 @@ namespace Carcassonne
         {
             public Vector2I pos;
             public int rot;
+            private PlaceTileAction() { }
             public PlaceTileAction(Vector2I pos, int rot)
             {
                 this.IsFilled = true;
@@ -97,6 +98,7 @@ namespace Carcassonne
         {
             public int indx;
             public bool isattribute;
+            private PlacePawnAction() { }
             public PlacePawnAction(int indx, bool isattribute)
             {
                 Assert(indx >= 0);
@@ -140,7 +142,7 @@ namespace Carcassonne
 
 
             UpdatePoints();
-            
+
             NextPlayer();
 
             CurrentState = State.PLACE_TILE;
@@ -153,12 +155,13 @@ namespace Carcassonne
 
         }
         [Serializable]
-        protected class StartBaseGameAction : Action
+        public class StartBaseGameAction : Action
         {
             public ulong seed;
             public int players;
-            public ITileset tileset;
-            public StartBaseGameAction(ulong seed, ITileset tileset, int players)
+            public string tileset;
+            private StartBaseGameAction() { }
+            public StartBaseGameAction(ulong seed, string tileset, int players)
             {
                 IsFilled = true;
                 this.players = players;
@@ -173,11 +176,13 @@ namespace Carcassonne
 
             _rng = new RNG(act.seed);
 
+            _tileset = _dataSource.GetTileset(act.tileset);
+
             Assert(act.players >= MIN_PLAYERS && act.players <= MAX_PLAYERS);
 
             _tileManager = new TileManager(this);
 
-            _tileManager.AddTiles(act.tileset.GenerateTiles(_rng), true);
+            _tileManager.AddTiles(_tileset.GenerateTiles(_rng), true);
 
             CurrentState = State.PLACE_TILE;
 
@@ -188,9 +193,9 @@ namespace Carcassonne
             CurrentPlayer = _players[0];
 
 
-            Assert(act.tileset.HasStarter);
+            Assert(_tileset.HasStarter);
 
-            var starter = act.tileset.GenerateStarter(_rng);
+            var starter = _tileset.GenerateStarter(_rng);
 
             Assert(starter != null);
 

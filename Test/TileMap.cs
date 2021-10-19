@@ -112,10 +112,15 @@ public class TileMap : Node2D
             }
         }
     }
+    public void SetGame(GameEngine game)
+    {
+        this.game = game;
+        UpdateDisplay();
+    }
     public override void _Ready()
     {
-        game = GameEngine.CreateBaseGame(666, 5, TileDataLoader.LoadTileset("BaseGame/BaseTileset.json"));
-        UpdateDisplay();
+        //game = GameEngine.CreateBaseGame(new GameExternalDataLoader(), 666, 5, "BaseGame/BaseTileset.json");
+        //UpdateDisplay();
     }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.

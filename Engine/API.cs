@@ -22,7 +22,7 @@ namespace Carcassonne
         public bool IsGameOver { get => CurrentState == State.GAME_OVER; }
         public uint Turn { get; protected set; }
         public List<Player> Players { get => _players.ToList(); }
-        public List<GameEngine.Action> History { get => History.ToList(); }
+        public List<GameEngine.Action> History { get => _history.ToList(); }
 
         public void PlaceCurrentTile(Vector2I pos, int rot)
         {
