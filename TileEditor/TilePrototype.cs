@@ -18,11 +18,8 @@ using static Utils;
 [Serializable]
 public class TilePrototype
 {
-    [Export]
     public int[] NodeTypes { get; set; }
-    [Export]
     public int[] Assignments { get; set; }
-    [Export]
     public bool UserEditable { get; set; }
     public Dictionary<int, List<int>> NodeAttributes { get; set; } = new Dictionary<int, List<int>>();
     public List<int> TileAttributes { get; set; } = new List<int>();
