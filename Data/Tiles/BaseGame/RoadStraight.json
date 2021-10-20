@@ -1,1 +1,1 @@
-{"MetaData":null,"NodeTypes":[1,2,1],"Assignments":[2,1,0,0,0,0,0,1,2,2,2,2],"UserEditable":false,"NodeAttributes":{"0":[],"1":[],"2":[]},"TileAttributes":[],"AssociatedModels":["res://Models/Tiles/BaseGame/RoadStraight.tscn"],"IsValid":true}
+{"MetaData":null,"NodeTypes":[1,2,1],"Assignments":[2,1,0,0,0,0,0,1,2,2,2,2],"UserEditable":false,"NodeAttributes":{"0":[],"1":[],"2":[]},"TileAttributes":[],"AssociatedModels":["res://Models/Tiles/BaseGame/RoadStraight.tscn","res://Models/Tiles/BaseGame/RoadStraightHut.tscn"],"IsValid":true}

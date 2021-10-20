@@ -1,1 +1,1 @@
-{"NodeTypes":[3,1],"Assignments":[0,0,0,0,0,0,1,1,1,0,0,0],"UserEditable":false,"NodeAttributes":{"0":[],"1":[2]},"TileAttributes":[],"AssociatedModels":[],"IsValid":true}
+{"MetaData":null,"NodeTypes":[3,1],"Assignments":[0,0,0,0,0,0,1,1,1,0,0,0],"UserEditable":false,"NodeAttributes":{"0":[],"1":[2]},"TileAttributes":[],"AssociatedModels":["res://Models/Tiles/BaseGame/CityEdge.tscn"],"IsValid":true}
