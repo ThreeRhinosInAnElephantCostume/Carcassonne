@@ -1,4 +1,13 @@
-﻿using System;
+﻿/*
+    *** Pawn.cs ***
+
+    A pawn effectively an interface for Agents (See Engine/Agent.cs) to interact with the Map, and 
+    its Tiles.
+
+    See also: Engine/BaseGame/Player.cs
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;

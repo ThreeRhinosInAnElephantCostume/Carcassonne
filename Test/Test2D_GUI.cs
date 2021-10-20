@@ -143,9 +143,9 @@ public class Test2D_GUI : Control
     public void UpdateInterface()
     {
         _currenttile.Visible = _game.CurrentState == GameEngine.State.PLACE_TILE;
-        if (_game.GetCurrentTile() != _currenttile.RenderedTile)
+        if (_game.CurrentTile != _currenttile.RenderedTile)
         {
-            _currenttile.RenderedTile = _game.GetCurrentTile();
+            _currenttile.RenderedTile = _game.CurrentTile;
             _currenttile.CallDeferred("update");
         }
         foreach (Node n in _mainButtonContainer.GetChildren())
@@ -157,7 +157,7 @@ public class Test2D_GUI : Control
         if (_game.CurrentState == GameEngine.State.PLACE_PAWN)
         {
             int i = 1;
-            Tile tile = _game.map[_game.CurrentPawnTarget()];
+            Tile tile = _game.map[_game.CurrentTile.Position];
             PlacePawnButton button;
             _mainButtonContainer.AddChild(button = new PlacePawnButton(this, _game, null, -1, i++));
             _pawnPlaceButtons.Add(button);

@@ -1,4 +1,10 @@
-﻿using System;
+﻿/*
+    *** BaseGameActions.cs ***
+
+    Base game action and their associated functions.
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -47,7 +53,7 @@ namespace Carcassonne
             if (!map.CanPlaceTile(c, act.pos))
             {
                 c.Rotate(-act.rot);
-                throw new Exception("INVALID TILE PLACEMENT");
+                throw new IllegalMoveException("INVALID TILE PLACEMENT");
             }
             map.PlaceTile(c, act.pos);
 
@@ -116,7 +122,8 @@ namespace Carcassonne
             var act = (PlacePawnAction)_act;
 
             AssertState(State.PLACE_PAWN);
-            Assert(GetFreeMeepleCount(CurrentPlayer) > 0);
+            AssertRule(GetFreeMeepleCount(CurrentPlayer) > 0,
+                 "Attempted to place a Meeple when there are none remaining.");
 
             var meeple = GetFreeMeeple(CurrentPlayer);
 
@@ -124,7 +131,14 @@ namespace Carcassonne
             {
                 Tile.TileAttribute attr = _lastTile.Attributes[act.indx];
 
-                Assert(GetPossibleMeeplePlacements(CurrentPlayer, _lastTile).Contains(attr));
+                AssertRule(GetPossibleMeeplePlacements(CurrentPlayer, _lastTile).Contains(attr),
+                    "Attempted to place a meeple on a nonexistent attribute.");
+
+                if (attr is TileMonasteryAttribute _mon)
+                {
+                    AssertRule(_mon.Owner == null,
+                        "Attempted to place a meeple on a monastery that's already been claimed.");
+                }
 
                 meeple.Place(_lastTile, attr);
 
@@ -135,7 +149,11 @@ namespace Carcassonne
             {
                 InternalNode node = _lastTile.Nodes[act.indx];
 
-                Assert(GetPossibleMeeplePlacements(CurrentPlayer, _lastTile).Contains(node));
+                AssertRule(GetGraphOwners(node.Graph).Count == 0,
+                    "Attempted to place a meeple on a node that's already owned.");
+
+                AssertRule(GetPossibleMeeplePlacements(CurrentPlayer, _lastTile).Contains(node),
+                    "Attempted to place a meeple on a nonexistent node");
 
                 meeple.Place(node);
             }

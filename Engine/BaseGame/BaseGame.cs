@@ -1,4 +1,10 @@
-﻿using System;
+﻿/*
+    *** BaseGame.cs ***
+
+    Most of the functions used by base game logic live here.
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -43,7 +49,7 @@ namespace Carcassonne
             CurrentPlayer = null;
             return;
         }
-        public int CalculateScore(Map.Graph g)
+        int CalculateScore(Map.Graph g)
         {
             if (g.Type == NodeType.FARM)
             {
@@ -100,7 +106,7 @@ namespace Carcassonne
             }
             return points;
         }
-        public void UpdatePoints()
+        void UpdatePoints()
         {
             foreach (var it in Players)
                 it.PotentialScore = 0;

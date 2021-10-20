@@ -48,7 +48,7 @@ public class TileMap : Node2D
         DisablePotentiaPlacement();
         tilesuggestion = (PlacedTile)placedtile.Instance();
         tilesuggestion.Rotation = (float)PI * rot * 0.5f;
-        tilesuggestion.RenderedTile = game.GetCurrentTile();
+        tilesuggestion.RenderedTile = game.CurrentTile;
         tilesuggestion.OpacityMP = 0.4f;
         tilesuggestion.GridPosition = pos;
 

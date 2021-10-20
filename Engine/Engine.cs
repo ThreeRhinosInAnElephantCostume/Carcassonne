@@ -1,4 +1,9 @@
-﻿using System;
+﻿/* 
+    *** Engine.cs ***
+    
+    Most of the engine's internal state is defined here.
+*/
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -16,126 +21,20 @@ using static Utils;
 
 namespace Carcassonne
 {
+    ///<summary>A mostly self-contained simulation of Carcassonne.</summary>
     public partial class GameEngine
     {
-        public class TileManager
-        {
-            Tile current = null;
-            GameEngine eng;
-            public List<Tile> TileList { get; protected set; } = new List<Tile>();
-            public List<Tile> TileQueue { get; protected set; } = new List<Tile>();
-            public int NQueued { get => TileQueue.Count; }
-            public void SetNextTile(Tile tile, bool insert = true)
-            {
-                Assert(tile != null);
-
-                if (!TileList.Contains(tile))
-                    TileList.Add(tile);
-                if (insert || TileQueue.Count == 0)
-                    TileQueue.Insert(0, tile);
-                else
-                    TileQueue[0] = tile;
-
-            }
-            public void AddTile(Tile tile, bool shuffle)
-            {
-                Assert(tile != null);
-
-                TileList.Add(tile);
-                if (shuffle && TileQueue.Count > 0)
-                    TileQueue.Insert((int)eng._rng.NextLong(0, TileQueue.Count), tile);
-                else
-                    TileQueue.Add(tile);
-            }
-            public void AddTiles(List<Tile> tiles, bool shuffle)
-            {
-                Assert(tiles != null);
-
-                foreach (var it in tiles)
-                    AddTile(it, shuffle);
-            }
-            public void Shuffle()
-            {
-                List<Tile> res = new List<Tile>(TileQueue.Count);
-                while (TileQueue.Count > 0)
-                {
-                    int indx = (int)eng._rng.NextLong(0, TileQueue.Count);
-                    res.Add(TileQueue[indx]);
-                    TileQueue.RemoveAt(indx);
-                }
-            }
-            public Tile CurrentTile()
-            {
-                return current;
-            }
-            public void SkipTile()
-            {
-                Tile c = current;
-                NextTile();
-                if (NQueued == 0)
-                    TileQueue.Add(c);
-                else
-                    TileQueue.Insert(1, c);
-            }
-            public Tile NextTile()
-            {
-                Assert(!(NQueued == 0 && current == null), "Attempting to retrieve a tile when there are none available!");
-
-                if (NQueued == 0)
-                {
-                    current = null;
-                }
-                else
-                {
-                    current = TileQueue[0];
-                    TileQueue.RemoveAt(0);
-                }
-                return current;
-            }
-            public Tile SwapTile()
-            {
-                Assert(!(NQueued == 0 && current == null));
-                if (NQueued <= 1)
-                {
-                    current = null;
-                    if (NQueued > 0)
-                        TileQueue.RemoveAt(0);
-                }
-                else
-                {
-                    TileQueue.Add(current);
-                    NextTile();
-                }
-                return current;
-            }
-            public List<Tile> PeekTiles(int n)
-            {
-                Assert(n > 0);
-                Assert(TileQueue.Count >= n, "Attempting to peek more tiles than there are in queue");
-
-                return TileQueue.GetRange(0, n).ToList<Tile>();
-            }
-            public Tile PeekTile()
-            {
-                Assert(TileQueue.Count > 0, "Attempting to peek an empty tile queue");
-
-                return TileQueue[0];
-            }
-
-            public TileManager(GameEngine eng)
-            {
-                Assert(eng != null);
-
-                this.eng = eng;
-            }
-
-        }
         public enum State
         {
+            ///<summary>This value should never occur.</summary>
             ERR = 0,
+            ///<summary>This value should indicate that the engine is in an uninitialized state.</summary>
             NONE,
+            ///<summary>It's the CurrentPlayer's turn to place a tile.</summary>
             PLACE_TILE,
+            ///<summary>It's the CurrentPlayer's turn to place a pawn or skip.</summary>
             PLACE_PAWN,
+            ///<summary>The game has ended (there are no more tiles queued, and the current player can't place any more pawns).</summary>
             GAME_OVER
         }
         protected TileManager _tileManager { get; set; }
@@ -147,6 +46,9 @@ namespace Carcassonne
         private int _nextUniqueID = 0;
         protected IExternalDataSource _dataSource;
         protected ITileset _tileset;
+        ///<summary>
+        ///    Returns an ID unique to the current instance of the engine, obtained by incrementing a counter.
+        ///</summary>
         public int NextUniqueID()
         {
             return _nextUniqueID++;
@@ -163,8 +65,7 @@ namespace Carcassonne
             if (CurrentPlayer != curplayer)
                 throw new Exception("Player assertion failed!");
             if (state != this.CurrentState)
-                throw new Exception("State assertion failed. Current state is " + this.CurrentState.ToString()
-                + ", expected " + state.ToString());
+                throw new InvalidStateException(CurrentState, state);
         }
         void AssertState(Player curplayer)
         {
@@ -174,6 +75,11 @@ namespace Carcassonne
         {
             AssertState(this.CurrentPlayer, state);
         }
+        void AssertRule(bool b, string msg)
+        {
+            if (!b)
+                throw new IllegalMoveException(msg);
+        }
         Player NextPlayer(bool nextturn = true)
         {
             CurrentPlayer = PeekNextPlayer();
@@ -181,10 +87,12 @@ namespace Carcassonne
                 Turn++;
             return CurrentPlayer;
         }
+        ///<summary>Returns a deep clone of the engine.</summary>
         public GameEngine Clone()
         {
             return CreateFromHistory(_dataSource, this.History);
         }
+        ///<summary>Returns a deep clone of the engine, before the latest action.</summary>
         public GameEngine StepBack(int steps = 1)
         {
             Assert(steps < this.History.Count);

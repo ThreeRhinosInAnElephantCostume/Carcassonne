@@ -1,4 +1,10 @@
-﻿using System;
+﻿/*
+    *** InternalNode.cs ***
+
+    An internal node represents a number of associated connections inside a tile.
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;

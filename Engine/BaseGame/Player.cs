@@ -1,4 +1,9 @@
-﻿using System;
+﻿/*
+    *** Player.cs ***
+
+    The definition for the Player class. See Engine/Agent.cs for more.
+*/
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -24,9 +29,9 @@ namespace Carcassonne
 
             public int Score { get; set; }
             public int PotentialScore { get; set; }
-            public int EndScore => Score+PotentialScore;
+            public int EndScore => Score + PotentialScore;
 
-            public List<Pawn> Pawns {get; set;} = new List<Pawn>();
+            public List<Pawn> Pawns { get; set; } = new List<Pawn>();
 
             public Player(GameEngine eng, int ID) : base(ID)
             {

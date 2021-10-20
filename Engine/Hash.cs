@@ -1,4 +1,14 @@
-﻿using System;
+﻿/*
+    *** Hash.cs ***
+
+    Functions for generating hashes that can be used to verify state integrity between different machines.
+
+    See GetHash()/HashData() to see the algorithm used.
+
+    Do note that RNG defaults to Xorshift64s for its algorithm.
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;

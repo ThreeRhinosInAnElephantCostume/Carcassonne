@@ -1,4 +1,14 @@
-﻿using System;
+﻿/*
+    *** Graph.cs ***
+
+    The graph class, a subsidary of Map (see Engine/Map.cs), is defined here.
+    A graph represents a collection of InternalNodes connected through Connections. 
+    They represent cities, farms, roads, rivers, etc.
+    Graphs can be extended to encompass unconnected nodes, when two graphs touch, they merge into one
+    ( the larger of the two graphs absorbs the smaller one ).
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Dynamic;
