@@ -1,4 +1,10 @@
-﻿using System;
+﻿/*
+    *** EngineConstants.cs ***
+
+    The GameEngine's many constants. 
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;

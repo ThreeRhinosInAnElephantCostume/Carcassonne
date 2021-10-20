@@ -1,4 +1,11 @@
-﻿using System;
+﻿/*
+    *** NodeType.cs ***
+
+    Contains various definitions for kinds of InternalNodes, attributes, etc.
+    Additionally provides getters for string representations of various types
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;

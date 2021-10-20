@@ -1,4 +1,13 @@
-﻿using System;
+﻿/*
+    *** Map.cs ***
+
+    A Map represents a collection of tiles and graphs. 
+    Do note that while each tile has its own unique position on a two-dimensional integer plane,
+    the Map itself can be thought of as a collection of as a graph (not a Graph), where each 
+    tile has four connections that can either connect to another tile, or to nothing (null)
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Dynamic;

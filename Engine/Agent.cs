@@ -1,4 +1,12 @@
-﻿using System;
+﻿/*
+    *** Agent.cs ***
+
+    An agent is any entity that's not directly reperesented on the map. 
+    Agents should be uniquely identifiable by their ID.
+*/
+
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -25,7 +33,7 @@ namespace Carcassonne
             {
                 this.ID = id;
             }
-            public Agent(RNG rng) : this(rng.NextLong())
+            public Agent(GameEngine eng) : this(eng.NextUniqueID())
             {
 
             }

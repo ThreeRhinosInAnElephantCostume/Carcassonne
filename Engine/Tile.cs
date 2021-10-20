@@ -1,4 +1,13 @@
-﻿using System;
+﻿/*
+    *** Tile.cs ***
+
+    A collection of 12 Connections, 4 Sides, and n >= 1 InternalNodes. 
+    The Connection list should be thought as starting in the upper left corner of the tile, 
+    then moving to the right, then down, then left, and then up, with 3 Connections on each side.
+    Do note that rotation is implemented by physically rearraning Sides and Connections.
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -21,8 +30,15 @@ using static Utils;
 
 namespace Carcassonne
 {
+    /// <summary>
+    /// A collection of 12 Connections, 4 Sides, and n >= 1 InternalNodes. 
+    ///  The Connection list should be thought as starting in the upper left corner of the tile, 
+    /// then moving to the right, then down, then left, and then up, with 3 Connections on each side.
+    /// Do note that rotation is implemented by physically rearraning Sides and Connections.
+    /// </summary>
     public class Tile
     {
+        ///<summary>A representation of a tile-wide attribute, like a monastery</summary>
         public class TileAttribute
         {
             public Tile tile { get; protected set; }
@@ -34,6 +50,7 @@ namespace Carcassonne
                 this.Type = tp;
             }
         }
+        ///<summary>Represents a single connection, associated with an InternalNode</summary>
         public class Connection
         {
             public InternalNode INode { get; }
@@ -72,6 +89,7 @@ namespace Carcassonne
                 node.Connections.Add(this);
             }
         }
+        ///<summary>Represents a Tile's side and 3 of its connections, useful when attaching tiles</summary>
         public class Side
         {
             public Connection[] Connections { get; protected set; } = new Connection[N_CONNECTORS];
@@ -133,7 +151,7 @@ namespace Carcassonne
         public Side Down { get => Sides[2]; }
         public Side Left { get => Sides[3]; }
         public Vector2I Position { get; set; } = new Vector2I(0, 0);
-        public object MetaData{get; set;}
+        public object MetaData { get; set; }
         public bool IsPlaced { get; protected set; } = false;
         public string DebugRepresentation
         {
@@ -183,6 +201,12 @@ namespace Carcassonne
                 }
             }
         }
+        ///<summary>
+        /// Rotates the Tile r times. 
+        /// Rotation physically rearanges the Tile's nodes.
+        /// You can reverse any given rotation by applying an opposite one, 
+        /// but note that Tile itself has no notion of its own rotation.
+        ///</summary>
         public void Rotate(int r)
         {
             r = AbsMod(r, (int)N_SIDES);

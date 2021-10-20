@@ -87,7 +87,6 @@ public class TileLogicEditor : Control
         if (!AutoTrackCityConnections && !force)
             return;
         bool changed = false;
-        NodeType prev = NodeType.ERR;
 
         for (int i = 0; i < Tile.NodeTypes.Length; i++)
         {
@@ -184,7 +183,7 @@ public class TileLogicEditor : Control
     }
     void CurrentNodeDeselected()
     {
-        if(!loaded)
+        if (!loaded)
             return;
         _placedTile.HighlightedNode = -1;
         ResetLists();
@@ -197,7 +196,7 @@ public class TileLogicEditor : Control
     }
     void PossibleAttributeDeselected()
     {
-        if(!loaded)
+        if (!loaded)
             return;
         _addAttributeButton.Disabled = true;
     }
@@ -231,9 +230,9 @@ public class TileLogicEditor : Control
         _possibleAttributeList.RemoveItem(indx);
         Assert(!Tile.NodeAttributes[sel].Contains((int)na));
         Tile.NodeAttributes[sel].Add((int)na);
-        if(!_currentAttributeList.IsAnythingSelected())
+        if (!_currentAttributeList.IsAnythingSelected())
             _removeAttributeButton.Disabled = true;
-        if(!_possibleAttributeList.IsAnythingSelected())
+        if (!_possibleAttributeList.IsAnythingSelected())
             _addAttributeButton.Disabled = true;
         return;
     }
@@ -258,9 +257,9 @@ public class TileLogicEditor : Control
         _possibleAttributeList.AddItem(na.ToString());
         Assert(Tile.NodeAttributes[sel].Contains((int)na));
         Tile.NodeAttributes[sel].Remove((int)na);
-        if(!_currentAttributeList.IsAnythingSelected())
+        if (!_currentAttributeList.IsAnythingSelected())
             _removeAttributeButton.Disabled = true;
-        if(!_possibleAttributeList.IsAnythingSelected())
+        if (!_possibleAttributeList.IsAnythingSelected())
             _addAttributeButton.Disabled = true;
         return;
 
@@ -307,7 +306,7 @@ public class TileLogicEditor : Control
     {
         void togglebuttons(Container con)
         {
-            GetChildrenRecrusively<Button>(con).ForEach(bt => bt.Disabled=!b);
+            GetChildrenRecrusively<Button>(con).ForEach(bt => bt.Disabled = !b);
         }
         togglebuttons(_toolboxContainer);
         togglebuttons(_attributeButtonContainer);
@@ -644,7 +643,7 @@ public class TileLogicEditor : Control
         _currentAttributeList.Connect("item_selected", this, "CurrentAttributeSelect");
         _currentAttributeList.Connect("nothing_selected", this, "CurrentAttributeDeselect");
         _currentAttributeList.Connect("item_activated", this, "RemoveAttributePressed");
-        
+
         _attributeButtonContainer = (Container)GetNode("VBoxContainer/BottomHalfContainer/AttributeControlBox");
         _addAttributeButton = (Button)GetNode("VBoxContainer/BottomHalfContainer/AttributeControlBox/AddAttributeButton");
         _removeAttributeButton = (Button)GetNode("VBoxContainer/BottomHalfContainer/AttributeControlBox/RemoveAttributeButton");

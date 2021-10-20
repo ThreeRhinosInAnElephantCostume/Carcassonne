@@ -95,7 +95,7 @@ public class TileEditor : Control
         {
 #if DEBUG
             return false;
-#endif
+#else
 
             var dm = new Directory();
             Assert(dm.FileExists(s));
@@ -112,6 +112,7 @@ public class TileEditor : Control
             {
                 return true;
             }
+#endif
 
         };
         _fileManager.FileOpenHandle = s =>

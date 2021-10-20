@@ -1,4 +1,14 @@
-﻿using System;
+﻿/*
+    *** Action.cs ***
+
+    Definition for the Action class, as well as the entire Action execution system lives here.
+
+    Actions allow for data to represent discrete changes in the engine's state.
+    The engine's state can be recreated by repeating a given sequence of actions. 
+    See GameEngine.History, GameEngineCreateFromHistory(), and Engine/Serialization.cs
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;

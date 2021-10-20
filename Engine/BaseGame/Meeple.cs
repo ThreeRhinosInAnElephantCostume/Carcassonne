@@ -1,4 +1,9 @@
-﻿using System;
+﻿/*
+    *** Meeple.cs ***
+
+    The Meeple and Occupier classes.
+*/
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;

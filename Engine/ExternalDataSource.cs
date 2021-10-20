@@ -1,4 +1,8 @@
-﻿using System;
+﻿/*
+    *** ExternalDatasource.cs ***
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -17,6 +21,9 @@ using static Utils;
 
 namespace Carcassonne
 {
+    ///<summary>
+    ///     Sources external data (like tilesets) for the engine
+    ///</summary>
     public interface IExternalDataSource
     {
         ITileset GetTileset(string name);
