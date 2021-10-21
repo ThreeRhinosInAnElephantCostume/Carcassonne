@@ -60,6 +60,7 @@ public class TileEditor : Control
         TabChanged(_editorContainer.CurrentTab);
 
         _fileManager.Extension = ".json";
+        _fileManager.SortAlphabetically = true;
 
         _fileManager.FilterHandle = s =>
         {
