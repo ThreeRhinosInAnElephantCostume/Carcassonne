@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://TileEditor/TileEditor.cs" type="Script" id=1]
 [ext_resource path="res://TileEditor/GroupedFileManager.tscn" type="PackedScene" id=2]
@@ -7,11 +7,25 @@
 [ext_resource path="res://TileEditor/OrbitCamera.cs" type="Script" id=5]
 
 [sub_resource type="Environment" id=1]
-background_mode = 1
-background_color = Color( 0, 0, 0, 0 )
+ambient_light_color = Color( 1, 1, 1, 1 )
+ambient_light_energy = 2.66
 
 [sub_resource type="World" id=2]
 environment = SubResource( 1 )
+
+[sub_resource type="SpatialMaterial" id=3]
+render_priority = -1
+flags_unshaded = true
+
+[sub_resource type="QuadMesh" id=4]
+
+[sub_resource type="SpatialMaterial" id=5]
+
+[sub_resource type="Environment" id=6]
+background_mode = 1
+
+[sub_resource type="World" id=7]
+environment = SubResource( 6 )
 
 [node name="TileEditor" type="Control"]
 anchor_right = 1.0
@@ -278,6 +292,7 @@ stretch = true
 
 [node name="Viewport" type="Viewport" parent="MainContainer/TabContainer/TileGraphicsEditor/HBoxContainer/VBoxContainer/3DViewport"]
 size = Vector2( 600, 360 )
+world = SubResource( 2 )
 handle_input_locally = false
 render_target_update_mode = 0
 
@@ -289,28 +304,45 @@ render_target_update_mode = 0
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 1, 0 )
 script = ExtResource( 5 )
 
-[node name="TileLogicOverlay" type="Sprite3D" parent="MainContainer/TabContainer/TileGraphicsEditor/HBoxContainer/VBoxContainer/3DViewport/Viewport/3DRoot"]
-transform = Transform( 0.333333, 0, 0, 0, -1.45705e-08, -0.333333, 0, 0.333333, -1.45705e-08, 0, 0.33, 0 )
-opacity = 0.5
+[node name="TileLogicOverlay" type="MeshInstance" parent="MainContainer/TabContainer/TileGraphicsEditor/HBoxContainer/VBoxContainer/3DViewport/Viewport/3DRoot"]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0 )
+material_override = SubResource( 3 )
+mesh = SubResource( 4 )
+material/0 = SubResource( 5 )
 
 [node name="CanvasLayer" type="CanvasLayer" parent="MainContainer/TabContainer/TileGraphicsEditor/HBoxContainer/VBoxContainer/3DViewport/Viewport"]
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MainContainer/TabContainer/TileGraphicsEditor/HBoxContainer/VBoxContainer/3DViewport/Viewport/CanvasLayer"]
 anchor_bottom = 1.0
+margin_right = 24.0
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.0
 
-[node name="RotateTileButton" type="Button" parent="MainContainer/TabContainer/TileGraphicsEditor/HBoxContainer/VBoxContainer/3DViewport/Viewport/CanvasLayer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MainContainer/TabContainer/TileGraphicsEditor/HBoxContainer/VBoxContainer/3DViewport/Viewport/CanvasLayer/VBoxContainer"]
+margin_right = 89.0
+margin_bottom = 24.0
+
+[node name="RotateTileButton" type="Button" parent="MainContainer/TabContainer/TileGraphicsEditor/HBoxContainer/VBoxContainer/3DViewport/Viewport/CanvasLayer/VBoxContainer/HBoxContainer"]
 margin_right = 61.0
-margin_bottom = 20.0
+margin_bottom = 24.0
+size_flags_horizontal = 9
+size_flags_vertical = 3
 disabled = true
 text = "ROTATE"
+expand_icon = true
+
+[node name="RenderInFrontCheck" type="CheckBox" parent="MainContainer/TabContainer/TileGraphicsEditor/HBoxContainer/VBoxContainer/3DViewport/Viewport/CanvasLayer/VBoxContainer/HBoxContainer"]
+margin_left = 65.0
+margin_right = 89.0
+margin_bottom = 24.0
+pressed = true
 
 [node name="TileLogicOpacitySlider" type="VSlider" parent="MainContainer/TabContainer/TileGraphicsEditor/HBoxContainer/VBoxContainer/3DViewport/Viewport/CanvasLayer/VBoxContainer"]
-margin_top = 24.0
+margin_top = 28.0
 margin_right = 16.0
 margin_bottom = 360.0
 size_flags_vertical = 3
+size_flags_stretch_ratio = 20.0
 value = 50.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MainContainer/TabContainer/TileGraphicsEditor/HBoxContainer/VBoxContainer"]
@@ -328,7 +360,8 @@ size_flags_vertical = 3
 [node name="Viewport" type="Viewport" parent="MainContainer/TabContainer/TileGraphicsEditor/HBoxContainer/VBoxContainer/HBoxContainer/2DViewport"]
 size = Vector2( 300, 300 )
 own_world = true
-world = SubResource( 2 )
+world = SubResource( 7 )
+transparent_bg = true
 handle_input_locally = false
 render_target_update_mode = 0
 
