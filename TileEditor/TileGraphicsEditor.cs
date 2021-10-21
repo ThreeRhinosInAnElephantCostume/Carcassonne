@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Numerics;
@@ -59,6 +60,7 @@ public class TileGraphicsEditor : VBoxContainer
     Dictionary<string, Vector3> _groupAveragePosition = new Dictionary<string, Vector3>();
 
     int _graphicsRotation = 0;
+    List<string> _modelsToUpdate = new List<string>();
     void AssignableSelected(int indx)
     {
         if (!_loaded)
@@ -256,6 +258,20 @@ public class TileGraphicsEditor : VBoxContainer
         fm.Open(_path, File.ModeFlags.Write);
         fm.StoreString(data);
         fm.Close();
+
+        foreach (var _it in _modelsToUpdate)
+        {
+            var it = _it.Replace(".tscn", ".json");
+            if (FileExists(it) && it != _modelPath)
+            {
+                var tgc = DeserializeFromFile<TileGraphicsConfig>(it);
+                if (tgc.Configs.ContainsKey(_path) && !_tile.AssociatedModels.Contains(it))
+                {
+                    tgc.Configs.Remove(_path);
+                    SerializeToFile(it, tgc);
+                }
+            }
+        }
     }
     void ResetPressed()
     {
@@ -485,6 +501,7 @@ public class TileGraphicsEditor : VBoxContainer
         if (_modelPath == "" || _modelRoot == null)
             return;
         Assert(new Directory().FileExists(_modelPath));
+        _modelsToUpdate.Add(_modelPath);
         _tileGraphicsConfig.Configs.Remove(_path);
         if (_tile.AssociatedModels.Contains(_modelPath))
             _tile.AssociatedModels.Remove(_modelPath);
