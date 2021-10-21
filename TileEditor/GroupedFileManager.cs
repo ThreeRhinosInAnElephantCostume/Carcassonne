@@ -42,6 +42,7 @@ public class GroupedFileManager : HBoxContainer
         get => _fileCloseHandle;
         set => _fileCloseHandle = s => value(EnsurePath(s));
     }
+    public bool SortAlphabetically { get; set; }
     public Func<string, bool> IsProtectedHandle = s => false;
     string _path = "";
     public string Path { get => _path; set { _path = value; SetPath(value); } }
@@ -64,6 +65,8 @@ public class GroupedFileManager : HBoxContainer
         _objectBrowser.Enabled = true;
 
         List<string> files = ListDirectoryFiles(path, true).FindAll(s => FilterHandle(ConcatPaths(path, s)));
+        if (SortAlphabetically)
+            files.Sort();
         foreach (var it in files)
         {
             _objectBrowser.AddItem(it, !IsProtectedHandle(ConcatPaths(path, it)));
@@ -201,7 +204,7 @@ public class GroupedFileManager : HBoxContainer
             string to = ConcatPaths(Path, CurrentDirectory, nname);
 
 
-            if(FileExists(to))
+            if (FileExists(to))
                 return false;
 
             Directory dm = new Directory();
@@ -220,7 +223,7 @@ public class GroupedFileManager : HBoxContainer
 
             string p = ConcatPaths(Path, CurrentDirectory, nname);
 
-            if(FileExists(p))
+            if (FileExists(p))
                 return false;
 
             CreateFileHandle(p);
