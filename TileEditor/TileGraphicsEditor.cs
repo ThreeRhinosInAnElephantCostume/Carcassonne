@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -36,6 +36,7 @@ public class TileGraphicsEditor : VBoxContainer
     Label _statusLabel;
     VBoxContainer _toggleNodeContainer;
     Button _rotateTileButton;
+    CheckBox _renderInFrontCheckbox;
     ItemList _assignableList;
     Slider _logicOpacitySlider;
     TilePrototype _tile;
@@ -51,7 +52,7 @@ public class TileGraphicsEditor : VBoxContainer
     Camera2D _camera2D;
     Viewport _viewport2D;
     PlacedTile _placedTile;
-    Sprite3D _tileLogicOverlay;
+    MeshInstance _tileLogicOverlay;
     string _modelPath = "";
     List<string> _modelGroups = new List<string>();
     Dictionary<string, bool> _groupAssigned = new System.Collections.Generic.Dictionary<string, bool>();
@@ -74,7 +75,7 @@ public class TileGraphicsEditor : VBoxContainer
             return;
         }
         indx -= 2;
-        if(indx < _tile.TileAttributes.Count)
+        if (indx < _tile.TileAttributes.Count)
         {
             _modelGroups.FindAll(s => _config.AttributeAssociations.ContainsKey(s) && _config.AttributeAssociations[s] == indx).ForEach(s => HighlightGroup(s, true));
             return;
@@ -172,7 +173,7 @@ public class TileGraphicsEditor : VBoxContainer
         _assignableList.AddItem("<NOTHING>");
         _assignableList.AddItem("Unassigned");
         int i = 0;
-        foreach(var it in _tile.TileAttributes)
+        foreach (var it in _tile.TileAttributes)
         {
             _assignableList.AddItem($"{(TileAttributeType)it} ({i})");
             i++;
@@ -226,23 +227,25 @@ public class TileGraphicsEditor : VBoxContainer
     }
     void SavePressed()
     {
-        Assert(_modelPath != "");
-        Assert(_modelRoot != null);
-        Assert(_tileGraphicsConfig != null);
+        Assert(_tile != null);
+        if (_modelPath != "")
+        {
+            Assert(_modelRoot != null);
+            Assert(_tileGraphicsConfig != null);
 
-        string path = _modelPath.Replace(".tscn", ".json");
+            string path = _modelPath.Replace(".tscn", ".json");
 
-        string dt = JsonConvert.SerializeObject(_tileGraphicsConfig);
+            string dt = JsonConvert.SerializeObject(_tileGraphicsConfig);
 
-        var f = new File();
+            var f = new File();
 
-        Assert(f.Open(path, File.ModeFlags.Write));
+            Assert(f.Open(path, File.ModeFlags.Write));
 
-        f.StoreString(dt);
+            f.StoreString(dt);
 
-        f.Close();
-
-        Assert(new Directory().FileExists(path));
+            f.Close();
+            Assert(new Directory().FileExists(path));
+        }
 
         string data = JsonConvert.SerializeObject(_tile);
         var fm = new File();
@@ -306,11 +309,11 @@ public class TileGraphicsEditor : VBoxContainer
         foreach (var it in unassigned.ToList())
         {
             int indx = kl.FindIndex(s => it.ToLower().Contains(s));
-            if(indx == -1)
+            if (indx == -1)
                 continue;
             _config.AttributeAssociations.Add(it, attributeassociations[kl[indx]]);
             _groupAssigned[it] = true;
-            
+
 
             unassigned.Remove(it);
         }
@@ -390,9 +393,30 @@ public class TileGraphicsEditor : VBoxContainer
             return;
         SetModel(p);
     }
+    void UpdateOverlay()
+    {
+        float opacity = (float)(_logicOpacitySlider.Value / _logicOpacitySlider.MaxValue);
+        if (_tileLogicOverlay.MaterialOverride == null)
+            _tileLogicOverlay.MaterialOverride = new SpatialMaterial();
+        SpatialMaterial mat = (SpatialMaterial)_tileLogicOverlay.MaterialOverride;
+
+        mat.FlagsTransparent = true;
+        mat.FlagsNoDepthTest = _renderInFrontCheckbox.Pressed;
+        var c = mat.AlbedoColor;
+        c.a = opacity;
+        mat.AlbedoColor = c;
+        var texdata = _viewport2D.GetTexture().GetData();
+        texdata.FlipY();
+        var tex = new ImageTexture();
+        tex.CreateFromImage(texdata);
+        mat.AlbedoTexture = tex;
+        texdata.Dispose();
+        tex.Dispose();
+    }
     void OpacityChanged(float val)
     {
-        _tileLogicOverlay.Opacity = val / (float)_logicOpacitySlider.MaxValue;
+        UpdateOverlay();
+        //_tileLogicOverlay.Opacity = val / (float)_logicOpacitySlider.MaxValue;
     }
     void RotateGroupPositions(int rot)
     {
@@ -412,12 +436,16 @@ public class TileGraphicsEditor : VBoxContainer
         _modelRoot.Rotate(Vector3.Up, r);
         RotateGroupPositions(rot);
     }
+    void RenderInFrontToggled(bool pressed)
+    {
+
+    }
     void RotatePressed()
     {
         Assert(_modelRoot != null);
         Assert(_config != null);
 
-        SetRotation(_config.Rotation+1);
+        SetRotation(_config.Rotation + 1);
     }
     void AddModelPressed()
     {
@@ -454,8 +482,8 @@ public class TileGraphicsEditor : VBoxContainer
             return;
         Assert(new Directory().FileExists(_modelPath));
         _tileGraphicsConfig.Configs.Remove(_path);
-        if(_tile.AssociatedModels.Contains(_modelPath))
-           _tile.AssociatedModels.Remove(_modelPath);
+        if (_tile.AssociatedModels.Contains(_modelPath))
+            _tile.AssociatedModels.Remove(_modelPath);
         _config = null;
         _modelSelector.RemoveItem(_modelSelector.Items.IndexOf(_modelPath.Split("/").Last()));
         SetModel("");
@@ -542,7 +570,7 @@ public class TileGraphicsEditor : VBoxContainer
                     }
                     _groupAveragePosition[s] = _groupAveragePosition[s] + av;
                 });
-                _groupAveragePosition[s] = _groupAveragePosition[s] / n;
+                _groupAveragePosition[s] = (_groupAveragePosition[s] / n) + _modelRoot.GetNode<Spatial>(s).Translation;
             }
         );
         SetRotation(_config.Rotation);
@@ -623,8 +651,10 @@ public class TileGraphicsEditor : VBoxContainer
 
         _placedTile = new PlacedTile();
         _placedTile.RenderedTile = _tile.Convert();
-        _placedTile.size = 300.0f;
-        _placedTile.outersize = new Vector2(_placedTile.size, _placedTile.size);
+        _placedTile.size = _viewport2D.Size.x;
+        _placedTile.outersize = _viewport2D.Size;
+        _placedTile.NodeConSize *= 2.5f;
+        _placedTile.ConSize *= 2.5f;
 
         _2DRoot.AddChild(_placedTile);
 
@@ -674,6 +704,7 @@ public class TileGraphicsEditor : VBoxContainer
         {
             _addModelButton.Disabled = false;
             _modelSelector.Disabled = false;
+            _saveButton.Disabled = false;
         }
     }
 
@@ -712,9 +743,8 @@ public class TileGraphicsEditor : VBoxContainer
         _camera3D = (OrbitCamera)GetNode("HBoxContainer/VBoxContainer/3DViewport/Viewport/3DRoot/CameraHolder/Camera3D");
         _camera3D.Distance = Constants.TILE_SIDE_LENGTH;
 
-        _tileLogicOverlay = (Sprite3D)GetNode("HBoxContainer/VBoxContainer/3DViewport/Viewport/3DRoot/TileLogicOverlay");
+        _tileLogicOverlay = GetNode<MeshInstance>("HBoxContainer/VBoxContainer/3DViewport/Viewport/3DRoot/TileLogicOverlay");
 
-        _tileLogicOverlay.Scale = new Vector3(1f / 3f, 1f / 3f, 1f / 3f);
         _tileLogicOverlay.Translation = new Vector3(0, Constants.TILE_HEIGHT * 2f, 0);
 
         _logicOpacitySlider = (Slider)GetNode("HBoxContainer/VBoxContainer/3DViewport/Viewport/CanvasLayer/VBoxContainer/TileLogicOpacitySlider");
@@ -722,11 +752,11 @@ public class TileGraphicsEditor : VBoxContainer
 
         _logicOpacitySlider.Connect("value_changed", this, "OpacityChanged");
 
-        _tileLogicOverlay.Opacity = 0.5f;
-
-        _rotateTileButton = (Button)GetNode("HBoxContainer/VBoxContainer/3DViewport/Viewport/CanvasLayer/VBoxContainer/RotateTileButton");
-
+        _rotateTileButton = (Button)GetNode("HBoxContainer/VBoxContainer/3DViewport/Viewport/CanvasLayer/VBoxContainer/HBoxContainer/RotateTileButton");
         _rotateTileButton.Connect("pressed", this, "RotatePressed");
+
+        _renderInFrontCheckbox = GetNode<CheckBox>("HBoxContainer/VBoxContainer/3DViewport/Viewport/CanvasLayer/VBoxContainer/HBoxContainer/RenderInFrontCheck");
+        _renderInFrontCheckbox.Connect("toggled", this, "RenderInFrontToggled");
 
         _logicOpacitySlider.SetProcessInput(false);
         _rotateTileButton.Disabled = true;
@@ -741,8 +771,12 @@ public class TileGraphicsEditor : VBoxContainer
     {
         if (_loaded)
         {
-            _tileLogicOverlay.Texture = _viewport2D.GetTexture();
+            //_tileLogicOverlay.Texture = _viewport2D.GetTexture();
+            UpdateOverlay();
+            _placedTile.Position = _camera2D.GetViewport().Size / 2;
+
         }
         _rotateTileButton.Disabled = !_loaded;
+        _renderInFrontCheckbox.Disabled = !_loaded;
     }
 }

@@ -1,1 +1,1 @@
-{"Path":"","Configs":{"res://Data/Tiles/BaseGame/RoadCross4.json":{"Rotation":0,"NodeAssociations":{"GRASS_1":-7,"GRASS_2":-6,"GRASS_0":0,"GRASS_3":-5,"ROAD_0":-3,"ROAD_2":-2,"ROAD_3":-4,"ROAD_1":7},"AttributeAssociations":{},"Unassociated":["BASE","CROSSROAD"]}}}
+{"Path":"","Configs":{"res://Data/Tiles/BaseGame/RoadCross4.json":{"Rotation":0,"NodeAssociations":{"GRASS_1":1,"GRASS_2":2,"GRASS_0":0,"GRASS_3":3,"ROAD_0":5,"ROAD_1":7,"ROAD_2":6,"ROAD_3":4},"AttributeAssociations":{},"Unassociated":["BASE","CROSSROAD"]}}}
