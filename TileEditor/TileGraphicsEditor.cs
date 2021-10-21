@@ -225,26 +225,30 @@ public class TileGraphicsEditor : VBoxContainer
         if (refreshlists)
             LoadLists();
     }
+    void SaveModel()
+    {
+        Assert(_modelRoot != null);
+        Assert(_tileGraphicsConfig != null);
+
+        string path = _modelPath.Replace(".tscn", ".json");
+
+        string dt = JsonConvert.SerializeObject(_tileGraphicsConfig);
+
+        var f = new File();
+
+        Assert(f.Open(path, File.ModeFlags.Write));
+
+        f.StoreString(dt);
+
+        f.Close();
+        Assert(new Directory().FileExists(path));
+    }
     void SavePressed()
     {
         Assert(_tile != null);
         if (_modelPath != "")
         {
-            Assert(_modelRoot != null);
-            Assert(_tileGraphicsConfig != null);
-
-            string path = _modelPath.Replace(".tscn", ".json");
-
-            string dt = JsonConvert.SerializeObject(_tileGraphicsConfig);
-
-            var f = new File();
-
-            Assert(f.Open(path, File.ModeFlags.Write));
-
-            f.StoreString(dt);
-
-            f.Close();
-            Assert(new Directory().FileExists(path));
+            SaveModel();
         }
 
         string data = JsonConvert.SerializeObject(_tile);
@@ -619,6 +623,17 @@ public class TileGraphicsEditor : VBoxContainer
             _modelSelector.Disabled = false;
         }
     }
+    void RemoveInvalidAssociations()
+    {
+        foreach (var it in _tile.AssociatedModels.ToList())
+        {
+            if (!FileExists(it))
+            {
+                GD.PrintErr("Removed association with a model that does not exist: " + it);
+                _tile.AssociatedModels.Remove(it);
+            }
+        }
+    }
     public void SetTile(TilePrototype tile, string path)
     {
         _path = path;
@@ -635,6 +650,7 @@ public class TileGraphicsEditor : VBoxContainer
             UnloadDisplays();
             return;
         }
+        RemoveInvalidAssociations();
         UnloadDisplays();
         MaybeLoad();
         UpdateOptions();
@@ -771,7 +787,6 @@ public class TileGraphicsEditor : VBoxContainer
     {
         if (_loaded)
         {
-            //_tileLogicOverlay.Texture = _viewport2D.GetTexture();
             UpdateOverlay();
             _placedTile.Position = _camera2D.GetViewport().Size / 2;
 

@@ -342,6 +342,21 @@ public class TilesetEditor : Control
             _possibleTileList.AddItem(visstr);
         }
     }
+    void RemoveInvalidTiles()
+    {
+        Assert(Tileset != null);
+        foreach (var it in Tileset.Tiles.ToList())
+        {
+            if (!FileExists(it))
+            {
+                if (Tileset.Tiles.Contains(it))
+                {
+                    GD.PrintErr("Removed missing tile: " + it);
+                    Tileset.Tiles.Remove(it);
+                }
+            }
+        }
+    }
     void LoadCurrentList(string filter)
     {
         filter = filter.ToLower();
@@ -512,6 +527,7 @@ public class TilesetEditor : Control
         {
             Tileset = new EditableTileset(false);
         }
+        RemoveInvalidTiles();
         LoadInterface();
     }
     void Unload()
