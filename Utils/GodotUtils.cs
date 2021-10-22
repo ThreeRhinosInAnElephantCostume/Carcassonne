@@ -15,6 +15,12 @@ using Expression = System.Linq.Expressions.Expression;
 
 public static partial class Utils
 {
+    public static void DestroyNode(Node node)
+    {
+        if (node.GetParent() is Node parent)
+            parent.RemoveChild(node);
+        node.QueueFree();
+    }
     public static string EnsurePathExists(string path)
     {
         Assert(!FileExists(path), "This function is meant for directories, not files");
