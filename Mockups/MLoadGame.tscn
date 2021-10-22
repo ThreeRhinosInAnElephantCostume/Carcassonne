@@ -1,0 +1,85 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Mockups/MLoadGameList.cs" type="Script" id=1]
+
+[node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="AspectRatioContainer"]
+margin_left = 420.0
+margin_right = 1500.0
+margin_bottom = 1080.0
+
+[node name="Label" type="Label" parent="AspectRatioContainer/VBoxContainer"]
+margin_right = 1080.0
+margin_bottom = 14.0
+text = "[Singleplayer/Multiplayer]"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="AspectRatioContainer/VBoxContainer/Label"]
+show_behind_parent = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ItemList" type="ItemList" parent="AspectRatioContainer/VBoxContainer"]
+margin_top = 18.0
+margin_right = 1080.0
+margin_bottom = 1042.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/vseparation = 5
+custom_constants/line_separation = 1
+items = [ "<SAVE DATA 0>", null, false, "<SAVE DATA 1>", null, false, "<SAVE DATA 2>", null, false, "<SAVE DATA 3>", null, false, "<SAVE DATA 4>", null, false ]
+script = ExtResource( 1 )
+
+[node name="PanelContainer" type="PanelContainer" parent="AspectRatioContainer/VBoxContainer"]
+margin_top = 1046.0
+margin_right = 1080.0
+margin_bottom = 1080.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/VBoxContainer/PanelContainer"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 1073.0
+margin_bottom = 27.0
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button" type="Button" parent="AspectRatioContainer/VBoxContainer/PanelContainer/HBoxContainer"]
+margin_left = 445.0
+margin_right = 494.0
+margin_bottom = 20.0
+text = "LOAD"
+
+[node name="Button2" type="Button" parent="AspectRatioContainer/VBoxContainer/PanelContainer/HBoxContainer"]
+margin_left = 498.0
+margin_right = 555.0
+margin_bottom = 20.0
+text = "DELETE"
+
+[node name="Button3" type="Button" parent="AspectRatioContainer/VBoxContainer/PanelContainer/HBoxContainer"]
+margin_left = 559.0
+margin_right = 620.0
+margin_bottom = 20.0
+text = "CANCEL"

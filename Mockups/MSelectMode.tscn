@@ -1,0 +1,132 @@
+[gd_scene format=2]
+
+[node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+ratio = 0.5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="AspectRatioContainer"]
+margin_left = 690.0
+margin_right = 1230.0
+margin_bottom = 1080.0
+custom_constants/margin_top = 20
+custom_constants/margin_bottom = 100
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="AspectRatioContainer/MarginContainer"]
+margin_top = 20.0
+margin_right = 540.0
+margin_bottom = 980.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 1
+
+[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2"]
+margin_right = 540.0
+margin_bottom = 122.0
+rect_min_size = Vector2( 0, 99 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.42
+text = "<LOGO>"
+align = 1
+valign = 1
+
+[node name="Control2" type="Control" parent="AspectRatioContainer/MarginContainer/VBoxContainer2"]
+margin_top = 126.0
+margin_right = 540.0
+margin_bottom = 176.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.17
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label2" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2"]
+margin_top = 180.0
+margin_right = 540.0
+margin_bottom = 194.0
+text = "[NEW GAME/LOAD GAME]"
+align = 1
+valign = 1
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2"]
+margin_top = 198.0
+margin_right = 540.0
+margin_bottom = 489.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+ratio = 2.0
+
+[node name="GridContainer" type="GridContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/AspectRatioContainer"]
+margin_top = 10.5
+margin_right = 540.0
+margin_bottom = 280.5
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/vseparation = 31
+custom_constants/hseparation = 25
+columns = 2
+
+[node name="Button" type="Button" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/AspectRatioContainer/GridContainer"]
+margin_right = 257.0
+margin_bottom = 270.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "<singleplayer icon>"
+
+[node name="Label2" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/AspectRatioContainer/GridContainer/Button"]
+anchor_top = 0.911
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 52.0
+margin_top = -1.97002
+margin_right = -48.0
+margin_bottom = -12.0
+text = "[SINGLEPLAYER]"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button2" type="Button" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/AspectRatioContainer/GridContainer"]
+margin_left = 282.0
+margin_right = 539.0
+margin_bottom = 270.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "<multiplayer icon>"
+
+[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/AspectRatioContainer/GridContainer/Button2"]
+anchor_top = 0.817
+anchor_right = 1.0
+anchor_bottom = 0.893
+margin_top = 16.6489
+margin_bottom = 17.7289
+text = "[MULTIPLAYER]"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Control" type="Control" parent="AspectRatioContainer/MarginContainer/VBoxContainer2"]
+margin_top = 493.0
+margin_right = 540.0
+margin_bottom = 960.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 1.6

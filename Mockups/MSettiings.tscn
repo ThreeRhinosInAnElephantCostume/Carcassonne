@@ -1,0 +1,209 @@
+[gd_scene format=2]
+
+[node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+ratio = 1.1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="AspectRatioContainer"]
+margin_left = 366.0
+margin_right = 1554.0
+margin_bottom = 1080.0
+custom_constants/margin_top = 50
+custom_constants/margin_bottom = 25
+
+[node name="PanelContainer" type="PanelContainer" parent="AspectRatioContainer/MarginContainer"]
+margin_top = 50.0
+margin_right = 1188.0
+margin_bottom = 1055.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="AspectRatioContainer/MarginContainer/PanelContainer"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 1181.0
+margin_bottom = 998.0
+
+[node name="TabContainer" type="TabContainer" parent="AspectRatioContainer/MarginContainer/PanelContainer/VBoxContainer"]
+margin_right = 1174.0
+margin_bottom = 967.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Gameplay" type="Control" parent="AspectRatioContainer/MarginContainer/PanelContainer/VBoxContainer/TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="Display" type="Control" parent="AspectRatioContainer/MarginContainer/PanelContainer/VBoxContainer/TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="Graphics" type="Control" parent="AspectRatioContainer/MarginContainer/PanelContainer/VBoxContainer/TabContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="TabContainer" type="TabContainer" parent="AspectRatioContainer/MarginContainer/PanelContainer/VBoxContainer/TabContainer/Graphics"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Basic" type="Control" parent="AspectRatioContainer/MarginContainer/PanelContainer/VBoxContainer/TabContainer/Graphics/TabContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/PanelContainer/VBoxContainer/TabContainer/Graphics/TabContainer/Basic"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="AspectRatioContainer/MarginContainer/PanelContainer/VBoxContainer/TabContainer/Graphics/TabContainer/Basic/HBoxContainer"]
+margin_right = 577.0
+margin_bottom = 895.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="CheckBox" type="CheckBox" parent="AspectRatioContainer/MarginContainer/PanelContainer/VBoxContainer/TabContainer/Graphics/TabContainer/Basic/HBoxContainer/VBoxContainer"]
+margin_right = 577.0
+margin_bottom = 24.0
+text = "<OPTION>"
+
+[node name="CheckBox3" type="CheckBox" parent="AspectRatioContainer/MarginContainer/PanelContainer/VBoxContainer/TabContainer/Graphics/TabContainer/Basic/HBoxContainer/VBoxContainer"]
+margin_top = 28.0
+margin_right = 577.0
+margin_bottom = 52.0
+text = "<OPTION>"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/PanelContainer/VBoxContainer/TabContainer/Graphics/TabContainer/Basic/HBoxContainer/VBoxContainer"]
+margin_top = 56.0
+margin_right = 577.0
+margin_bottom = 72.0
+
+[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/PanelContainer/VBoxContainer/TabContainer/Graphics/TabContainer/Basic/HBoxContainer/VBoxContainer/HBoxContainer"]
+margin_top = 1.0
+margin_right = 60.0
+margin_bottom = 15.0
+text = "<SLIDER>"
+
+[node name="HSlider" type="HSlider" parent="AspectRatioContainer/MarginContainer/PanelContainer/VBoxContainer/TabContainer/Graphics/TabContainer/Basic/HBoxContainer/VBoxContainer/HBoxContainer"]
+margin_left = 64.0
+margin_right = 577.0
+margin_bottom = 16.0
+size_flags_horizontal = 3
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="AspectRatioContainer/MarginContainer/PanelContainer/VBoxContainer/TabContainer/Graphics/TabContainer/Basic/HBoxContainer"]
+margin_left = 581.0
+margin_right = 1158.0
+margin_bottom = 895.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="CheckBox2" type="CheckBox" parent="AspectRatioContainer/MarginContainer/PanelContainer/VBoxContainer/TabContainer/Graphics/TabContainer/Basic/HBoxContainer/VBoxContainer2"]
+margin_right = 577.0
+margin_bottom = 24.0
+text = "<OPTION>"
+
+[node name="OptionButton" type="OptionButton" parent="AspectRatioContainer/MarginContainer/PanelContainer/VBoxContainer/TabContainer/Graphics/TabContainer/Basic/HBoxContainer/VBoxContainer2"]
+margin_top = 28.0
+margin_right = 577.0
+margin_bottom = 48.0
+text = "<SELECTOR>"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Advanced" type="Control" parent="AspectRatioContainer/MarginContainer/PanelContainer/VBoxContainer/TabContainer/Graphics/TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="Sound" type="Control" parent="AspectRatioContainer/MarginContainer/PanelContainer/VBoxContainer/TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -283.0
+margin_top = -25.0
+margin_right = -291.0
+margin_bottom = -61.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/PanelContainer/VBoxContainer"]
+margin_top = 971.0
+margin_right = 1174.0
+margin_bottom = 991.0
+alignment = 1
+
+[node name="Button" type="Button" parent="AspectRatioContainer/MarginContainer/PanelContainer/VBoxContainer/HBoxContainer"]
+margin_left = 440.0
+margin_right = 483.0
+margin_bottom = 20.0
+text = "SAVE"
+
+[node name="Button3" type="Button" parent="AspectRatioContainer/MarginContainer/PanelContainer/VBoxContainer/HBoxContainer"]
+margin_left = 487.0
+margin_right = 556.0
+margin_bottom = 20.0
+text = "DISCARD"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button4" type="Button" parent="AspectRatioContainer/MarginContainer/PanelContainer/VBoxContainer/HBoxContainer"]
+margin_left = 560.0
+margin_right = 691.0
+margin_bottom = 20.0
+text = "RESET TO DEFAULT"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button2" type="Button" parent="AspectRatioContainer/MarginContainer/PanelContainer/VBoxContainer/HBoxContainer"]
+margin_left = 695.0
+margin_right = 734.0
+margin_bottom = 20.0
+text = "EXIT"

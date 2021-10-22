@@ -1,0 +1,476 @@
+[gd_scene load_steps=6 format=2]
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0, 0.133333, 1, 1 )
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 1, 0, 0, 1 )
+
+[sub_resource type="StyleBoxFlat" id=3]
+bg_color = Color( 0.243137, 0.584314, 0.223529, 1 )
+
+[sub_resource type="StyleBoxFlat" id=4]
+bg_color = Color( 1, 0.843137, 0, 1 )
+
+[sub_resource type="StyleBoxFlat" id=5]
+bg_color = Color( 1, 0, 0.796078, 1 )
+
+[node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 1.0
+margin_top = -1.0
+margin_right = 1.0
+margin_bottom = -1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+anchor_right = 1.0
+margin_bottom = 40.0
+size_flags_horizontal = 3
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="HBoxContainer"]
+margin_left = 593.0
+margin_top = 13.0
+margin_right = 650.0
+margin_bottom = 27.0
+text = "<SCORE>"
+
+[node name="Label2" type="Label" parent="HBoxContainer"]
+margin_left = 654.0
+margin_top = 13.0
+margin_right = 786.0
+margin_bottom = 27.0
+text = "<POTENTIAL SCORE>"
+
+[node name="VSeparator" type="VSeparator" parent="HBoxContainer"]
+margin_left = 790.0
+margin_right = 794.0
+margin_bottom = 40.0
+
+[node name="Label3" type="Label" parent="HBoxContainer"]
+margin_left = 798.0
+margin_top = 13.0
+margin_right = 857.0
+margin_bottom = 27.0
+text = "<FARMS>"
+
+[node name="Label4" type="Label" parent="HBoxContainer"]
+margin_left = 861.0
+margin_top = 13.0
+margin_right = 916.0
+margin_bottom = 27.0
+text = "<CITIES>"
+
+[node name="Label5" type="Label" parent="HBoxContainer"]
+margin_left = 920.0
+margin_top = 13.0
+margin_right = 981.0
+margin_bottom = 27.0
+text = "<ROADS>"
+
+[node name="Label6" type="Label" parent="HBoxContainer"]
+margin_left = 985.0
+margin_top = 13.0
+margin_right = 1084.0
+margin_bottom = 27.0
+text = "<MONASTRIES>"
+
+[node name="VSeparator2" type="VSeparator" parent="HBoxContainer"]
+margin_left = 1088.0
+margin_right = 1092.0
+margin_bottom = 40.0
+
+[node name="Label8" type="Label" parent="HBoxContainer"]
+margin_left = 1096.0
+margin_top = 13.0
+margin_right = 1220.0
+margin_bottom = 27.0
+rect_pivot_offset = Vector2( -1916.27, 326.911 )
+text = "<MEEPLES PLACED>"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label7" type="Label" parent="HBoxContainer"]
+margin_left = 1224.0
+margin_top = 13.0
+margin_right = 1327.0
+margin_bottom = 27.0
+rect_pivot_offset = Vector2( -1916.27, 326.911 )
+text = "<MEEPLES LEFT>"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchor_top = 0.2
+anchor_bottom = 0.2
+margin_right = 40.0
+margin_bottom = 40.0
+custom_constants/separation = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
+margin_right = 210.0
+margin_bottom = 32.0
+custom_constants/separation = 0
+
+[node name="Panel2" type="Panel" parent="VBoxContainer/HBoxContainer2"]
+margin_right = 5.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 5, 32 )
+custom_styles/panel = SubResource( 2 )
+
+[node name="Panel" type="Panel" parent="VBoxContainer/HBoxContainer2"]
+margin_left = 5.0
+margin_right = 37.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2/Panel"]
+margin_left = -3.57166
+margin_top = 9.39242
+margin_right = 36.4283
+margin_bottom = 23.3924
+text = "ICON"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2"]
+margin_left = 37.0
+margin_top = 9.0
+margin_right = 153.0
+margin_bottom = 23.0
+text = "<Player/AI NAME>"
+
+[node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer2"]
+margin_left = 153.0
+margin_top = 9.0
+margin_right = 210.0
+margin_bottom = 23.0
+text = "<SCORE>"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 38.0
+margin_right = 210.0
+margin_bottom = 70.0
+custom_constants/separation = 0
+
+[node name="Panel2" type="Panel" parent="VBoxContainer/HBoxContainer"]
+margin_right = 5.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 5, 32 )
+custom_styles/panel = SubResource( 1 )
+
+[node name="Panel" type="Panel" parent="VBoxContainer/HBoxContainer"]
+margin_left = 5.0
+margin_right = 37.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/Panel"]
+margin_left = -3.57166
+margin_top = 9.39242
+margin_right = 36.4283
+margin_bottom = 23.3924
+text = "ICON"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer"]
+margin_left = 37.0
+margin_top = 9.0
+margin_right = 153.0
+margin_bottom = 23.0
+custom_colors/font_color = Color( 0.764706, 0.764706, 0.764706, 1 )
+text = "<Player/AI NAME>"
+
+[node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer"]
+margin_left = 153.0
+margin_top = 9.0
+margin_right = 210.0
+margin_bottom = 23.0
+custom_colors/font_color = Color( 0.8, 0.8, 0.8, 1 )
+text = "<SCORE>"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 76.0
+margin_right = 210.0
+margin_bottom = 108.0
+custom_constants/separation = 0
+
+[node name="Panel2" type="Panel" parent="VBoxContainer/HBoxContainer3"]
+margin_right = 5.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 5, 32 )
+custom_styles/panel = SubResource( 3 )
+
+[node name="Panel" type="Panel" parent="VBoxContainer/HBoxContainer3"]
+margin_left = 5.0
+margin_right = 37.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3/Panel"]
+margin_left = -3.57166
+margin_top = 9.39242
+margin_right = 36.4283
+margin_bottom = 23.3924
+text = "ICON"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3"]
+margin_left = 37.0
+margin_top = 9.0
+margin_right = 153.0
+margin_bottom = 23.0
+text = "<Player/AI NAME>"
+
+[node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer3"]
+margin_left = 153.0
+margin_top = 9.0
+margin_right = 210.0
+margin_bottom = 23.0
+text = "<SCORE>"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 114.0
+margin_right = 210.0
+margin_bottom = 146.0
+custom_constants/separation = 0
+
+[node name="Panel2" type="Panel" parent="VBoxContainer/HBoxContainer4"]
+margin_right = 5.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 5, 32 )
+custom_styles/panel = SubResource( 4 )
+
+[node name="Panel" type="Panel" parent="VBoxContainer/HBoxContainer4"]
+margin_left = 5.0
+margin_right = 37.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer4/Panel"]
+margin_left = -3.57166
+margin_top = 9.39242
+margin_right = 36.4283
+margin_bottom = 23.3924
+text = "ICON"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer4"]
+margin_left = 37.0
+margin_top = 9.0
+margin_right = 153.0
+margin_bottom = 23.0
+text = "<Player/AI NAME>"
+
+[node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer4"]
+margin_left = 153.0
+margin_top = 9.0
+margin_right = 210.0
+margin_bottom = 23.0
+text = "<SCORE>"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 152.0
+margin_right = 210.0
+margin_bottom = 184.0
+custom_constants/separation = 0
+
+[node name="Panel2" type="Panel" parent="VBoxContainer/HBoxContainer5"]
+margin_right = 5.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 5, 32 )
+custom_styles/panel = SubResource( 5 )
+
+[node name="Panel" type="Panel" parent="VBoxContainer/HBoxContainer5"]
+margin_left = 5.0
+margin_right = 37.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer5/Panel"]
+margin_left = -3.57166
+margin_top = 9.39242
+margin_right = 36.4283
+margin_bottom = 23.3924
+text = "ICON"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer5"]
+margin_left = 37.0
+margin_top = 9.0
+margin_right = 153.0
+margin_bottom = 23.0
+text = "<Player/AI NAME>"
+
+[node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer5"]
+margin_left = 153.0
+margin_top = 9.0
+margin_right = 210.0
+margin_bottom = 23.0
+text = "<SCORE>"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="."]
+anchor_left = 0.778
+anchor_top = 0.735
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 30.2399
+margin_top = 53.2
+alignment = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer2"]
+margin_right = 196.0
+margin_bottom = 233.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer2/VBoxContainer"]
+margin_top = 169.0
+margin_right = 196.0
+margin_bottom = 233.0
+
+[node name="Panel" type="Panel" parent="HBoxContainer2/VBoxContainer/HBoxContainer"]
+margin_right = 64.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
+
+[node name="CenterContainer" type="CenterContainer" parent="HBoxContainer2/VBoxContainer/HBoxContainer/Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="HBoxContainer2/VBoxContainer/HBoxContainer/Panel/CenterContainer"]
+margin_left = 1.0
+margin_top = 16.0
+margin_right = 61.0
+margin_bottom = 47.0
+text = "<MEEPLE 
+ICON>"
+align = 1
+valign = 1
+
+[node name="Label" type="Label" parent="HBoxContainer2/VBoxContainer/HBoxContainer"]
+margin_left = 68.0
+margin_top = 25.0
+margin_right = 171.0
+margin_bottom = 39.0
+text = "<MEEPLES LEFT>"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="HBoxContainer2"]
+margin_left = 200.0
+margin_right = 396.0
+margin_bottom = 233.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label2" type="Label" parent="HBoxContainer2/VBoxContainer2"]
+margin_right = 196.0
+margin_bottom = 14.0
+text = "<TURN>"
+align = 1
+valign = 1
+
+[node name="Label" type="Label" parent="HBoxContainer2/VBoxContainer2"]
+margin_top = 18.0
+margin_right = 196.0
+margin_bottom = 32.0
+text = "<TILES LEFT>"
+align = 1
+valign = 1
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="HBoxContainer2/VBoxContainer2"]
+margin_top = 36.0
+margin_right = 196.0
+margin_bottom = 233.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment_horizontal = 2
+alignment_vertical = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="HBoxContainer2/VBoxContainer2/AspectRatioContainer"]
+margin_top = 1.0
+margin_right = 196.0
+margin_bottom = 197.0
+
+[node name="CenterContainer" type="CenterContainer" parent="HBoxContainer2/VBoxContainer2/AspectRatioContainer/Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="HBoxContainer2/VBoxContainer2/AspectRatioContainer/Panel/CenterContainer"]
+margin_left = 27.0
+margin_top = 91.0
+margin_right = 168.0
+margin_bottom = 105.0
+text = "<CURRENT TILE VIEW>"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
