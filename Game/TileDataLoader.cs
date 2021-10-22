@@ -17,16 +17,25 @@ using static Utils;
 
 public static class TileDataLoader
 {
-    public static TilePrototype LoadTilePrototype(string path)
+    public static GameExternalDataLoader Loader = new GameExternalDataLoader();
+    public static TilePrototype LoadTilePrototype(string path, bool failsafe = false)
     {
         if (!path.Contains("res://"))
             path = ConcatPaths(Constants.TILE_DIRECTORY, path);
 
+        if (failsafe)
+        {
+            if (!FileExists(path) || !path.EndsWith(".json"))
+                return null;
+        }
         Assert(path.EndsWith(".json"));
         Assert(FileExists(path));
 
         string data = ReadFile(path);
         TilePrototype tp = JsonConvert.DeserializeObject<TilePrototype>(data);
+
+        if (failsafe && tp == null)
+            return null;
 
         Assert(tp != null);
 
@@ -34,9 +43,12 @@ public static class TileDataLoader
 
         return tp;
     }
-    public static Tile LoadTile(string path)
+    public static Tile LoadTile(string path, bool failsafe = false)
     {
-        return LoadTilePrototype(path).Convert();
+        var prot = LoadTilePrototype(path, failsafe);
+        if (failsafe && prot == null)
+            return null;
+        return prot.Convert();
     }
     public static Carcassonne.ITileset LoadTileset(string path)
     {
