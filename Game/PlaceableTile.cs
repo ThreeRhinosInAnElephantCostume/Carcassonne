@@ -37,8 +37,8 @@ public class PlaceableTile : Spatial
             TileRotation = _rotations[0];
             if (tile3d.GetParent() != null)
                 tile3d.GetParent().RemoveChild(tile3d);
+            this.AddChild(tile3d);
         }
-        this.AddChild(tile3d);
         tile3d.Visible = true;
     }
     public void MouseExited()
