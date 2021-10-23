@@ -30,7 +30,7 @@ public class GameUI : Control
     }
     public override void _PhysicsProcess(float delta)
     {
-        Vector3 pos = _camera.Translation;
+        Vector3 pos = new Vector3(0, 0, 0);
         if (Input.IsKeyPressed((int)KeyList.W))
             pos.z -= _speed * delta;
         if (Input.IsKeyPressed((int)KeyList.S))
@@ -47,6 +47,8 @@ public class GameUI : Control
             _camera.RotateY(_rotspeed * _speed);
         if (Input.IsKeyPressed((int)KeyList.E))
             _camera.RotateY(-_rotspeed * _speed);
-        _camera.Translation = pos;
+
+        pos = pos.Rotated(Vector3.Up, _camera.Rotation.y);
+        _camera.Translation += pos;
     }
 }
