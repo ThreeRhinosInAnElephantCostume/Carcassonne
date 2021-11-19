@@ -6,6 +6,8 @@ General utilities.
 */
 
 using System;
+using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -13,6 +15,8 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using System.Runtime.Serialization;
 using System.Threading;
 using ExtraMath;
 using Godot;
@@ -66,7 +70,7 @@ public static partial class Utils
         if (p0is ^ p1is)
             return p0 + p1;
         if (p0is)
-            return p0.Remove(p0.Length-1) + p1;
+            return p0.Remove(p0.Length - 1) + p1;
         return p0 + "/" + p1;
     }
     public static string ConcatPaths(string p0, string p1, string p2)
@@ -138,6 +142,16 @@ public static partial class Utils
     {
         Assert(!b);
     }
+    public static void Assert<T>(bool b, string msg) where T : Exception
+    {
+        if (!b)
+            throw (Exception)GetActivator<T>()(msg);
+    }
+    public static void Assert<T>(bool b) where T : Exception
+    {
+        if (!b)
+            throw (Exception)GetActivator<T>()();
+    }
     static uint ID = 0;
     public static uint CreateID()
     {
@@ -192,5 +206,95 @@ public static partial class Utils
     public static ObjectActivator GetActivator<T>()
     {
         return GetActivator<T>(typeof(T).GetConstructors().First());
+    }
+    [System.Serializable]
+    public class SerializationFailedException : System.Exception
+    {
+        public SerializationFailedException() { }
+        public SerializationFailedException(string message) : base(message) { }
+        public SerializationFailedException(string message, System.Exception inner) : base(message, inner) { }
+        protected SerializationFailedException(
+            System.Runtime.Serialization.SerializationInfo info,
+            System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
+    }
+    [System.Serializable]
+    public class DeserializationFailedException : System.Exception
+    {
+        public DeserializationFailedException() { }
+        public DeserializationFailedException(string message) : base(message) { }
+        public DeserializationFailedException(string message, System.Exception inner) : base(message, inner) { }
+        protected DeserializationFailedException(
+            System.Runtime.Serialization.SerializationInfo info,
+            System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
+    }
+    public unsafe static byte[] SerializeStruct<T>(T s) where T : struct
+    {
+        int size = Marshal.SizeOf(s);
+        IntPtr ptr = Marshal.AllocHGlobal(size);
+        try
+        {
+            Marshal.StructureToPtr(s, ptr, true);
+        }
+        catch (Exception ex)
+        {
+            throw new SerializationFailedException("Serialization failure", ex);
+        }
+        byte* bptr = (byte*)ptr;
+        byte[] dt = new byte[size];
+        for (int i = 0; i < size; i++)
+        {
+            dt[i] = bptr[i];
+        }
+        Marshal.FreeHGlobal(ptr);
+        return dt;
+    }
+    public unsafe static T DeserializeStruct<T>(byte[] dt) where T : struct
+    {
+        T ret = new T();
+        try
+        {
+            fixed (byte* bptr = dt)
+            {
+                Marshal.PtrToStructure<T>((IntPtr)bptr, ret);
+            }
+        }
+        catch (Exception ex)
+        {
+            throw new DeserializationFailedException("Deserialization failure", ex);
+        }
+        return ret;
+    }
+    public class FIFO<T> : IEnumerable<T>, IEnumerable
+    {
+        Queue<T> queue;
+        public int Capacity { get; protected set; }
+        public int Count => queue.Count;
+        public bool Full => Count == Capacity;
+        public bool Empty => Count == 0;
+        public IEnumerator<T> GetEnumerator()
+        {
+            return queue.GetEnumerator();
+        }
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return queue.GetEnumerator();
+        }
+        public T this[int indx]
+        {
+            get => queue.ElementAt(indx);
+        }
+        public T Peek() => queue.Peek();
+        public T Dequeue() => queue.Dequeue();
+        public void Enqueue(T val)
+        {
+            if (queue.Count == Capacity)
+                queue.Dequeue();
+            queue.Enqueue(val);
+        }
+        public FIFO(int capacity)
+        {
+            this.Capacity = capacity;
+            this.queue = new Queue<T>(capacity);
+        }
     }
 }
