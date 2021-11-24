@@ -20,7 +20,6 @@ using System.Threading.Tasks.Dataflow;
 using System.Xml.Linq;
 using Carcassonne;
 using ExtraMath;
-using Godot;
 using static System.Math;
 using static Carcassonne.GameEngine;
 using static Utils;
@@ -62,7 +61,7 @@ namespace Carcassonne
         {
             string s = type.ToString().ToLower();
             Assert(s.Length > 0);
-            s = (s[0] + "").ToUpper() + s.Substr(1, s.Length - 1);
+            s = (s[0] + "").ToUpper() + s.Substring(1, s.Length - 1);
             return s;
         }
     }

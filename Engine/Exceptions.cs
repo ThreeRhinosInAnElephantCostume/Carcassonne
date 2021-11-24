@@ -17,7 +17,6 @@ using System.Threading;
 using System.Threading.Tasks.Dataflow;
 using Carcassonne;
 using ExtraMath;
-using Godot;
 using Newtonsoft.Json;
 using static System.Math;
 using static Carcassonne.GameEngine;
