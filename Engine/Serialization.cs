@@ -20,7 +20,6 @@ using System.Threading;
 using System.Threading.Tasks.Dataflow;
 using Carcassonne;
 using ExtraMath;
-using Godot;
 using Newtonsoft.Json;
 using static System.Math;
 using static Carcassonne.GameEngine;
@@ -78,7 +77,7 @@ namespace Carcassonne
             ToDictionaryRecursively(act, dict);
             dict.Add("$TYPE", act.GetType().Name);
             string sv = JsonConvert.SerializeObject(dict);
-            return sv.ToString().ToUTF8();
+            return Encoding.UTF8.GetBytes(sv.ToString());
         }
         ///<summary>
         /// Serializes an engine instance. 
