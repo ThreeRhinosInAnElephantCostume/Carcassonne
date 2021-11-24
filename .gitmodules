@@ -4,3 +4,6 @@
 [submodule "Networking"]
 	path = Networking
 	url = https://github.com/ThreeRhinosInAnElephantCostume/Carcassonne-Networking.git
+[submodule "Engine"]
+	path = Engine
+	url = https://github.com/ThreeRhinosInAnElephantCostume/Carcassonne-Engine.git
