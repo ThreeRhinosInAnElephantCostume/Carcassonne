@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if GODOT
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -28,3 +29,4 @@ public static class Constants
     public static readonly Godot.Vector2 TILE_SIZE = new Godot.Vector2(TILE_SIDE_LENGTH, TILE_SIDE_LENGTH);
 
 }
+#endif

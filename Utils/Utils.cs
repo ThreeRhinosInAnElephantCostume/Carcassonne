@@ -19,7 +19,9 @@ using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using System.Threading;
 using ExtraMath;
+#if GODOT
 using Godot;
+#endif
 using static System.Math;
 using Expression = System.Linq.Expressions.Expression;
 
@@ -122,8 +124,13 @@ public static partial class Utils
     {
         if (b)
             return;
+#if GODOT
         GD.PrintErr("ASSERTION FAILURE:");
         GD.PrintErr(msg);
+#else
+        Console.WriteLine("ASSERTION FAILURE:");
+        Console.WriteLine(msg);
+#endif
         //Debugger.Break();
         throw new AssertionFailureException(msg);
     }

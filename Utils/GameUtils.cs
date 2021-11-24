@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if GODOT
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -20,3 +21,4 @@ public static partial class Utils
         return new Vector3(pos.x * Constants.TILE_SIDE_LENGTH, 0, -pos.y * Constants.TILE_SIDE_LENGTH);
     }
 }
+#endif

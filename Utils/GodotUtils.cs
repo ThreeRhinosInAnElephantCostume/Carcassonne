@@ -8,13 +8,16 @@ using System.Runtime;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using ExtraMath;
+#if GODOT 
 using Godot;
+#endif
 using Newtonsoft.Json;
 using static System.Math;
 using Expression = System.Linq.Expressions.Expression;
 
 public static partial class Utils
 {
+#if GODOT
     public static void DestroyNode(Node node)
     {
         if (node.GetParent() is Node parent)
@@ -215,4 +218,5 @@ public static partial class Utils
         }
         return default(T);
     }
+#endif
 }
