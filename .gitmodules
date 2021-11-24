@@ -1,3 +1,6 @@
 [submodule "Utils"]
 	path = Utils
 	url = https://github.com/ThreeRhinosInAnElephantCostume/Carcassonne-Utils.git
+[submodule "Networking"]
+	path = Networking
+	url = https://github.com/ThreeRhinosInAnElephantCostume/Carcassonne-Networking.git
