@@ -43,8 +43,8 @@ rect_min_size = Vector2( 104, 104 )
 
 [node name="CurrentTile" parent="CanvasLayer/HBoxContainer/VBoxContainer/PanelContainer" instance=ExtResource( 3 )]
 position = Vector2( 52, 52 )
-MeepleSize = 15.0
 MonasterySize = 20.0
+MeepleSize = 15.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/HBoxContainer/VBoxContainer"]
 margin_top = 108.0
