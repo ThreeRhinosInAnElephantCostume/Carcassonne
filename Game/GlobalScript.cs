@@ -27,9 +27,9 @@ public class GlobalScript : Node
     {
         List<string> requiredpaths = new List<string>()
         {
-            "res://Data/Tilesets",
-            "res://Data/Tiles",
-            "res://Models/Tiles"
+            Constants.TILE_DIRECTORY,
+            Constants.TILESET_DIRECTORY,
+            Constants.TILE_MODEL_DIRECTORY,
         };
         foreach (var it in requiredpaths)
         {

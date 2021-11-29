@@ -7,6 +7,7 @@
 [node name="InGameUI" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+mouse_filter = 2
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -15,6 +16,7 @@ __meta__ = {
 [node name="MainViewportContainer" type="ViewportContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
+mouse_filter = 2
 stretch = true
 script = ExtResource( 3 )
 __meta__ = {
@@ -26,13 +28,14 @@ size = Vector2( 1280, 720 )
 handle_input_locally = false
 render_target_update_mode = 3
 
-[node name="Spatial" parent="MainViewportContainer/Viewport" instance=ExtResource( 1 )]
+[node name="InGame3D" parent="MainViewportContainer/Viewport" instance=ExtResource( 1 )]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="GameUIRoot" type="Control" parent="CanvasLayer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 __meta__ = {
@@ -42,3 +45,4 @@ __meta__ = {
 [node name="Button" type="Button" parent="CanvasLayer/GameUIRoot"]
 margin_right = 136.0
 margin_bottom = 103.0
+mouse_filter = 2
