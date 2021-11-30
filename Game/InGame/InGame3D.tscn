@@ -1,9 +1,7 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://Game/InGame/Camera.cs" type="Script" id=1]
-
-[sub_resource type="Environment" id=1]
-ambient_light_color = Color( 1, 1, 1, 1 )
+[ext_resource path="res://Game/InGame/BaseEnvironment.tres" type="Environment" id=2]
 
 [node name="InGame3D" type="Spatial"]
 
@@ -12,4 +10,4 @@ transform = Transform( 1, 0, 0, 0, 0.898878, 0.438199, 0, -0.438199, 0.898878, 0
 script = ExtResource( 1 )
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource( 1 )
+environment = ExtResource( 2 )
