@@ -15,7 +15,9 @@ using static Carcassonne.GameEngine;
 using static Utils;
 public class PotentialTile3D : Spatial
 {
-    public Action<Vector2I, int> OnPlaceHandle;
+    const string PLACE_ACTION = "map_tile_place";
+    const string ROTATE_ACTION = "map_tile_rotate";
+    static string[] ACTIONS = new string[] { PLACE_ACTION, ROTATE_ACTION }; public Action<Vector2I, int> OnPlaceHandle;
     public Tile3D PTile { get; set; } = null;
     Spatial _visRoot;
     Spatial _center;
@@ -24,9 +26,6 @@ public class PotentialTile3D : Spatial
     Vector2I _position = new Vector2I();
     CollisionShape _colshape;
     Area _area;
-    const string PLACE_ACTION = "map_tile_place";
-    const string ROTATE_ACTION = "map_tile_rotate";
-    static string[] ACTIONS = new string[] { PLACE_ACTION, ROTATE_ACTION };
     List<int> _rotations = new List<int>();
     int _currotpos = 0;
     public Vector2I Pos
@@ -66,12 +65,12 @@ public class PotentialTile3D : Spatial
     }
     void AreaInputEvent(Camera camera, InputEvent @event, Vector3 clickpos, Vector3 clicknormal, int shapeindx)
     {
-        if (InputMap.EventIsAction(@event, PLACE_ACTION))
+        if (InputMap.EventIsAction(@event, PLACE_ACTION) && Input.IsActionJustPressed(PLACE_ACTION))
         {
             OnPlaceHandle(Pos, _rotations[_currotpos]);
             _area.InputRayPickable = false;
         }
-        else if (InputMap.EventIsAction(@event, ROTATE_ACTION))
+        else if (InputMap.EventIsAction(@event, ROTATE_ACTION) && Input.IsActionJustPressed(ROTATE_ACTION))
         {
             _currotpos = (_currotpos + 1) % _rotations.Count;
             PTile.Rot = _rotations[_currotpos];

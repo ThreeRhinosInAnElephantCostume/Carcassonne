@@ -22,6 +22,7 @@ public partial class Game
         public string Name { get; set; }
         public GameEngine.Player Player { get; protected set; }
         public PlayerType Type { get; protected set; }
+        public Color BaseColor { get; set; }
         protected void ExecuteAction(GameEngine.Action action)
         {
             _game.AgentExecute(this, action);
@@ -36,6 +37,10 @@ public partial class Game
             this.Name = name;
             this.Player = player;
             this.Type = type;
+            if (player.ID >= Game.PlayerColors.Length)
+                BaseColor = Game.PlayerColors.Last();
+            else
+                BaseColor = Game.PlayerColors[player.ID];
         }
     }
 }

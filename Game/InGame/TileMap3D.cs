@@ -17,12 +17,13 @@ using static Utils;
 
 public class TileMap3D : Spatial
 {
+    static PackedScene _potentialTile3DScene = ResourceLoader.Load<PackedScene>("res://Game/InGame/PotentialTile.tscn");
     public Action<Vector2I, int> OnTilePlaced;
     public Action<int> OnMeeplePlacedOnNode;
     public Action<int> OnMeeplePlacedOnAttribute;
     public Tile3D NextTile { get; protected set; }
-    static PackedScene _potentialTile3DScene = ResourceLoader.Load<PackedScene>("res://Game/InGame/PotentialTile.tscn");
     List<PotentialTile3D> _potentialTile3Ds = new List<PotentialTile3D>();
+    Game _game;
     Dictionary<Vector2I, PotentialTile3D> _potDict = new Dictionary<Vector2I, PotentialTile3D>();
     GameEngine _engine = null;
     RNG _rng = new RNG(777);
@@ -91,13 +92,18 @@ public class TileMap3D : Spatial
         _tiles.Add(t);
         AttachTile(t);
     }
+    void ClearInteractible()
+    {
+        _potentialTile3Ds.ForEach(it => DestroyNode(it));
+        _potentialTile3Ds.Clear();
+        _potDict.Clear();
+        _tiles.ForEach(it => it.ClearPotentialPlacements());
+    }
     void UpdateInteractible()
     {
+        ClearInteractible();
         if (!_playable)
         {
-            _potentialTile3Ds.ForEach(it => DestroyNode(it));
-            _potentialTile3Ds.Clear();
-            _potDict.Clear();
             return;
         }
         if (NextTile == null || NextTile.AssociatedTile != Engine.CurrentTile)
@@ -132,7 +138,10 @@ public class TileMap3D : Spatial
         }
         else if (Engine.CurrentState == GameEngine.State.PLACE_PAWN)
         {
-
+            var current = _tiles.Find(it => it.AssociatedTile == Engine.CurrentTile);
+            Assert(current != null);
+            Engine.PossibleMeepleAttributePlacements().ForEach(it => current.AddPotentialAttributePlacement(Player, it));
+            Engine.PossibleMeepleNodePlacements().ForEach(it => current.AddPotentialNodePlacement(Player, it));
         }
 
     }
@@ -144,6 +153,30 @@ public class TileMap3D : Spatial
         foreach (var it in unplaced)
         {
             RepresentTile(it);
+        }
+        foreach (var player in _engine.Players)
+        {
+            player.Pawns.FindAll(m => m.IsInPlay).ForEach(_m =>
+            {
+                var m = _m as Meeple;
+                if (m == null)
+                    return;
+                var tile3d = this._tiles.Find(it => it.AssociatedTile == m.CurrentTile);
+                Assert(tile3d != null);
+                var owner = (Game.GameAgent)_game.GetAgent((Player)m.Owner);
+                if (m._place is Tile.TileAttribute attr)
+                {
+                    int indx = attr.tile.Attributes.IndexOf(attr);
+                    tile3d.AddAttributePlacement(owner, attr.tile.Attributes.IndexOf(attr));
+                }
+                else if (m._place is InternalNode node)
+                {
+                    tile3d.AddNodePlacement(owner, node.Index);
+                }
+                else
+                    Assert(false);
+            });
+
         }
         UpdateInteractible();
     }
@@ -160,7 +193,9 @@ public class TileMap3D : Spatial
     {
 
     }
-    public TileMap3D()
+    public TileMap3D(Game game)
     {
+        this._game = game;
+        this.Engine = game.Engine;
     }
 }
