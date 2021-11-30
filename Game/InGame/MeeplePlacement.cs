@@ -29,6 +29,8 @@ public class MeeplePlacement : Spatial
             mat = (SpatialMaterial)mat.Duplicate(true);
             mat.AlbedoColor = _agent.BaseColor;
             mat.DepthEnabled = false;
+            mat.RenderPriority = 1;
+            mat.FlagsNoDepthTest = true;
             _mesh.SetSurfaceMaterial(i, mat);
         });
     }
