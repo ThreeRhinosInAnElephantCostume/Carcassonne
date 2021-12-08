@@ -22,6 +22,7 @@ public class PotentialMeeplePlacement : Spatial
     public Game.GameLocalAgent Agent { get; set; }
     public int Index { get; set; }
     public bool IsAttribute { get; set; }
+    static bool _sharedInputLockout = false;
     void MouseEntered()
     {
 
@@ -32,8 +33,11 @@ public class PotentialMeeplePlacement : Spatial
     }
     void AreaInputEvent(Camera camera, InputEvent @event, Vector3 clickpos, Vector3 clicknormal, int shapeindx)
     {
+        if (_sharedInputLockout)
+            return;
         if (InputMap.EventIsAction(@event, PLACE_ACTION) && Input.IsActionJustPressed(PLACE_ACTION))
         {
+            _sharedInputLockout = true;
             if (IsAttribute)
                 Agent.PlaceMeepleOnAttribute(Index);
             else
@@ -45,6 +49,8 @@ public class PotentialMeeplePlacement : Spatial
     {
         foreach (var it in ACTIONS)
             Assert(InputMap.HasAction(it));
+
+        _sharedInputLockout = false;
 
         _area = GetNode<Area>("Area");
         _area.Connect("mouse_entered", this, "MouseEntered");
