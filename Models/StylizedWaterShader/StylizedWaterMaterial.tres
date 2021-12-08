@@ -3,23 +3,25 @@
 [ext_resource path="res://Models/StylizedWaterShader/StylizedWaterShader.shader" type="Shader" id=1]
 
 [sub_resource type="OpenSimplexNoise" id=1]
+seed = 666
 octaves = 2
 period = 50.0
 lacunarity = 4.0
 
 [sub_resource type="NoiseTexture" id=2]
-width = 6000
-height = 6000
+width = 2048
+height = 2048
 seamless = true
 noise = SubResource( 1 )
 
 [sub_resource type="OpenSimplexNoise" id=3]
+seed = 777
 octaves = 2
 period = 50.0
 
 [sub_resource type="NoiseTexture" id=4]
-width = 6000
-height = 6000
+width = 2048
+height = 2048
 seamless = true
 noise = SubResource( 3 )
 
@@ -28,8 +30,6 @@ seed = 2
 octaves = 4
 
 [sub_resource type="NoiseTexture" id=6]
-width = 500
-height = 500
 seamless = true
 as_normalmap = true
 bump_strength = 4.0
