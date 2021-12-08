@@ -38,16 +38,20 @@ public class PotentialTile3D : Spatial
             this.Translation = GridPosTo3D(_position);
         }
     }
-    public void AddRotation(int rot)
+    public void AddRotation(int rot, bool deffered = false)
     {
+        if(!deffered)
+        {
+            Assert(!_rotations.Contains(rot));
+            _rotations.Add(rot);
+        }
         if (this.dirs == null || this.dirs.Length == 0)
         {
-            CallDeferred("AddRotation", rot);
+            CallDeferred("AddRotation", rot, true);
             return;
         }
         Assert(rot >= 0 && rot <= 3);
         this.dirs[rot].Visible = true;
-        _rotations.Add(rot);
     }
     void MouseEntered()
     {
