@@ -121,7 +121,7 @@ public class TileMap3D : Spatial
                 }
                 var pot = _potentialTile3DScene.Instance<PotentialTile3D>();
                 pot.PTile = NextTile;
-                pot.Pos = it.pos;
+                pot.PotentialPosition = it.pos;
                 pot.AddRotation(it.rot);
                 pot.OnPlaceHandle = (Vector2I pos, int rot) =>
                 {
@@ -132,7 +132,7 @@ public class TileMap3D : Spatial
                     _tiles.Add(NextTile);
                 };
                 _potentialTile3Ds.Add(pot);
-                _potDict.Add(pot.Pos, pot);
+                _potDict.Add(pot.PotentialPosition, pot);
                 AddChild(pot);
             }
         }

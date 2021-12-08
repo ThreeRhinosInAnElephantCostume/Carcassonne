@@ -97,7 +97,6 @@ public class Tile3D : Spatial
             this.Translation = GridPosTo3D(_position);
         }
     }
-
     int _rotation = 0;
     public int Rot
     {

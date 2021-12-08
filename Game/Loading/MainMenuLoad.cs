@@ -35,7 +35,7 @@ public class MainMenuLoad : Control
     ConcurrentQueue<string> _remainingPrototypePaths = new ConcurrentQueue<string>();
     ConcurrentQueue<string> _lastProcessedPaths = new ConcurrentQueue<string>();
     PackedScene _ingamescene = null;
-    public void TileLoader(object state)
+    void TileLoader(object state)
     {
         string path;
         while (_remainingPrototypePaths.TryDequeue(out path))
@@ -48,7 +48,7 @@ public class MainMenuLoad : Control
         }
         (state as AutoResetEvent).Set();
     }
-    public void LoadControlThread(object state)
+    void LoadControlThread(object state)
     {
         _step = LoadSteps.NONE;
         _ingamescene = ResourceLoader.Load<PackedScene>("res://Game/InGame/InGameUI.tscn");
@@ -61,7 +61,8 @@ public class MainMenuLoad : Control
         RepeatN(nthreads, i => ThreadPool.QueueUserWorkItem(TileLoader, events[i]));
         AutoResetEvent.WaitAll(events.ToArray());
         Assert(_remainingPrototypePaths.Count == 0);
-        while (_lastProcessedPaths.Count > 0) ;
+        while (_lastProcessedPaths.Count > 0)
+            Thread.Sleep(1);
         _step = LoadSteps.COMPLETE;
     }
     public override void _Ready()

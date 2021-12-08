@@ -23,12 +23,13 @@ public class PotentialTile3D : Spatial
     Spatial _center;
     Spatial _front, _back, _right, _left;
     Spatial[] dirs;
-    Vector2I _position = new Vector2I();
     CollisionShape _colshape;
     Area _area;
     List<int> _rotations = new List<int>();
     int _currotpos = 0;
-    public Vector2I Pos
+    static bool _sharedInputLockout = false;
+    Vector2I _position;
+    public Vector2I PotentialPosition
     {
         get => _position;
         set
@@ -50,6 +51,8 @@ public class PotentialTile3D : Spatial
     }
     void MouseEntered()
     {
+        if (_sharedInputLockout)
+            return;
         _visRoot.Visible = false;
         if (PTile.GetParent() != null)
             PTile.GetParent().RemoveChild(PTile);
@@ -58,6 +61,8 @@ public class PotentialTile3D : Spatial
     }
     void MouseExited()
     {
+        if (_sharedInputLockout)
+            return;
         _visRoot.Visible = true;
         if (PTile.GetParent() == this)
             PTile.GetParent().RemoveChild(PTile);
@@ -65,14 +70,19 @@ public class PotentialTile3D : Spatial
     }
     void AreaInputEvent(Camera camera, InputEvent @event, Vector3 clickpos, Vector3 clicknormal, int shapeindx)
     {
+        if (_sharedInputLockout)
+            return;
         if (InputMap.EventIsAction(@event, PLACE_ACTION) && Input.IsActionJustPressed(PLACE_ACTION))
         {
-            OnPlaceHandle(Pos, _rotations[_currotpos]);
+            _sharedInputLockout = true;
+            PTile.Rot = _rotations[_currotpos];
+            OnPlaceHandle(PotentialPosition, _rotations[_currotpos]);
             _area.InputRayPickable = false;
+            DestroyNode(_area);
         }
         else if (InputMap.EventIsAction(@event, ROTATE_ACTION) && Input.IsActionJustPressed(ROTATE_ACTION))
         {
-            _currotpos = (_currotpos + 1) % _rotations.Count;
+            _currotpos = (_currotpos + 1) % (_rotations.Count);
             PTile.Rot = _rotations[_currotpos];
         }
     }
@@ -80,6 +90,7 @@ public class PotentialTile3D : Spatial
     {
         foreach (var it in ACTIONS)
             Assert(InputMap.HasAction(it));
+        _sharedInputLockout = false;
         _visRoot = GetNode<Spatial>("VisRoot");
         _center = GetNode<Spatial>("VisRoot/CenterPiece");
         _front = GetNode<Spatial>("VisRoot/Front");
@@ -100,13 +111,4 @@ public class PotentialTile3D : Spatial
             it.Visible = false;
         }
     }
-
-    // public override void _Input(InputEvent @event)
-    // {
-    //     _area._UnhandledInput(@event);
-    // }
-    // public override void _UnhandledInput(InputEvent @event)
-    // {
-    //     _area._UnhandledInput(@event);   
-    // }
 }
