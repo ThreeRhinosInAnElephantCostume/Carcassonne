@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Reflection.PortableExecutable;
 using System.Runtime;
 using System.Runtime.CompilerServices;
 using System.Threading;
@@ -33,7 +34,6 @@ public class MainMenuLoad : Control
     List<string> _prototypePaths = new List<string>();
     ConcurrentQueue<string> _remainingPrototypePaths = new ConcurrentQueue<string>();
     ConcurrentQueue<string> _lastProcessedPaths = new ConcurrentQueue<string>();
-    AutoResetEvent _event = new AutoResetEvent(false);
     PackedScene _ingamescene = null;
     public void TileLoader(object state)
     {
@@ -46,7 +46,7 @@ public class MainMenuLoad : Control
             Assert(models.Count != 0);
             _lastProcessedPaths.Enqueue(path);
         }
-        _event.Set();
+        (state as AutoResetEvent).Set();
     }
     public void LoadControlThread(object state)
     {
@@ -56,9 +56,11 @@ public class MainMenuLoad : Control
         _prototypePaths = Utils.ListDirectoryFilesRecursively(Constants.TILE_DIRECTORY);
         _step = LoadSteps.LOADING_TILES;
         _remainingPrototypePaths = new ConcurrentQueue<string>(_prototypePaths);
-        RepeatN(Math.Max(1, 1), () => ThreadPool.QueueUserWorkItem(TileLoader));
-        _event.WaitOne();
-        while (_remainingPrototypePaths.Count > 0) ;
+        int nthreads = Max(1, System.Environment.ProcessorCount - 1);
+        var events = RepeatN<WaitHandle>(nthreads, i => new AutoResetEvent(false));
+        RepeatN(nthreads, i => ThreadPool.QueueUserWorkItem(TileLoader, events[i]));
+        AutoResetEvent.WaitAll(events.ToArray());
+        Assert(_remainingPrototypePaths.Count == 0);
         while (_lastProcessedPaths.Count > 0) ;
         _step = LoadSteps.COMPLETE;
     }
@@ -90,7 +92,8 @@ public class MainMenuLoad : Control
                     {
                         _loadingLabel.Text = "Loading Tiles: " + lastres;
                     }
-                    float rt = 1.0f - ((float)_remainingPrototypePaths.Count / (float)_prototypePaths.Count);
+                    int pc = Max(_prototypePaths.Count, 1);
+                    float rt = 1.0f - ((float)_remainingPrototypePaths.Count / (float)pc);
                     progress += rt * (((float)LoadSteps.LOADING_TILES - (float)EnumPrev(LoadSteps.LOADING_TILES)) / (float)LoadSteps.END);
                     break;
                 }
