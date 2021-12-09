@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/bensound-epic.mp3-37ea9268d4502df1cda967387976bd96.mp3str"
+
+[deps]
+
+source_file="res://Audio/Music/bensound-epic.mp3"
+dest_files=[ "res://.import/bensound-epic.mp3-37ea9268d4502df1cda967387976bd96.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Dropping-Bag-on-Floor.wav-f8ac3c78b5f9f6f4eb78ef979f3866cc.sample"
+
+[deps]
+
+source_file="res://Audio/Sounds/Dropping-Bag-on-Floor.wav"
+dest_files=[ "res://.import/Dropping-Bag-on-Floor.wav-f8ac3c78b5f9f6f4eb78ef979f3866cc.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

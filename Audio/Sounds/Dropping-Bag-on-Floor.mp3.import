@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/Dropping-Bag-on-Floor.mp3-fcbd4624daa6f41f05b7435656286df7.mp3str"
+
+[deps]
+
+source_file="res://Audio/Sounds/Dropping-Bag-on-Floor.mp3"
+dest_files=[ "res://.import/Dropping-Bag-on-Floor.mp3-fcbd4624daa6f41f05b7435656286df7.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0
