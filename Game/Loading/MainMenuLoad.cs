@@ -23,7 +23,8 @@ public class MainMenuLoad : Control
     {
         COMPLETE = -1,
         NONE = 0,
-        SEARCHING_FOR_FILES = 20,
+        LOADING_RESOURCES = 35,
+        SEARCHING_FOR_FILES = 40,
         LOADING_TILES = 100,
         END = LOADING_TILES,
     }
@@ -34,7 +35,9 @@ public class MainMenuLoad : Control
     List<string> _prototypePaths = new List<string>();
     ConcurrentQueue<string> _remainingPrototypePaths = new ConcurrentQueue<string>();
     ConcurrentQueue<string> _lastProcessedPaths = new ConcurrentQueue<string>();
-    PackedScene _ingamescene = null;
+    PackedScene _InGameScenePacked = null;
+    float _resourceLoadProgress = 0;
+    public float Progress { get; protected set; } = 0;
     void TileLoader(object state)
     {
         string path;
@@ -51,9 +54,35 @@ public class MainMenuLoad : Control
     void LoadControlThread(object state)
     {
         _step = LoadSteps.NONE;
-        _ingamescene = ResourceLoader.Load<PackedScene>("res://Game/InGame/InGameUI.tscn");
+
+        _step = LoadSteps.LOADING_RESOURCES;
+        int scene_steps = 0;
+        int scene_steps_completed = 0;
+
+        List<(string path, Action<Resource> onend)> scenestoload =
+            new List<(string path, Action<Resource> onend)>()
+            {
+                ("res://Game/InGame/InGameUI.tscn", r => _InGameScenePacked = (PackedScene)r)
+            };
+
+        var loaders
+            = scenestoload.ConvertAll<(ResourceInteractiveLoader loader, Action<Resource> onend)>(it =>
+                (ResourceLoader.LoadInteractive(it.path), it.onend));
+        loaders.ForEach(it => scene_steps += it.loader.GetStageCount());
+
+        foreach (var it in loaders)
+        {
+            while (it.loader.Poll() != Error.FileEof)
+            {
+                _resourceLoadProgress = ((float)(scene_steps_completed + it.loader.GetStage())) / ((float)scene_steps);
+            }
+            scene_steps_completed += it.loader.GetStageCount();
+            it.onend(it.loader.GetResource());
+        }
+
         _step = LoadSteps.SEARCHING_FOR_FILES;
         _prototypePaths = Utils.ListDirectoryFilesRecursively(Constants.TILE_DIRECTORY);
+
         _step = LoadSteps.LOADING_TILES;
         _remainingPrototypePaths = new ConcurrentQueue<string>(_prototypePaths);
         int nthreads = Max(1, System.Environment.ProcessorCount - 1);
@@ -63,6 +92,7 @@ public class MainMenuLoad : Control
         Assert(_remainingPrototypePaths.Count == 0);
         while (_lastProcessedPaths.Count > 0)
             Thread.Sleep(1);
+
         _step = LoadSteps.COMPLETE;
     }
     public override void _Ready()
@@ -73,6 +103,7 @@ public class MainMenuLoad : Control
     }
     public override void _Process(float delta)
     {
+        float stepfactor = (((float)_step - (float)EnumPrev(_step)) / (float)LoadSteps.END);
         float progress = SLIDER_STEP * ((float)EnumPrev(_step));
         switch (_step)
         {
@@ -81,9 +112,15 @@ public class MainMenuLoad : Control
                     _loadingLabel.Text = "Initializing...";
                     break;
                 }
+            case LoadSteps.LOADING_RESOURCES:
+                {
+                    _loadingLabel.Text = "Loading Resources...";
+                    progress += _resourceLoadProgress * stepfactor;
+                    break;
+                }
             case LoadSteps.SEARCHING_FOR_FILES:
                 {
-                    _loadingLabel.Text = "Indexing files...";
+                    _loadingLabel.Text = "Indexing Files...";
                     break;
                 }
             case LoadSteps.LOADING_TILES:
@@ -95,12 +132,12 @@ public class MainMenuLoad : Control
                     }
                     int pc = Max(_prototypePaths.Count, 1);
                     float rt = 1.0f - ((float)_remainingPrototypePaths.Count / (float)pc);
-                    progress += rt * (((float)LoadSteps.LOADING_TILES - (float)EnumPrev(LoadSteps.LOADING_TILES)) / (float)LoadSteps.END);
+                    progress += rt * stepfactor;
                     break;
                 }
             case LoadSteps.COMPLETE:
                 {
-                    var igs = _ingamescene.Instance();
+                    var igs = _InGameScenePacked.Instance();
                     var t = GetTree();
                     var r = t.Root;
                     r.AddChild(igs);
@@ -109,5 +146,6 @@ public class MainMenuLoad : Control
                 }
         }
         _progressBar.Value = (_progressBar.MaxValue * progress);
+        Progress = progress;
     }
 }
