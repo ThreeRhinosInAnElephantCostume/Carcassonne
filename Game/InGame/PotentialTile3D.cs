@@ -38,9 +38,9 @@ public class PotentialTile3D : Spatial
             this.Translation = GridPosTo3D(_position);
         }
     }
-    public void AddRotation(int rot, bool deffered = false)
+    public void AddRotation(int rot, bool deferred = false)
     {
-        if(!deffered)
+        if (!deferred)
         {
             Assert(!_rotations.Contains(rot));
             _rotations.Add(rot);
