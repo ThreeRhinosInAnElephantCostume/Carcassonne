@@ -18,6 +18,7 @@ using ExtraMath;
 using Godot;
 using Newtonsoft.Json;
 using static System.Math;
+using static Globals;
 using static Utils;
 using Expression = System.Linq.Expressions.Expression;
 
@@ -35,5 +36,22 @@ public class GlobalScript : Node
         {
             EnsurePathExists(it);
         }
+        if (!FileExists(Constants.SETTINGS_PATH))
+        {
+            SerializeToFile(Constants.SETTINGS_PATH, Settings);
+        }
+        Settings = DeserializeFromFile<MainSettings>(Constants.SETTINGS_PATH);
+        Settings.CompleteLoad();
+
+        // Example use for OnChangeHandle:
+
+        // Settings.OnChangeHandle += (s, o) => GD.Print(s, "=", o);
+
+        // Settings.Audio.Volume.Value = 1;
+        // Settings.FullScreen.Value = true;
+        // Settings.Resolution.Value = new Vector2I(100, 100);
+
+        OS.WindowFullscreen = Settings.FullScreen;
+        OS.WindowSize = (Vector2)Settings.Resolution.Value;
     }
 }
