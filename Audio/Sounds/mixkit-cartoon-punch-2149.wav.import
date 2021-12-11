@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/mixkit-cartoon-punch-2149.wav-b88daa3636ef02f2156cc3ae7aec4855.sample"
+
+[deps]
+
+source_file="res://Audio/Sounds/mixkit-cartoon-punch-2149.wav"
+dest_files=[ "res://.import/mixkit-cartoon-punch-2149.wav-b88daa3636ef02f2156cc3ae7aec4855.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

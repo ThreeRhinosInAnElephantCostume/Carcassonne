@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/The_A-Team_Full_Theme_Tune.mp3-7adeea884689cba4f78bb1f0fc4bb77c.mp3str"
+
+[deps]
+
+source_file="res://Audio/Music/The_A-Team_Full_Theme_Tune.mp3"
+dest_files=[ "res://.import/The_A-Team_Full_Theme_Tune.mp3-7adeea884689cba4f78bb1f0fc4bb77c.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

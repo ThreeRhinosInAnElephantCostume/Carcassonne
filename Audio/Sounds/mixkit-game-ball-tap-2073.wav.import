@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/mixkit-game-ball-tap-2073.wav-db9acb9a811681c8d8ed71853b60d735.sample"
+
+[deps]
+
+source_file="res://Audio/Sounds/mixkit-game-ball-tap-2073.wav"
+dest_files=[ "res://.import/mixkit-game-ball-tap-2073.wav-db9acb9a811681c8d8ed71853b60d735.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

@@ -17,6 +17,7 @@ config/icon="res://icon.png"
 [autoload]
 
 GlobalScript="*res://Game/GlobalScript.cs"
+AudioPlayer="*res://Audio/AudioPlayer.tscn"
 
 [display]
 
@@ -30,6 +31,13 @@ enabled=PoolStringArray( "res://addons/extra_math_cs/plugin.cfg" )
 [gdnative]
 
 singletons=[  ]
+
+[importer_defaults]
+
+mp3={
+"loop": false,
+"loop_offset": 0
+}
 
 [input]
 

@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Hard-Slap-B.wav-9cbf135c463eb7ecc1f3ee20e764e565.sample"
+
+[deps]
+
+source_file="res://Audio/Sounds/Hard-Slap-B.wav"
+dest_files=[ "res://.import/Hard-Slap-B.wav-9cbf135c463eb7ecc1f3ee20e764e565.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

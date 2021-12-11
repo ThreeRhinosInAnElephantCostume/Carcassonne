@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -16,92 +16,150 @@ using static Utils;
 
 public class InGameUI : Control, Game.IGameHandles
 {
-    Game _game = null;
-    TileMap3D _map;
-    GameEngine _engine => _game.Engine;
-    Spatial _inGame3D;
-    Spatial _previewRoot;
-    Camera _mainCamera;
-    VBoxContainer _mainInfoContainer;
-    Label _stateLabel;
-    List<Label> _playerLabels = new List<Label>();
-    //Viewport _viewport;
-    public void Start(Game game)
-    {
-        this._game = game;
-        UpdateUI();
-    }
-    public void UpdateUI()
-    {
-        _map.Playable = _game.CurrentAgent != null && _game.CurrentAgent is Game.GameLocalAgent;
-        if (_map.Playable)
-        {
-            _map.Player = (Game.GameLocalAgent)_game.CurrentAgent;
-        }
-        _map.Update();
-        _stateLabel.Text = $"STATE: {_engine.CurrentPlayer}";
-        for (int i = 0; i < _engine.Players.Count; i++)
-        {
-            var p = _engine.Players[i];
-            var l = _playerLabels[i];
-            l.Text = $"Player {p.ID}: {p.Score} (+{p.PotentialScore})\n";
-            if (p == _engine.CurrentPlayer)
-            {
-                l.Text += " <<<<<";
-            }
-        }
-    }
-    void Game.IGameHandles.OnAction(Game.GameAgent agent, GameEngine.Action action)
-    {
-        UpdateUI();
-    }
+	Game _game = null;
+	TileMap3D _map;
+	GameEngine _engine => _game.Engine;
+	Spatial _inGame3D;
+	Spatial _previewRoot;
+	Camera _mainCamera;
+	VBoxContainer _mainInfoContainer;
+	Label _stateLabel;
+	List<Label> _playerLabels = new List<Label>();
 
-    void Game.IGameHandles.OnGameOver(List<Game.GameAgent> winners)
-    {
-        UpdateUI();
-    }
+	AudioPlayer _gameAudio;
+	//Viewport _viewport;
+	public void Start(Game game)
+	{
+		this._game = game;
+		UpdateUI();
+	}
+	public void UpdateUI()
+	{
+		_map.Playable = _game.CurrentAgent != null && _game.CurrentAgent is Game.GameLocalAgent;
+		if (_map.Playable)
+		{
+			_map.Player = (Game.GameLocalAgent)_game.CurrentAgent;
+		}
+		_map.Update();
+		_stateLabel.Text = $"STATE: {_engine.CurrentPlayer}";
+		for (int i = 0; i < _engine.Players.Count; i++)
+		{
+			var p = _engine.Players[i];
+			var l = _playerLabels[i];
+			l.Text = $"Player {p.ID}: {p.Score} (+{p.PotentialScore})\n";
+			if (p == _engine.CurrentPlayer)
+			{
+				l.Text += " <<<<<";
+			}
+		}
+	}
+	void Game.IGameHandles.OnAction(Game.GameAgent agent, GameEngine.Action action)
+	{
+		UpdateUI();
+	}
 
-    void Game.IGameHandles.OnNextPlayerTurn(Game.GameAgent agent)
-    {
-        UpdateUI();
-    }
-    public override void _Process(float delta)
-    {
-        if (_map == null)
-            return;
-        if (_map.NextTile != null && _map.NextTile.GetParent() == null)
-        {
-            _previewRoot.AddChild(_map.NextTile);
-        }
-        _previewRoot.Rotation = new Vector3(-_mainCamera.Rotation.x, _mainCamera.Rotation.y, _mainCamera.Rotation.z);
-    }
+	void Game.IGameHandles.OnGameOver(List<Game.GameAgent> winners)
+	{
+		UpdateUI();
+	}
 
-    public override void _Ready()
-    {
-        _inGame3D = GetNode<Spatial>("InGame3D");
+	void Game.IGameHandles.OnNextPlayerTurn(Game.GameAgent agent)
+	{
+		UpdateUI();
+	}
+	public override void _Process(float delta)
+	{
+		if (_map == null)
+			return;
+		if (_map.NextTile != null && _map.NextTile.GetParent() == null)
+		{
+			_previewRoot.AddChild(_map.NextTile);
+		}
+		_previewRoot.Rotation = new Vector3(-_mainCamera.Rotation.x, _mainCamera.Rotation.y, _mainCamera.Rotation.z);
+	}
 
-        _mainInfoContainer = GetNode<VBoxContainer>("CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer");
+	public override void _Ready()
+	{
+		_inGame3D = GetNode<Spatial>("InGame3D");
 
-        _game = Game.NewLocalGame(this, 4, "BaseGame/BaseTileset.json");
-        _previewRoot = GetNode<Spatial>("CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/AspectRatioContainer/ViewportContainer/Viewport/PreviewRoot");
+		_mainInfoContainer = GetNode<VBoxContainer>("CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer");
 
-        _mainCamera = GetNode<Camera>("InGame3D/Camera");
+		_game = Game.NewLocalGame(this, 4, "BaseGame/BaseTileset.json");
+		_previewRoot = GetNode<Spatial>("CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/AspectRatioContainer/ViewportContainer/Viewport/PreviewRoot");
 
-        _map = new TileMap3D(_game);
-        _map.Engine = _game.Engine;
-        _inGame3D.AddChild(_map);
+		_mainCamera = GetNode<Camera>("InGame3D/Camera");
 
-        _stateLabel = new Label();
-        _mainInfoContainer.AddChild(_stateLabel);
+		_map = new TileMap3D(_game);
+		_map.Engine = _game.Engine;
+		_inGame3D.AddChild(_map);
 
-        RepeatN(_engine.Players.Count, i =>
-        {
-            var l = new Label();
-            _playerLabels.Add(l);
-            _mainInfoContainer.AddChild(l);
-        });
+		_stateLabel = new Label();
+		_mainInfoContainer.AddChild(_stateLabel);
 
-        Start(_game);
-    }
+		RepeatN(_engine.Players.Count, i =>
+		{
+			var l = new Label();
+			_playerLabels.Add(l);
+			_mainInfoContainer.AddChild(l);
+		});
+
+		Start(_game);
+
+		_gameAudio = GetNode<AudioPlayer>("/root/AudioPlayer");
+	}
+	
+	
+	private void _onMusicToggleButtonToggled(bool button_pressed)
+	{		
+		_gameAudio.ToggleAudioBusVolume("Music");
+	}
+	
+	private void _onPlayNextSongButtonPressed()
+	{
+		_gameAudio.StopIntroMusic();
+
+		_gameAudio.PlayNextSong();
+	}
+	
+	private void _onSoundToggleButtonToggled(bool button_pressed)
+	{	
+		_gameAudio.ToggleAudioBusVolume("Sounds");	
+	}
+	
+	private void _onSoundVolumeSliderValueChanged(float value)
+	{
+		_gameAudio.SetAudioBusVolume("Sounds", value);
+		
+	}
+	
+	private void _onMusicVolumeSliderValueChanged(float value)
+	{
+		_gameAudio.SetAudioBusVolume("Music", value);
+	}
+	
+	public bool AudioMenuToggle(){
+		Control audioMenu = GetNode("AudioMenu") as Control;
+		bool audioMenuVisibity = audioMenu.Visible;
+		if(audioMenu.Visible == true){
+			audioMenu.Visible = false;
+		} else {
+			audioMenu.Visible = true;
+		}
+		return audioMenu.Visible;		
+	}
+	
+	private void _onAudioMenuButtonPressed()
+	{
+		AudioMenuToggle();
+	}
 
 }
+
+
+
+
+
+
+
+
+

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -16,6 +16,7 @@ using static System.Math;
 using static Utils;
 using Expression = System.Linq.Expressions.Expression;
 using Thread = System.Threading.Thread;
+
 
 public class MainMenuLoad : Control
 {
@@ -38,6 +39,7 @@ public class MainMenuLoad : Control
     PackedScene _InGameScenePacked = null;
     float _resourceLoadProgress = 0;
     public float Progress { get; protected set; } = 0;
+    AudioPlayer _gameAudio;
     void TileLoader(object state)
     {
         string path;
@@ -97,6 +99,7 @@ public class MainMenuLoad : Control
     }
     public override void _Ready()
     {
+        _gameAudio = GetNode<AudioPlayer>("/root/AudioPlayer");
         _loadingLabel = GetNode<Label>("VBoxContainer/VBoxContainer/LoadingLabel");
         _progressBar = GetNode<ProgressBar>("VBoxContainer/VBoxContainer/HBoxContainer/LoadingProgressBar");
         ThreadPool.QueueUserWorkItem(LoadControlThread);
@@ -145,6 +148,7 @@ public class MainMenuLoad : Control
                     return;
                 }
         }
+        _gameAudio.PlayIntroMusic(7);
         _progressBar.Value = (_progressBar.MaxValue * progress);
         Progress = progress;
     }

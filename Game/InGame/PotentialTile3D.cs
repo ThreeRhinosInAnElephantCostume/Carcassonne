@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -29,6 +29,7 @@ public class PotentialTile3D : Spatial
     int _currotpos = 0;
     static bool _sharedInputLockout = false;
     Vector2I _position;
+    AudioPlayer _gameAudio;
     public Vector2I PotentialPosition
     {
         get => _position;
@@ -58,6 +59,7 @@ public class PotentialTile3D : Spatial
         if (_sharedInputLockout)
             return;
         _visRoot.Visible = false;
+        _gameAudio.PlaySound("TileOverSpotSound");
         if (PTile.GetParent() != null)
             PTile.GetParent().RemoveChild(PTile);
         this.AddChild((PTile));
@@ -86,12 +88,18 @@ public class PotentialTile3D : Spatial
         }
         else if (InputMap.EventIsAction(@event, ROTATE_ACTION) && Input.IsActionJustPressed(ROTATE_ACTION))
         {
+            if(_rotations.Count >1 ){
+				      _gameAudio.PlaySound("TileRotationAvailableSound");				
+			      } else {
+				      _gameAudio.PlaySound("TileRotationDisabledSound");				
+			      }
             _currotpos = (_currotpos + 1) % (_rotations.Count);
             PTile.Rot = _rotations[_currotpos];
         }
     }
     public override void _Ready()
     {
+        _gameAudio =  GetNode<AudioPlayer>("/root/AudioPlayer");
         foreach (var it in ACTIONS)
             Assert(InputMap.HasAction(it));
         _sharedInputLockout = false;
@@ -107,12 +115,22 @@ public class PotentialTile3D : Spatial
         _area.Connect("mouse_exited", this, "MouseExited");
         _area.Connect("input_event", this, "AreaInputEvent");
 
-        this.dirs = new Spatial[] { _front, _right, _back, _left };
+		this.dirs = new Spatial[] { _front, _right, _back, _left };
 
-        _area.InputRayPickable = true;
-        foreach (var it in this.dirs)
-        {
-            it.Visible = false;
-        }
-    }
+		_area.InputRayPickable = true;
+		foreach (var it in this.dirs)
+		{
+			it.Visible = false;
+		}
+	}
+	
+	private void _OnPotentialTileTreeExiting()
+	{
+		_gameAudio.PlaySound("TilePlacedSound");
+	}
 }
+
+
+
+
+

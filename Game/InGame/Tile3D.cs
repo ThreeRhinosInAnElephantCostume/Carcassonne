@@ -145,8 +145,6 @@ public class Tile3D : Spatial
     }
     public Tile3D(Tile tile, int rot, RNG rng)
     {
-
-
         this.AssociatedTile = tile;
         Assert(tile.MetaData is string);
         string path = (string)tile.MetaData;
@@ -159,7 +157,6 @@ public class Tile3D : Spatial
         _root.RotateY((float)(_model.Config.Rotation * PI / 2));
         Pos = tile.Position;
         Rot = rot;
-
         CachePositions();
     }
 }

@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/Catching-Coins.mp3-92ea5f7b529c25150694a80f80fba45b.mp3str"
+
+[deps]
+
+source_file="res://Audio/Sounds/Catching-Coins.mp3"
+dest_files=[ "res://.import/Catching-Coins.mp3-92ea5f7b529c25150694a80f80fba45b.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/2019-07-26_-_Healing_Water_FesliyanStudios.com_-_David_Renda.mp3-59ba8bc60d19731afdb668377e271457.mp3str"
+
+[deps]
+
+source_file="res://Audio/Music/2019-07-26_-_Healing_Water_FesliyanStudios.com_-_David_Renda.mp3"
+dest_files=[ "res://.import/2019-07-26_-_Healing_Water_FesliyanStudios.com_-_David_Renda.mp3-59ba8bc60d19731afdb668377e271457.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0
