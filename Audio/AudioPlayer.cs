@@ -70,9 +70,11 @@ public class AudioPlayer : Node
 
 	public void PlayNextSong(){
 		if(USER_PREFERENCES_AUTOPLAY == true){
-			if(_introMusic.Playing == false){
-				_currentSongIndex++; 	
-			}		
+			if((_introMusic.Playing == true)||(_currentSongIndex >= _songsList.Count-1)){
+				_currentSongIndex = 0; 	
+			} else {
+				_currentSongIndex++;
+			}
 			_songStream  = ResourceLoader.Load(_songsList[_currentSongIndex]) as AudioStream;
 			_currentSong.Stream = _songStream;
 			_currentSong.Play();
