@@ -25,30 +25,6 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="SoundVolumeSlider" type="HSlider" parent="."]
-margin_left = 773.01
-margin_top = 36.1022
-margin_right = 919.01
-margin_bottom = 78.1022
-custom_icons/grabber_highlight = ExtResource( 10 )
-custom_icons/grabber = ExtResource( 9 )
-value = 100.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="MusicVolumeSlider" type="HSlider" parent="."]
-margin_left = 772.449
-margin_top = 110.929
-margin_right = 918.449
-margin_bottom = 152.929
-custom_icons/grabber_highlight = ExtResource( 10 )
-custom_icons/grabber = ExtResource( 9 )
-value = 100.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="GameUIRoot" type="Control" parent="CanvasLayer"]
@@ -87,62 +63,6 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 6.63
 
-[node name="SoundToggleButton" type="CheckButton" parent="CanvasLayer/GameUIRoot/HBoxContainer/Control"]
-anchor_left = 0.751
-anchor_top = 0.066
-anchor_right = 0.751
-anchor_bottom = 0.066
-margin_left = -71.7737
-margin_top = -12.2066
-margin_right = -19.7737
-margin_bottom = 35.7934
-rect_min_size = Vector2( 50, 0 )
-focus_mode = 0
-custom_icons/off = ExtResource( 5 )
-custom_icons/on = ExtResource( 4 )
-pressed = true
-enabled_focus_mode = 0
-expand_icon = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="MusicToggleButton" type="CheckButton" parent="CanvasLayer/GameUIRoot/HBoxContainer/Control"]
-anchor_left = 0.692
-anchor_top = 0.191
-anchor_right = 0.692
-anchor_bottom = 0.191
-margin_left = -26.368
-margin_top = -23.52
-margin_right = 25.632
-margin_bottom = 24.48
-rect_min_size = Vector2( 50, 0 )
-focus_mode = 0
-custom_icons/off = ExtResource( 12 )
-custom_icons/on = ExtResource( 11 )
-pressed = true
-enabled_focus_mode = 0
-expand_icon = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="PlayNextSongButton" type="TextureButton" parent="CanvasLayer/GameUIRoot/HBoxContainer/Control"]
-anchor_left = 0.584
-anchor_top = 0.072
-anchor_right = 0.584
-anchor_bottom = 0.072
-margin_left = -20.2781
-margin_top = -19.7468
-margin_right = 19.7219
-margin_bottom = 20.2532
-texture_normal = ExtResource( 6 )
-texture_pressed = ExtResource( 8 )
-texture_hover = ExtResource( 7 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/GameUIRoot/HBoxContainer"]
 margin_left = 933.0
 margin_right = 1280.0
@@ -159,6 +79,28 @@ margin_bottom = 358.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 alignment = 2
+
+[node name="PlayNextSongButton" type="TextureButton" parent="CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/HBoxContainer2"]
+margin_left = 263.0
+margin_right = 303.0
+margin_bottom = 358.0
+texture_normal = ExtResource( 6 )
+texture_pressed = ExtResource( 8 )
+texture_hover = ExtResource( 7 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AudioMenuButton" type="TextureButton" parent="CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/HBoxContainer2"]
+margin_left = 307.0
+margin_right = 347.0
+margin_bottom = 358.0
+texture_normal = ExtResource( 11 )
+texture_pressed = ExtResource( 11 )
+texture_hover = ExtResource( 11 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="AspectRatioContainer" type="AspectRatioContainer" parent="CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer"]
 margin_top = 362.0
@@ -190,8 +132,91 @@ size = 1.61217
 
 [node name="InGame3D" parent="." instance=ExtResource( 1 )]
 
-[connection signal="value_changed" from="SoundVolumeSlider" to="." method="_onSoundVolumeSliderValueChanged"]
-[connection signal="value_changed" from="MusicVolumeSlider" to="." method="_onMusicVolumeSliderValueChanged"]
-[connection signal="toggled" from="CanvasLayer/GameUIRoot/HBoxContainer/Control/SoundToggleButton" to="." method="_onSoundToggleButtonToggled"]
-[connection signal="toggled" from="CanvasLayer/GameUIRoot/HBoxContainer/Control/MusicToggleButton" to="." method="_onMusicToggleButtonToggled"]
-[connection signal="pressed" from="CanvasLayer/GameUIRoot/HBoxContainer/Control/PlayNextSongButton" to="." method="_onPlayNextSongButtonPressed"]
+[node name="AudioMenu" type="Control" parent="."]
+visible = false
+margin_left = 460.0
+margin_top = 10.0
+margin_right = 822.0
+margin_bottom = 253.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SoundVolumeSlider" type="HSlider" parent="AudioMenu"]
+anchor_left = 0.55
+anchor_top = 0.171
+anchor_right = 0.55
+anchor_bottom = 0.171
+margin_left = -127.163
+margin_top = -21.0008
+margin_right = 18.8372
+margin_bottom = 20.9992
+custom_icons/grabber_highlight = ExtResource( 10 )
+custom_icons/grabber = ExtResource( 9 )
+value = 100.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MusicVolumeSlider" type="HSlider" parent="AudioMenu"]
+anchor_left = 0.55
+anchor_top = 0.479
+anchor_right = 0.55
+anchor_bottom = 0.479
+margin_left = -127.724
+margin_top = -21.0183
+margin_right = 18.2762
+margin_bottom = 20.9817
+custom_icons/grabber_highlight = ExtResource( 10 )
+custom_icons/grabber = ExtResource( 9 )
+value = 100.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SoundToggleButton" type="CheckButton" parent="AudioMenu"]
+anchor_left = 0.732
+anchor_top = 0.185
+anchor_right = 0.732
+anchor_bottom = 0.185
+margin_left = -25.984
+margin_top = -23.955
+margin_right = 26.016
+margin_bottom = 24.045
+rect_min_size = Vector2( 50, 0 )
+focus_mode = 0
+custom_icons/off = ExtResource( 5 )
+custom_icons/on = ExtResource( 4 )
+pressed = true
+enabled_focus_mode = 0
+expand_icon = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MusicToggleButton" type="CheckButton" parent="AudioMenu"]
+anchor_left = 0.733
+anchor_top = 0.484
+anchor_right = 0.733
+anchor_bottom = 0.484
+margin_left = -25.9591
+margin_top = -24.067
+margin_right = 26.0409
+margin_bottom = 23.933
+rect_min_size = Vector2( 50, 0 )
+focus_mode = 0
+custom_icons/off = ExtResource( 12 )
+custom_icons/on = ExtResource( 11 )
+pressed = true
+enabled_focus_mode = 0
+expand_icon = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="pressed" from="CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/HBoxContainer2/PlayNextSongButton" to="." method="_onPlayNextSongButtonPressed"]
+[connection signal="pressed" from="CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/HBoxContainer2/AudioMenuButton" to="." method="_onAudioMenuButtonPressed"]
+[connection signal="value_changed" from="AudioMenu/SoundVolumeSlider" to="." method="_onSoundVolumeSliderValueChanged"]
+[connection signal="value_changed" from="AudioMenu/MusicVolumeSlider" to="." method="_onMusicVolumeSliderValueChanged"]
+[connection signal="toggled" from="AudioMenu/SoundToggleButton" to="." method="_onSoundToggleButtonToggled"]
+[connection signal="toggled" from="AudioMenu/MusicToggleButton" to="." method="_onMusicToggleButtonToggled"]

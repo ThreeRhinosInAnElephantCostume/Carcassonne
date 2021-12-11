@@ -136,8 +136,26 @@ public class InGameUI : Control, Game.IGameHandles
 	{
 		_gameAudio.SetAudioBusVolume("Music", value);
 	}
+	
+	public bool AudioMenuToggle(){
+		Control audioMenu = GetNode("AudioMenu") as Control;
+		bool audioMenuVisibity = audioMenu.Visible;
+		if(audioMenu.Visible == true){
+			audioMenu.Visible = false;
+		} else {
+			audioMenu.Visible = true;
+		}
+		return audioMenu.Visible;		
+	}
+	
+	private void _onAudioMenuButtonPressed()
+	{
+		AudioMenuToggle();
+	}
 
 }
+
+
 
 
 
