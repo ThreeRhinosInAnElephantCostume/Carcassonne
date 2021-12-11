@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/2021-06-03_-_Rolling_Hills_Of_Ireland_-_www.FesliyanStudios.com.mp3-fd4c7807786482f619162ac2f68a5416.mp3str"
+
+[deps]
+
+source_file="res://Audio/Music/2021-06-03_-_Rolling_Hills_Of_Ireland_-_www.FesliyanStudios.com.mp3"
+dest_files=[ "res://.import/2021-06-03_-_Rolling_Hills_Of_Ireland_-_www.FesliyanStudios.com.mp3-fd4c7807786482f619162ac2f68a5416.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

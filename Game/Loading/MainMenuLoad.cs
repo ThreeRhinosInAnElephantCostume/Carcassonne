@@ -76,9 +76,9 @@ public class MainMenuLoad : Control
 		_progressBar = GetNode<ProgressBar>("VBoxContainer/VBoxContainer/HBoxContainer/LoadingProgressBar");
 		ThreadPool.QueueUserWorkItem(LoadControlThread);
 		
-		PackedScene AudioPlayerScene = ResourceLoader.Load("res://Audio/AudioPlayer.tscn") as PackedScene;				
-		AddChild(AudioPlayerScene.Instance());
-		_gameAudio = (AudioPlayer)GetNode("AudioPlayer");
+		//AudioPlayer AudioPlayerScene = ResourceLoader.Load("res://Audio/AudioPlayer.tscn") as PackedScene;				
+		//AddChild(AudioPlayerScene.Instance());
+		_gameAudio = /*(AudioPlayer)*/GetNode<AudioPlayer>("/root/AudioPlayer");
 	}
 	public override void _Process(float delta)
 	{
@@ -120,9 +120,9 @@ public class MainMenuLoad : Control
 		}
 		_progressBar.Value = (_progressBar.MaxValue * progress);
 		_gameAudio.PlayIntroMusic(7);
-		if(_progressBar.Value > 80){
+		/*if(_progressBar.Value > 80){
 			_gameAudio.SetIntroVolume(-1*(float)_progressBar.Value+80);
 		
-		}
+		}*/
 	}
 }

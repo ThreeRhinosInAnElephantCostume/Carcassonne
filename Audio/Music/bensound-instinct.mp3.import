@@ -11,5 +11,5 @@ dest_files=[ "res://.import/bensound-instinct.mp3-2e3feadd6f564fca83422af608bfdb
 
 [params]
 
-loop=true
+loop=false
 loop_offset=0

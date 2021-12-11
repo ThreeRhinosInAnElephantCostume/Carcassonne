@@ -11,5 +11,5 @@ dest_files=[ "res://.import/The_A-Team_Full_Theme_Tune.mp3-7adeea884689cba4f78bb
 
 [params]
 
-loop=true
+loop=false
 loop_offset=0

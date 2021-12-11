@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/2019-07-29_-_Elven_Forest_-_FesliyanStudios.com_-_David_Renda.mp3-b741df5e166169eb2a0f51cb7ff542f4.mp3str"
+
+[deps]
+
+source_file="res://Audio/Music/2019-07-29_-_Elven_Forest_-_FesliyanStudios.com_-_David_Renda.mp3"
+dest_files=[ "res://.import/2019-07-29_-_Elven_Forest_-_FesliyanStudios.com_-_David_Renda.mp3-b741df5e166169eb2a0f51cb7ff542f4.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

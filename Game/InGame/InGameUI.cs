@@ -25,6 +25,8 @@ public class InGameUI : Control, Game.IGameHandles
 	VBoxContainer _mainInfoContainer;
 	Label _stateLabel;
 	List<Label> _playerLabels = new List<Label>();
+
+	AudioPlayer _gameAudio;
 	//Viewport _viewport;
 	public void Start(Game game)
 	{
@@ -102,6 +104,44 @@ public class InGameUI : Control, Game.IGameHandles
 		});
 
 		Start(_game);
+
+		_gameAudio = GetNode<AudioPlayer>("/root/AudioPlayer");
+	}
+	
+	
+	private void _onMusicToggleButtonToggled(bool button_pressed)
+	{		
+		_gameAudio.ToggleAudioBusVolume("Music");
+	}
+	
+	private void _onPlayNextSongButtonPressed()
+	{
+		_gameAudio.StopIntroMusic();
+
+		_gameAudio.PlayNextSong();
+	}
+	
+	private void _onSoundToggleButtonToggled(bool button_pressed)
+	{	
+		_gameAudio.ToggleAudioBusVolume("Sounds");	
+	}
+	
+	private void _onSoundVolumeSliderValueChanged(float value)
+	{
+		_gameAudio.SetAudioBusVolume("Sounds", value);
+		
+	}
+	
+	private void _onMusicVolumeSliderValueChanged(float value)
+	{
+		_gameAudio.SetAudioBusVolume("Music", value);
 	}
 
 }
+
+
+
+
+
+
+

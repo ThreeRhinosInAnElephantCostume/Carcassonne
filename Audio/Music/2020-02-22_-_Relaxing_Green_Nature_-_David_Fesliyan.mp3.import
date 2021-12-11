@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/2020-02-22_-_Relaxing_Green_Nature_-_David_Fesliyan.mp3-2835ff57dbd618b569136b41868308e2.mp3str"
+
+[deps]
+
+source_file="res://Audio/Music/2020-02-22_-_Relaxing_Green_Nature_-_David_Fesliyan.mp3"
+dest_files=[ "res://.import/2020-02-22_-_Relaxing_Green_Nature_-_David_Fesliyan.mp3-2835ff57dbd618b569136b41868308e2.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

@@ -1,26 +1,50 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Audio/Sounds/mixkit-game-ball-tap-2073.wav" type="AudioStream" id=1]
-[ext_resource path="res://Audio/Sounds/Dropping-Bag-on-Floor.wav" type="AudioStream" id=2]
+[ext_resource path="res://Audio/Sounds/Knife-Stab-A1-www.fesliyanstudios.com.wav" type="AudioStream" id=2]
 [ext_resource path="res://Audio/Music/The_A-Team_Full_Theme_Tune.mp3" type="AudioStream" id=3]
 [ext_resource path="res://Audio/Sounds/Hard-Slap-B.wav" type="AudioStream" id=4]
 [ext_resource path="res://Audio/AudioPlayer.cs" type="Script" id=5]
 [ext_resource path="res://Audio/Sounds/Catching-Coins.wav" type="AudioStream" id=6]
+[ext_resource path="res://Audio/Sounds/Single-footstep-on-concrete-with-womans-heel-shoes-9-www.FesliyanStudios.com.wav" type="AudioStream" id=7]
 
 [node name="AudioPlayer" type="Node"]
 script = ExtResource( 5 )
 
-[node name="IntroMusic" type="AudioStreamPlayer" parent="."]
+[node name="MusicPlayer" type="Node" parent="."]
+
+[node name="IntroMusic" type="AudioStreamPlayer" parent="MusicPlayer"]
 stream = ExtResource( 3 )
+bus = "Music"
 
-[node name="TilePlacedSound" type="AudioStreamPlayer" parent="."]
+[node name="CurrentSong" type="AudioStreamPlayer" parent="MusicPlayer"]
+stream = ExtResource( 3 )
+bus = "Music"
+
+[node name="SoundsPlayer" type="Node" parent="."]
+
+[node name="TilePlacedSound" type="AudioStreamPlayer" parent="SoundsPlayer"]
 stream = ExtResource( 2 )
+bus = "Sounds"
 
-[node name="TileOverSpotSound" type="AudioStreamPlayer" parent="."]
+[node name="TileOverSpotSound" type="AudioStreamPlayer" parent="SoundsPlayer"]
 stream = ExtResource( 6 )
+bus = "Sounds"
 
-[node name="TileRotationAvailableSound" type="AudioStreamPlayer" parent="."]
+[node name="TileRotationAvailableSound" type="AudioStreamPlayer" parent="SoundsPlayer"]
 stream = ExtResource( 1 )
+bus = "Sounds"
 
-[node name="TileRotationDisabledSound" type="AudioStreamPlayer" parent="."]
+[node name="TileRotationDisabledSound" type="AudioStreamPlayer" parent="SoundsPlayer"]
 stream = ExtResource( 4 )
+bus = "Sounds"
+
+[node name="MeeplePlacedSound" type="AudioStreamPlayer" parent="SoundsPlayer"]
+stream = ExtResource( 7 )
+bus = "Sounds"
+
+[node name="PlaySound" type="AudioStreamPlayer" parent="."]
+bus = "Sounds"
+
+[connection signal="finished" from="MusicPlayer/IntroMusic" to="." method="_onIntroMusicFinished"]
+[connection signal="finished" from="MusicPlayer/CurrentSong" to="." method="_onCurrentSongFinished"]

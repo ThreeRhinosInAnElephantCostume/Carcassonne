@@ -57,7 +57,7 @@ public class PotentialTile3D : Spatial
 		if (_sharedInputLockout)
 			return;
 		_visRoot.Visible = false;
-		_gameAudio.PlayTileOverSpotSound();
+		_gameAudio.PlaySound("TileOverSpotSound");
 		if (PTile.GetParent() != null)
 			PTile.GetParent().RemoveChild(PTile);
 		this.AddChild((PTile));
@@ -87,9 +87,9 @@ public class PotentialTile3D : Spatial
 		else if (InputMap.EventIsAction(@event, ROTATE_ACTION) && Input.IsActionJustPressed(ROTATE_ACTION))
 		{
 			if(_rotations.Count >1 ){
-				_gameAudio.PlayTileRotationSound();				
+				_gameAudio.PlaySound("TileRotationAvailableSound");				
 			} else {
-				_gameAudio.PlayTileRotationDisabledSound();				
+				_gameAudio.PlaySound("TileRotationDisabledSound");				
 			}
 			_currotpos = (_currotpos + 1) % (_rotations.Count);
 			PTile.Rot = _rotations[_currotpos];
@@ -97,9 +97,7 @@ public class PotentialTile3D : Spatial
 	}
 	public override void _Ready()
 	{		
-		PackedScene AudioPlayerScene = ResourceLoader.Load("res://Audio/AudioPlayer.tscn") as PackedScene;		
-		AddChild(AudioPlayerScene.Instance());
-		_gameAudio = (AudioPlayer)GetNode("AudioPlayer");
+		_gameAudio =  GetNode<AudioPlayer>("/root/AudioPlayer");
 		
 		foreach (var it in ACTIONS)
 			Assert(InputMap.HasAction(it));
@@ -127,17 +125,7 @@ public class PotentialTile3D : Spatial
 	
 	private void _OnPotentialTileTreeExiting()
 	{
-		PackedScene AudioPlayerScene = ResourceLoader.Load("res://Audio/AudioPlayer.tscn") as PackedScene;		
-		Node _root = GetTree().GetRoot();
-		_root.AddChild(AudioPlayerScene.Instance());
-		AudioPlayer GameSound = (AudioPlayer)_root.GetNode("AudioPlayer");
-		GameSound.PlayTilePlacedSound();
-	}
-	
-	
-	private void _onPotentialTileTreeExited()
-	{
-		// Replace with function body.
+		_gameAudio.PlaySound("TilePlacedSound");
 	}
 }
 

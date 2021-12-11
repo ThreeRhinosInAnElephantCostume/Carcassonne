@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/2020-06-18_-_Cathedral_Ambience_-_www.FesliyanStudios.com_David_Renda.mp3-98369a6fc42464e364aa0bef1f47c0eb.mp3str"
+
+[deps]
+
+source_file="res://Audio/Music/2020-06-18_-_Cathedral_Ambience_-_www.FesliyanStudios.com_David_Renda.mp3"
+dest_files=[ "res://.import/2020-06-18_-_Cathedral_Ambience_-_www.FesliyanStudios.com_David_Renda.mp3-98369a6fc42464e364aa0bef1f47c0eb.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

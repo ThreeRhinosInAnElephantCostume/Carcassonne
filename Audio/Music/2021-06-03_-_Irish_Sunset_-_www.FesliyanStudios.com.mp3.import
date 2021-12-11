@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/2021-06-03_-_Irish_Sunset_-_www.FesliyanStudios.com.mp3-04ad0da94c06ddadf20bdac7a82a8a0c.mp3str"
+
+[deps]
+
+source_file="res://Audio/Music/2021-06-03_-_Irish_Sunset_-_www.FesliyanStudios.com.mp3"
+dest_files=[ "res://.import/2021-06-03_-_Irish_Sunset_-_www.FesliyanStudios.com.mp3-04ad0da94c06ddadf20bdac7a82a8a0c.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

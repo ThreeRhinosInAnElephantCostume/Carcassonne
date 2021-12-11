@@ -29,3 +29,5 @@ material/0 = SubResource( 2 )
 [node name="CollisionShape" type="CollisionShape" parent="Area"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
 shape = SubResource( 3 )
+
+[connection signal="tree_exiting" from="." to="." method="_onPotentialMeeplePlacementTreeExiting"]
