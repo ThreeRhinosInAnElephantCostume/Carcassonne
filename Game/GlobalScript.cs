@@ -6,6 +6,7 @@
 
 */
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -24,6 +25,20 @@ using Expression = System.Linq.Expressions.Expression;
 
 public class GlobalScript : Node
 {
+    public static GlobalScript GS;
+    ConcurrentQueue<Action> _toExec = new ConcurrentQueue<Action>();
+    void DequeDeferred()
+    {
+        System.Action action;
+        Assert(_toExec.TryDequeue(out action), "Error: queue desynchronization");
+        action();
+    }
+    public void QueueDeferred(System.Action action)
+    {
+        Assert(action != null);
+        _toExec.Enqueue(action);
+        CallDeferred(nameof(DequeDeferred));
+    }
     public override void _Ready()
     {
         List<string> requiredpaths = new List<string>()
@@ -53,5 +68,10 @@ public class GlobalScript : Node
 
         OS.WindowFullscreen = Settings.FullScreen;
         OS.WindowSize = (Vector2)Settings.Resolution.Value;
+    }
+    public GlobalScript()
+    {
+        Assert(GS == null, "Attempted to create multiple instances of GlobalScript!");
+        GS = this;
     }
 }
