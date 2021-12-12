@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Menu-Selection-Change-C-www.fesliyanstudios.com.wav-7e594ab71594e266d669ef0da114726c.sample"
+
+[deps]
+
+source_file="res://Audio/Sounds/Menu-Selection-Change-C-www.fesliyanstudios.com.wav"
+dest_files=[ "res://.import/Menu-Selection-Change-C-www.fesliyanstudios.com.wav-7e594ab71594e266d669ef0da114726c.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

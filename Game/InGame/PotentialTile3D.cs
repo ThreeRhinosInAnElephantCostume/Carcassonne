@@ -29,9 +29,13 @@ public class PotentialTile3D : Spatial
 	int _currotpos = 0;
 	static bool _sharedInputLockout = false;
 	Vector2I _position;
+<<<<<<< HEAD
 	
 	AudioPlayer _gameAudio;
 	
+=======
+	AudioPlayer _gameAudio;
+>>>>>>> 2cc8ed4628aa572168882e23a3d95e7bc4f3b614
 	public Vector2I PotentialPosition
 	{
 		get => _position;
@@ -41,16 +45,32 @@ public class PotentialTile3D : Spatial
 			this.Translation = GridPosTo3D(_position);
 		}
 	}
+<<<<<<< HEAD
 	public void AddRotation(int rot)
 	{
 		if (this.dirs == null || this.dirs.Length == 0)
 		{
 			CallDeferred("AddRotation", rot);
+=======
+	public void AddRotation(int rot, bool deferred = false)
+	{
+		if (!deferred)
+		{
+			Assert(!_rotations.Contains(rot));
+			_rotations.Add(rot);
+		}
+		if (this.dirs == null || this.dirs.Length == 0)
+		{
+			CallDeferred("AddRotation", rot, true);
+>>>>>>> 2cc8ed4628aa572168882e23a3d95e7bc4f3b614
 			return;
 		}
 		Assert(rot >= 0 && rot <= 3);
 		this.dirs[rot].Visible = true;
+<<<<<<< HEAD
 		_rotations.Add(rot);
+=======
+>>>>>>> 2cc8ed4628aa572168882e23a3d95e7bc4f3b614
 	}
 	void MouseEntered()
 	{
@@ -87,18 +107,30 @@ public class PotentialTile3D : Spatial
 		else if (InputMap.EventIsAction(@event, ROTATE_ACTION) && Input.IsActionJustPressed(ROTATE_ACTION))
 		{
 			if(_rotations.Count >1 ){
+<<<<<<< HEAD
 				_gameAudio.PlaySound("TileRotationAvailableSound");				
 			} else {
 				_gameAudio.PlaySound("TileRotationDisabledSound");				
 			}
+=======
+					  _gameAudio.PlaySound("TileRotationAvailableSound");				
+				  } else {
+					  _gameAudio.PlaySound("TileRotationDisabledSound");				
+				  }
+>>>>>>> 2cc8ed4628aa572168882e23a3d95e7bc4f3b614
 			_currotpos = (_currotpos + 1) % (_rotations.Count);
 			PTile.Rot = _rotations[_currotpos];
 		}
 	}
 	public override void _Ready()
+<<<<<<< HEAD
 	{		
 		_gameAudio =  GetNode<AudioPlayer>("/root/AudioPlayer");
 		
+=======
+	{
+		_gameAudio =  GetNode<AudioPlayer>("/root/AudioPlayer");
+>>>>>>> 2cc8ed4628aa572168882e23a3d95e7bc4f3b614
 		foreach (var it in ACTIONS)
 			Assert(InputMap.HasAction(it));
 		_sharedInputLockout = false;
