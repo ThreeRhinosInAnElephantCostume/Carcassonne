@@ -1,7 +1,6 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Audio/Sounds/mixkit-game-ball-tap-2073.wav" type="AudioStream" id=1]
-[ext_resource path="res://Audio/Sounds/Fall-Down-On-Wood-A1-www.fesliyanstudios.com.wav" type="AudioStream" id=2]
 [ext_resource path="res://Audio/Music/The_A-Team_Full_Theme_Tune.mp3" type="AudioStream" id=3]
 [ext_resource path="res://Audio/Sounds/Menu-Selection-Change-C-www.fesliyanstudios.com.wav" type="AudioStream" id=4]
 [ext_resource path="res://Audio/AudioPlayer.cs" type="Script" id=5]
@@ -24,7 +23,7 @@ bus = "Music"
 [node name="SoundsPlayer" type="Node" parent="."]
 
 [node name="TilePlacedSound" type="AudioStreamPlayer" parent="SoundsPlayer"]
-stream = ExtResource( 2 )
+stream = ExtResource( 1 )
 bus = "Sounds"
 
 [node name="TileOverSpotSound" type="AudioStreamPlayer" parent="SoundsPlayer"]

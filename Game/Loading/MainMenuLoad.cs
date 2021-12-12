@@ -24,12 +24,8 @@ public class MainMenuLoad : Control
 	{
 		COMPLETE = -1,
 		NONE = 0,
-<<<<<<< HEAD
-		SEARCHING_FOR_FILES = 20,
-=======
 		LOADING_RESOURCES = 35,
 		SEARCHING_FOR_FILES = 40,
->>>>>>> 2cc8ed4628aa572168882e23a3d95e7bc4f3b614
 		LOADING_TILES = 100,
 		END = LOADING_TILES,
 	}
@@ -40,18 +36,10 @@ public class MainMenuLoad : Control
 	List<string> _prototypePaths = new List<string>();
 	ConcurrentQueue<string> _remainingPrototypePaths = new ConcurrentQueue<string>();
 	ConcurrentQueue<string> _lastProcessedPaths = new ConcurrentQueue<string>();
-<<<<<<< HEAD
-	PackedScene _ingamescene = null;	
-	
-	AudioPlayer _gameAudio;
-	
-	
-=======
 	PackedScene _InGameScenePacked = null;
 	float _resourceLoadProgress = 0;
 	public float Progress { get; protected set; } = 0;
 	AudioPlayer _gameAudio;
->>>>>>> 2cc8ed4628aa572168882e23a3d95e7bc4f3b614
 	void TileLoader(object state)
 	{
 		string path;
@@ -68,11 +56,6 @@ public class MainMenuLoad : Control
 	void LoadControlThread(object state)
 	{
 		_step = LoadSteps.NONE;
-<<<<<<< HEAD
-		_ingamescene = ResourceLoader.Load<PackedScene>("res://Game/InGame/InGameUI.tscn");
-		_step = LoadSteps.SEARCHING_FOR_FILES;
-		_prototypePaths = Utils.ListDirectoryFilesRecursively(Constants.TILE_DIRECTORY);
-=======
 
 		_step = LoadSteps.LOADING_RESOURCES;
 		int scene_steps = 0;
@@ -102,7 +85,6 @@ public class MainMenuLoad : Control
 		_step = LoadSteps.SEARCHING_FOR_FILES;
 		_prototypePaths = Utils.ListDirectoryFilesRecursively(Constants.TILE_DIRECTORY);
 
->>>>>>> 2cc8ed4628aa572168882e23a3d95e7bc4f3b614
 		_step = LoadSteps.LOADING_TILES;
 		_remainingPrototypePaths = new ConcurrentQueue<string>(_prototypePaths);
 		int nthreads = Max(1, System.Environment.ProcessorCount - 1);
@@ -112,28 +94,10 @@ public class MainMenuLoad : Control
 		Assert(_remainingPrototypePaths.Count == 0);
 		while (_lastProcessedPaths.Count > 0)
 			Thread.Sleep(1);
-<<<<<<< HEAD
-=======
-
->>>>>>> 2cc8ed4628aa572168882e23a3d95e7bc4f3b614
 		_step = LoadSteps.COMPLETE;
 	}
 	public override void _Ready()
 	{
-<<<<<<< HEAD
-		_loadingLabel = GetNode<Label>("VBoxContainer/VBoxContainer/LoadingLabel");
-		_progressBar = GetNode<ProgressBar>("VBoxContainer/VBoxContainer/HBoxContainer/LoadingProgressBar");
-		ThreadPool.QueueUserWorkItem(LoadControlThread);
-		
-		//AudioPlayer AudioPlayerScene = ResourceLoader.Load("res://Audio/AudioPlayer.tscn") as PackedScene;				
-		//AddChild(AudioPlayerScene.Instance());
-		_gameAudio = /*(AudioPlayer)*/GetNode<AudioPlayer>("/root/AudioPlayer");
-	}
-	public override void _Process(float delta)
-	{
-		float progress = SLIDER_STEP * ((float)EnumPrev(_step));
-		
-=======
 		_gameAudio = GetNode<AudioPlayer>("/root/AudioPlayer");
 		_loadingLabel = GetNode<Label>("VBoxContainer/VBoxContainer/LoadingLabel");
 		_progressBar = GetNode<ProgressBar>("VBoxContainer/VBoxContainer/HBoxContainer/LoadingProgressBar");
@@ -143,7 +107,6 @@ public class MainMenuLoad : Control
 	{
 		float stepfactor = (((float)_step - (float)EnumPrev(_step)) / (float)LoadSteps.END);
 		float progress = SLIDER_STEP * ((float)EnumPrev(_step));
->>>>>>> 2cc8ed4628aa572168882e23a3d95e7bc4f3b614
 		switch (_step)
 		{
 			case LoadSteps.NONE:
@@ -151,11 +114,6 @@ public class MainMenuLoad : Control
 					_loadingLabel.Text = "Initializing...";
 					break;
 				}
-<<<<<<< HEAD
-			case LoadSteps.SEARCHING_FOR_FILES:
-				{
-					_loadingLabel.Text = "Indexing files...";
-=======
 			case LoadSteps.LOADING_RESOURCES:
 				{
 					_loadingLabel.Text = "Loading Resources...";
@@ -165,7 +123,6 @@ public class MainMenuLoad : Control
 			case LoadSteps.SEARCHING_FOR_FILES:
 				{
 					_loadingLabel.Text = "Indexing Files...";
->>>>>>> 2cc8ed4628aa572168882e23a3d95e7bc4f3b614
 					break;
 				}
 			case LoadSteps.LOADING_TILES:
@@ -177,20 +134,12 @@ public class MainMenuLoad : Control
 					}
 					int pc = Max(_prototypePaths.Count, 1);
 					float rt = 1.0f - ((float)_remainingPrototypePaths.Count / (float)pc);
-<<<<<<< HEAD
-					progress += rt * (((float)LoadSteps.LOADING_TILES - (float)EnumPrev(LoadSteps.LOADING_TILES)) / (float)LoadSteps.END);
-=======
 					progress += rt * stepfactor;
->>>>>>> 2cc8ed4628aa572168882e23a3d95e7bc4f3b614
 					break;
 				}
 			case LoadSteps.COMPLETE:
 				{
-<<<<<<< HEAD
-					var igs = _ingamescene.Instance();
-=======
 					var igs = _InGameScenePacked.Instance();
->>>>>>> 2cc8ed4628aa572168882e23a3d95e7bc4f3b614
 					var t = GetTree();
 					var r = t.Root;
 					r.AddChild(igs);
@@ -198,17 +147,8 @@ public class MainMenuLoad : Control
 					return;
 				}
 		}
-<<<<<<< HEAD
-		_progressBar.Value = (_progressBar.MaxValue * progress);
-		_gameAudio.PlayIntroMusic(7);
-		/*if(_progressBar.Value > 80){
-			_gameAudio.SetIntroVolume(-1*(float)_progressBar.Value+80);
-		
-		}*/
-=======
 		_gameAudio.PlayIntroMusic(7);
 		_progressBar.Value = (_progressBar.MaxValue * progress);
 		Progress = progress;
->>>>>>> 2cc8ed4628aa572168882e23a3d95e7bc4f3b614
 	}
 }

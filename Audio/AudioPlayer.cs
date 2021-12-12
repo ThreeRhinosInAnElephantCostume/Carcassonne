@@ -30,6 +30,7 @@ public class AudioPlayer : Node
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{		
+		try{
 		USER_PREFERENCES_AUTOPLAY = true;
 		USER_PREFERENCES_MUSIC_VOLUME = 0.0f;
 		USER_PREFERENCES_SOUNDS_VOLUME = 0.0f;
@@ -62,22 +63,35 @@ public class AudioPlayer : Node
 		_random = new Random();
 		_currentSong.Stream = _songStream;
 
-		_muteLevel = -50.0f;
+		_muteLevel = -55.0f;
 
 		_lastMusicVolume = USER_PREFERENCES_MUSIC_VOLUME;
 		_lastSoundsVolume = USER_PREFERENCES_SOUNDS_VOLUME;
+		} catch (NullReferenceException e){
+			System.Diagnostics.Debug.WriteLine("Exception caught!. There is no such a node. "+e.Message);
+		} catch (Exception e){
+			System.Diagnostics.Debug.WriteLine("Exception caught: "+e.Message);
+		}
 	}
 
 	public void PlayNextSong(){
-		if(USER_PREFERENCES_AUTOPLAY == true){
-			if((_introMusic.Playing == true)||(_currentSongIndex >= _songsList.Count-1)){
-				_currentSongIndex = 0; 	
-			} else {
-				_currentSongIndex++;
+		try{
+			if(USER_PREFERENCES_AUTOPLAY == true){
+				if((_introMusic.Playing == true)||(_currentSongIndex >= _songsList.Count -1)){
+					_currentSongIndex = 0; 	
+				} else {
+					_currentSongIndex++;
+				}
+				_songStream  = ResourceLoader.Load(_songsList[_currentSongIndex]) as AudioStream;
+				_currentSong.Stream = _songStream;
+				_currentSong.Play();
 			}
-			_songStream  = ResourceLoader.Load(_songsList[_currentSongIndex]) as AudioStream;
-			_currentSong.Stream = _songStream;
-			_currentSong.Play();
+		} catch(NullReferenceException e){
+			System.Diagnostics.Debug.WriteLine("Exception caught!. There is no such a node. "+e.Message);
+		} catch(ArgumentOutOfRangeException e){
+			System.Diagnostics.Debug.WriteLine("EXCEPTION CAUGHT! There is no song with given index! Skipping to first song...");
+			System.Diagnostics.Debug.WriteLine("EXCEPTION MESSAGE: " + e.Message);
+			_currentSongIndex = 0;
 		}
 	}	
 	
@@ -94,13 +108,28 @@ public class AudioPlayer : Node
 	
 
 	public void PlaySound(string namedStreamPlayer){
-		AudioStreamPlayer _soundToPlay = (AudioStreamPlayer)GetNode("SoundsPlayer").GetNode(namedStreamPlayer);
-		_soundToPlay.Play();
+		try{
+			AudioStreamPlayer _soundToPlay = (AudioStreamPlayer)GetNode("SoundsPlayer").GetNode(namedStreamPlayer);
+			_soundToPlay.Play();
+		} catch(NullReferenceException e){
+			System.Diagnostics.Debug.WriteLine("Exception caught!. Can't find sound called: "+namedStreamPlayer);
+			System.Diagnostics.Debug.WriteLine("Exception message: "+e.Message);
+		}
 	}	
 
 	public void SetAudioBusVolume(string audioBus, float value){
-		float _volumeToSet = -_muteLevel*value*0.01f+_muteLevel;
-		AudioServer.SetBusVolumeDb(AudioServer.GetBusIndex(audioBus),_volumeToSet);				
+		float volumeToSet = -_muteLevel*value*0.01f+_muteLevel;
+		if(volumeToSet <= _muteLevel){
+			volumeToSet = _muteLevel;
+		} else if(volumeToSet >= 0){
+			volumeToSet = 0 ;
+		}
+		try{
+			AudioServer.SetBusVolumeDb(AudioServer.GetBusIndex(audioBus),volumeToSet);				
+		} catch(NullReferenceException e){
+			System.Diagnostics.Debug.WriteLine("Exception caught!. Can't find Audio Bus named: "+audioBus);
+			System.Diagnostics.Debug.WriteLine("Exception message: "+e.Message);
+		}
 	}
 
 	private void _setLastAudioVolume(string audioBus, float volume){
