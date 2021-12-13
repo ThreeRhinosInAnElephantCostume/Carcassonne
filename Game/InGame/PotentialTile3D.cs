@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -88,11 +88,10 @@ public class PotentialTile3D : Spatial
 		}
 		else if (InputMap.EventIsAction(@event, ROTATE_ACTION) && Input.IsActionJustPressed(ROTATE_ACTION))
 		{
-			if(_rotations.Count >1 ){
-					  _gameAudio.PlaySound("TileRotationAvailableSound");				
-				  } else {
-					  _gameAudio.PlaySound("TileRotationDisabledSound");				
-				  }
+			if(_rotations.Count >1 )
+				_gameAudio.PlaySound("TileRotationAvailableSound");				
+			else
+				_gameAudio.PlaySound("TileRotationDisabledSound");		
 			_currotpos = (_currotpos + 1) % (_rotations.Count);
 			PTile.Rot = _rotations[_currotpos];
 		}

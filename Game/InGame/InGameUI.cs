@@ -138,13 +138,12 @@ public class InGameUI : Control, Game.IGameHandles
 	}
 	
 	public bool AudioMenuToggle(){
-		Control audioMenu = GetNode("AudioMenu") as Control;
+		Control audioMenu = GetNode<Control>("AudioMenu");
 		bool audioMenuVisibity = audioMenu.Visible;
-		if(audioMenu.Visible == true){
+		if(audioMenu.Visible == true)
 			audioMenu.Visible = false;
-		} else {
+		else
 			audioMenu.Visible = true;
-		}
 		return audioMenu.Visible;		
 	}
 	
