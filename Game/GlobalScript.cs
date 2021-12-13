@@ -26,19 +26,6 @@ using Expression = System.Linq.Expressions.Expression;
 public class GlobalScript : Node
 {
     public static GlobalScript GS;
-    ConcurrentQueue<Action> _toExec = new ConcurrentQueue<Action>();
-    void DequeDeferred()
-    {
-        System.Action action;
-        Assert(_toExec.TryDequeue(out action), "Error: queue desynchronization");
-        action();
-    }
-    public void QueueDeferred(System.Action action)
-    {
-        Assert(action != null);
-        _toExec.Enqueue(action);
-        CallDeferred(nameof(DequeDeferred));
-    }
     public override void _Ready()
     {
         List<string> requiredpaths = new List<string>()

@@ -11,11 +11,12 @@ config_version=4
 [application]
 
 config/name="Carcassonne"
-run/main_scene="res://Game/Loading/MainMenuLoad.tscn"
+run/main_scene="res://Icons/Themeable/ThemeableIconPreview.tscn"
 config/icon="res://icon.png"
 
 [autoload]
 
+GlobalUtilsScript="*res://Utils/GlobalUtilsScript.cs"
 GlobalScript="*res://Game/GlobalScript.cs"
 AudioPlayer="*res://Audio/AudioPlayer.tscn"
 
@@ -81,6 +82,11 @@ map_tile_rotate={
 "events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":2,"pressed":false,"doubleclick":false,"script":null)
  ]
 }
+
+[memory]
+
+limits/message_queue/max_size_kb=65536
+limits/command_queue/multithreading_queue_size_kb=65536
 
 [network]
 
