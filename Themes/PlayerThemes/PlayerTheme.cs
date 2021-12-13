@@ -18,9 +18,6 @@ using Expression = System.Linq.Expressions.Expression;
 [Serializable]
 public class PlayerTheme
 {
-    public static Color PrimaryMask = new Color(1, 0, 0);
-    public static Color SecondaryMask = new Color(0, 1, 0);
-    public static Color TertiaryMask = new Color(0, 0, 1);
     public Color PrimaryColor;
     public Color SecondaryColor;
     public Color TertiaryColor;
@@ -33,6 +30,8 @@ public class PlayerTheme
     {
         Image img = new Image();
         img.CopyFrom(_img);
+        if (img.IsCompressed())
+            img.Decompress();
         img.Lock();
         for (int i = 0; i < img.GetSize().x; i++)
         {

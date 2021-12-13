@@ -1,8 +1,12 @@
-[gd_scene format=2]
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Themes/PlayerThemes/ThemeEditor/PropView.cs" type="Script" id=1]
+[ext_resource path="res://Themes/PlayerThemes/ThemeEditor/ThemeEditor.cs" type="Script" id=2]
 
 [node name="ThemeEditor" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -32,6 +36,25 @@ margin_right = -4.0
 margin_bottom = -4.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+script = ExtResource( 1 )
+
+[node name="ViewportContainer" type="ViewportContainer" parent="MainContainer/VBoxContainer/PropView"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+stretch = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Viewport" type="Viewport" parent="MainContainer/VBoxContainer/PropView/ViewportContainer"]
+own_world = true
+
+[node name="PropViewRoot" type="Spatial" parent="MainContainer/VBoxContainer/PropView/ViewportContainer/Viewport"]
+
+[node name="PropViewCamera" type="Camera" parent="MainContainer/VBoxContainer/PropView/ViewportContainer/Viewport/PropViewRoot"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.892543, 2.16724 )
 
 [node name="IconView" type="Panel" parent="MainContainer/VBoxContainer"]
 visible = false

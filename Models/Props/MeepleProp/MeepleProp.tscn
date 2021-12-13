@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Models/Props/Prop.cs" type="Script" id=1]
+[ext_resource path="res://Models/Meeples/meeple.dae" type="PackedScene" id=2]
+[ext_resource path="res://Models/Props/PropMesh.cs" type="Script" id=3]
+
+[node name="meeple" instance=ExtResource( 2 )]
+script = ExtResource( 1 )
+ExamplePlayerTheme = "res://Themes/PlayerThemes/DefaultTheme.json"
+
+[node name="Mesh" parent="." index="1"]
+script = ExtResource( 3 )
+PrimarySurfaces = PoolIntArray( 0 )
