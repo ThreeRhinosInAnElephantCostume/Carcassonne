@@ -6,29 +6,28 @@ using System.Collections.Generic;
 
 public class AudioPlayer : Node
 {
-	private AudioStreamPlayer _introMusic;
-	private AudioStreamPlayer _tileRotationSound;
-	private AudioStreamPlayer _tileRotationDisabledSound;
-	private AudioStreamPlayer _tilePlacedSound;
-	private AudioStreamPlayer _tileOverSpotSound;	
+	AudioStreamPlayer _introMusic;
+	AudioStreamPlayer _tileRotationSound;
+	AudioStreamPlayer _tileRotationDisabledSound;
+	AudioStreamPlayer _tilePlacedSound;
+	AudioStreamPlayer _tileOverSpotSound;	
 	
-	private AudioStreamPlayer _meeplePlacedSound;	
+	AudioStreamPlayer _meeplePlacedSound;	
 	
-	private float _lastMusicVolume;
-	private float _lastSoundsVolume;
+	float _lastMusicVolume;
+	float _lastSoundsVolume;
 
-	private List<string> _songsList;
-	private AudioStreamPlayer _currentSong;
-	private int _currentSongIndex;
-	private Random _random;
-	private AudioStream _songStream;
-
-	private float _muteLevel;
+	List<string> _songsList;
+	AudioStreamPlayer _currentSong;
+	int _currentSongIndex;
+	Random _random;
+	AudioStream _songStream;
+	float _muteLevel;
+	string[] _allowedMusicTypes;
 	
 	public bool USER_PREFERENCES_AUTOPLAY;
 	public float USER_PREFERENCES_MUSIC_VOLUME;
 	public float USER_PREFERENCES_SOUNDS_VOLUME;
-	private string[] _allowedMusicTypes;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -37,20 +36,20 @@ public class AudioPlayer : Node
 		USER_PREFERENCES_MUSIC_VOLUME = 0.0f;
 		USER_PREFERENCES_SOUNDS_VOLUME = 0.0f;		
 		
-		_introMusic = GetNode("MusicPlayer").GetNode<AudioStreamPlayer>("IntroMusic");
+		_introMusic = GetNode<AudioStreamPlayer>("MusicPlayer/IntroMusic");
 		
-		_tileRotationSound = GetNode("SoundsPlayer").GetNode<AudioStreamPlayer>("TileRotationAvailableSound");
-		_tileRotationDisabledSound = GetNode("SoundsPlayer").GetNode<AudioStreamPlayer>("TileRotationDisabledSound");
-		_tilePlacedSound = GetNode("SoundsPlayer").GetNode<AudioStreamPlayer>("TilePlacedSound");
-		_tileOverSpotSound = GetNode("SoundsPlayer").GetNode<AudioStreamPlayer>("TileOverSpotSound");
+		_tileRotationSound = GetNode<AudioStreamPlayer>("SoundsPlayer/TileRotationAvailableSound");
+		_tileRotationDisabledSound = GetNode<AudioStreamPlayer>("SoundsPlayer/TileRotationDisabledSound");
+		_tilePlacedSound = GetNode<AudioStreamPlayer>("SoundsPlayer/TilePlacedSound");
+		_tileOverSpotSound = GetNode<AudioStreamPlayer>("SoundsPlayer/TileOverSpotSound");
 				
-		_meeplePlacedSound = GetNode("SoundsPlayer").GetNode<AudioStreamPlayer>("MeeplePlacedSound");
+		_meeplePlacedSound = GetNode<AudioStreamPlayer>("SoundsPlayer/MeeplePlacedSound");
 		
 		_allowedMusicTypes = new string[] {"mp3", "ogg", "wav"};
 
 		_songsList = ListMimeFilesInDirectory("res://Audio/Music",_allowedMusicTypes);
 
-		_currentSong = GetNode("MusicPlayer").GetNode<AudioStreamPlayer>("CurrentSong");
+		_currentSong = GetNode<AudioStreamPlayer>("MusicPlayer/CurrentSong");
 		_currentSongIndex = 0 ;
 		_random = new Random();
 		_currentSong.Stream = _songStream;
@@ -64,34 +63,14 @@ public class AudioPlayer : Node
 	public static List<string> ListMimeFilesInDirectory(string directoryPath, string[] mimeTypes)
 	{
 		
-		Directory directory = new Directory();
-		string fileName = "";
-		List<string> filesList = new List<string>(){};
-		if (directory.Open(directoryPath) == Error.Ok)
-		{
-			directory.ListDirBegin();
-			fileName = directory.GetNext();
-			while(fileName != "")
-			{
-				if(directory.CurrentIsDir() == false)				
-				{
-					string fileExtension = System.IO.Path.GetExtension(fileName).Replace(".", "");
-					if(mimeTypes.Contains(fileExtension))
-						filesList.Add(directoryPath+"/"+fileName);											
-				}					
-				fileName = directory.GetNext();
-			}
-		}
-		else
-			GD.Print("An error occurred while opening dir " + directoryPath);
-		return filesList;
+		return Utils.ListDirectoryFiles(directoryPath).FindAll(path => mimeTypes.Any(ext => path.EndsWith(ext)));
 	}
 
 	public void PlayNextSong()
 	{		
-		if(USER_PREFERENCES_AUTOPLAY == true)
+		if(USER_PREFERENCES_AUTOPLAY)
 		{
-			if((_introMusic.Playing == true)||(_currentSongIndex >= _songsList.Count -1))
+			if((_introMusic.Playing)||(_currentSongIndex >= _songsList.Count -1))
 				_currentSongIndex = 0; 	
 			else
 				_currentSongIndex++;
@@ -115,7 +94,7 @@ public class AudioPlayer : Node
 	
 	public void PlaySound(string namedStreamPlayer)
 	{
-		AudioStreamPlayer _soundToPlay = GetNode("SoundsPlayer").GetNode<AudioStreamPlayer>(namedStreamPlayer);
+		AudioStreamPlayer _soundToPlay = GetNode<AudioStreamPlayer>("SoundsPlayer/"+namedStreamPlayer);
 		_soundToPlay.Play();		
 	}	
 
@@ -128,11 +107,7 @@ public class AudioPlayer : Node
 
 	private float verifyVolumeLevel(float volume)
 	{
-		if(volume < _muteLevel)
-			return _muteLevel;
-		if(volume > 0)
-			return 0.0f;
-		return volume;
+		return Math.Clamp(volume, _muteLevel, 0);
 	}
 
 	public void ToggleAudioBusVolume(string audioBus)

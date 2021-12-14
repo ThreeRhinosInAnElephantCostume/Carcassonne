@@ -26,38 +26,38 @@ using Expression = System.Linq.Expressions.Expression;
 public class GlobalScript : Node
 {
 
-    public static GlobalScript GS;
-    ConcurrentQueue<Action> _toExec = new ConcurrentQueue<Action>();
-    void DequeDeferred()
-    {
-        System.Action action;
-        Assert(_toExec.TryDequeue(out action), "Error: queue desynchronization");
-        action();
-    }
-    public void QueueDeferred(System.Action action)
-    {
-        Assert(action != null);
-        _toExec.Enqueue(action);
-        CallDeferred(nameof(DequeDeferred));
-    }
-    public override void _Ready()
-    {
-        List<string> requiredpaths = new List<string>()
-        {
-            Constants.TILE_DIRECTORY,
-            Constants.TILESET_DIRECTORY,
-            Constants.TILE_MODEL_DIRECTORY,
-        };
-        foreach (var it in requiredpaths)
-        {
-            EnsurePathExists(it);
-        }
-        if (!FileExists(Constants.SETTINGS_PATH))
-        {
-            SerializeToFile(Constants.SETTINGS_PATH, Settings);
-        }
-        Settings = DeserializeFromFile<MainSettings>(Constants.SETTINGS_PATH);
-        Settings.CompleteLoad();
+	public static GlobalScript GS;
+	ConcurrentQueue<Action> _toExec = new ConcurrentQueue<Action>();
+	void DequeDeferred()
+	{
+		System.Action action;
+		Assert(_toExec.TryDequeue(out action), "Error: queue desynchronization");
+		action();
+	}
+	public void QueueDeferred(System.Action action)
+	{
+		Assert(action != null);
+		_toExec.Enqueue(action);
+		CallDeferred(nameof(DequeDeferred));
+	}
+	public override void _Ready()
+	{
+		List<string> requiredpaths = new List<string>()
+		{
+			Constants.TILE_DIRECTORY,
+			Constants.TILESET_DIRECTORY,
+			Constants.TILE_MODEL_DIRECTORY,
+		};
+		foreach (var it in requiredpaths)
+		{
+			EnsurePathExists(it);
+		}
+		if (!FileExists(Constants.SETTINGS_PATH))
+		{
+			SerializeToFile(Constants.SETTINGS_PATH, Settings);
+		}
+		Settings = DeserializeFromFile<MainSettings>(Constants.SETTINGS_PATH);
+		Settings.CompleteLoad();
 
 		// Example use for OnChangeHandle:
 
@@ -68,12 +68,12 @@ public class GlobalScript : Node
 		// Settings.Resolution.Value = new Vector2I(100, 100);
 
 
-        OS.WindowFullscreen = Settings.FullScreen;
-        OS.WindowSize = (Vector2)Settings.Resolution.Value;
-    }
-    public GlobalScript()
-    {
-        Assert(GS == null, "Attempted to create multiple instances of GlobalScript!");
-        GS = this;
-    }
+		OS.WindowFullscreen = Settings.FullScreen;
+		OS.WindowSize = (Vector2)Settings.Resolution.Value;
+	}
+	public GlobalScript()
+	{
+		Assert(GS == null, "Attempted to create multiple instances of GlobalScript!");
+		GS = this;
+	}
 }
