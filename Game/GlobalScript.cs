@@ -25,7 +25,6 @@ using Expression = System.Linq.Expressions.Expression;
 
 public class GlobalScript : Node
 {
-
 	public static GlobalScript GS;
 	ConcurrentQueue<Action> _toExec = new ConcurrentQueue<Action>();
 	void DequeDeferred()

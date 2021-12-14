@@ -51,7 +51,7 @@ public static partial class Globals
     }
     public class NotifyLink
     {
-        public string Name;
+        protected string Name;
         [JsonIgnore]
         public bool Modified { get; protected set; } = false;
         [JsonIgnore]
