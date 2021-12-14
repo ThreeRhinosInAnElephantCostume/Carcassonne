@@ -57,6 +57,7 @@ public class GlobalScript : Node
         }
         Settings = DeserializeFromFile<MainSettings>(Constants.SETTINGS_PATH);
         Settings.CompleteLoad();
+        SerializeToFile(Constants.SETTINGS_PATH, Settings);
 
         // Example use for OnChangeHandle:
 
