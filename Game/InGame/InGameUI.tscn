@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://Game/InGame/InGame3D.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Game/InGame/InGameUI.cs" type="Script" id=2]
@@ -12,13 +12,23 @@
 [ext_resource path="res://Audio/Img/Icons/meepleHover.png" type="Texture" id=10]
 [ext_resource path="res://Audio/Img/Icons/Note.png" type="Texture" id=11]
 [ext_resource path="res://Audio/Img/Icons/NoteHoover.png" type="Texture" id=12]
+[ext_resource path="res://GUI/img/money-bag.png" type="Texture" id=13]
+[ext_resource path="res://GUI/fonts/Frederic.tres" type="DynamicFont" id=14]
+[ext_resource path="res://GUI/img/BlasonCarcassonne-player.png" type="Texture" id=15]
+[ext_resource path="res://GUI/img/meeple_green.png" type="Texture" id=16]
+[ext_resource path="res://GUI/img/meeple_yellow.png" type="Texture" id=17]
+[ext_resource path="res://GUI/img/meeple_black.png" type="Texture" id=18]
+[ext_resource path="res://GUI/img/meeple_blue.png" type="Texture" id=19]
+[ext_resource path="res://GUI/img/meeple_red.png" type="Texture" id=20]
 
-[sub_resource type="World" id=1]
+[sub_resource type="World" id=2]
 environment = ExtResource( 3 )
 
 [node name="InGameUI" type="Control"]
-anchor_right = 1.0
-anchor_bottom = 1.0
+margin_left = 62.0
+margin_top = 320.0
+margin_right = 120.0
+margin_bottom = 396.0
 mouse_filter = 2
 script = ExtResource( 2 )
 __meta__ = {
@@ -38,8 +48,8 @@ __meta__ = {
 }
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/GameUIRoot"]
-anchor_right = 1.0
-anchor_bottom = 1.0
+margin_right = 1280.0
+margin_bottom = 720.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -52,7 +62,435 @@ margin_right = 121.0
 margin_bottom = 720.0
 mouse_filter = 2
 size_flags_horizontal = 3
+
+[node name="Player1Container" type="HBoxContainer" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer"]
+margin_right = 121.0
+margin_bottom = 80.0
+
+[node name="ShieldPlayer1" type="TextureRect" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player1Container"]
+margin_right = 39.0
+margin_bottom = 80.0
+size_flags_horizontal = 3
 size_flags_vertical = 3
+texture = ExtResource( 15 )
+expand = true
+stretch_mode = 6
+
+[node name="Player1StatusContainer" type="VBoxContainer" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player1Container"]
+margin_left = 43.0
+margin_right = 121.0
+margin_bottom = 80.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 1.95
+
+[node name="MeepleContainer" type="HBoxContainer" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player1Container/Player1StatusContainer"]
+margin_right = 78.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="MeepleGreenImg" type="TextureRect" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player1Container/Player1StatusContainer/MeepleContainer"]
+margin_right = 24.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 16 )
+expand = true
+stretch_mode = 6
+
+[node name="MeeplesPlayer1" type="Label" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player1Container/Player1StatusContainer/MeepleContainer"]
+margin_left = 28.0
+margin_right = 78.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+size_flags_vertical = 6
+size_flags_stretch_ratio = 2.0
+custom_fonts/font = ExtResource( 14 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_shadow = Color( 0.360784, 0.360784, 0.360784, 1 )
+text = "4"
+
+[node name="PointsContainer" type="HBoxContainer" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player1Container/Player1StatusContainer"]
+margin_top = 28.0
+margin_right = 78.0
+margin_bottom = 52.0
+
+[node name="PointsImg" type="TextureRect" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player1Container/Player1StatusContainer/PointsContainer"]
+margin_right = 24.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 13 )
+expand = true
+stretch_mode = 6
+
+[node name="PointsPlayer1" type="Label" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player1Container/Player1StatusContainer/PointsContainer"]
+margin_left = 28.0
+margin_right = 78.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+size_flags_vertical = 6
+size_flags_stretch_ratio = 2.0
+custom_fonts/font = ExtResource( 14 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_shadow = Color( 0.360784, 0.360784, 0.360784, 1 )
+text = "6(+3)"
+
+[node name="StatusPlayer1" type="Label" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player1Container/Player1StatusContainer"]
+margin_top = 56.0
+margin_right = 78.0
+margin_bottom = 80.0
+size_flags_horizontal = 3
+size_flags_vertical = 6
+custom_fonts/font = ExtResource( 14 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_shadow = Color( 0.360784, 0.360784, 0.360784, 1 )
+text = "active"
+
+[node name="Player2Container" type="HBoxContainer" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer"]
+margin_top = 84.0
+margin_right = 121.0
+margin_bottom = 164.0
+
+[node name="ShieldPlayer2" type="TextureRect" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player2Container"]
+margin_right = 39.0
+margin_bottom = 80.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 15 )
+expand = true
+stretch_mode = 6
+
+[node name="Player2StatusContainer" type="VBoxContainer" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player2Container"]
+margin_left = 43.0
+margin_right = 121.0
+margin_bottom = 80.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 1.95
+
+[node name="MeepleContainer" type="HBoxContainer" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player2Container/Player2StatusContainer"]
+margin_right = 78.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="MeepleYellowImg" type="TextureRect" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player2Container/Player2StatusContainer/MeepleContainer"]
+margin_right = 24.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 17 )
+expand = true
+stretch_mode = 6
+
+[node name="MeeplesPlayer2" type="Label" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player2Container/Player2StatusContainer/MeepleContainer"]
+margin_left = 28.0
+margin_right = 78.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+size_flags_vertical = 6
+size_flags_stretch_ratio = 2.0
+custom_fonts/font = ExtResource( 14 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_shadow = Color( 0.360784, 0.360784, 0.360784, 1 )
+text = "4"
+
+[node name="PointsContainer" type="HBoxContainer" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player2Container/Player2StatusContainer"]
+margin_top = 28.0
+margin_right = 78.0
+margin_bottom = 52.0
+
+[node name="PointsImg" type="TextureRect" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player2Container/Player2StatusContainer/PointsContainer"]
+margin_right = 24.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 13 )
+expand = true
+stretch_mode = 6
+
+[node name="PointsPlayer2" type="Label" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player2Container/Player2StatusContainer/PointsContainer"]
+margin_left = 28.0
+margin_right = 78.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+size_flags_vertical = 6
+size_flags_stretch_ratio = 2.0
+custom_fonts/font = ExtResource( 14 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_shadow = Color( 0.360784, 0.360784, 0.360784, 1 )
+text = "6(+3)"
+
+[node name="StatusPlayer2" type="Label" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player2Container/Player2StatusContainer"]
+margin_top = 56.0
+margin_right = 78.0
+margin_bottom = 80.0
+size_flags_horizontal = 3
+size_flags_vertical = 6
+custom_fonts/font = ExtResource( 14 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_shadow = Color( 0.360784, 0.360784, 0.360784, 1 )
+text = "."
+
+[node name="Player3Container" type="HBoxContainer" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer"]
+margin_top = 168.0
+margin_right = 121.0
+margin_bottom = 248.0
+
+[node name="ShieldPlayer3" type="TextureRect" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player3Container"]
+margin_right = 39.0
+margin_bottom = 80.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 15 )
+expand = true
+stretch_mode = 6
+
+[node name="Player3StatusContainer" type="VBoxContainer" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player3Container"]
+margin_left = 43.0
+margin_right = 121.0
+margin_bottom = 80.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 1.95
+
+[node name="MeepleContainer" type="HBoxContainer" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player3Container/Player3StatusContainer"]
+margin_right = 78.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="MeepleBlueImg" type="TextureRect" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player3Container/Player3StatusContainer/MeepleContainer"]
+margin_right = 24.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 19 )
+expand = true
+stretch_mode = 6
+
+[node name="MeeplesPlayer3" type="Label" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player3Container/Player3StatusContainer/MeepleContainer"]
+margin_left = 28.0
+margin_right = 78.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+size_flags_vertical = 6
+size_flags_stretch_ratio = 2.0
+custom_fonts/font = ExtResource( 14 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_shadow = Color( 0.360784, 0.360784, 0.360784, 1 )
+text = "4"
+
+[node name="PointsContainer" type="HBoxContainer" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player3Container/Player3StatusContainer"]
+margin_top = 28.0
+margin_right = 78.0
+margin_bottom = 52.0
+
+[node name="PointsImg" type="TextureRect" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player3Container/Player3StatusContainer/PointsContainer"]
+margin_right = 24.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 13 )
+expand = true
+stretch_mode = 6
+
+[node name="PointsPlayer3" type="Label" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player3Container/Player3StatusContainer/PointsContainer"]
+margin_left = 28.0
+margin_right = 78.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+size_flags_vertical = 6
+size_flags_stretch_ratio = 2.0
+custom_fonts/font = ExtResource( 14 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_shadow = Color( 0.360784, 0.360784, 0.360784, 1 )
+text = "6(+3)"
+
+[node name="StatusPlayer3" type="Label" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player3Container/Player3StatusContainer"]
+margin_top = 56.0
+margin_right = 78.0
+margin_bottom = 80.0
+size_flags_horizontal = 3
+size_flags_vertical = 6
+custom_fonts/font = ExtResource( 14 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_shadow = Color( 0.360784, 0.360784, 0.360784, 1 )
+text = "."
+
+[node name="Player4Container4" type="HBoxContainer" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer"]
+margin_top = 252.0
+margin_right = 121.0
+margin_bottom = 332.0
+
+[node name="ShieldPlayer4" type="TextureRect" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player4Container4"]
+margin_right = 39.0
+margin_bottom = 80.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 15 )
+expand = true
+stretch_mode = 6
+
+[node name="Player4StatusContainer" type="VBoxContainer" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player4Container4"]
+margin_left = 43.0
+margin_right = 121.0
+margin_bottom = 80.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 1.95
+
+[node name="MeepleContainer" type="HBoxContainer" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player4Container4/Player4StatusContainer"]
+margin_right = 78.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="MeepleBlackImg" type="TextureRect" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player4Container4/Player4StatusContainer/MeepleContainer"]
+margin_right = 24.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 18 )
+expand = true
+stretch_mode = 6
+
+[node name="MeeplesPlayer4" type="Label" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player4Container4/Player4StatusContainer/MeepleContainer"]
+margin_left = 28.0
+margin_right = 78.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+size_flags_vertical = 6
+size_flags_stretch_ratio = 2.0
+custom_fonts/font = ExtResource( 14 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_shadow = Color( 0.360784, 0.360784, 0.360784, 1 )
+text = "4"
+
+[node name="PointsContainer" type="HBoxContainer" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player4Container4/Player4StatusContainer"]
+margin_top = 28.0
+margin_right = 78.0
+margin_bottom = 52.0
+
+[node name="PointsImg" type="TextureRect" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player4Container4/Player4StatusContainer/PointsContainer"]
+margin_right = 24.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 13 )
+expand = true
+stretch_mode = 6
+
+[node name="PointsPlayer4" type="Label" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player4Container4/Player4StatusContainer/PointsContainer"]
+margin_left = 28.0
+margin_right = 78.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+size_flags_vertical = 6
+size_flags_stretch_ratio = 2.0
+custom_fonts/font = ExtResource( 14 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_shadow = Color( 0.360784, 0.360784, 0.360784, 1 )
+text = "6(+3)"
+
+[node name="StatusPlayer4" type="Label" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player4Container4/Player4StatusContainer"]
+margin_top = 56.0
+margin_right = 78.0
+margin_bottom = 80.0
+size_flags_horizontal = 3
+size_flags_vertical = 6
+custom_fonts/font = ExtResource( 14 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_shadow = Color( 0.360784, 0.360784, 0.360784, 1 )
+text = "."
+
+[node name="Player5Container" type="HBoxContainer" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer"]
+margin_top = 336.0
+margin_right = 121.0
+margin_bottom = 416.0
+
+[node name="ShieldPlayer5" type="TextureRect" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player5Container"]
+margin_right = 39.0
+margin_bottom = 80.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 15 )
+expand = true
+stretch_mode = 6
+
+[node name="Player4StatusContainer" type="VBoxContainer" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player5Container"]
+margin_left = 43.0
+margin_right = 121.0
+margin_bottom = 80.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 1.95
+
+[node name="MeepleContainer" type="HBoxContainer" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player5Container/Player4StatusContainer"]
+margin_right = 78.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="MeepleRedImg" type="TextureRect" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player5Container/Player4StatusContainer/MeepleContainer"]
+margin_right = 24.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 20 )
+expand = true
+stretch_mode = 6
+
+[node name="MeeplesPlayer5" type="Label" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player5Container/Player4StatusContainer/MeepleContainer"]
+margin_left = 28.0
+margin_right = 78.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+size_flags_vertical = 6
+size_flags_stretch_ratio = 2.0
+custom_fonts/font = ExtResource( 14 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_shadow = Color( 0.360784, 0.360784, 0.360784, 1 )
+text = "4"
+
+[node name="PointsContainer" type="HBoxContainer" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player5Container/Player4StatusContainer"]
+margin_top = 28.0
+margin_right = 78.0
+margin_bottom = 52.0
+
+[node name="PointsImg" type="TextureRect" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player5Container/Player4StatusContainer/PointsContainer"]
+margin_right = 24.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 13 )
+expand = true
+stretch_mode = 6
+
+[node name="PointsPlayer5" type="Label" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player5Container/Player4StatusContainer/PointsContainer"]
+margin_left = 28.0
+margin_right = 78.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+size_flags_vertical = 6
+size_flags_stretch_ratio = 2.0
+custom_fonts/font = ExtResource( 14 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_shadow = Color( 0.360784, 0.360784, 0.360784, 1 )
+text = "6(+3)"
+
+[node name="StatusPlayer5" type="Label" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player5Container/Player4StatusContainer"]
+margin_top = 56.0
+margin_right = 78.0
+margin_bottom = 80.0
+size_flags_horizontal = 3
+size_flags_vertical = 6
+custom_fonts/font = ExtResource( 14 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_shadow = Color( 0.360784, 0.360784, 0.360784, 1 )
+text = "."
 
 [node name="Control" type="Control" parent="CanvasLayer/GameUIRoot/HBoxContainer"]
 margin_left = 125.0
@@ -118,7 +556,7 @@ stretch = true
 [node name="Viewport" type="Viewport" parent="CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/AspectRatioContainer/ViewportContainer"]
 size = Vector2( 347, 347 )
 own_world = true
-world = SubResource( 1 )
+world = SubResource( 2 )
 transparent_bg = true
 handle_input_locally = false
 render_target_update_mode = 3
