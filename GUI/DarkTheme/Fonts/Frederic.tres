@@ -3,6 +3,5 @@
 [ext_resource path="res://GUI/fonts/FrederickatheGreat-Regular.ttf" type="DynamicFontData" id=1]
 
 [resource]
-resource_local_to_scene = true
-size = 20
+size = 50
 font_data = ExtResource( 1 )
