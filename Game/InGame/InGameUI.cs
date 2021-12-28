@@ -26,6 +26,9 @@ public class InGameUI : Control, Game.IGameHandles
 	Label _stateLabel;
 	List<Label> _playerLabels = new List<Label>();
 
+	List<HBoxContainer> _playerContainers = new List<HBoxContainer>();
+	List<Label> _playerPoints = new List<Label>();
+
 	AudioPlayer _gameAudio;
 	//Viewport _viewport;
 	public void Start(Game game)
@@ -46,7 +49,9 @@ public class InGameUI : Control, Game.IGameHandles
 		{
 			var p = _engine.Players[i];
 			var l = _playerLabels[i];
+			var pp = _playerPoints[i];
 			l.Text = $"Player {p.ID}: {p.Score} (+{p.PotentialScore})\n";
+			pp.Text = $"{p.Score} (+{p.PotentialScore})";
 			if (p == _engine.CurrentPlayer)
 			{
 				l.Text += " <<<<<";
@@ -96,6 +101,21 @@ public class InGameUI : Control, Game.IGameHandles
 		_stateLabel = new Label();
 		_mainInfoContainer.AddChild(_stateLabel);
 
+		_playerContainers.Add(GetNode<HBoxContainer>("CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player1Container"));
+		_playerContainers.Add(GetNode<HBoxContainer>("CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player2Container"));
+		_playerContainers.Add(GetNode<HBoxContainer>("CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player3Container"));
+		_playerContainers.Add(GetNode<HBoxContainer>("CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player4Container"));
+		_playerContainers.Add(GetNode<HBoxContainer>("CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player5Container"));
+		_playerContainerVisibilityOff();
+
+		_playerPoints.Add(GetNode<Label>("CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player1Container/Player1StatusContainer/PointsContainer/PointsPlayer1"));
+		_playerPoints.Add(GetNode<Label>("CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player2Container/Player2StatusContainer/PointsContainer/PointsPlayer2"));
+		_playerPoints.Add(GetNode<Label>("CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player3Container/Player3StatusContainer/PointsContainer/PointsPlayer3"));
+		_playerPoints.Add(GetNode<Label>("CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player4Container/Player4StatusContainer/PointsContainer/PointsPlayer4"));
+		_playerPoints.Add(GetNode<Label>("CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player5Container/Player4StatusContainer/PointsContainer/PointsPlayer5"));
+
+		_playerContainerVisibilityOn();
+
 		RepeatN(_engine.Players.Count, i =>
 		{
 			var l = new Label();
@@ -108,6 +128,24 @@ public class InGameUI : Control, Game.IGameHandles
 		_gameAudio = GetNode<AudioPlayer>("/root/AudioPlayer");
 	}
 	
+	void _playerContainerVisibilityOff()
+	{
+		//_playerContainers.ForEach(this.Visible = false);
+		for (int i = 0; i < 5; i++)
+		{
+			_playerContainers[i].Visible = false;
+		}
+	}
+
+	void _playerContainerVisibilityOn()
+	{
+		//_playerContainers.ForEach(this.Visible = false);
+		for (int i = 0; i < _engine.Players.Count; i++)
+		{
+			_playerContainers[i].Visible = true;
+		}
+	}
+
 	
 	private void _onMusicToggleButtonToggled(bool button_pressed)
 	{		

@@ -320,12 +320,12 @@ custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/font_color_shadow = Color( 0.360784, 0.360784, 0.360784, 1 )
 text = "."
 
-[node name="Player4Container4" type="HBoxContainer" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer"]
+[node name="Player4Container" type="HBoxContainer" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer"]
 margin_top = 261.0
 margin_right = 121.0
 margin_bottom = 344.0
 
-[node name="ShieldPlayer4" type="TextureRect" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player4Container4"]
+[node name="ShieldPlayer4" type="TextureRect" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player4Container"]
 margin_right = 39.0
 margin_bottom = 83.0
 size_flags_horizontal = 3
@@ -334,7 +334,7 @@ texture = ExtResource( 15 )
 expand = true
 stretch_mode = 6
 
-[node name="Player4StatusContainer" type="VBoxContainer" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player4Container4"]
+[node name="Player4StatusContainer" type="VBoxContainer" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player4Container"]
 margin_left = 43.0
 margin_right = 121.0
 margin_bottom = 83.0
@@ -342,13 +342,13 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 1.95
 
-[node name="MeepleContainer" type="HBoxContainer" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player4Container4/Player4StatusContainer"]
+[node name="MeepleContainer" type="HBoxContainer" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player4Container/Player4StatusContainer"]
 margin_right = 78.0
 margin_bottom = 25.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="MeepleBlackImg" type="TextureRect" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player4Container4/Player4StatusContainer/MeepleContainer"]
+[node name="MeepleBlackImg" type="TextureRect" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player4Container/Player4StatusContainer/MeepleContainer"]
 margin_right = 24.0
 margin_bottom = 25.0
 size_flags_horizontal = 3
@@ -357,7 +357,7 @@ texture = ExtResource( 18 )
 expand = true
 stretch_mode = 6
 
-[node name="MeeplesPlayer4" type="Label" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player4Container4/Player4StatusContainer/MeepleContainer"]
+[node name="MeeplesPlayer4" type="Label" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player4Container/Player4StatusContainer/MeepleContainer"]
 margin_left = 28.0
 margin_right = 78.0
 margin_bottom = 25.0
@@ -369,12 +369,12 @@ custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/font_color_shadow = Color( 0.360784, 0.360784, 0.360784, 1 )
 text = "4"
 
-[node name="PointsContainer" type="HBoxContainer" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player4Container4/Player4StatusContainer"]
+[node name="PointsContainer" type="HBoxContainer" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player4Container/Player4StatusContainer"]
 margin_top = 29.0
 margin_right = 78.0
 margin_bottom = 54.0
 
-[node name="PointsImg" type="TextureRect" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player4Container4/Player4StatusContainer/PointsContainer"]
+[node name="PointsImg" type="TextureRect" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player4Container/Player4StatusContainer/PointsContainer"]
 margin_right = 24.0
 margin_bottom = 25.0
 size_flags_horizontal = 3
@@ -383,7 +383,7 @@ texture = ExtResource( 13 )
 expand = true
 stretch_mode = 6
 
-[node name="PointsPlayer4" type="Label" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player4Container4/Player4StatusContainer/PointsContainer"]
+[node name="PointsPlayer4" type="Label" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player4Container/Player4StatusContainer/PointsContainer"]
 margin_left = 28.0
 margin_right = 78.0
 margin_bottom = 25.0
@@ -395,7 +395,7 @@ custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/font_color_shadow = Color( 0.360784, 0.360784, 0.360784, 1 )
 text = "6(+3)"
 
-[node name="StatusPlayer4" type="Label" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player4Container4/Player4StatusContainer"]
+[node name="StatusPlayer4" type="Label" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player4Container/Player4StatusContainer"]
 margin_top = 58.0
 margin_right = 78.0
 margin_bottom = 83.0
