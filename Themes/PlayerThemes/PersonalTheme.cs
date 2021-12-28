@@ -16,7 +16,7 @@ using static Utils;
 using Expression = System.Linq.Expressions.Expression;
 
 [Serializable]
-public class PlayerTheme
+public class PersonalTheme
 {
     public Color PrimaryColor;
     public Color SecondaryColor;

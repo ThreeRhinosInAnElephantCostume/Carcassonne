@@ -32,6 +32,31 @@ public class ThemeableIconPreview : Control
     Texture _currentTexture;
     FileDialog _dialog;
     PackedScene _packedFileDialog = ResourceLoader.Load<PackedScene>("res://UI/FileDialog.tscn");
+    System.Threading.Thread _transformThread;
+    AutoResetEvent _ev = new AutoResetEvent(false);
+    PersonalTheme _lastTheme;
+    Texture _lastTexture;
+    // While I am fairly certain  that this is thread-safe due to handles being atomic, I am not 100% on this.
+    void TransformTextureThread()
+    {
+        while (true)
+        {
+            _ev.WaitOne();
+            Texture tex = _lastTheme.TransformTexture(_lastTexture);
+            Defer(() => _effectSprite.Texture = tex);
+        }
+    }
+    void TransformTexutre(Texture tex, PersonalTheme theme)
+    {
+        if (_transformThread == null)
+        {
+            _transformThread = new System.Threading.Thread(TransformTextureThread);
+            _transformThread.Start();
+        }
+        _lastTheme = theme;
+        _lastTexture = tex;
+        _ev.Set();
+    }
     void SetInput(bool enabled)
     {
         GetChildrenRecrusively<Button>(_mainControlContainer).ForEach(it => it.Disabled = !enabled);
@@ -105,7 +130,7 @@ public class ThemeableIconPreview : Control
     {
         OnPopupClose();
 
-        PlayerTheme theme;
+        PersonalTheme theme;
 
         if (!FileExists(path))
         {
@@ -114,7 +139,7 @@ public class ThemeableIconPreview : Control
         }
         try
         {
-            theme = DeserializeFromFile<PlayerTheme>(path);
+            theme = DeserializeFromFile<PersonalTheme>(path);
         }
         catch (Exception ex)
         {
@@ -177,11 +202,11 @@ public class ThemeableIconPreview : Control
     {
         if (_currentTexture == null)
             return;
-        var theme = new PlayerTheme();
+        var theme = new PersonalTheme();
         theme.PrimaryColor = _primaryColorPicker.PickedColor;
         theme.SecondaryColor = _secondaryColorPicker.PickedColor;
         theme.TertiaryColor = _tertiaryColorPicker.PickedColor;
-        _effectSprite.Texture = theme.TransformTexture(_currentTexture);
+        TransformTexutre(_currentTexture, theme);
     }
     public override void _Ready()
     {
@@ -201,18 +226,18 @@ public class ThemeableIconPreview : Control
         _loadThemeButton.Connect("pressed", this, nameof(OnLoadThemePressed));
 
         _primaryColorPicker = GetNode<ThemeSingleColorPicker>("HBoxContainer/HSplitContainer/MainControlContainer/PrimaryContainer");
-        _primaryColorPicker.Name = "Primary";
+        _primaryColorPicker.DisplayedName = "Primary";
         _primaryColorPicker.OnColorChangedHandle = c => UpdateColors();
 
         _secondaryColorPicker = GetNode<ThemeSingleColorPicker>("HBoxContainer/HSplitContainer/MainControlContainer/SecondaryContainer");
-        _secondaryColorPicker.Name = "Secondary";
+        _secondaryColorPicker.DisplayedName = "Secondary";
         _secondaryColorPicker.OnColorChangedHandle = c => UpdateColors();
 
         _tertiaryColorPicker = GetNode<ThemeSingleColorPicker>("HBoxContainer/HSplitContainer/MainControlContainer/TertiaryContainer");
-        _tertiaryColorPicker.Name = "Tertiary";
+        _tertiaryColorPicker.DisplayedName = "Tertiary";
         _tertiaryColorPicker.OnColorChangedHandle = c => UpdateColors();
 
-        LoadIcon(ConcatPaths(Constants.THEMEABLE_ICONS_DIRECTORY, "ThemableMeeple.png"));
+        LoadIcon(ConcatPaths(Constants.THEMEABLE_ICONS_DIRECTORY, "ThemableTest.png"));
     }
 
 }

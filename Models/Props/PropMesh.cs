@@ -24,7 +24,7 @@ public class PropMesh : MeshInstance, IPropElement
     public int[] SecondarySurfaces = new int[0];
     [Export]
     public int[] TertiarySurfaces = new int[0];
-    List<Action<PlayerTheme>> IPropElement.GetThemeSetters()
+    List<Action<PersonalTheme>> IPropElement.GetThemeSetters()
     {
         void SetMat(MeshInstance mesh, int indx, Color col)
         {
@@ -32,7 +32,7 @@ public class PropMesh : MeshInstance, IPropElement
             mat.AlbedoColor = col;
             mesh.Mesh.SurfaceSetMaterial(indx, mat);
         }
-        var ret = new List<Action<PlayerTheme>>();
+        var ret = new List<Action<PersonalTheme>>();
         RepeatN(this.GetSurfaceMaterialCount(), i =>
         {
             var mat = this.Mesh.SurfaceGetMaterial(i);

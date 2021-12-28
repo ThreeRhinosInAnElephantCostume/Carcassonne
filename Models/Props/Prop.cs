@@ -32,10 +32,10 @@ public class Prop : Spatial
                 GD.Print("File not found: " + ExamplePlayerTheme);
                 return;
             }
-            PlayerTheme ntheme = null;
+            PersonalTheme ntheme = null;
             try
             {
-                ntheme = DeserializeFromFile<PlayerTheme>(ExamplePlayerTheme);
+                ntheme = DeserializeFromFile<PersonalTheme>(ExamplePlayerTheme);
             }
             catch (Exception)
             {
@@ -45,9 +45,9 @@ public class Prop : Spatial
             this.CurrentTheme = ntheme;
         }
     }
-    List<Action<PlayerTheme>> _themeSetters = new List<Action<PlayerTheme>>();
-    PlayerTheme _theme = null;
-    PlayerTheme CurrentTheme { get => _theme; set { _theme = value; UpdateTheme(); } }
+    List<Action<PersonalTheme>> _themeSetters = new List<Action<PersonalTheme>>();
+    PersonalTheme _theme = null;
+    PersonalTheme CurrentTheme { get => _theme; set { _theme = value; UpdateTheme(); } }
     void UpdateTheme()
     {
         if (CurrentTheme == null)
@@ -56,7 +56,7 @@ public class Prop : Spatial
     }
     void LoadThemeSetters()
     {
-        _themeSetters = new List<Action<PlayerTheme>>();
+        _themeSetters = new List<Action<PersonalTheme>>();
         Utils.GetChildrenRecrusively<Spatial>(this).FindAll(it => it is IPropElement)
             .ForEach(it =>
             {

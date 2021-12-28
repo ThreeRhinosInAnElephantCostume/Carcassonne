@@ -17,6 +17,6 @@ using Expression = System.Linq.Expressions.Expression;
 
 public interface IPropElement
 {
-    List<Action<PlayerTheme>> GetThemeSetters();
+    List<Action<PersonalTheme>> GetThemeSetters();
     System.Action OnChangeHandle { get; set; }
 }

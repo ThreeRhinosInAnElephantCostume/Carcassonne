@@ -46,7 +46,7 @@ public class GlobalScript : Node
         }
         if (!FileExists(Constants.DEFAULT_PLAYER_THEME_PATH))
         {
-            var theme = new PlayerTheme();
+            var theme = new PersonalTheme();
             theme.PrimaryColor = new Color(0.2f, 0.5f, 1f);
             theme.SecondaryColor = new Color(0.05f, 0.1f, 1f);
             theme.TertiaryColor = new Color(0f, 0f, 0.5f);
@@ -63,8 +63,10 @@ public class GlobalScript : Node
         // Settings.FullScreen.Value = true;
         // Settings.Resolution.Value = new Vector2I(100, 100);
 
-        OS.WindowFullscreen = Settings.FullScreen;
-        OS.WindowSize = (Vector2)Settings.Resolution.Value;
+        Settings.FullScreen.OnModification += v => OS.WindowFullscreen = v;
+        Settings.Resolution.OnModification += v => OS.WindowSize = (Vector2)v;
+        Settings.NotifyChangeOnAll();
+        Settings.ClearModified();
     }
     public GlobalScript()
     {
