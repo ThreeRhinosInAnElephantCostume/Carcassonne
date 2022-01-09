@@ -164,45 +164,49 @@ public class InGameUI : Control, Game.IGameHandles
 	}
 
 	
-	private void _onMusicToggleButtonToggled(bool button_pressed)
+	void OnMusicToggleButtonToggled(bool button_pressed)
 	{		
 		_gameAudio.ToggleAudioBusVolume("Music");
 	}
 	
-	private void _onPlayNextSongButtonPressed()
+	void OnPlayNextSongButtonPressed()
 	{
 		_gameAudio.StopIntroMusic();
 		
 		_gameAudio.PlayNextSong();
 	}
 	
-	private void _onSoundToggleButtonToggled(bool button_pressed)
+	void OnSoundToggleButtonToggled(bool button_pressed)
 	{	
 		_gameAudio.ToggleAudioBusVolume("Sounds");	
 	}
 	
-	private void _onSoundVolumeSliderValueChanged(float value)
+	void OnSoundVolumeSliderValueChanged(float value)
 	{
 		_gameAudio.SetAudioBusVolume("Sounds", value);
 		
 	}
 	
-	private void _onMusicVolumeSliderValueChanged(float value)
+	void OnMusicVolumeSliderValueChanged(float value)
 	{
 		_gameAudio.SetAudioBusVolume("Music", value);
 	}
 	
 	public bool AudioMenuToggle()
-  {
-	  Control audioMenu = GetNode<Control>("CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/HBoxContainer/AudioMenu");
+  	{
+	  	Control audioMenu = GetNode<Control>("CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/HBoxContainer/AudioMenu");
 		return (audioMenu.Visible = !audioMenu.Visible);
 	}
 	
-	private void _onAudioMenuButtonPressed()
+	void OnAudioMenuButtonPressed()
 	{
 		AudioMenuToggle();
 	}
 
+	void OnQuitButtonPressed()
+	{
+		GetTree().Quit();
+	}
 }
 
 
