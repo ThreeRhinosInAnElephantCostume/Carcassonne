@@ -1,0 +1,104 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://GUI/fonts/Frederic.tres" type="DynamicFont" id=1]
+[ext_resource path="res://GUI/img/meeple_green.png" type="Texture" id=2]
+[ext_resource path="res://GUI/img/BlasonCarcassonne-player.png" type="Texture" id=3]
+[ext_resource path="res://GUI/img/money-bag.png" type="Texture" id=4]
+
+[node name="Player1Container" type="HBoxContainer"]
+margin_right = 121.0
+margin_bottom = 83.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ShieldPlayer1" type="TextureRect" parent="."]
+margin_right = 38.0
+margin_bottom = 83.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 3 )
+expand = true
+stretch_mode = 6
+
+[node name="Player1StatusContainer" type="VBoxContainer" parent="."]
+margin_left = 42.0
+margin_right = 117.0
+margin_bottom = 83.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 1.95
+
+[node name="MeepleContainer" type="HBoxContainer" parent="Player1StatusContainer"]
+margin_right = 75.0
+margin_bottom = 25.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="MeepleGreenImg" type="TextureRect" parent="Player1StatusContainer/MeepleContainer"]
+margin_right = 23.0
+margin_bottom = 25.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 2 )
+expand = true
+stretch_mode = 6
+
+[node name="MeeplesPlayer1" type="Label" parent="Player1StatusContainer/MeepleContainer"]
+margin_left = 27.0
+margin_right = 75.0
+margin_bottom = 25.0
+size_flags_horizontal = 3
+size_flags_vertical = 6
+size_flags_stretch_ratio = 2.0
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_shadow = Color( 0.360784, 0.360784, 0.360784, 1 )
+text = "4"
+
+[node name="PointsContainer" type="HBoxContainer" parent="Player1StatusContainer"]
+margin_top = 29.0
+margin_right = 75.0
+margin_bottom = 54.0
+
+[node name="PointsImg" type="TextureRect" parent="Player1StatusContainer/PointsContainer"]
+margin_right = 23.0
+margin_bottom = 25.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 4 )
+expand = true
+stretch_mode = 6
+
+[node name="PointsPlayer1" type="Label" parent="Player1StatusContainer/PointsContainer"]
+margin_left = 27.0
+margin_right = 75.0
+margin_bottom = 25.0
+size_flags_horizontal = 3
+size_flags_vertical = 6
+size_flags_stretch_ratio = 2.0
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_shadow = Color( 0.360784, 0.360784, 0.360784, 1 )
+text = "6(+3)"
+
+[node name="StatusPlayer1" type="Label" parent="Player1StatusContainer"]
+margin_top = 58.0
+margin_right = 75.0
+margin_bottom = 83.0
+size_flags_horizontal = 3
+size_flags_vertical = 6
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_shadow = Color( 0.360784, 0.360784, 0.360784, 1 )
+text = "active"
+
+[node name="ViewportContainer" type="ViewportContainer" parent="."]
+margin_left = 121.0
+margin_right = 121.0
+margin_bottom = 83.0
+
+[node name="Viewport" type="Viewport" parent="ViewportContainer"]
+
+[node name="Spatial" type="Spatial" parent="ViewportContainer/Viewport"]
+transform = Transform( 0.988918, 0, 0.148465, 0, 1, 0, -0.148465, 0, 0.988918, 0, 0, 0 )

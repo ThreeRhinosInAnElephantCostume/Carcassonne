@@ -1,0 +1,50 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://GUI/DarkTheme/Fonts/Frederic.tres" type="DynamicFont" id=1]
+[ext_resource path="res://GUI/DarkTheme/Dark.theme" type="Theme" id=2]
+[ext_resource path="res://Game/InGame/InGame3D.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Game/MainMenu/MainMenu.cs" type="Script" id=4]
+[ext_resource path="res://GUI/img/a-team_1.png" type="Texture" id=5]
+
+[node name="MainMenu" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 2 )
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Play" type="Button" parent="."]
+margin_left = 772.464
+margin_top = 165.125
+margin_right = 1072.46
+margin_bottom = 255.125
+custom_fonts/font = ExtResource( 1 )
+toggle_mode = true
+text = "PLAY"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Quit" type="Button" parent="."]
+margin_left = 772.464
+margin_top = 281.817
+margin_right = 1072.46
+margin_bottom = 371.817
+custom_fonts/font = ExtResource( 1 )
+toggle_mode = true
+text = "QUIT"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="InGame3D" parent="." instance=ExtResource( 3 )]
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 327.105, 492.332 )
+scale = Vector2( 0.202331, 0.215464 )
+texture = ExtResource( 5 )
+
+[connection signal="pressed" from="Play" to="." method="_onPlayPressed"]
+[connection signal="pressed" from="Quit" to="." method="_onQuitPressed"]
