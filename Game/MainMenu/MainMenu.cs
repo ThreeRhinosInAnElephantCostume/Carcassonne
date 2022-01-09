@@ -11,10 +11,10 @@ public class MainMenu : Control
     public override void _Ready()
     {
         _play = GetNode<Button>("Play");
-        _play.Connect("pressed",_play, nameof(OnPlayPressed));
+        _play.Connect("pressed", this, nameof(OnPlayPressed));
 
         _quit = GetNode<Button>("Quit");
-        _quit.Connect("pressed", _quit, nameof(OnQuitPressed));
+        _quit.Connect("pressed", this, nameof(OnQuitPressed));
     }
 
     void OnPlayPressed()
