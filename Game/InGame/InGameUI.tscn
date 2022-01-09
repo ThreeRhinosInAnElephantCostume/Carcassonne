@@ -713,6 +713,7 @@ __meta__ = {
 margin_top = 44.0
 margin_right = 347.0
 margin_bottom = 720.0
+mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
@@ -720,6 +721,7 @@ size_flags_vertical = 3
 margin_top = 164.5
 margin_right = 347.0
 margin_bottom = 511.5
+mouse_filter = 2
 stretch = true
 
 [node name="Viewport" type="Viewport" parent="CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/AspectRatioContainer/ViewportContainer"]

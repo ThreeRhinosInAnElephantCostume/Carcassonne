@@ -51,6 +51,7 @@ public class Tile3D : Spatial
         pot.Index = indx;
         pot.IsAttribute = true;
         pot.Translation = CalculateAttributePlacementPosition(indx);
+        pot.AssociatedTile = AssociatedTile;
         AddChild(pot);
         _potentialPlacements.Add(pot);
     }
@@ -61,6 +62,7 @@ public class Tile3D : Spatial
         pot.Index = indx;
         pot.IsAttribute = false;
         pot.Translation = CalculateNodePlacementPosition(indx);
+        pot.AssociatedTile = AssociatedTile;
         AddChild(pot);
         _potentialPlacements.Add(pot);
     }
