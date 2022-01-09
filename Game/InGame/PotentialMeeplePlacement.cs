@@ -22,6 +22,7 @@ public class PotentialMeeplePlacement : Spatial
 	public Game.GameLocalAgent Agent { get; set; }
 	public int Index { get; set; }
 	public bool IsAttribute { get; set; }
+	public Tile AssociatedTile { get; set; }
 	static bool _sharedInputLockout = false;
 	void MouseEntered()
 	{
@@ -37,8 +38,10 @@ public class PotentialMeeplePlacement : Spatial
 			return;
 		if (InputMap.EventIsAction(@event, PLACE_ACTION) && Input.IsActionJustPressed(PLACE_ACTION))
 		{
-			
-			System.Diagnostics.Debug.WriteLine("Trying to place meeple! Type: ");
+			Assert(AssociatedTile != null);
+			Meeple.Role role = (IsAttribute) ? Meeple.MatchRole(AssociatedTile.AttributeTypes[Index]) : 
+				Meeple.MatchRole(AssociatedTile.Nodes[Index].Type);  
+			// !!!
 			_sharedInputLockout = true;			
 			if (IsAttribute)
 				Agent.PlaceMeepleOnAttribute(Index);
