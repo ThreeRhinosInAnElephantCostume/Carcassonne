@@ -134,7 +134,7 @@ public class Camera : Godot.Camera
 		dir = dir.Rotated(-Rotation.y);
 		return dir;
 	}
-	public override void _Input(InputEvent @event)
+	public override void _UnhandledInput(InputEvent @event)
 	{
 
 		lock (_physMX)
@@ -185,10 +185,6 @@ public class Camera : Godot.Camera
 		}
 
 	}
-	// public override void _UnhandledInput(InputEvent @event)
-	// {
-	//     this._Input(@event);
-	// }
 	public override void _PhysicsProcess(float delta)
 	{
 		lock (_physMX)
