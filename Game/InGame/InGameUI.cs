@@ -172,7 +172,7 @@ public class InGameUI : Control, Game.IGameHandles
 	private void _onPlayNextSongButtonPressed()
 	{
 		_gameAudio.StopIntroMusic();
-
+		
 		_gameAudio.PlayNextSong();
 	}
 	

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -147,7 +147,7 @@ public class MainMenuLoad : Control
 					return;
 				}
 		}
-		_gameAudio.PlayIntroMusic(7);
+		_gameAudio.PlayIntroMusic(0);
 		_progressBar.Value = (_progressBar.MaxValue * progress);
 		Progress = progress;
 	}
