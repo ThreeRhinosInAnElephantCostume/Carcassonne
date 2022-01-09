@@ -192,8 +192,9 @@ public class InGameUI : Control, Game.IGameHandles
 		_gameAudio.SetAudioBusVolume("Music", value);
 	}
 	
-	public bool AudioMenuToggle(){
-		Control audioMenu = GetNode<Control>("CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/HBoxContainer/AudioMenu");
+	public bool AudioMenuToggle()
+  {
+	  Control audioMenu = GetNode<Control>("CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/HBoxContainer/AudioMenu");
 		return (audioMenu.Visible = !audioMenu.Visible);
 	}
 	
