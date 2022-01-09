@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/locked_tile.wav-c0a0b69aa93926bc2d96f48a1bdd7cce.sample"
+
+[deps]
+
+source_file="res://Audio/Sounds/locked_tile.wav"
+dest_files=[ "res://.import/locked_tile.wav-c0a0b69aa93926bc2d96f48a1bdd7cce.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

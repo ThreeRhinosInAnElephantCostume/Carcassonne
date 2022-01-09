@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/meepleplaced1.wav-cea01f1d63498804fe135ef4aa9698ca.sample"
+
+[deps]
+
+source_file="res://Audio/Sounds/meepleplaced1.wav"
+dest_files=[ "res://.import/meepleplaced1.wav-cea01f1d63498804fe135ef4aa9698ca.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

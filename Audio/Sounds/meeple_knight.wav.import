@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/meeple_knight.wav-21aaf9f20580a98a5cb37d1c5f3f3b99.sample"
+
+[deps]
+
+source_file="res://Audio/Sounds/meeple_knight.wav"
+dest_files=[ "res://.import/meeple_knight.wav-21aaf9f20580a98a5cb37d1c5f3f3b99.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0
