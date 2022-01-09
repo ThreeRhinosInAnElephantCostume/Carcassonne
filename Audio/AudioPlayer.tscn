@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Audio/Sounds/tilerotation.wav" type="AudioStream" id=1]
 [ext_resource path="res://Audio/Music/bensound-epic.mp3" type="AudioStream" id=2]
@@ -8,6 +8,10 @@
 [ext_resource path="res://Audio/Sounds/tileoverspot.wav" type="AudioStream" id=6]
 [ext_resource path="res://Audio/Sounds/meepleplaced1.wav" type="AudioStream" id=7]
 [ext_resource path="res://Audio/Sounds/click1.wav" type="AudioStream" id=8]
+[ext_resource path="res://Audio/Sounds/meeple_knight.wav" type="AudioStream" id=9]
+[ext_resource path="res://Audio/Sounds/meeple_highwayman.wav" type="AudioStream" id=10]
+[ext_resource path="res://Audio/Sounds/meeple_monk.wav" type="AudioStream" id=11]
+[ext_resource path="res://Audio/Sounds/meeple_farmer.wav" type="AudioStream" id=12]
 
 [node name="AudioPlayer" type="Node"]
 script = ExtResource( 5 )
@@ -43,6 +47,22 @@ bus = "Sounds"
 
 [node name="MeeplePlacedSound" type="AudioStreamPlayer" parent="SoundsPlayer"]
 stream = ExtResource( 7 )
+bus = "Sounds"
+
+[node name="MeepleKnightSound" type="AudioStreamPlayer" parent="SoundsPlayer"]
+stream = ExtResource( 9 )
+bus = "Sounds"
+
+[node name="MeepleFarmerSound" type="AudioStreamPlayer" parent="SoundsPlayer"]
+stream = ExtResource( 12 )
+bus = "Sounds"
+
+[node name="MeepleMonkSound" type="AudioStreamPlayer" parent="SoundsPlayer"]
+stream = ExtResource( 11 )
+bus = "Sounds"
+
+[node name="MeepleHighwaymanSound" type="AudioStreamPlayer" parent="SoundsPlayer"]
+stream = ExtResource( 10 )
 bus = "Sounds"
 
 [node name="PlaySound" type="AudioStreamPlayer" parent="."]

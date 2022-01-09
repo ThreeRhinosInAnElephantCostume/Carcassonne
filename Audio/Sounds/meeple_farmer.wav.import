@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/meeple_farmer.wav-0e9bce15d62d04a5bc42218089ef3148.sample"
+
+[deps]
+
+source_file="res://Audio/Sounds/meeple_farmer.wav"
+dest_files=[ "res://.import/meeple_farmer.wav-0e9bce15d62d04a5bc42218089ef3148.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0
