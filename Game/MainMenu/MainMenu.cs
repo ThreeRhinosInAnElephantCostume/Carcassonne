@@ -11,19 +11,19 @@ public class MainMenu : Control
     public override void _Ready()
     {
         _play = GetNode<Button>("Play");
-        _play.Connect("pressed",_play,"_onPlayPressed");
+        _play.Connect("pressed",_play, nameof(OnPlayPressed));
 
         _quit = GetNode<Button>("Quit");
-        _quit.Connect("pressed", _quit, "_onQuitPressed");
+        _quit.Connect("pressed", _quit, nameof(OnQuitPressed));
     }
 
-    void _onPlayPressed()
+    void OnPlayPressed()
     {
         GD.Print("Play pressed!");
         GetTree().ChangeScene("res://Game/Loading/MainMenuLoad.tscn");
     }
 
-        void _onQuitPressed()
+    void OnQuitPressed()
     {
         GD.Print("Quit pressed!");
         GetTree().Quit();
