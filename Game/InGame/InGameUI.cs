@@ -193,7 +193,7 @@ public class InGameUI : Control, Game.IGameHandles
 	}
 	
 	public bool AudioMenuToggle(){
-		Control audioMenu = GetNode<Control>("AudioMenu");
+		Control audioMenu = GetNode<Control>("CanvasLayer/GameUIRoot/AudioMenu");
 		return (audioMenu.Visible = !audioMenu.Visible);
 	}
 	
