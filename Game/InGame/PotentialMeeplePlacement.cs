@@ -42,6 +42,11 @@ public class PotentialMeeplePlacement : Spatial
 			Meeple.Role role = (IsAttribute) ? Meeple.MatchRole(AssociatedTile.AttributeTypes[Index]) : 
 				Meeple.MatchRole(AssociatedTile.Nodes[Index].Type);  
 			// !!!
+			GD.Print("Meeple placed: " +  UppercaseFirst(role.ToString()));
+			AudioPlayer _gameAudio =  GetNode<AudioPlayer>("/root/AudioPlayer");
+			string soundNodeName = "Meeple"+UppercaseFirst(role.ToString())+"Sound";
+			_gameAudio.PlaySound(soundNodeName);
+
 			_sharedInputLockout = true;			
 			if (IsAttribute)
 				Agent.PlaceMeepleOnAttribute(Index);

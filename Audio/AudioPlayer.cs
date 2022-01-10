@@ -7,6 +7,7 @@ using System.Collections.Generic;
 public class AudioPlayer : Node
 {
 	AudioStreamPlayer _introMusic;
+	AudioStreamPlayer _mainMenuMusic;
 	AudioStreamPlayer _tileRotationSound;
 	AudioStreamPlayer _tileRotationDisabledSound;
 	AudioStreamPlayer _tilePlacedSound;
@@ -37,6 +38,7 @@ public class AudioPlayer : Node
 		USER_PREFERENCES_SOUNDS_VOLUME = 0.0f;		
 		
 		_introMusic = GetNode<AudioStreamPlayer>("MusicPlayer/IntroMusic");
+		_mainMenuMusic = GetNode<AudioStreamPlayer>("MusicPlayer/MainMenuMusic");
 		
 		_tileRotationSound = GetNode<AudioStreamPlayer>("SoundsPlayer/TileRotationAvailableSound");
 		_tileRotationDisabledSound = GetNode<AudioStreamPlayer>("SoundsPlayer/TileRotationDisabledSound");
@@ -86,10 +88,22 @@ public class AudioPlayer : Node
 		if(_introMusic.Playing == false)
 			_introMusic.Play(startFrom);		
 	}
-
+	
 	public void StopIntroMusic()
 	{
 		_introMusic.Stop();
+	}
+	
+	public void PlayMainMenuMusic(float startFrom = 0)
+	{
+		_lastMusicVolume = _mainMenuMusic.VolumeDb;
+		if(_mainMenuMusic.Playing == false)
+			_mainMenuMusic.Play(startFrom);		
+	}
+	
+	public void StopMainMenuMusic()
+	{
+		_mainMenuMusic.Stop();
 	}
 	
 	public void PlaySound(string namedStreamPlayer)

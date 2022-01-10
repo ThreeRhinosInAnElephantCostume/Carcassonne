@@ -99,6 +99,7 @@ public class MainMenuLoad : Control
 	public override void _Ready()
 	{
 		_gameAudio = GetNode<AudioPlayer>("/root/AudioPlayer");
+		
 		_loadingLabel = GetNode<Label>("VBoxContainer/VBoxContainer/LoadingLabel");
 		_progressBar = GetNode<ProgressBar>("VBoxContainer/VBoxContainer/HBoxContainer/LoadingProgressBar");
 		ThreadPool.QueueUserWorkItem(LoadControlThread);
@@ -147,7 +148,10 @@ public class MainMenuLoad : Control
 					return;
 				}
 		}
+				
+		_gameAudio.StopMainMenuMusic();
 		_gameAudio.PlayIntroMusic(0);
+		
 		_progressBar.Value = (_progressBar.MaxValue * progress);
 		Progress = progress;
 	}
