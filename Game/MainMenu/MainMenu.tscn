@@ -46,5 +46,7 @@ position = Vector2( 327.105, 492.332 )
 scale = Vector2( 0.202331, 0.215464 )
 texture = ExtResource( 5 )
 
+[connection signal="mouse_entered" from="Play" to="." method="_onPlayMouseEntered"]
 [connection signal="pressed" from="Play" to="." method="_onPlayPressed"]
+[connection signal="mouse_entered" from="Quit" to="." method="_onQuitMouseEntered"]
 [connection signal="pressed" from="Quit" to="." method="_onQuitPressed"]

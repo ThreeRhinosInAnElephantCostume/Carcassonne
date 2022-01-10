@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Audio/Sounds/tilerotation.wav" type="AudioStream" id=1]
 [ext_resource path="res://Audio/Music/bensound-epic.mp3" type="AudioStream" id=2]
@@ -12,6 +12,7 @@
 [ext_resource path="res://Audio/Sounds/meeple_highwayman.wav" type="AudioStream" id=10]
 [ext_resource path="res://Audio/Sounds/meeple_monk.wav" type="AudioStream" id=11]
 [ext_resource path="res://Audio/Sounds/meeple_farmer.wav" type="AudioStream" id=12]
+[ext_resource path="res://Audio/Music/2019-07-26_-_Healing_Water_FesliyanStudios.com_-_David_Renda.mp3" type="AudioStream" id=13]
 
 [node name="AudioPlayer" type="Node"]
 script = ExtResource( 5 )
@@ -20,6 +21,10 @@ script = ExtResource( 5 )
 
 [node name="IntroMusic" type="AudioStreamPlayer" parent="MusicPlayer"]
 stream = ExtResource( 2 )
+bus = "Music"
+
+[node name="MainMenuMusic" type="AudioStreamPlayer" parent="MusicPlayer"]
+stream = ExtResource( 13 )
 bus = "Music"
 
 [node name="CurrentSong" type="AudioStreamPlayer" parent="MusicPlayer"]
