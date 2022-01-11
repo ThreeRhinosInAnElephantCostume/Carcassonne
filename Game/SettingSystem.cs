@@ -8,6 +8,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime;
 using System.Runtime.CompilerServices;
+using System.Runtime.Serialization.Json;
 using System.Threading;
 using ExtraMath;
 using Godot;
@@ -16,30 +17,37 @@ using static System.Math;
 using static Utils;
 using Expression = System.Linq.Expressions.Expression;
 
-public static partial class Globals
+namespace SettingsSystem
 {
     [Serializable]
     public class NotifyValue
     {
+        [JsonRequired]
+        protected object _value;
+        [JsonIgnore]
+        protected object _mx = new object();
         [JsonIgnore]
         public string Name;
         [JsonIgnore]
         public NotifyLink Parent;
         [JsonIgnore]
         public bool Modified { get; protected set; } = false;
-        object _value;
         [JsonIgnore]
         public Action<object> OnModification = o => { };
         [JsonIgnore]
         public object Value
         {
-            get => _value; set
+            get => _value;
+            set
             {
-                _value = value;
-                if (Parent != null)
+                lock (_mx)
                 {
-                    Modified = true;
-                    Parent.NotifyChange(Name, _value);
+                    _value = value;
+                    if (Parent != null)
+                    {
+                        Modified = true;
+                        Parent.NotifyChange(Name, _value);
+                    }
                 }
                 OnModification(_value);
             }
@@ -51,7 +59,10 @@ public static partial class Globals
     }
     public class NotifyLink
     {
+        [JsonRequired]
         protected string Name;
+        [JsonIgnore]
+        protected object _mx = new object();
         [JsonIgnore]
         public bool Modified { get; protected set; } = false;
         [JsonIgnore]
@@ -64,16 +75,22 @@ public static partial class Globals
         public Action<string, object> OnChangeHandle = (s, o) => { };
         public void NotifyChange(string name, object val)
         {
-            Modified = true;
+            lock (_mx)
+            {
+                Modified = true;
+            }
             OnChangeHandle(name, val);
             if (_domLink != null)
                 _domLink.NotifyChange(ConcatPaths(Name, name), val);
         }
         public void ClearModified()
         {
-            Modified = false;
-            _subLinks.ForEach(it => it.ClearModified());
-            _subProperties.ForEach(it => it.ClearModified());
+            lock (_mx)
+            {
+                Modified = false;
+                _subLinks.ForEach(it => it.ClearModified());
+                _subProperties.ForEach(it => it.ClearModified());
+            }
         }
         protected void init()
         {
@@ -131,6 +148,10 @@ public static partial class Globals
         }
         public static implicit operator T(SettingsProperty<T> prop) => prop.Value;
         public static implicit operator SettingsProperty<T>(T val) => new SettingsProperty<T>(val);
+        public void TriggerModified()
+        {
+            OnModification(Value);
+        }
         public SettingsProperty()
         {
             base.OnModification = o => OnModification((T)o);
