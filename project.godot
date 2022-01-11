@@ -16,6 +16,7 @@ config/icon="res://icon.png"
 
 [autoload]
 
+GlobalUtilsScript="*res://Utils/GlobalUtilsScript.cs"
 GlobalScript="*res://Game/GlobalScript.cs"
 AudioPlayer="*res://Audio/AudioPlayer.tscn"
 

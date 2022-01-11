@@ -12,6 +12,8 @@ using real_t = System.Double;
 using real_t = System.Single;
 #endif
 
+using Newtonsoft.Json;
+
 namespace ExtraMath
 {
     /// <summary>
@@ -44,6 +46,7 @@ namespace ExtraMath
         /// Access vector components using their index.
         /// </summary>
         /// <value>`[0]` is equivalent to `.x`, `[1]` is equivalent to `.y`.</value>
+        [JsonIgnore]
         public int this[int index]
         {
             get
@@ -314,6 +317,7 @@ namespace ExtraMath
         {
             return new Vector2I[] { pos + Down, pos + Right, pos + Up, pos + Left };
         }
+        [JsonIgnore]
         public Vector2I[] Neighbours
         {
             get => GetNeighbouringPositions(this);

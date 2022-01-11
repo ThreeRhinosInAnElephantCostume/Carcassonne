@@ -1107,6 +1107,5 @@ material/1051 = null
 material/1052 = null
 
 [connection signal="mouse_entered" from="Play" to="." method="_onPlayMouseEntered"]
-[connection signal="pressed" from="Play" to="." method="_onPlayPressed"]
 [connection signal="mouse_entered" from="Quit" to="." method="_onQuitMouseEntered"]
 [connection signal="pressed" from="Quit" to="." method="_onQuitPressed"]
