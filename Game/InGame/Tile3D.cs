@@ -17,8 +17,6 @@ using static Utils;
 
 public class Tile3D : Spatial
 {
-    static PackedScene _meeplePlacementScene = ResourceLoader.Load<PackedScene>("res://Game/InGame/MeeplePlacement.tscn");
-    static PackedScene _potentialMeepleScene = ResourceLoader.Load<PackedScene>("res://Game/InGame/PotentialMeeplePlacement.tscn");
     public Tile AssociatedTile { get; protected set; }
     TileDataLoader.TileModel _model;
     Spatial _root;
@@ -46,7 +44,7 @@ public class Tile3D : Spatial
     }
     public void AddPotentialAttributePlacement(Game.GameLocalAgent agent, int indx)
     {
-        var pot = _potentialMeepleScene.Instance<PotentialMeeplePlacement>();
+        var pot = Globals.PotentialMeeplePlacementPacked.Instance<PotentialMeeplePlacement>();
         pot.Agent = agent;
         pot.Index = indx;
         pot.IsAttribute = true;
@@ -57,7 +55,7 @@ public class Tile3D : Spatial
     }
     public void AddPotentialNodePlacement(Game.GameLocalAgent agent, int indx)
     {
-        var pot = _potentialMeepleScene.Instance<PotentialMeeplePlacement>();
+        var pot = Globals.PotentialMeeplePlacementPacked.Instance<PotentialMeeplePlacement>();
         pot.Agent = agent;
         pot.Index = indx;
         pot.IsAttribute = false;
@@ -70,7 +68,7 @@ public class Tile3D : Spatial
     {
         if (_placements.Any(it => it.Agent == agent && it.Index == indx && it.IsAttribute))
             return;
-        var meep = _meeplePlacementScene.Instance<MeeplePlacement>();
+        var meep = Globals.MeeplePlacementPacked.Instance<MeeplePlacement>();
         meep.Agent = agent;
         meep.IsAttribute = false;
         meep.Index = indx;
@@ -82,7 +80,7 @@ public class Tile3D : Spatial
     {
         if (_placements.Any(it => it.Agent == agent && it.Index == indx && !it.IsAttribute))
             return;
-        var meep = _meeplePlacementScene.Instance<MeeplePlacement>();
+        var meep = Globals.MeeplePlacementPacked.Instance<MeeplePlacement>();
         meep.Agent = agent;
         meep.IsAttribute = false;
         meep.Index = indx;
