@@ -18,4 +18,9 @@ using Expression = System.Linq.Expressions.Expression;
 public static partial class Globals
 {
     public static MainSettings Settings { get; set; } = new MainSettings();
+    public static PackedScene InGameUIPacked { get; set; }
+    public static PackedScene MainMenuPacked { get; set; }
+    public static PackedScene PotentialTilePacked { get; set; }
+    public static PackedScene MeeplePlacementPacked { get; set; }
+    public static PackedScene PotentialMeeplePlacementPacked { get; set; }
 }

@@ -11,7 +11,7 @@ config_version=4
 [application]
 
 config/name="Carcassonne"
-run/main_scene="res://Game/MainMenu/MainMenu.tscn"
+run/main_scene="res://Game/Loading/MainMenuLoad.tscn"
 config/icon="res://icon.png"
 
 [autoload]
