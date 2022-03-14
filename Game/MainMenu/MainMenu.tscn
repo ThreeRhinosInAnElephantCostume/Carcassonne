@@ -17,25 +17,113 @@ __meta__ = {
 }
 
 [node name="Play" type="Button" parent="."]
-anchor_left = 0.603487
-anchor_top = 0.22934
-anchor_right = 0.837859
-anchor_bottom = 0.35434
+anchor_left = 0.664
+anchor_top = 0.069
+anchor_right = 0.937
+anchor_bottom = 0.181
+margin_left = 0.0799561
+margin_top = 0.319996
+margin_right = 0.639771
+margin_bottom = -0.320007
 custom_fonts/font = ExtResource( 1 )
 toggle_mode = true
-text = "PLAY"
+text = "New Game"
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Load" type="Button" parent="."]
+anchor_left = 0.664
+anchor_top = 0.194
+anchor_right = 0.937
+anchor_bottom = 0.306
+margin_left = 0.0799561
+margin_top = 0.319992
+margin_right = 0.639893
+margin_bottom = -0.320023
+custom_fonts/font = ExtResource( 1 )
+toggle_mode = true
+text = "Load Game"
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Statistics" type="Button" parent="."]
+anchor_left = 0.664
+anchor_top = 0.319
+anchor_right = 0.937
+anchor_bottom = 0.431
+margin_left = 0.0799561
+margin_top = 0.319992
+margin_right = 0.639893
+margin_bottom = -0.320007
+custom_fonts/font = ExtResource( 1 )
+toggle_mode = true
+text = "Statistics"
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Settings" type="Button" parent="."]
+anchor_left = 0.664
+anchor_top = 0.444
+anchor_right = 0.937
+anchor_bottom = 0.556
+margin_left = 0.0799561
+margin_top = 0.319977
+margin_right = 0.639893
+margin_bottom = -0.320038
+custom_fonts/font = ExtResource( 1 )
+toggle_mode = true
+text = "Settings"
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Help" type="Button" parent="."]
+anchor_left = 0.664
+anchor_top = 0.569
+anchor_right = 0.937
+anchor_bottom = 0.681
+margin_left = 0.0799561
+margin_top = 0.320007
+margin_right = 0.639893
+margin_bottom = -0.320038
+custom_fonts/font = ExtResource( 1 )
+toggle_mode = true
+text = "Help"
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Credits" type="Button" parent="."]
+anchor_left = 0.664
+anchor_top = 0.694
+anchor_right = 0.937
+anchor_bottom = 0.806
+margin_left = 0.0799561
+margin_top = 0.320007
+margin_right = 0.639893
+margin_bottom = -0.320068
+custom_fonts/font = ExtResource( 1 )
+toggle_mode = true
+text = "Credits"
 __meta__ = {
 "_edit_use_anchors_": true
 }
 
 [node name="Quit" type="Button" parent="."]
-anchor_left = 0.603487
-anchor_top = 0.391412
-anchor_right = 0.837859
-anchor_bottom = 0.516412
+anchor_left = 0.664
+anchor_top = 0.819
+anchor_right = 0.937
+anchor_bottom = 0.931
+margin_left = 0.0799561
+margin_top = 0.319946
+margin_right = 0.639893
+margin_bottom = -0.320068
 custom_fonts/font = ExtResource( 1 )
 toggle_mode = true
-text = "QUIT"
+text = "Quit"
 __meta__ = {
 "_edit_use_anchors_": true
 }
@@ -1107,5 +1195,10 @@ material/1051 = null
 material/1052 = null
 
 [connection signal="mouse_entered" from="Play" to="." method="_onPlayMouseEntered"]
+[connection signal="mouse_entered" from="Load" to="." method="_onPlayMouseEntered"]
+[connection signal="mouse_entered" from="Statistics" to="." method="_onPlayMouseEntered"]
+[connection signal="mouse_entered" from="Settings" to="." method="_onPlayMouseEntered"]
+[connection signal="mouse_entered" from="Help" to="." method="_onPlayMouseEntered"]
+[connection signal="mouse_entered" from="Credits" to="." method="_onPlayMouseEntered"]
 [connection signal="mouse_entered" from="Quit" to="." method="_onQuitMouseEntered"]
 [connection signal="pressed" from="Quit" to="." method="_onQuitPressed"]
