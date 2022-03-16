@@ -1,0 +1,38 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://GUI/animated/farmer/chlop_2.png" type="Texture" id=1]
+[ext_resource path="res://GUI/animated/farmer/chlop_start.png" type="Texture" id=2]
+[ext_resource path="res://GUI/animated/farmer/chlop_3.png" type="Texture" id=3]
+[ext_resource path="res://GUI/animated/farmer/chlop_6.png" type="Texture" id=4]
+[ext_resource path="res://GUI/animated/farmer/chlop_1.png" type="Texture" id=5]
+[ext_resource path="res://GUI/animated/farmer/chlop_end.png" type="Texture" id=6]
+[ext_resource path="res://GUI/animated/farmer/chlop_5.png" type="Texture" id=7]
+[ext_resource path="res://GUI/animated/farmer/chlop_4.png" type="Texture" id=8]
+[ext_resource path="res://GUI/avatars/avatar_player.png" type="Texture" id=9]
+[ext_resource path="res://GUI/avatars/avatar_bot.png" type="Texture" id=10]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 2 ), ExtResource( 5 ), ExtResource( 1 ), ExtResource( 3 ), ExtResource( 8 ), ExtResource( 7 ), ExtResource( 4 ), ExtResource( 6 ) ],
+"loop": false,
+"name": "appear",
+"speed": 3.5
+} ]
+
+[node name="AnimatedSprite" type="AnimatedSprite"]
+modulate = Color( 0.635294, 0.294118, 0.294118, 1 )
+position = Vector2( -0.00012207, -5.65674 )
+frames = SubResource( 1 )
+animation = "appear"
+frame = 7
+speed_scale = 2.0
+playing = true
+
+[node name="avatar_player" type="Sprite" parent="."]
+visible = false
+position = Vector2( 3.49847, -0.189087 )
+texture = ExtResource( 9 )
+
+[node name="avatar_bot" type="Sprite" parent="."]
+position = Vector2( 6.43561, 5.48926 )
+texture = ExtResource( 10 )
