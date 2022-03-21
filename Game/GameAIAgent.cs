@@ -23,16 +23,11 @@ public partial class Game
         public override void NewTurn()
         {
             int PossibleTilePlacements = _game.Engine.PossibleTilePlacements().Count();
-            int PossiblePawnPlacements = _game.Engine.PossibleMeepleAttributePlacements().Count();
-            int PossiblePawnAttributePlacements = _game.Engine.PossibleMeepleNodePlacements().Count();
-
             if (PossibleTilePlacements > 0)
             {
                 this.PlaceTile(_game.Engine.PossibleTilePlacements().ElementAt(0).pos, _game.Engine.PossibleTilePlacements().ElementAt(0).rot);
 
             }
-            else if (PossiblePawnPlacements > 0 || PossiblePawnAttributePlacements > 0)
-                _game.Engine.SkipPlacingPawn();
             else
                 ExecuteImplied();
         }
