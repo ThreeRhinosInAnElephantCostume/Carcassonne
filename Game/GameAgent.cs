@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -23,6 +23,7 @@ public partial class Game
         public GameEngine.Player Player { get; protected set; }
         public PlayerType Type { get; protected set; }
         public Color BaseColor { get; set; }
+        public abstract void NewTurn();
         protected void ExecuteAction(GameEngine.Action action)
         {
             _game.AgentExecute(this, action);

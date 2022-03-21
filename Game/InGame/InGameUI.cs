@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -67,6 +67,11 @@ public class InGameUI : Control, Game.IGameHandles
                 s.Text = "";
             }
         }
+        if (_game.CurrentAgent.Type.ToString() == "AI")
+        {
+            _game.CurrentAgent.NewTurn();
+            GD.Print("AI player turn");
+        }
     }
     void Game.IGameHandles.OnAction(Game.GameAgent agent, GameEngine.Action action)
     {
@@ -80,6 +85,7 @@ public class InGameUI : Control, Game.IGameHandles
 
     void Game.IGameHandles.OnNextPlayerTurn(Game.GameAgent agent)
     {
+        GD.Print("Turn of player" + " " + agent.Name + " " + agent.Type);
         UpdateUI();
     }
     public override void _Process(float delta)
@@ -99,7 +105,8 @@ public class InGameUI : Control, Game.IGameHandles
 
         _mainInfoContainer = GetNode<VBoxContainer>("CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer");
 
-        _game = Game.NewLocalGame(this, 4, "BaseGame/BaseTileset.json");
+        //_game = Game.NewLocalGame(this, 4, "BaseGame/BaseTileset.json");
+        _game = Game.NewAIGame(this, 2, "BaseGame/BaseTileset.json");
         _previewRoot = GetNode<Spatial>("CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/AspectRatioContainer/ViewportContainer/Viewport/PreviewRoot");
 
         _mainCamera = GetNode<Camera>("InGame3D/Camera");

@@ -19,6 +19,11 @@ public partial class Game
     public class GameLocalAgent : GameAgent
     {
         public bool IsMyMove => _game.CurrentAgent == this;
+        public override void NewTurn()
+        {
+
+        }
+
         public void PlaceTile(Vector2I pos, int rot)
         {
             _game.Engine.PlaceCurrentTile(pos, rot);

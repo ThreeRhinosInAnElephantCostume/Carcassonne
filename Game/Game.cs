@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -61,6 +61,7 @@ public partial class Game
     };
     public void UpdateEngine(GameAgent agent)
     {
+
         Handles.OnAction(agent, Engine.History.Last());
         if (Engine.CurrentState == GameEngine.State.GAME_OVER)
         {
@@ -93,6 +94,18 @@ public partial class Game
         game.State = GameState.AWAITING_MOVE;
         game.Engine = GameEngine.CreateBaseGame(TileDataLoader.GlobalLoader, 666, players, tileset);
         game.Agents = game.Engine.Players.ConvertAll<GameAgent>(it => new GameLocalAgent(game, $"PLAYER {it.ID}", it));
+        return game;
+    }
+
+    public static Game NewAIGame(IGameHandles handles, int players, string tileset)
+    {
+        Game game = new Game(handles);
+        game.Mode = GameMode.LOCAL;
+        game.State = GameState.AWAITING_MOVE;
+        game.Engine = GameEngine.CreateBaseGame(TileDataLoader.GlobalLoader, 666, players, tileset);
+        game.Agents.Add(new GameLocalAgent(game, $"PLAYER 1", game.Engine.Players.ElementAt(0)));
+        game.Agents.Add(new GameAIAgent(game, $"TEST AI", game.Engine.Players.ElementAt(1)));
+        //game.Agents = game.Engine.Players.ConvertAll<GameAgent>(it => new GameAIAgent(game, $"PLAYER {it.ID}", it));
         return game;
     }
     Game(IGameHandles handles)

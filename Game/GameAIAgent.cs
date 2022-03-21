@@ -1,0 +1,63 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
+using System.Runtime;
+using System.Runtime.CompilerServices;
+using System.Threading;
+using Carcassonne;
+using ExtraMath;
+using Godot;
+using static System.Math;
+using static Carcassonne.GameEngine;
+using static Utils;
+
+public partial class Game
+{
+    public class GameAIAgent : GameAgent
+    {
+        public bool IsMyMove => _game.CurrentAgent == this;
+
+        public override void NewTurn()
+        {
+            int PossibleTilePlacements = _game.Engine.PossibleTilePlacements().Count();
+            int PossiblePawnPlacements = _game.Engine.PossibleMeepleAttributePlacements().Count();
+            int PossiblePawnAttributePlacements = _game.Engine.PossibleMeepleNodePlacements().Count();
+
+            if (PossibleTilePlacements > 0)
+            {
+                this.PlaceTile(_game.Engine.PossibleTilePlacements().ElementAt(0).pos, _game.Engine.PossibleTilePlacements().ElementAt(0).rot);
+
+            }
+            else if (PossiblePawnPlacements > 0 || PossiblePawnAttributePlacements > 0)
+                _game.Engine.SkipPlacingPawn();
+            else
+                ExecuteImplied();
+        }
+        public void PlaceTile(Vector2I pos, int rot)
+        {
+            GD.Print("AI place tile");
+            _game.Engine.PlaceCurrentTile(pos, rot);
+            _game.Engine.SkipPlacingPawn(); // TO DO - ZNALEŹĆ ODPOWIEDNIE MIEJSCE NA UMIESZCZENIE MEEPLA - MS
+            ExecuteImplied();
+        }
+        public void PlaceMeepleOnAttribute(int indx)
+        {
+            GD.Print("AI place meeple on attribute");
+            _game.Engine.PlacePawnOnAttribute(0);
+            ExecuteImplied();
+        }
+        public void PlaceMeepleOnNode(int indx)
+        {
+            GD.Print("AI place meeple on node");
+            _game.Engine.PlacePawnOnNode(0);
+            ExecuteImplied();
+        }
+        public GameAIAgent(Game game, string name, GameEngine.Player player) : base(game, name, PlayerType.AI, player)
+        {
+
+        }
+    }
+}
