@@ -67,6 +67,7 @@ public class InGameUI : Control, Game.IGameHandles
                 s.Text = "";
             }
         }
+        // myślę, że to nie jest dobre miejsce na wywoływanie funkcji NewTurn(), bo jesteśmy w UI (ina)
         if (_game.CurrentAgent != null && _game.CurrentAgent.Type.ToString() == "AI")
         {
             _game.CurrentAgent.NewTurn();
@@ -86,6 +87,7 @@ public class InGameUI : Control, Game.IGameHandles
 
     void Game.IGameHandles.OnNextPlayerTurn(Game.GameAgent agent)
     {
+        // Nigdy nie drukuje "Turn of player TEST AI AI" Dlaczego? /Name "TEST AI" TYPE "AI"/ (ina)
         GD.Print("Turn of player" + " " + agent.Name + " " + agent.Type);
         UpdateUI();
     }

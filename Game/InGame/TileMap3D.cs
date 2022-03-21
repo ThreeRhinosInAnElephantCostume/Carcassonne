@@ -48,6 +48,8 @@ public class TileMap3D : Spatial
             Update();
         }
     }
+
+    // mamy GameLocalAgenta, a co a GameAIAgent? on też układa planszę :) (ina)
     public Game.GameLocalAgent Player { get; set; }
     List<Tile3D> _tiles = new List<Tile3D>();
     bool _calledUpdate = false;

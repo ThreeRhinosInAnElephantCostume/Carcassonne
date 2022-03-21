@@ -26,6 +26,7 @@ public partial class Game
 
         public void PlaceTile(Vector2I pos, int rot)
         {
+            GD.Print("LOCAL player place tile");
             _game.Engine.PlaceCurrentTile(pos, rot);
             ExecuteImplied();
         }

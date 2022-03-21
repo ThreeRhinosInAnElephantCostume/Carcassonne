@@ -20,6 +20,7 @@ public partial class Game
     {
         public bool IsMyMove => _game.CurrentAgent == this;
 
+        // wydaje mi się, że raczej trzeba pomyśleć, jakie zmieny dać w 'TileMap3D' - tam zajmujemy się szukaniem 'PossiblePlacement' (ina)
         public override void NewTurn()
         {
             if (_game.Engine.CurrentState == GameEngine.State.PLACE_TILE)
