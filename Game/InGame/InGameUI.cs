@@ -67,7 +67,7 @@ public class InGameUI : Control, Game.IGameHandles
                 s.Text = "";
             }
         }
-        if (_game.CurrentAgent.Type.ToString() == "AI")
+        if (_game.CurrentAgent != null && _game.CurrentAgent.Type.ToString() == "AI")
         {
             _game.CurrentAgent.NewTurn();
             GD.Print("AI player turn");
@@ -80,6 +80,7 @@ public class InGameUI : Control, Game.IGameHandles
 
     void Game.IGameHandles.OnGameOver(List<Game.GameAgent> winners)
     {
+        GD.Print("Game Over, the winner is: " + winners.ToString());
         UpdateUI();
     }
 

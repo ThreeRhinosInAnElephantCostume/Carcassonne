@@ -22,11 +22,14 @@ public partial class Game
 
         public override void NewTurn()
         {
-            int PossibleTilePlacements = _game.Engine.PossibleTilePlacements().Count();
-            if (PossibleTilePlacements > 0)
+            if (_game.Engine.CurrentState == GameEngine.State.PLACE_TILE)
             {
-                this.PlaceTile(_game.Engine.PossibleTilePlacements().ElementAt(0).pos, _game.Engine.PossibleTilePlacements().ElementAt(0).rot);
+                int PossibleTilePlacements = _game.Engine.PossibleTilePlacements().Count();
+                if (PossibleTilePlacements > 0)
+                {
+                    this.PlaceTile(_game.Engine.PossibleTilePlacements().ElementAt(0).pos, _game.Engine.PossibleTilePlacements().ElementAt(0).rot);
 
+                }
             }
             else
                 ExecuteImplied();
@@ -35,7 +38,8 @@ public partial class Game
         {
             GD.Print("AI place tile");
             _game.Engine.PlaceCurrentTile(pos, rot);
-            _game.Engine.SkipPlacingPawn(); // TO DO - ZNALEŹĆ ODPOWIEDNIE MIEJSCE NA UMIESZCZENIE MEEPLA - MS
+            if (_game.Engine.CurrentState == GameEngine.State.PLACE_PAWN)
+                _game.Engine.SkipPlacingPawn(); // TO DO - ZNALEŹĆ ODPOWIEDNIE MIEJSCE NA UMIESZCZENIE MEEPLA - MS
             ExecuteImplied();
         }
         public void PlaceMeepleOnAttribute(int indx)
