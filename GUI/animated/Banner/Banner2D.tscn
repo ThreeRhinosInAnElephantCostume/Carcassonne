@@ -1,0 +1,53 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://GUI/animated/Banner/baner_big.png" type="Texture" id=1]
+[ext_resource path="res://GUI/animated/Banner/baner_hold.png" type="Texture" id=2]
+[ext_resource path="res://GUI/animated/Banner/baner_small.png" type="Texture" id=3]
+
+[sub_resource type="Animation" id=2]
+resource_name = "Banner_down"
+length = 2.5
+step = 2.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("Banner2D/baner_hold/baner_big:region_rect")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1.2, 2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Rect2( 80, 500, 340, 510 ), Rect2( 80, 100, 340, 510 ), Rect2( 80, 100, 340, 510 ) ]
+}
+
+[node name="Banner2D" type="Control"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Banner2D" type="AnimationPlayer" parent="."]
+autoplay = "Banner_down"
+anims/Banner_down = SubResource( 2 )
+
+[node name="baner_hold" type="Sprite" parent="Banner2D"]
+position = Vector2( 640, 128 )
+texture = ExtResource( 2 )
+offset = Vector2( -2.63583, 84.3689 )
+
+[node name="baner_small" type="Sprite" parent="Banner2D/baner_hold"]
+position = Vector2( 0, 237 )
+texture = ExtResource( 3 )
+region_rect = Rect2( 180, 40, 150, 170 )
+
+[node name="baner_big" type="Sprite" parent="Banner2D/baner_hold"]
+position = Vector2( -170, 16 )
+z_index = -1
+texture = ExtResource( 1 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 80, 100, 340, 510 )
