@@ -22,6 +22,7 @@ public class PersonalTheme
     public Color SecondaryColor;
     public Color TertiaryColor;
     public Texture Icon;
+    public Texture Avatar;
     public Color TransformColor(Color col)
     {
         return new Color((PrimaryColor * col.r) + (SecondaryColor * col.g) + (TertiaryColor * col.b), col.a);

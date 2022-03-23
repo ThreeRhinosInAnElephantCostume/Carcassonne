@@ -25,8 +25,6 @@ public class Prop : Spatial
         get => _examplePlayerTheme; set
         {
             _examplePlayerTheme = value;
-            if (!Engine.EditorHint)
-                return;
             if (!FileExists(ExamplePlayerTheme))
             {
                 GD.Print("File not found: " + ExamplePlayerTheme);

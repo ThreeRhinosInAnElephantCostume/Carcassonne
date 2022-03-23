@@ -47,9 +47,9 @@ public class GlobalScript : Node
         if (!FileExists(Constants.DEFAULT_PLAYER_THEME_PATH))
         {
             var theme = new PersonalTheme();
-            theme.PrimaryColor = new Color(0.2f, 0.5f, 1f);
-            theme.SecondaryColor = new Color(0.05f, 0.1f, 1f);
-            theme.TertiaryColor = new Color(0f, 0f, 0.5f);
+            theme.PrimaryColor = new Color(1f, 0f, 0f);
+            theme.SecondaryColor = new Color(0f, 1f, 0f);
+            theme.TertiaryColor = new Color(0f, 0f, 1f);
             SerializeToFile(Constants.DEFAULT_PLAYER_THEME_PATH, theme);
         }
         Settings = DeserializeFromFile<MainSettings>(Constants.SETTINGS_PATH);
