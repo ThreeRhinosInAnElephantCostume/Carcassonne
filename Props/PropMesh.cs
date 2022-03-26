@@ -118,12 +118,7 @@ public class PropMesh : MeshInstance, IPropElement
             }
             else if (mat is ShaderMaterial shad)
             {
-                if (shad.GetShaderParam(Constants.SHADER_PRIMARY_THEME_SETTER) != null)
-                    ret.Add(t => shad.SetShaderParam(Constants.SHADER_PRIMARY_THEME_SETTER, t.PrimaryColor));
-                if (shad.GetShaderParam(Constants.SHADER_SECONDARY_THEME_SETTER) != null)
-                    ret.Add(t => shad.SetShaderParam(Constants.SHADER_SECONDARY_THEME_SETTER, t.SecondaryColor));
-                if (shad.GetShaderParam(Constants.SHADER_TERTIARY_THEME_SETTER) != null)
-                    ret.Add(t => shad.SetShaderParam(Constants.SHADER_TERTIARY_THEME_SETTER, t.TertiaryColor));
+                ret.AddRange(PersonalTheme.GetSettersForShader(shad));
             }
         });
         return ret;

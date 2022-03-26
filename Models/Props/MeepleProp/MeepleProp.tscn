@@ -1,8 +1,16 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Props/Prop.cs" type="Script" id=1]
 [ext_resource path="res://Models/Meeples/meeple.dae" type="PackedScene" id=2]
 [ext_resource path="res://Props/PropMesh.cs" type="Script" id=3]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [  ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
 
 [node name="meeple" instance=ExtResource( 2 )]
 script = ExtResource( 1 )
@@ -15,4 +23,9 @@ transform = Transform( 0.995562, -0.0474801, 0.0812524, 0, 0.863395, 0.504528, -
 script = ExtResource( 3 )
 "Surface #0" = 1
 
-[node name="MeshInstance" type="MeshInstance" parent="." index="3"]
+[node name="Banner" type="MeshInstance" parent="." index="3"]
+
+[node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="Banner" index="0"]
+frames = SubResource( 1 )
+
+[node name="Spatial" type="Spatial" parent="." index="4"]

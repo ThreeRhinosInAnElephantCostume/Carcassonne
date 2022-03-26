@@ -18,4 +18,5 @@ using Expression = System.Linq.Expressions.Expression;
 public static partial class Globals
 {
     public static MainSettings Settings { get; set; } = new MainSettings();
+    public static PersonalTheme DefaultTheme { get; set; }
 }

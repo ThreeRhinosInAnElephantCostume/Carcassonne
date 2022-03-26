@@ -50,8 +50,11 @@ public class GlobalScript : Node
             theme.PrimaryColor = new Color(1f, 0f, 0f);
             theme.SecondaryColor = new Color(0f, 1f, 0f);
             theme.TertiaryColor = new Color(0f, 0f, 1f);
+            theme.IconPath = Constants.DEFAULT_PLAYER_ICON_PATH;
+            theme.AvatarPath = Constants.DEFAULT_PLAYER_AVATAR_PATH;
             SerializeToFile(Constants.DEFAULT_PLAYER_THEME_PATH, theme);
         }
+        DefaultTheme = DeserializeFromFile<PersonalTheme>(Constants.DEFAULT_PLAYER_THEME_PATH);
         Settings = DeserializeFromFile<MainSettings>(Constants.SETTINGS_PATH);
         Settings.CompleteLoad();
 
