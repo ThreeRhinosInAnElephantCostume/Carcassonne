@@ -1,5 +1,5 @@
+﻿using System;
 using Godot;
-using System;
 
 
 public class StartMenu : Control
@@ -30,9 +30,9 @@ public class StartMenu : Control
     }
 
 
-  // Called every frame. 'delta' is the elapsed time since the previous frame.
-  public override void _Process(float delta)
-  {
-      
-  }
+    // Called every frame. 'delta' is the elapsed time since the previous frame.
+    public override void _Process(float delta)
+    {
+
+    }
 }

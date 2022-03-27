@@ -82,6 +82,8 @@ public class GlobalScript : Node
             Constants.TILE_DIRECTORY,
             Constants.TILESET_DIRECTORY,
             Constants.TILE_MODEL_DIRECTORY,
+            Constants.PLAYER_THEMES_DIRECTORY,
+            Constants.THEMEABLE_ICONS_DIRECTORY,
         };
         foreach (var it in requiredpaths)
         {
@@ -105,6 +107,18 @@ public class GlobalScript : Node
         }
         SaveSettings(true);
 
+        if (!FileExists(Constants.DEFAULT_PLAYER_THEME_PATH))
+        {
+            var theme = new PersonalTheme();
+            theme.PrimaryColor = new Color(1f, 0f, 0f);
+            theme.SecondaryColor = new Color(0f, 1f, 0f);
+            theme.TertiaryColor = new Color(0f, 0f, 1f);
+            theme.IconPath = Constants.DEFAULT_PLAYER_ICON_PATH;
+            theme.AvatarPath = Constants.DEFAULT_PLAYER_AVATAR_PATH;
+            SerializeToFile(Constants.DEFAULT_PLAYER_THEME_PATH, theme);
+        }
+        DefaultTheme = DeserializeFromFile<PersonalTheme>(Constants.DEFAULT_PLAYER_THEME_PATH);
+
         // Example use for OnChangeHandle:
 
         // Settings.OnChangeHandle += (s, o) => GD.Print(s, "=", o);
@@ -113,9 +127,10 @@ public class GlobalScript : Node
         // Settings.FullScreen.Value = true;
         // Settings.Resolution.Value = new Vector2I(100, 100);
 
-
-        OS.WindowFullscreen = Settings.FullScreen;
-        OS.WindowSize = (Vector2)Settings.Resolution.Value;
+        Settings.FullScreen.OnModification += v => OS.WindowFullscreen = v;
+        Settings.Resolution.OnModification += v => OS.WindowSize = (Vector2)v;
+        Settings.NotifyChangeOnAll();
+        Settings.ClearModified();
     }
     public GlobalScript()
     {

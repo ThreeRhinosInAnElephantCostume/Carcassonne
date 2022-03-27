@@ -653,7 +653,7 @@ public class TileLogicEditor : Control
         _removeAttributeButton.Connect("pressed", this, "CurRemoveAttributePressed");
         _resetAttributeButton.Connect("pressed", this, "ResetAttributePressed");
 
-        camera = (Camera2D)FindChild<ViewportContainer>(upperhalf).GetNode("Viewport/Camera2D");
+        camera = (Camera2D)upperhalf.FindChild<ViewportContainer>().GetNode("Viewport/Camera2D");
         root = (Node2D)camera.GetNode("TileDisplayRoot");
 
         _toolboxContainer = (Container)GetNode("ToolsContainer");

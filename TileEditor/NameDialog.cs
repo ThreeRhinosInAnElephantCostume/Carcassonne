@@ -63,11 +63,11 @@ public class NameDialog : WindowDialog
     }
     public void Reset()
     {
-        var cont = FindChild<VBoxContainer>(this);
-        _nameEdit = FindChild<LineEdit>(cont);
+        var cont = this.FindChild<VBoxContainer>();
+        _nameEdit = cont.FindChild<LineEdit>();
         _nameEdit.Text = "";
-        _confirmButton = FindChild<Button>(cont);
-        _stateLabel = FindChild<Label>(cont);
+        _confirmButton = cont.FindChild<Button>();
+        _stateLabel = cont.FindChild<Label>();
         _stateLabel.Text = "";
         if (!_nameEdit.IsConnected("text_changed", this, "CheckValidity"))
             _nameEdit.Connect("text_changed", this, "CheckValidity");

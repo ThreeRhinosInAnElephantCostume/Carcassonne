@@ -83,6 +83,12 @@ namespace SettingsSystem
             if (_domLink != null)
                 _domLink.NotifyChange(ConcatPaths(Name, name), val);
         }
+        public void NotifyChangeOnAll()
+        {
+            Modified = true;
+            _subLinks.ForEach(it => it.NotifyChangeOnAll());
+            _subProperties.ForEach(it => it.Value = it.Value);
+        }
         public void ClearModified()
         {
             lock (_mx)

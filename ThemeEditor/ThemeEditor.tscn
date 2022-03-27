@@ -1,0 +1,191 @@
+[gd_scene format=2]
+
+[node name="ThemeEditor" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MainContainer" type="HBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="TabContainer" parent="MainContainer"]
+margin_right = 1063.0
+margin_bottom = 720.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 5.0
+
+[node name="PropView" type="Panel" parent="MainContainer/VBoxContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="IconView" type="Panel" parent="MainContainer/VBoxContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="TileView" type="Panel" parent="MainContainer/VBoxContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MainContainer"]
+margin_left = 1067.0
+margin_right = 1280.0
+margin_bottom = 720.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="NameEdit" type="LineEdit" parent="MainContainer/VBoxContainer2"]
+margin_right = 213.0
+margin_bottom = 24.0
+
+[node name="NewButton" type="Button" parent="MainContainer/VBoxContainer2"]
+margin_top = 28.0
+margin_right = 213.0
+margin_bottom = 48.0
+text = "NEW"
+
+[node name="LoadButton" type="Button" parent="MainContainer/VBoxContainer2"]
+margin_top = 52.0
+margin_right = 213.0
+margin_bottom = 72.0
+text = "LOAD"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SaveButton" type="Button" parent="MainContainer/VBoxContainer2"]
+margin_top = 76.0
+margin_right = 213.0
+margin_bottom = 96.0
+text = "SAVE"
+
+[node name="DeleteButton" type="Button" parent="MainContainer/VBoxContainer2"]
+margin_top = 100.0
+margin_right = 213.0
+margin_bottom = 120.0
+text = "DELETE"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HSeparator" type="HSeparator" parent="MainContainer/VBoxContainer2"]
+margin_top = 124.0
+margin_right = 213.0
+margin_bottom = 128.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainContainer/VBoxContainer2"]
+margin_top = 132.0
+margin_right = 213.0
+margin_bottom = 152.0
+
+[node name="Label" type="Label" parent="MainContainer/VBoxContainer2/HBoxContainer"]
+margin_top = 3.0
+margin_right = 86.0
+margin_bottom = 17.0
+text = "Primary Color"
+
+[node name="Control" type="Control" parent="MainContainer/VBoxContainer2/HBoxContainer"]
+margin_left = 90.0
+margin_right = 121.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="MainColorPicker" type="ColorPickerButton" parent="MainContainer/VBoxContainer2/HBoxContainer"]
+margin_left = 125.0
+margin_right = 213.0
+margin_bottom = 20.0
+size_flags_vertical = 3
+text = "Select Color"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MainContainer/VBoxContainer2"]
+margin_top = 156.0
+margin_right = 213.0
+margin_bottom = 176.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="MainContainer/VBoxContainer2/HBoxContainer2"]
+margin_top = 3.0
+margin_right = 102.0
+margin_bottom = 17.0
+text = "Secondary Color"
+
+[node name="Control" type="Control" parent="MainContainer/VBoxContainer2/HBoxContainer2"]
+margin_left = 106.0
+margin_right = 121.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="SecondaryColorPicker" type="ColorPickerButton" parent="MainContainer/VBoxContainer2/HBoxContainer2"]
+margin_left = 125.0
+margin_right = 213.0
+margin_bottom = 20.0
+size_flags_vertical = 3
+text = "Select Color"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MainContainer/VBoxContainer2"]
+margin_top = 180.0
+margin_right = 213.0
+margin_bottom = 200.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="MainContainer/VBoxContainer2/HBoxContainer3"]
+margin_top = 3.0
+margin_right = 85.0
+margin_bottom = 17.0
+text = "Tertiary Color"
+
+[node name="Control" type="Control" parent="MainContainer/VBoxContainer2/HBoxContainer3"]
+margin_left = 89.0
+margin_right = 121.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="TertiaryColorPicker" type="ColorPickerButton" parent="MainContainer/VBoxContainer2/HBoxContainer3"]
+margin_left = 125.0
+margin_right = 213.0
+margin_bottom = 20.0
+size_flags_vertical = 3
+text = "Select Color"
+
+[node name="HSeparator2" type="HSeparator" parent="MainContainer/VBoxContainer2"]
+margin_top = 204.0
+margin_right = 213.0
+margin_bottom = 208.0
+__meta__ = {
+"_edit_use_anchors_": false
+}

@@ -233,7 +233,7 @@ public class ItemBrowser : VBoxContainer
         _selected = null;
         _selectedIndex = -1;
 
-        var buttoncontainer = FindChild<HBoxContainer>(this);
+        var buttoncontainer = this.FindChild<HBoxContainer>();
         if (null == (_cloneButton = (Button)buttoncontainer.GetNodeOrNull("CloneButton")))
         {
             _cloneButton = new Button();
@@ -270,7 +270,7 @@ public class ItemBrowser : VBoxContainer
         _newButton.Connect("pressed", this, "New");
         //_newButton.Disabled = false;
 
-        _list = FindChild<ItemList>(this);
+        _list = this.FindChild<ItemList>();
         if (_list.IsConnected("nothing_selected", this, "NothingSelected"))
             _list.Disconnect("nothing_selected", this, "NothingSelected");
         if (_list.IsConnected("item_selected", this, "ItemSelected"))
