@@ -27,9 +27,10 @@ public class PropBanner : Spatial, IPropElement, IExtendedProperties
 
     Action IPropElement.OnChangeHandle { get; set; }
     Dictionary<string, (Func<object> getter, Action<object> setter, Func<bool> predicate, GDProperty prop)>
-        IExtendedProperties.Actions
+        IExtendedProperties.ExtendedProperties
     { get; set; } =
             new Dictionary<string, (Func<object> getter, Action<object> setter, Func<bool> predicate, GDProperty prop)>();
+    List<string> IExtendedProperties.ExtendedPropertiesOrdered { get; set; } = new List<string>();
     bool _billboard = true;
     [Export]
     public bool Billboard { get => _billboard; set { if (_billboard != value) { _billboard = value; Refresh(); } } }
@@ -207,6 +208,15 @@ public class PropBanner : Spatial, IPropElement, IExtendedProperties
         ep.RemoveProperty("AnimatedMask", true);
         ep.RemoveProperty("Loop", true);
         ep.RemoveProperty("BackgroundOpacity", true);
+        ep.RemoveProperty("IconOffset", true);
+        ep.RemoveProperty("IconScale", true);
+        if (ShowIcon)
+        {
+            ep.AddProperty(new GDProperty("IconOffset", Variant.Type.Vector2, PropertyHint.None),
+                () => IconOffset, o => IconOffset = (Vector2)o);
+            ep.AddProperty(new GDProperty("IconScale", Variant.Type.Vector2, PropertyHint.None),
+                () => IconScale, o => IconScale = (Vector2)o);
+        }
         if (Background != 0)
         {
             ep.AddProperty(new GDProperty("BackgroundOpacity", Variant.Type.Real, PropertyHint.ExpRange, "0.0,1.0"),
@@ -245,7 +255,7 @@ public class PropBanner : Spatial, IPropElement, IExtendedProperties
             ep.AddProperty(new GDProperty("Texture", Variant.Type.Object, PropertyHint.ResourceType, "Texture"),
                 () => (_contentData as ImageContent)._texture, o => (_contentData as ImageContent)._texture = (Texture)o);
             ep.AddProperty(new GDProperty("MaskEnabled", Variant.Type.Bool, PropertyHint.None),
-                () => (_contentData as ImageContent)._maskEnabled, o => (_contentData as ImageContent)._maskEnabled = (bool)o);
+                () => (_contentData as ImageContent)._maskEnabled, o => { (_contentData as ImageContent)._maskEnabled = (bool)o; Refresh(); });
             if (ic._maskEnabled)
             {
                 mat.SetShaderParam(Constants.SHADER_MASK_TEXTURE_THEME_SETTER, ic._mask);
@@ -255,9 +265,10 @@ public class PropBanner : Spatial, IPropElement, IExtendedProperties
         }
         else if (Content == 2) // AnimatedSprite
         {
+            AnimatedContent ac;
             if (!(_contentData is AnimatedContent))
             {
-                var ac = new AnimatedContent();
+                ac = new AnimatedContent();
                 if (_contentData is ImageContent ic)
                 {
                     ac._maskEnabled = ic._maskEnabled;
@@ -269,14 +280,27 @@ public class PropBanner : Spatial, IPropElement, IExtendedProperties
                 }
                 _contentData = ac;
             }
+            ac = (AnimatedContent)_contentData;
+            if (ac._mask != null)
+            {
+                if (ac._maskEnabled)
+                {
+                    if ((ac._animatedMask && !(ac._mask is SpriteFrames)) || (!ac._animatedMask && (ac._mask is SpriteFrames)))
+                    {
+                        ac._mask = null;
+                    }
+                }
+                else
+                    ac._mask = null;
+            }
             ep.AddProperty(new GDProperty("Frames", Variant.Type.Object, PropertyHint.ResourceType, "SpriteFrames"),
                 () => (_contentData as AnimatedContent)._frames, o => (_contentData as AnimatedContent)._frames = (SpriteFrames)o);
             ep.AddProperty(new GDProperty("MaskEnabled", Variant.Type.Bool, PropertyHint.None),
-                () => (_contentData as AnimatedContent)._maskEnabled, o => (_contentData as AnimatedContent)._maskEnabled = (bool)o);
+                () => (_contentData as AnimatedContent)._maskEnabled, o => { (_contentData as AnimatedContent)._maskEnabled = (bool)o; Refresh(); });
             if ((_contentData as AnimatedContent)._maskEnabled)
             {
                 ep.AddProperty(new GDProperty("AnimatedMask", Variant.Type.Bool, PropertyHint.None),
-                    () => (_contentData as AnimatedContent)._animatedMask, o => (_contentData as AnimatedContent)._animatedMask = (bool)o);
+                    () => (_contentData as AnimatedContent)._animatedMask, o => { (_contentData as AnimatedContent)._animatedMask = (bool)o; Refresh(); });
                 ep.AddProperty
                 (
                     new GDProperty("Mask", Variant.Type.Object, PropertyHint.ResourceType,
@@ -353,11 +377,7 @@ public class PropBanner : Spatial, IPropElement, IExtendedProperties
 
     public PropBanner()
     {
-        var iep = (this as IExtendedProperties);
-        iep.AddProperty(new GDProperty("IconScale", Variant.Type.Vector2, PropertyHint.None),
-            () => IconScale, o => IconScale = (Vector2)o, () => ShowIcon);
-        iep.AddProperty(new GDProperty("IconOffset", Variant.Type.Vector2, PropertyHint.None),
-            () => IconOffset, o => IconOffset = (Vector2)o, () => ShowIcon);
+
     }
 
     //  // Called every frame. 'delta' is the elapsed time since the previous frame.
