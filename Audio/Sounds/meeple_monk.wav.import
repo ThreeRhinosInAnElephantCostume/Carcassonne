@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/meeple_monk.wav-1913f28a7c977350c195abc0d91adf6c.sample"
+
+[deps]
+
+source_file="res://Audio/Sounds/meeple_monk.wav"
+dest_files=[ "res://.import/meeple_monk.wav-1913f28a7c977350c195abc0d91adf6c.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

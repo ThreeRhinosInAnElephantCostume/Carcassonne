@@ -15,12 +15,14 @@ using static System.Math;
 using static Utils;
 using Expression = System.Linq.Expressions.Expression;
 
-public static partial class Globals
+namespace SettingsSystem
 {
     [Serializable]
     public class AudioSettings : NotifyLink
     {
-        public SettingsProperty<float> Volume { get; } = 0.1f;
+        public SettingsProperty<double> MasterVolume { get; } = 1;
+        public SettingsProperty<double> EffectsVolume { get; } = 0.5;
+        public SettingsProperty<double> MusicVolume { get; } = 0.5;
     }
     [Serializable]
     public class MainSettings : NotifyLink

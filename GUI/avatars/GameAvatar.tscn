@@ -1,0 +1,25 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://GUI/avatars/avatar_1.png" type="Texture" id=1]
+[ext_resource path="res://GUI/avatars/GameAvatar.cs" type="Script" id=2]
+[ext_resource path="res://GUI/avatars/avatar_3.png" type="Texture" id=3]
+[ext_resource path="res://GUI/avatars/avatar_4.png" type="Texture" id=4]
+[ext_resource path="res://GUI/avatars/avatar_0.png" type="Texture" id=5]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 5 ), ExtResource( 1 ), ExtResource( 3 ), ExtResource( 4 ) ],
+"loop": true,
+"name": "avatar",
+"speed": 1.0
+} ]
+
+[node name="Node2D" type="Node2D"]
+light_mask = 0
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+frames = SubResource( 1 )
+animation = "avatar"
+frame = 2
+playing = true
+script = ExtResource( 2 )

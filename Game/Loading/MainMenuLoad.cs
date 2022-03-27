@@ -36,7 +36,6 @@ public class MainMenuLoad : Control
     List<string> _prototypePaths = new List<string>();
     ConcurrentQueue<string> _remainingPrototypePaths = new ConcurrentQueue<string>();
     ConcurrentQueue<string> _lastProcessedPaths = new ConcurrentQueue<string>();
-    PackedScene _InGameScenePacked = null;
     float _resourceLoadProgress = 0;
     public float Progress { get; protected set; } = 0;
     AudioPlayer _gameAudio;
@@ -64,9 +63,13 @@ public class MainMenuLoad : Control
         List<(string path, Action<Resource> onend)> scenestoload =
             new List<(string path, Action<Resource> onend)>()
             {
-                ("res://Game/InGame/InGameUI.tscn", r => _InGameScenePacked = (PackedScene)r)
+                ("res://Game/MainMenu/MainMenu.tscn", r => Globals.MainMenuPacked = (PackedScene)r),
+                ("res://Game/InGame/InGameUI.tscn", r => Globals.InGameUIPacked = (PackedScene)r),
+                ("res://Game/InGame/PotentialTile.tscn", r => Globals.PotentialTilePacked = (PackedScene)r),
+                ("res://Game/InGame/MeeplePlacement.tscn", r => Globals.MeeplePlacementPacked = (PackedScene)r),
+                ("res://Game/InGame/PotentialMeeplePlacement.tscn", r => Globals.PotentialMeeplePlacementPacked = (PackedScene)r),
             };
-
+        scenestoload.ForEach(it => Assert(FileExists(it.path), "Could not find resource: " + it.path));
         var loaders
             = scenestoload.ConvertAll<(ResourceInteractiveLoader loader, Action<Resource> onend)>(it =>
                 (ResourceLoader.LoadInteractive(it.path), it.onend));
@@ -94,12 +97,12 @@ public class MainMenuLoad : Control
         Assert(_remainingPrototypePaths.Count == 0);
         while (_lastProcessedPaths.Count > 0)
             Thread.Sleep(1);
-
         _step = LoadSteps.COMPLETE;
     }
     public override void _Ready()
     {
         _gameAudio = GetNode<AudioPlayer>("/root/AudioPlayer");
+
         _loadingLabel = GetNode<Label>("VBoxContainer/VBoxContainer/LoadingLabel");
         _progressBar = GetNode<ProgressBar>("VBoxContainer/VBoxContainer/HBoxContainer/LoadingProgressBar");
         ThreadPool.QueueUserWorkItem(LoadControlThread);
@@ -131,7 +134,7 @@ public class MainMenuLoad : Control
                     string lastres = "";
                     if (_lastProcessedPaths.TryDequeue(out lastres))
                     {
-                        _loadingLabel.Text = "Loading Tiles: " + lastres;
+                        _loadingLabel.Text = "Loading Tiles: " + lastres.Split('/').Last().Replace(".tscn", "");
                     }
                     int pc = Max(_prototypePaths.Count, 1);
                     float rt = 1.0f - ((float)_remainingPrototypePaths.Count / (float)pc);
@@ -140,15 +143,16 @@ public class MainMenuLoad : Control
                 }
             case LoadSteps.COMPLETE:
                 {
-                    var igs = _InGameScenePacked.Instance();
-                    var t = GetTree();
-                    var r = t.Root;
-                    r.AddChild(igs);
+                    var scene = Globals.MainMenuPacked.Instance();
+                    GetTree().Root.AddChild(scene);
                     DestroyNode(this);
                     return;
                 }
         }
-        _gameAudio.PlayIntroMusic(7);
+
+        _gameAudio.StopMainMenuMusic();
+        _gameAudio.PlayIntroMusic(0);
+
         _progressBar.Value = (_progressBar.MaxValue * progress);
         Progress = progress;
     }
