@@ -1,4 +1,4 @@
-[gd_scene load_steps=212 format=2]
+[gd_scene load_steps=215 format=2]
 
 [ext_resource path="res://Models/Tiles/BaseGame/MATERIALS/Material-Earth_Brown.material" type="Material" id=1]
 [ext_resource path="res://Models/Tiles/BaseGame/MATERIALS/Material-Road_Sand.material" type="Material" id=2]
@@ -3100,6 +3100,33 @@ surfaces/0 = {
 "vertex_count": 24
 }
 
+[sub_resource type="ParticlesMaterial" id=207]
+lifetime_randomness = 0.5
+trail_divisor = 4
+emission_shape = 2
+emission_box_extents = Vector3( 0.01, 0.01, 0.01 )
+direction = Vector3( 0.05, 0.05, 0 )
+spread = 1.0
+gravity = Vector3( 0, 1, 0 )
+tangential_accel = 0.5
+tangential_accel_random = 0.1
+damping = 1.0
+damping_random = 1.0
+scale = 0.05
+scale_random = 0.1
+
+[sub_resource type="SpatialMaterial" id=208]
+albedo_color = Color( 1, 0.654902, 0, 1 )
+emission_enabled = true
+emission = Color( 0.996078, 1, 0.866667, 1 )
+emission_energy = 0.5
+emission_operator = 1
+emission_on_uv2 = false
+
+[sub_resource type="CubeMesh" id=209]
+material = SubResource( 208 )
+size = Vector3( 0.2, 0.2, 0.2 )
+
 [node name="RoadCross3" type="Spatial"]
 
 [node name="TREE_3" type="Spatial" parent="."]
@@ -3462,7 +3489,7 @@ material/0 = null
 mesh = SubResource( 88 )
 material/0 = null
 
-[node name="Brep23" type="MeshInstance" parent="CAMPSITE"]
+[node name="Brep35" type="MeshInstance" parent="CAMPSITE"]
 mesh = SubResource( 89 )
 material/0 = null
 
@@ -3953,3 +3980,14 @@ material/0 = null
 [node name="Brep3" type="MeshInstance" parent="TREE_1"]
 mesh = SubResource( 206 )
 material/0 = null
+
+[node name="Fire" type="Particles" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.41, 0.13, 0.33 )
+cast_shadow = 0
+generate_lightmap = false
+amount = 4
+speed_scale = 0.7
+randomness = 0.5
+visibility_aabb = AABB( -50, 0, -50, 100, 100, 100 )
+process_material = SubResource( 207 )
+draw_pass_1 = SubResource( 209 )
