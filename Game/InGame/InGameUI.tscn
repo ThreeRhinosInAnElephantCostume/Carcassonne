@@ -111,9 +111,9 @@ margin_bottom = 25.0
 size_flags_horizontal = 3
 size_flags_vertical = 6
 size_flags_stretch_ratio = 2.0
-custom_fonts/font = ExtResource( 14 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/font_color_shadow = Color( 0.360784, 0.360784, 0.360784, 1 )
+custom_fonts/font = ExtResource( 14 )
 
 [node name="PointsContainer" type="HBoxContainer" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player1Container/Player1StatusContainer"]
 margin_top = 29.0
@@ -136,9 +136,9 @@ margin_bottom = 25.0
 size_flags_horizontal = 3
 size_flags_vertical = 6
 size_flags_stretch_ratio = 2.0
-custom_fonts/font = ExtResource( 14 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/font_color_shadow = Color( 0.360784, 0.360784, 0.360784, 1 )
+custom_fonts/font = ExtResource( 14 )
 text = "6(+3)"
 
 [node name="StatusPlayer1" type="Label" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player1Container/Player1StatusContainer"]
@@ -147,9 +147,9 @@ margin_right = 78.0
 margin_bottom = 83.0
 size_flags_horizontal = 3
 size_flags_vertical = 6
-custom_fonts/font = ExtResource( 14 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/font_color_shadow = Color( 0.360784, 0.360784, 0.360784, 1 )
+custom_fonts/font = ExtResource( 14 )
 text = "."
 
 [node name="Player2Container" type="HBoxContainer" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer"]
@@ -196,9 +196,9 @@ margin_bottom = 25.0
 size_flags_horizontal = 3
 size_flags_vertical = 6
 size_flags_stretch_ratio = 2.0
-custom_fonts/font = ExtResource( 14 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/font_color_shadow = Color( 0.360784, 0.360784, 0.360784, 1 )
+custom_fonts/font = ExtResource( 14 )
 
 [node name="PointsContainer" type="HBoxContainer" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player2Container/Player2StatusContainer"]
 margin_top = 29.0
@@ -221,9 +221,9 @@ margin_bottom = 25.0
 size_flags_horizontal = 3
 size_flags_vertical = 6
 size_flags_stretch_ratio = 2.0
-custom_fonts/font = ExtResource( 14 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/font_color_shadow = Color( 0.360784, 0.360784, 0.360784, 1 )
+custom_fonts/font = ExtResource( 14 )
 text = "6(+3)"
 
 [node name="StatusPlayer2" type="Label" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player2Container/Player2StatusContainer"]
@@ -232,9 +232,9 @@ margin_right = 78.0
 margin_bottom = 83.0
 size_flags_horizontal = 3
 size_flags_vertical = 6
-custom_fonts/font = ExtResource( 14 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/font_color_shadow = Color( 0.360784, 0.360784, 0.360784, 1 )
+custom_fonts/font = ExtResource( 14 )
 text = "."
 
 [node name="Player3Container" type="HBoxContainer" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer"]
@@ -281,9 +281,9 @@ margin_bottom = 25.0
 size_flags_horizontal = 3
 size_flags_vertical = 6
 size_flags_stretch_ratio = 2.0
-custom_fonts/font = ExtResource( 14 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/font_color_shadow = Color( 0.360784, 0.360784, 0.360784, 1 )
+custom_fonts/font = ExtResource( 14 )
 
 [node name="PointsContainer" type="HBoxContainer" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player3Container/Player3StatusContainer"]
 margin_top = 29.0
@@ -306,9 +306,9 @@ margin_bottom = 25.0
 size_flags_horizontal = 3
 size_flags_vertical = 6
 size_flags_stretch_ratio = 2.0
-custom_fonts/font = ExtResource( 14 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/font_color_shadow = Color( 0.360784, 0.360784, 0.360784, 1 )
+custom_fonts/font = ExtResource( 14 )
 text = "6(+3)"
 
 [node name="StatusPlayer3" type="Label" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player3Container/Player3StatusContainer"]
@@ -317,9 +317,9 @@ margin_right = 78.0
 margin_bottom = 83.0
 size_flags_horizontal = 3
 size_flags_vertical = 6
-custom_fonts/font = ExtResource( 14 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/font_color_shadow = Color( 0.360784, 0.360784, 0.360784, 1 )
+custom_fonts/font = ExtResource( 14 )
 text = "."
 
 [node name="Player4Container" type="HBoxContainer" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer"]
@@ -366,9 +366,9 @@ margin_bottom = 25.0
 size_flags_horizontal = 3
 size_flags_vertical = 6
 size_flags_stretch_ratio = 2.0
-custom_fonts/font = ExtResource( 14 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/font_color_shadow = Color( 0.360784, 0.360784, 0.360784, 1 )
+custom_fonts/font = ExtResource( 14 )
 
 [node name="PointsContainer" type="HBoxContainer" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player4Container/Player4StatusContainer"]
 margin_top = 29.0
@@ -391,9 +391,9 @@ margin_bottom = 25.0
 size_flags_horizontal = 3
 size_flags_vertical = 6
 size_flags_stretch_ratio = 2.0
-custom_fonts/font = ExtResource( 14 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/font_color_shadow = Color( 0.360784, 0.360784, 0.360784, 1 )
+custom_fonts/font = ExtResource( 14 )
 text = "6(+3)"
 
 [node name="StatusPlayer4" type="Label" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player4Container/Player4StatusContainer"]
@@ -402,9 +402,9 @@ margin_right = 78.0
 margin_bottom = 83.0
 size_flags_horizontal = 3
 size_flags_vertical = 6
-custom_fonts/font = ExtResource( 14 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/font_color_shadow = Color( 0.360784, 0.360784, 0.360784, 1 )
+custom_fonts/font = ExtResource( 14 )
 text = "."
 
 [node name="Player5Container" type="HBoxContainer" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer"]
@@ -451,9 +451,9 @@ margin_bottom = 25.0
 size_flags_horizontal = 3
 size_flags_vertical = 6
 size_flags_stretch_ratio = 2.0
-custom_fonts/font = ExtResource( 14 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/font_color_shadow = Color( 0.360784, 0.360784, 0.360784, 1 )
+custom_fonts/font = ExtResource( 14 )
 
 [node name="PointsContainer" type="HBoxContainer" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player5Container/Player4StatusContainer"]
 margin_top = 29.0
@@ -476,9 +476,9 @@ margin_bottom = 25.0
 size_flags_horizontal = 3
 size_flags_vertical = 6
 size_flags_stretch_ratio = 2.0
-custom_fonts/font = ExtResource( 14 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/font_color_shadow = Color( 0.360784, 0.360784, 0.360784, 1 )
+custom_fonts/font = ExtResource( 14 )
 text = "6(+3)"
 
 [node name="StatusPlayer5" type="Label" parent="CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player5Container/Player4StatusContainer"]
@@ -487,9 +487,9 @@ margin_right = 78.0
 margin_bottom = 83.0
 size_flags_horizontal = 3
 size_flags_vertical = 6
-custom_fonts/font = ExtResource( 14 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/font_color_shadow = Color( 0.360784, 0.360784, 0.360784, 1 )
+custom_fonts/font = ExtResource( 14 )
 text = "."
 
 [node name="Control" type="Control" parent="CanvasLayer/GameUIRoot/HBoxContainer"]

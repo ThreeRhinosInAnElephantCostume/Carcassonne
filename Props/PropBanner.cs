@@ -45,7 +45,7 @@ public class PropBanner : Spatial, IPropElement, IExtendedProperties
             if (_primaryEnabled != value)
             {
                 _primaryEnabled = value;
-                Refresh();
+                ShaderUpdate();
             }
         }
     }
@@ -59,7 +59,7 @@ public class PropBanner : Spatial, IPropElement, IExtendedProperties
             if (_secondaryEnabled != value)
             {
                 _secondaryEnabled = value;
-                Refresh();
+                ShaderUpdate();
             }
         }
     }
@@ -73,7 +73,7 @@ public class PropBanner : Spatial, IPropElement, IExtendedProperties
             if (_tertiaryEnabled != value)
             {
                 _tertiaryEnabled = value;
-                Refresh();
+                ShaderUpdate();
             }
         }
     }
@@ -89,7 +89,7 @@ public class PropBanner : Spatial, IPropElement, IExtendedProperties
             if (IconOffset != value)
             {
                 _iconOffset = new Vector2(Clamp(value.x, -1, 1), Clamp(value.y, -1, 1));
-                Refresh();
+                ShaderUpdate();
             }
         }
     }
@@ -102,7 +102,7 @@ public class PropBanner : Spatial, IPropElement, IExtendedProperties
             if (_iconScale != value)
             {
                 _iconScale = new Vector2(Clamp(value.x, -1, 1), Clamp(value.y, -1, 1));
-                Refresh();
+                ShaderUpdate();
             }
         }
     }
@@ -132,7 +132,7 @@ public class PropBanner : Spatial, IPropElement, IExtendedProperties
             if (_backgroundOpacity != value)
             {
                 _backgroundOpacity = value;
-                Refresh();
+                ShaderUpdate();
             }
         }
     }
@@ -181,17 +181,23 @@ public class PropBanner : Spatial, IPropElement, IExtendedProperties
         refreshing = true;
         Defer(() => RealRefresh());
     }
-    void SetTheme(PersonalTheme t)
+    void ShaderUpdate()
     {
         var mat = (ShaderMaterial)_bannerMeshInstance.GetActiveMaterial(0);
-        if (ShowIcon)
-            t.SetFullShader(mat, true, IconScale, IconOffset);
-        else
-            t.SetFullShader(mat, false);
         mat.SetShaderParam(Constants.SHADER_PRIMARY_ENABLED, PrimaryEnabled);
         mat.SetShaderParam(Constants.SHADER_SECONDARY_ENABLED, SecondaryEnabled);
         mat.SetShaderParam(Constants.SHADER_TERTIARY_ENABLED, TertiaryEnabled);
         mat.SetShaderParam(Constants.SHADER_BILLBOARD_ENABLED, Billboard);
+        mat.SetShaderParam(Constants.SHADER_BACKGROUND_OPACITY, BackgroundOpacity);
+        if (ShowIcon)
+        {
+            mat.SetShaderParam(Constants.SHADER_ICON_SCALE_THEME_SETTER, IconScale);
+            mat.SetShaderParam(Constants.SHADER_ICON_OFFSET_THEME_SETTER, IconOffset);
+        }
+    }
+    void SetTheme(PersonalTheme t)
+    {
+        var mat = (ShaderMaterial)_bannerMeshInstance.GetActiveMaterial(0);
         mat.SetShaderParam("albedo", Background switch
         {
             0 => Colors.Transparent,
@@ -200,6 +206,10 @@ public class PropBanner : Spatial, IPropElement, IExtendedProperties
             3 => t.TertiaryColor,
             _ => throw new InvalidOperationException("This should not happen"),
         });
+        if (ShowIcon)
+            t.SetFullShader(mat, true, IconScale, IconOffset);
+        else
+            t.SetFullShader(mat, false);
         var ep = (IExtendedProperties)this;
         ep.RemoveProperty("Texture", true);
         ep.RemoveProperty("MaskEnabled", true);
@@ -225,7 +235,6 @@ public class PropBanner : Spatial, IPropElement, IExtendedProperties
         else
             _backgroundOpacity = 0.0f;
 
-        mat.SetShaderParam(Constants.SHADER_BACKGROUND_OPACITY, BackgroundOpacity);
 
         if (Content == 0)
         {
@@ -319,7 +328,7 @@ public class PropBanner : Spatial, IPropElement, IExtendedProperties
                 () => (_contentData as AnimatedContent)._looping, o => (_contentData as AnimatedContent)._looping = (bool)o);
             StartAnimation();
         }
-
+        ShaderUpdate();
         PropertyListChangedNotify();
     }
     void RealRefresh()
