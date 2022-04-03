@@ -2,7 +2,7 @@
 
 [ext_resource path="res://Props/Prop.cs" type="Script" id=1]
 [ext_resource path="res://Models/Meeples/meeple.dae" type="PackedScene" id=2]
-[ext_resource path="res://Props/PropMesh.cs" type="Script" id=3]
+[ext_resource path="res://Props/SpatialProp.cs" type="Script" id=3]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -13,15 +13,13 @@ animations = [ {
 } ]
 
 [node name="meeple" instance=ExtResource( 2 )]
-script = ExtResource( 1 )
-ExamplePlayerTheme = "res://Themes/PlayerThemes/DefaultTheme.json"
+script = ExtResource( 3 )
 
 [node name="View-Perspective" parent="." index="0"]
 transform = Transform( 0.995562, -0.0474801, 0.0812524, 0, 0.863395, 0.504528, -0.094108, -0.502289, 0.859564, -4.76469, 1.46922, -0.0218013 )
 
 [node name="Mesh" parent="." index="1"]
-script = ExtResource( 3 )
-"Surface #0" = 1
+script = ExtResource( 1 )
 
 [node name="Banner" type="MeshInstance" parent="." index="3"]
 
