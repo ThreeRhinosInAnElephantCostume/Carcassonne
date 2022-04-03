@@ -18,8 +18,12 @@ using static Utils;
 using Expression = System.Linq.Expressions.Expression;
 
 [Tool]
-public class PropMesh : MeshInstance, IPropElement
+public class MeshProp : MeshInstance, IProp
 {
+    PersonalTheme IProp._theme {get; set;}
+    string IProp._examplePlayerTheme {get; set;}
+    List<IProp> IProp._children {get; set;} = new List<IProp>();
+    IProp IProp._parent {get; set;}
     public List<(bool primary, bool secondary, bool tertiary)> SurfaceSettings = new List<(bool, bool, bool)>();
     void MaybeInitSurfaces()
     {
@@ -27,6 +31,7 @@ public class PropMesh : MeshInstance, IPropElement
         {
             SurfaceSettings.Clear();
             RepeatN(GetSurfaceMaterialCount(), i => SurfaceSettings.Add((false, false, false)));
+            _setters = GenerateThemeSetters();
         }
     }
     public override Godot.Collections.Array _GetPropertyList()
@@ -65,13 +70,13 @@ public class PropMesh : MeshInstance, IPropElement
             Assert(num >= 0 && num < SurfaceSettings.Count);
             int val = (int)value;
             SurfaceSettings[num] = ((val & 0b1) != 0, (val & 0b10) != 0, (val & 0b100) != 0);
-            if ((this as IPropElement).OnChangeHandle != null)
-                (this as IPropElement).OnChangeHandle();
+            _setters = GenerateThemeSetters();
+            (this as IProp).UpdateTheme();
             return true;
         }
         return base._Set(property, value);
     }
-    List<Action<PersonalTheme>> IPropElement.GetThemeSetters()
+    List<Action<PersonalTheme>> GenerateThemeSetters()
     {
         MaybeInitSurfaces();
         void SetMat(MeshInstance mesh, int indx, PersonalTheme theme, bool p, bool s, bool t)
@@ -123,17 +128,18 @@ public class PropMesh : MeshInstance, IPropElement
         });
         return ret;
     }
-    System.Action IPropElement.OnChangeHandle { get; set; }
+    List<Action<PersonalTheme>> _setters = new List<Action<PersonalTheme>>();
     public override void _Ready()
     {
-        var n = (Node)this;
-        while ((n = n.GetParent()) != null)
+        (this as IProp).InitHierarchy();
+    }
+
+    void IProp.UpdateTheme()
+    {
+        if(_setters == null || _setters.Count == 0)
         {
-            if (n is Prop prop)
-            {
-                prop.MarkForLoad();
-                break;
-            }
+            _setters = GenerateThemeSetters();
         }
+        _setters.ForEach(it => it((this as IProp).CurrentTheme));
     }
 }

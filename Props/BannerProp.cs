@@ -21,11 +21,10 @@ using static Utils;
 using Expression = System.Linq.Expressions.Expression;
 
 [Tool]
-public class PropBanner : Spatial, IPropElement, IExtendedProperties
+public class PropBanner : Spatial, IProp, IExtendedProperties
 {
     MeshInstance _bannerMeshInstance;
 
-    Action IPropElement.OnChangeHandle { get; set; }
     Dictionary<string, (Func<object> getter, Action<object> setter, Func<bool> predicate, GDProperty prop)>
         IExtendedProperties.ExtendedProperties
     { get; set; } =
@@ -150,6 +149,12 @@ public class PropBanner : Spatial, IPropElement, IExtendedProperties
             }
         }
     }
+
+    PersonalTheme IProp._theme {get; set;}
+    string IProp._examplePlayerTheme {get; set;}
+    List<IProp> IProp._children {get; set;} = new List<IProp>();
+    IProp IProp._parent {get; set;}
+
     public class ImageContent
     {
         public Texture _texture;
@@ -334,9 +339,7 @@ public class PropBanner : Spatial, IPropElement, IExtendedProperties
     void RealRefresh()
     {
         refreshing = false;
-        if ((this as IPropElement).OnChangeHandle != null)
-            (this as IPropElement).OnChangeHandle();
-        else if (Engine.EditorHint)
+        if (Engine.EditorHint)
         {
             if (Globals.DefaultTheme == null)
                 Globals.DefaultTheme = DeserializeFromFile<PersonalTheme>(Constants.DEFAULT_PLAYER_THEME_PATH);
@@ -373,20 +376,30 @@ public class PropBanner : Spatial, IPropElement, IExtendedProperties
     {
         return (this as IExtendedProperties).OnGetPropertyList();
     }
-    List<Action<PersonalTheme>> IPropElement.GetThemeSetters()
-    {
-        return new List<Action<PersonalTheme>>() { SetTheme };
-    }
-    public override void _Ready()
-    {
-        _bannerMeshInstance = this.GetNodeSafe<MeshInstance>("BannerMesh");
-        Refresh();
-    }
 
+    void IProp.UpdateTheme()
+    {
+        RealRefresh();
+    }
 
     public PropBanner()
     {
 
+    }
+    public override void _Ready()
+    {
+        try
+        {
+            _bannerMeshInstance = this.GetNodeSafe<MeshInstance>("BannerMesh");
+        }
+        catch(KeyNotFoundException)
+        {
+            _bannerMeshInstance = new MeshInstance();
+            _bannerMeshInstance.Mesh = new QuadMesh();
+            this.AddChild(_bannerMeshInstance);
+        }
+        (this as IProp).InitHierarchy();
+        Refresh();
     }
 
     //  // Called every frame. 'delta' is the elapsed time since the previous frame.
