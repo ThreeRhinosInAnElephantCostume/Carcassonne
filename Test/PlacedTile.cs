@@ -1,6 +1,9 @@
-﻿using System;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
@@ -27,18 +30,18 @@ public class PlacedTile : TestTile
     public List<int> HighlightedNodes = new List<int>();
 
     [Export]
-    public int HighlightedNode 
-    { 
-        get 
+    public int HighlightedNode
+    {
+        get
         {
-            if(HighlightedNodes.Count == 0)
+            if (HighlightedNodes.Count == 0)
                 return -1;
             return HighlightedNodes[0];
-        } 
-        set 
+        }
+        set
         {
             HighlightedNodes.Clear();
-            if(value != -1)
+            if (value != -1)
             {
                 HighlightedNodes.Add(value);
             }
@@ -87,7 +90,7 @@ public class PlacedTile : TestTile
     [Export]
     public float CityBonusSize = 10.0f;
     [Export]
-    public Color[] PlayerColors {get; set;} = new Color[]
+    public Color[] PlayerColors { get; set; } = new Color[]
     {
         new Color(1f, 0.3f, 0.3f),
         new Color(0.5f, 0.5f, 1f),
@@ -96,7 +99,7 @@ public class PlacedTile : TestTile
         new Color(1f, 1f, 1f),
         new Color(0.5f, 0.5f, 0.5f),
     };
-    public Tile RenderedTile  {get; set;} = null;
+    public Tile RenderedTile { get; set; } = null;
 
     float _unconnecteddiv = 2;
     [Export(PropertyHint.Range, "1,10")]
@@ -129,12 +132,12 @@ public class PlacedTile : TestTile
     {
         float sz = MeepleSize;
         var vsz = new Vector2(sz, sz);
-        DrawRect(new Rect2(pos-vsz/2,  vsz), color);
+        DrawRect(new Rect2(pos - vsz / 2, vsz), color);
     }
     void DrawMonastery(Vector2 pos, Color color)
     {
-        DrawRect(new Rect2(pos - (new Vector2(MonasterySize/6, MonasterySize/2)), new Vector2(MonasterySize / 3, MonasterySize)), color);
-        DrawRect(new Rect2(pos - (new Vector2(MonasterySize/2, MonasterySize/6)), new Vector2(MonasterySize, MonasterySize / 3)), color);
+        DrawRect(new Rect2(pos - (new Vector2(MonasterySize / 6, MonasterySize / 2)), new Vector2(MonasterySize / 3, MonasterySize)), color);
+        DrawRect(new Rect2(pos - (new Vector2(MonasterySize / 2, MonasterySize / 6)), new Vector2(MonasterySize, MonasterySize / 3)), color);
     }
     void DrawCityBonus(Vector2 pos, Color color)
     {

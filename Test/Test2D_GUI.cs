@@ -1,6 +1,9 @@
-﻿using System;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
@@ -23,21 +26,21 @@ public class Test2D_GUI : Control
     GameEngine _game;
     Camera2D _camera;
     PlacedTile _currenttile;
-    List<Label> _playerlabels = new List<Label>();
+    readonly List<Label> _playerlabels = new List<Label>();
     CanvasLayer _cl;
     Godot.Container _sidecontainer;
     TabContainer _playerTabContainer;
     VBoxContainer _mainButtonContainer;
-    List<VBoxContainer> _playerDataContainers = new List<VBoxContainer>();
-    List<Button> _pawnPlaceButtons = new List<Button>();
+    readonly List<VBoxContainer> _playerDataContainers = new List<VBoxContainer>();
+    readonly List<Button> _pawnPlaceButtons = new List<Button>();
     Button _saveButton;
     Button _undoButton;
     Button _redoButton;
     Label _hashLabel;
     class GraphLabel : Label
     {
-        TileMap _tilemap;
-        Map.Graph _graph;
+        readonly TileMap _tilemap;
+        readonly Map.Graph _graph;
         void MouseEntered()
         {
             _tilemap.tiledisplays.ForEach(td =>
@@ -63,11 +66,12 @@ public class Test2D_GUI : Control
     }
     class PlacePawnButton : Button
     {
-        GameEngine _game;
-        object o;
-        int _indx;
+        readonly GameEngine _game;
+        readonly object o;
+        readonly int _indx;
         PlacedTile _placedTile => _gui._tileMap.tiledisplays.Find(it => it.RenderedTile == ((InternalNode)o).ParentTile);
-        Test2D_GUI _gui;
+
+        readonly Test2D_GUI _gui;
         void MouseEntered()
         {
             if (o is InternalNode)

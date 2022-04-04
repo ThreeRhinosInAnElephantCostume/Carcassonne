@@ -1,4 +1,4 @@
-[gd_scene load_steps=227 format=2]
+[gd_scene load_steps=225 format=2]
 
 [ext_resource path="res://Models/Tiles/BaseGame/MATERIALS/Material-Road_Sand.material" type="Material" id=1]
 [ext_resource path="res://Models/Tiles/BaseGame/MATERIALS/Material-Grass_Green.material" type="Material" id=2]
@@ -2165,16 +2165,6 @@ surfaces/0 = {
 "vertex_count": 30
 }
 
-[sub_resource type="ParticlesMaterial" id=220]
-lifetime_randomness = 0.06
-gravity = Vector3( 0, 0, 0 )
-initial_velocity = 9.1
-initial_velocity_random = 1.0
-
-[sub_resource type="CapsuleMesh" id=221]
-radius = 0.023
-mid_height = 0.02
-
 [sub_resource type="ArrayMesh" id=144]
 surfaces/0 = {
 "aabb": AABB( -0.5, 0.04, -0.166666, 0.333343, 0.06, 0.126676 ),
@@ -3868,12 +3858,6 @@ material/0 = null
 [node name="Brick4" type="MeshInstance" parent="CITY"]
 mesh = SubResource( 143 )
 material/0 = null
-
-[node name="Particles" type="Particles" parent="CITY"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.225015, 0 )
-visibility_aabb = AABB( -0.559671, -0.0828739, -0.100738, 0.242389, 0.165748, 0.201476 )
-process_material = SubResource( 220 )
-draw_pass_1 = SubResource( 221 )
 
 [node name="GRASS_1" type="Spatial" parent="."]
 

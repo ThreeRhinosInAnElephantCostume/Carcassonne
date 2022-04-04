@@ -84,7 +84,7 @@ void fragment()
 	if(icon_enabled)
 	{
 		vec2 icon_coords = (base_uv/icon_scale) + icon_offset;
-		vec4 icon_albedo = texture(icon_texture, icon_coords);
+		vec4 icon_albedo = texture(icon_texture, base_uv);
 		icon_albedo.rgb = icon_albedo.r * primary_color.rgb + 
 			icon_albedo.g * secondary_color.rgb + 
 			icon_albedo.b * tertiary_color.rgb;

@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -17,11 +21,12 @@ using ExtraMath;
 using Godot;
 using Newtonsoft.Json;
 using static System.Math;
+using static Constants.ShaderParams.ThemableShader;
 using static Utils;
 using Expression = System.Linq.Expressions.Expression;
 
 [Tool]
-public class PropBanner : Spatial, IProp, IExtendedProperties
+public class BannerProp : Spatial, IProp, IExtendedProperties
 {
     MeshInstance _bannerMeshInstance;
 
@@ -150,10 +155,10 @@ public class PropBanner : Spatial, IProp, IExtendedProperties
         }
     }
 
-    PersonalTheme IProp._theme {get; set;}
-    string IProp._examplePlayerTheme {get; set;}
-    List<IProp> IProp._children {get; set;} = new List<IProp>();
-    IProp IProp._parent {get; set;}
+    PersonalTheme IProp._theme { get; set; }
+    string IProp._examplePlayerTheme { get; set; }
+    List<IProp> IProp._children { get; set; } = new List<IProp>();
+    IProp IProp._parent { get; set; }
 
     public class ImageContent
     {
@@ -189,19 +194,21 @@ public class PropBanner : Spatial, IProp, IExtendedProperties
     void ShaderUpdate()
     {
         var mat = (ShaderMaterial)_bannerMeshInstance.GetActiveMaterial(0);
-        mat.SetShaderParam(Constants.SHADER_PRIMARY_ENABLED, PrimaryEnabled);
-        mat.SetShaderParam(Constants.SHADER_SECONDARY_ENABLED, SecondaryEnabled);
-        mat.SetShaderParam(Constants.SHADER_TERTIARY_ENABLED, TertiaryEnabled);
-        mat.SetShaderParam(Constants.SHADER_BILLBOARD_ENABLED, Billboard);
-        mat.SetShaderParam(Constants.SHADER_BACKGROUND_OPACITY, BackgroundOpacity);
+        mat.SetShaderParam(SHADER_PRIMARY_ENABLED, PrimaryEnabled);
+        mat.SetShaderParam(SHADER_SECONDARY_ENABLED, SecondaryEnabled);
+        mat.SetShaderParam(SHADER_TERTIARY_ENABLED, TertiaryEnabled);
+        mat.SetShaderParam(SHADER_BILLBOARD_ENABLED, Billboard);
+        mat.SetShaderParam(SHADER_BACKGROUND_OPACITY, BackgroundOpacity);
         if (ShowIcon)
         {
-            mat.SetShaderParam(Constants.SHADER_ICON_SCALE_THEME_SETTER, IconScale);
-            mat.SetShaderParam(Constants.SHADER_ICON_OFFSET_THEME_SETTER, IconOffset);
+            mat.SetShaderParam(SHADER_ICON_SCALE_THEME_SETTER, IconScale);
+            mat.SetShaderParam(SHADER_ICON_OFFSET_THEME_SETTER, IconOffset);
         }
     }
     void SetTheme(PersonalTheme t)
     {
+        Assert(_bannerMeshInstance != null, "_bannerMeshInstance is null! Invalid init?");
+        Assert(_bannerMeshInstance.GetSurfaceMaterialCount() > 0, "Error no surface materials!");
         var mat = (ShaderMaterial)_bannerMeshInstance.GetActiveMaterial(0);
         mat.SetShaderParam("albedo", Background switch
         {
@@ -244,7 +251,7 @@ public class PropBanner : Spatial, IProp, IExtendedProperties
         if (Content == 0)
         {
             _contentData = null;
-            mat.SetShaderParam(Constants.SHADER_TEXTURE_ENABLED, false);
+            mat.SetShaderParam(SHADER_TEXTURE_ENABLED, false);
         }
         else if (Content == 1) // Sprite
         {
@@ -263,16 +270,16 @@ public class PropBanner : Spatial, IProp, IExtendedProperties
                 _contentData = ic;
             }
             ic = (ImageContent)_contentData;
-            mat.SetShaderParam(Constants.SHADER_TEXTURE_ENABLED, true);
+            mat.SetShaderParam(SHADER_TEXTURE_ENABLED, true);
             mat.SetShaderParam("texture_albedo", ic._texture);
-            mat.SetShaderParam(Constants.SHADER_MASK_ENABLED_THEME_SETTER, ic._maskEnabled);
+            mat.SetShaderParam(SHADER_MASK_ENABLED_THEME_SETTER, ic._maskEnabled);
             ep.AddProperty(new GDProperty("Texture", Variant.Type.Object, PropertyHint.ResourceType, "Texture"),
                 () => (_contentData as ImageContent)._texture, o => (_contentData as ImageContent)._texture = (Texture)o);
             ep.AddProperty(new GDProperty("MaskEnabled", Variant.Type.Bool, PropertyHint.None),
                 () => (_contentData as ImageContent)._maskEnabled, o => { (_contentData as ImageContent)._maskEnabled = (bool)o; Refresh(); });
             if (ic._maskEnabled)
             {
-                mat.SetShaderParam(Constants.SHADER_MASK_TEXTURE_THEME_SETTER, ic._mask);
+                mat.SetShaderParam(SHADER_MASK_TEXTURE_THEME_SETTER, ic._mask);
                 ep.AddProperty(new GDProperty("Mask", Variant.Type.Object, PropertyHint.ResourceType, "Texture"),
                     () => (_contentData as ImageContent)._mask, o => (_contentData as ImageContent)._mask = (Texture)o);
             }
@@ -382,7 +389,7 @@ public class PropBanner : Spatial, IProp, IExtendedProperties
         RealRefresh();
     }
 
-    public PropBanner()
+    public BannerProp()
     {
 
     }
@@ -392,10 +399,11 @@ public class PropBanner : Spatial, IProp, IExtendedProperties
         {
             _bannerMeshInstance = this.GetNodeSafe<MeshInstance>("BannerMesh");
         }
-        catch(KeyNotFoundException)
+        catch (KeyNotFoundException)
         {
             _bannerMeshInstance = new MeshInstance();
             _bannerMeshInstance.Mesh = new QuadMesh();
+            _bannerMeshInstance.Name = "BannerMesh";
             this.AddChild(_bannerMeshInstance);
         }
         (this as IProp).InitHierarchy();
