@@ -1,6 +1,9 @@
-﻿using System;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
@@ -31,9 +34,9 @@ public class ThemeableIconPreview : Control
     Control _mainControlContainer;
     Texture _currentTexture;
     FileDialog _dialog;
-    PackedScene _packedFileDialog = ResourceLoader.Load<PackedScene>("res://UI/FileDialog.tscn");
+    readonly PackedScene _packedFileDialog = ResourceLoader.Load<PackedScene>("res://UI/FileDialog.tscn");
     System.Threading.Thread _transformThread;
-    AutoResetEvent _ev = new AutoResetEvent(false);
+    readonly AutoResetEvent _ev = new AutoResetEvent(false);
     PersonalTheme _lastTheme;
     Texture _lastTexture;
     // While I am fairly certain  that this is thread-safe due to handles being atomic, I am not 100% on this.

@@ -1,6 +1,9 @@
-﻿using System;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
@@ -12,6 +15,7 @@ using ExtraMath;
 using Godot;
 using Newtonsoft.Json;
 using static System.Math;
+using static Constants.ShaderParams.ThemableShader;
 using static Utils;
 using Expression = System.Linq.Expressions.Expression;
 
@@ -62,32 +66,32 @@ public class PersonalTheme
     public static List<Action<PersonalTheme>> GetSettersForShader(ShaderMaterial shad, bool iconenabled = true)
     {
         var ret = new List<Action<PersonalTheme>>();
-        if (shad.GetShaderParam(Constants.SHADER_PRIMARY_THEME_SETTER) != null)
-            ret.Add(t => shad.SetShaderParam(Constants.SHADER_PRIMARY_THEME_SETTER, t.PrimaryColor));
-        if (shad.GetShaderParam(Constants.SHADER_SECONDARY_THEME_SETTER) != null)
-            ret.Add(t => shad.SetShaderParam(Constants.SHADER_SECONDARY_THEME_SETTER, t.SecondaryColor));
-        if (shad.GetShaderParam(Constants.SHADER_TERTIARY_THEME_SETTER) != null)
-            ret.Add(t => shad.SetShaderParam(Constants.SHADER_TERTIARY_THEME_SETTER, t.TertiaryColor));
-        if (shad.GetShaderParam(Constants.SHADER_ICON_ENABLED_THEME_SETTER) != null)
-            ret.Add(t => shad.SetShaderParam(Constants.SHADER_ICON_ENABLED_THEME_SETTER, iconenabled));
-        if (iconenabled && shad.GetShaderParam(Constants.SHADER_ICON_TEXTURE_THEME_SETTER) != null)
-            ret.Add(t => shad.SetShaderParam(Constants.SHADER_ICON_TEXTURE_THEME_SETTER, t.Icon));
+        if (shad.GetShaderParam(SHADER_PRIMARY_THEME_SETTER) != null)
+            ret.Add(t => shad.SetShaderParam(SHADER_PRIMARY_THEME_SETTER, t.PrimaryColor));
+        if (shad.GetShaderParam(SHADER_SECONDARY_THEME_SETTER) != null)
+            ret.Add(t => shad.SetShaderParam(SHADER_SECONDARY_THEME_SETTER, t.SecondaryColor));
+        if (shad.GetShaderParam(SHADER_TERTIARY_THEME_SETTER) != null)
+            ret.Add(t => shad.SetShaderParam(SHADER_TERTIARY_THEME_SETTER, t.TertiaryColor));
+        if (shad.GetShaderParam(SHADER_ICON_ENABLED_THEME_SETTER) != null)
+            ret.Add(t => shad.SetShaderParam(SHADER_ICON_ENABLED_THEME_SETTER, iconenabled));
+        if (iconenabled && shad.GetShaderParam(SHADER_ICON_TEXTURE_THEME_SETTER) != null)
+            ret.Add(t => shad.SetShaderParam(SHADER_ICON_TEXTURE_THEME_SETTER, t.Icon));
         return ret;
     }
     public void SetFullShader(ShaderMaterial shad, bool icon_enabled, Vector2? icon_scale = null, Vector2? icon_offset = null)
     {
-        shad.SetShaderParam(Constants.SHADER_PRIMARY_THEME_SETTER, PrimaryColor);
-        shad.SetShaderParam(Constants.SHADER_PRIMARY_THEME_SETTER, SecondaryColor);
-        shad.SetShaderParam(Constants.SHADER_PRIMARY_THEME_SETTER, TertiaryColor);
-        shad.SetShaderParam(Constants.SHADER_ICON_ENABLED_THEME_SETTER, icon_enabled);
+        shad.SetShaderParam(SHADER_PRIMARY_THEME_SETTER, PrimaryColor);
+        shad.SetShaderParam(SHADER_PRIMARY_THEME_SETTER, SecondaryColor);
+        shad.SetShaderParam(SHADER_PRIMARY_THEME_SETTER, TertiaryColor);
+        shad.SetShaderParam(SHADER_ICON_ENABLED_THEME_SETTER, icon_enabled);
         if (icon_enabled)
         {
             Assert(Icon != null);
             Assert(icon_scale != null);
             Assert(icon_offset != null);
-            shad.SetShaderParam(Constants.SHADER_ICON_TEXTURE_THEME_SETTER, Icon);
-            shad.SetShaderParam(Constants.SHADER_ICON_SCALE_THEME_SETTER, icon_scale.Value);
-            shad.SetShaderParam(Constants.SHADER_ICON_OFFSET_THEME_SETTER, icon_offset.Value);
+            shad.SetShaderParam(SHADER_ICON_TEXTURE_THEME_SETTER, Icon);
+            shad.SetShaderParam(SHADER_ICON_SCALE_THEME_SETTER, icon_scale.Value);
+            shad.SetShaderParam(SHADER_ICON_OFFSET_THEME_SETTER, icon_offset.Value);
         }
     }
     public Color TransformColor(Color col)

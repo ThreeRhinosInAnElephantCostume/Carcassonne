@@ -1,6 +1,44 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://Props/Prop.cs" type="Script" id=1]
+[ext_resource path="res://Props/BannerProp.cs" type="Script" id=1]
+[ext_resource path="res://Props/PropBanner.gdshader" type="Shader" id=2]
+[ext_resource path="res://Icons/Themeable/PlayerIcons/DefaultIcon.png" type="Texture" id=3]
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = ExtResource( 2 )
+shader_param/albedo = Color( 1, 1, 1, 0 )
+shader_param/specular = null
+shader_param/metallic = null
+shader_param/roughness = null
+shader_param/point_size = null
+shader_param/uv1_scale = null
+shader_param/uv1_offset = null
+shader_param/uv2_scale = null
+shader_param/uv2_offset = null
+shader_param/primary_color = Color( 0, 0, 1, 1 )
+shader_param/secondary_color = null
+shader_param/tertiary_color = null
+shader_param/primary_enabled = true
+shader_param/secondary_enabled = true
+shader_param/tertiary_enabled = true
+shader_param/icon_enabled = true
+shader_param/icon_scale = Vector2( 1, 1 )
+shader_param/icon_offset = Vector2( 0, 0 )
+shader_param/mask_enabled = false
+shader_param/billboard_enabled = true
+shader_param/texture_enabled = false
+shader_param/background_alpha = 0.0
+shader_param/icon_texture = ExtResource( 3 )
+
+[sub_resource type="QuadMesh" id=1]
+material = SubResource( 2 )
 
 [node name="FlatBanner" type="Spatial"]
 script = ExtResource( 1 )
+ShowIcon = true
+IconOffset = Vector2( 0, 0 )
+IconScale = Vector2( 1, 1 )
+
+[node name="BannerMesh" type="MeshInstance" parent="."]
+mesh = SubResource( 1 )
+material/0 = null

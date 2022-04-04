@@ -1,6 +1,9 @@
-﻿using System;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
@@ -17,11 +20,11 @@ using static Utils;
 
 public class Sidepiece : Area2D
 {
-    PotentialTile potential;
-    int indx;
+    readonly PotentialTile potential;
+    readonly int indx;
     bool mouseover = false;
-    PlacedTile nexttile;
-    CollisionPolygon2D collider;
+    readonly PlacedTile nexttile;
+    readonly CollisionPolygon2D collider;
     public override void _Input(InputEvent @event)
     {
         if (@event is InputEventMouseButton e)
