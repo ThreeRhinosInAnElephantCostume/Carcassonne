@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -23,9 +27,9 @@ public static class TileDataLoader
         public TileGraphicsConfig.Config Config;
     }
     public static GameExternalDataLoader GlobalLoader = new GameExternalDataLoader();
-    static Dictionary<string, TilePrototype> _prototypeCache = new Dictionary<string, TilePrototype>();
-    static Dictionary<string, EditableTileset> _tilesetCache = new Dictionary<string, EditableTileset>();
-    static Dictionary<string, List<TileModel>> _modelsByPrototypeCache = new Dictionary<string, List<TileModel>>();
+    static readonly Dictionary<string, TilePrototype> _prototypeCache = new Dictionary<string, TilePrototype>();
+    static readonly Dictionary<string, EditableTileset> _tilesetCache = new Dictionary<string, EditableTileset>();
+    static readonly Dictionary<string, List<TileModel>> _modelsByPrototypeCache = new Dictionary<string, List<TileModel>>();
     public static List<TileModel> LoadPrototypeModels(string protpath, bool cached = true)
     {
         lock (_modelsByPrototypeCache)
@@ -75,7 +79,7 @@ public static class TileDataLoader
     public static TilePrototype LoadTilePrototype(string path, bool failsafe = false, bool cache = true)
     {
         if (!path.Contains("res://"))
-            path = ConcatPaths(Constants.TILE_DIRECTORY, path);
+            path = ConcatPaths(Constants.DataPaths.TILE_DIRECTORY, path);
 
         lock (_prototypeCache)
         {
@@ -122,7 +126,7 @@ public static class TileDataLoader
     public static Carcassonne.ITileset LoadTileset(string path, bool cache = true)
     {
         if (!path.Contains("res://"))
-            path = ConcatPaths(Constants.TILESET_DIRECTORY, path);
+            path = ConcatPaths(Constants.DataPaths.TILESET_DIRECTORY, path);
 
         lock (_tilesetCache)
         {

@@ -81,8 +81,8 @@ public class PersonalTheme
     public void SetFullShader(ShaderMaterial shad, bool icon_enabled, Vector2? icon_scale = null, Vector2? icon_offset = null)
     {
         shad.SetShaderParam(SHADER_PRIMARY_THEME_SETTER, PrimaryColor);
-        shad.SetShaderParam(SHADER_PRIMARY_THEME_SETTER, SecondaryColor);
-        shad.SetShaderParam(SHADER_PRIMARY_THEME_SETTER, TertiaryColor);
+        shad.SetShaderParam(SHADER_SECONDARY_THEME_SETTER, SecondaryColor);
+        shad.SetShaderParam(SHADER_TERTIARY_THEME_SETTER, TertiaryColor);
         shad.SetShaderParam(SHADER_ICON_ENABLED_THEME_SETTER, icon_enabled);
         if (icon_enabled)
         {

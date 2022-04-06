@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -125,7 +129,7 @@ public class TileEditor : Control
         {
             _logicEditor.Path = "";
         };
-        _fileManager.Path = Constants.TILE_DIRECTORY;
+        _fileManager.Path = Constants.DataPaths.TILE_DIRECTORY;
 
         _logicEditor.TileChangedHandle = (t, p) => _graphicsEditor.SetTile(t, _logicEditor.Path);
     }

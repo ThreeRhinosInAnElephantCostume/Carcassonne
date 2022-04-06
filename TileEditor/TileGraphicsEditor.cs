@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -55,12 +59,12 @@ public class TileGraphicsEditor : VBoxContainer
     PlacedTile _placedTile;
     MeshInstance _tileLogicOverlay;
     string _modelPath = "";
-    List<string> _modelGroups = new List<string>();
-    Dictionary<string, bool> _groupAssigned = new System.Collections.Generic.Dictionary<string, bool>();
-    Dictionary<string, Vector3> _groupAveragePosition = new Dictionary<string, Vector3>();
+    readonly List<string> _modelGroups = new List<string>();
+    readonly Dictionary<string, bool> _groupAssigned = new System.Collections.Generic.Dictionary<string, bool>();
+    readonly Dictionary<string, Vector3> _groupAveragePosition = new Dictionary<string, Vector3>();
 
     int _graphicsRotation = 0;
-    List<string> _modelsToUpdate = new List<string>();
+    readonly List<string> _modelsToUpdate = new List<string>();
     void AssignableSelected(int indx)
     {
         if (!_loaded)
@@ -488,7 +492,7 @@ public class TileGraphicsEditor : VBoxContainer
             }
         };
 
-        pop.Path = Constants.TILE_MODEL_DIRECTORY;
+        pop.Path = Constants.DataPaths.TILE_MODEL_DIRECTORY;
 
         AddChild(pop);
 

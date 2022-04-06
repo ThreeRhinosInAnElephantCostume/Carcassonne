@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -34,8 +38,8 @@ public class TilesetEditor : Control
     }
     ListMode _listMode = ListMode.NOTHING;
     int _listIndex = 0;
-    List<string> _possibleTilePaths = new List<string>();
-    List<(string path, int n, bool isstarter)> _currentTileData = new List<(string, int, bool)>();
+    readonly List<string> _possibleTilePaths = new List<string>();
+    readonly List<(string path, int n, bool isstarter)> _currentTileData = new List<(string, int, bool)>();
     // Controls
     GroupedFileManager _fileManager;
     Container _mainContainer;
@@ -225,7 +229,7 @@ public class TilesetEditor : Control
     // Internal logic
     string CreateTileText(string path, int n, bool starter)
     {
-        string visstr = path.Replace(Constants.TILE_DIRECTORY, "");
+        string visstr = path.Replace(Constants.DataPaths.TILE_DIRECTORY, "");
         if (visstr[0] == '/')
             visstr = visstr.Substring(1);
         return ($"{visstr} " + ((starter) ? ("STARTER") : "") + ((n > 1) ? ("(" + n.ToString() + ")") : ""));
@@ -321,11 +325,11 @@ public class TilesetEditor : Control
         filter = filter.ToLower();
         _possibleTilePaths.Clear();
         _possibleTileList.Clear();
-        var files = ListDirectoryFilesRecursively(Constants.TILE_DIRECTORY, s => s.EndsWith(".json"));
+        var files = ListDirectoryFilesRecursively(Constants.DataPaths.TILE_DIRECTORY, s => s.EndsWith(".json"));
         files.Sort();
         foreach (var it in files)
         {
-            string visstr = it.Replace(Constants.TILE_DIRECTORY, "");
+            string visstr = it.Replace(Constants.DataPaths.TILE_DIRECTORY, "");
             if (visstr[0] == '/')
                 visstr = visstr.Substring(1);
             if (filter != "" && !visstr.ToLower().Contains(filter))
@@ -573,7 +577,7 @@ public class TilesetEditor : Control
                 SerializeToFile<EditableTileset>(s, new EditableTileset(true));
             };
             _fileManager.Extension = ".json";
-            _fileManager.Path = Constants.TILESET_DIRECTORY;
+            _fileManager.Path = Constants.DataPaths.TILESET_DIRECTORY;
         }
 
         _mainContainer = GetNode<Container>("HBoxContainer/MainContainer");

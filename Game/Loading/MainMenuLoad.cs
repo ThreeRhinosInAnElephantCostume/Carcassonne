@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -35,7 +39,7 @@ public class MainMenuLoad : Control
     Label _loadingLabel;
     List<string> _prototypePaths = new List<string>();
     ConcurrentQueue<string> _remainingPrototypePaths = new ConcurrentQueue<string>();
-    ConcurrentQueue<string> _lastProcessedPaths = new ConcurrentQueue<string>();
+    readonly ConcurrentQueue<string> _lastProcessedPaths = new ConcurrentQueue<string>();
     float _resourceLoadProgress = 0;
     public float Progress { get; protected set; } = 0;
     AudioPlayer _gameAudio;
@@ -86,7 +90,7 @@ public class MainMenuLoad : Control
         }
 
         _step = LoadSteps.SEARCHING_FOR_FILES;
-        _prototypePaths = Utils.ListDirectoryFilesRecursively(Constants.TILE_DIRECTORY);
+        _prototypePaths = Utils.ListDirectoryFilesRecursively(Constants.DataPaths.TILE_DIRECTORY);
 
         _step = LoadSteps.LOADING_TILES;
         _remainingPrototypePaths = new ConcurrentQueue<string>(_prototypePaths);
