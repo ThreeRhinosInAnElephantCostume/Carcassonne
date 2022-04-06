@@ -172,7 +172,7 @@ public class ThemeableIconPreview : Control
         if (_dialog != null)
             DestroyNode(_dialog);
         _dialog = _packedFileDialog.Instance<FileDialog>();
-        _dialog.CurrentDir = Constants.THEMEABLE_ICONS_DIRECTORY;
+        _dialog.CurrentDir = Constants.DataPaths.THEMEABLE_ICONS_DIRECTORY;
         _dialog.Filters = new string[]
         {
             "*.png ; PNG images",
@@ -189,7 +189,7 @@ public class ThemeableIconPreview : Control
     {
         SetInput(false);
         var diag = _packedFileDialog.Instance<FileDialog>();
-        diag.CurrentDir = Constants.PLAYER_THEMES_DIRECTORY;
+        diag.CurrentDir = Constants.DataPaths.PLAYER_THEMES_DIRECTORY;
         diag.Filters = new string[]
         {
             "*.json ; THEMES"
@@ -240,7 +240,7 @@ public class ThemeableIconPreview : Control
         _tertiaryColorPicker.DisplayedName = "Tertiary";
         _tertiaryColorPicker.OnColorChangedHandle = c => UpdateColors();
 
-        LoadIcon(ConcatPaths(Constants.THEMEABLE_ICONS_DIRECTORY, "ThemableTest.png"));
+        LoadIcon(ConcatPaths(Constants.DataPaths.THEMEABLE_ICONS_DIRECTORY, "ThemableTest.png"));
     }
 
 }

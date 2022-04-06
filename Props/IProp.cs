@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -17,9 +21,9 @@ using Expression = System.Linq.Expressions.Expression;
 
 public interface IProp
 {
-    PersonalTheme _theme {get; protected set;}
+    PersonalTheme _theme { get; protected set; }
     PersonalTheme CurrentTheme { get => _theme; set { _theme = value; UpdateProp(); } }
-    string _examplePlayerTheme {get; protected set;}
+    string _examplePlayerTheme { get; protected set; }
     [Export(PropertyHint.File, "*.json,")]
     public string ExamplePlayerTheme
     {
@@ -45,8 +49,8 @@ public interface IProp
         }
     }
 
-    List<IProp> _children {get; set;}
-    IProp _parent {get; set;}
+    List<IProp> _children { get; set; }
+    IProp _parent { get; set; }
     public void AddSubProp(IProp child)
     {
         _children.Add(child);
@@ -55,11 +59,11 @@ public interface IProp
     public void UpdateTheme();
     public void UpdateProp()
     {
-        if(_parent != null)
+        if (_parent != null)
             this.CurrentTheme = _parent.CurrentTheme;
         if (CurrentTheme == null)
             return;
-        foreach(var it in _children)
+        foreach (var it in _children)
         {
             it._theme = _theme;
             it.UpdateProp();
@@ -68,13 +72,13 @@ public interface IProp
     }
     public void InitHierarchy()
     {
-        if(this is Node node)
+        if (this is Node node)
         {
 
             Node Parent = node.GetParent();
-            while(Parent != null)
+            while (Parent != null)
             {
-                if(Parent is IProp parent)
+                if (Parent is IProp parent)
                 {
                     _parent = parent;
                     parent.AddSubProp(this);
@@ -84,8 +88,8 @@ public interface IProp
             }
             if (Engine.EditorHint && ExamplePlayerTheme == "" && CurrentTheme == null)
             {
-                ExamplePlayerTheme = Constants.DEFAULT_PLAYER_THEME_PATH;
+                ExamplePlayerTheme = Constants.DataPaths.DEFAULT_PLAYER_THEME_PATH;
             }
-        }   
+        }
     }
 }

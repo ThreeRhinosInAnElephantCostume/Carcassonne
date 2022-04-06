@@ -1,4 +1,8 @@
-﻿/*
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+/*
 
 	GlobalScripts.cs
 	This script should be the first thing to be loaded in, and consequently the first _Ready() call. 
@@ -26,8 +30,8 @@ using Expression = System.Linq.Expressions.Expression;
 public class GlobalScript : Node
 {
     public static GlobalScript GS;
-    ConcurrentQueue<Action> _toExec = new ConcurrentQueue<Action>();
-    System.Threading.Mutex _saveSettingsMX = new System.Threading.Mutex();
+    readonly ConcurrentQueue<Action> _toExec = new ConcurrentQueue<Action>();
+    readonly System.Threading.Mutex _saveSettingsMX = new System.Threading.Mutex();
     int _saveIndex = 0;
     void DequeDeferred()
     {
@@ -64,7 +68,7 @@ public class GlobalScript : Node
             Formatting = Formatting.Indented,
         };
         var data = JsonConvert.SerializeObject(Settings, settings);
-        WriteFile(Constants.SETTINGS_PATH, data);
+        WriteFile(Constants.DataPaths.SETTINGS_PATH, data);
         if (clearmodified)
             Settings.ClearModified();
         _saveIndex = indx;
@@ -79,25 +83,25 @@ public class GlobalScript : Node
     {
         List<string> requiredpaths = new List<string>()
         {
-            Constants.TILE_DIRECTORY,
-            Constants.TILESET_DIRECTORY,
-            Constants.TILE_MODEL_DIRECTORY,
-            Constants.PLAYER_THEMES_DIRECTORY,
-            Constants.THEMEABLE_ICONS_DIRECTORY,
+            Constants.DataPaths.TILE_DIRECTORY,
+            Constants.DataPaths.TILESET_DIRECTORY,
+            Constants.DataPaths.TILE_MODEL_DIRECTORY,
+            Constants.DataPaths.PLAYER_THEMES_DIRECTORY,
+            Constants.DataPaths.THEMEABLE_ICONS_DIRECTORY,
         };
         foreach (var it in requiredpaths)
         {
             EnsurePathExists(it);
         }
-        if (!FileExists(Constants.SETTINGS_PATH))
+        if (!FileExists(Constants.DataPaths.SETTINGS_PATH))
         {
             SaveSettings(false);
         }
-        var nsettings = DeserializeFromFile<SettingsSystem.MainSettings>(Constants.SETTINGS_PATH, true);
+        var nsettings = DeserializeFromFile<SettingsSystem.MainSettings>(Constants.DataPaths.SETTINGS_PATH, true);
         if (nsettings == null)
         {
-            Assert(FileExists(Constants.SETTINGS_PATH), "Error settings writing to " + Constants.SETTINGS_PATH);
-            GD.PrintErr("An error occurend while loading settings from " + Constants.SETTINGS_PATH);
+            Assert(FileExists(Constants.DataPaths.SETTINGS_PATH), "Error settings writing to " + Constants.DataPaths.SETTINGS_PATH);
+            GD.PrintErr("An error occurend while loading settings from " + Constants.DataPaths.SETTINGS_PATH);
             GD.PrintErr("Falling back on default settings");
         }
         else
@@ -107,17 +111,17 @@ public class GlobalScript : Node
         }
         SaveSettings(true);
 
-        if (!FileExists(Constants.DEFAULT_PLAYER_THEME_PATH))
+        if (!FileExists(Constants.DataPaths.DEFAULT_PLAYER_THEME_PATH))
         {
             var theme = new PersonalTheme();
             theme.PrimaryColor = new Color(1f, 0f, 0f);
             theme.SecondaryColor = new Color(0f, 1f, 0f);
             theme.TertiaryColor = new Color(0f, 0f, 1f);
-            theme.IconPath = Constants.DEFAULT_PLAYER_ICON_PATH;
-            theme.AvatarPath = Constants.DEFAULT_PLAYER_AVATAR_PATH;
-            SerializeToFile(Constants.DEFAULT_PLAYER_THEME_PATH, theme);
+            theme.IconPath = Constants.DataPaths.DEFAULT_PLAYER_ICON_PATH;
+            theme.AvatarPath = Constants.DataPaths.DEFAULT_PLAYER_AVATAR_PATH;
+            SerializeToFile(Constants.DataPaths.DEFAULT_PLAYER_THEME_PATH, theme);
         }
-        DefaultTheme = DeserializeFromFile<PersonalTheme>(Constants.DEFAULT_PLAYER_THEME_PATH);
+        DefaultTheme = DeserializeFromFile<PersonalTheme>(Constants.DataPaths.DEFAULT_PLAYER_THEME_PATH);
 
         // Example use for OnChangeHandle:
 
