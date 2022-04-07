@@ -22,7 +22,20 @@ using Expression = System.Linq.Expressions.Expression;
 public interface IProp
 {
     PersonalTheme _theme { get; protected set; }
-    PersonalTheme CurrentTheme { get => _theme; set { _theme = value; UpdateProp(); } }
+    PersonalTheme CurrentTheme
+    {
+        get
+        {
+            if (_theme == null && Engine.EditorHint)
+            {
+                if (Globals.DefaultTheme == null)
+                    Globals.DefaultTheme = DeserializeFromFile<PersonalTheme>(Constants.DataPaths.DEFAULT_PLAYER_THEME_PATH);
+                return Globals.DefaultTheme;
+            }
+            return _theme;
+        }
+        set { _theme = value; UpdateProp(); }
+    }
     string _examplePlayerTheme { get; protected set; }
     [Export(PropertyHint.File, "*.json,")]
     public string ExamplePlayerTheme
@@ -53,6 +66,8 @@ public interface IProp
     IProp _parent { get; set; }
     public void AddSubProp(IProp child)
     {
+        if (child == this)
+            return;
         _children.Add(child);
         child.UpdateProp();
     }
@@ -60,7 +75,7 @@ public interface IProp
     public void UpdateProp()
     {
         if (_parent != null)
-            this.CurrentTheme = _parent.CurrentTheme;
+            this._theme = _parent._theme;
         if (CurrentTheme == null)
             return;
         foreach (var it in _children)

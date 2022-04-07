@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -17,6 +21,7 @@ using static Utils;
 using Expression = System.Linq.Expressions.Expression;
 using Thread = System.Threading.Thread;
 
+[Tool]
 public class ThemeSingleColorPicker : HBoxContainer
 {
     public Action<Color> OnColorChangedHandle = c => { };
@@ -57,6 +62,7 @@ public class ThemeSingleColorPicker : HBoxContainer
                 return;
             }
             _picker.Color = value;
+            _picker.Update();
         }
     }
     Label _label;

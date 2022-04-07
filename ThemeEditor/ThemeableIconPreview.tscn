@@ -1,0 +1,126 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://UI/ThemeColorPicker.tscn" type="PackedScene" id=1]
+[ext_resource path="res://ThemeEditor/ThemeableIconPreview.cs" type="Script" id=2]
+
+[node name="ThemeableIconEditor" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HSplitContainer" type="HSplitContainer" parent="HBoxContainer"]
+margin_right = 1280.0
+margin_bottom = 720.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VSplitContainer" type="VSplitContainer" parent="HBoxContainer/HSplitContainer"]
+margin_right = 847.0
+margin_bottom = 720.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 2.0
+
+[node name="ViewportContainer" type="ViewportContainer" parent="HBoxContainer/HSplitContainer/VSplitContainer"]
+margin_right = 847.0
+margin_bottom = 354.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+stretch = true
+
+[node name="RawViewViewport" type="Viewport" parent="HBoxContainer/HSplitContainer/VSplitContainer/ViewportContainer"]
+size = Vector2( 847, 354 )
+own_world = true
+handle_input_locally = false
+render_target_update_mode = 3
+
+[node name="RawViewRoot" type="Node2D" parent="HBoxContainer/HSplitContainer/VSplitContainer/ViewportContainer/RawViewViewport"]
+
+[node name="Camera2D" type="Camera2D" parent="HBoxContainer/HSplitContainer/VSplitContainer/ViewportContainer/RawViewViewport/RawViewRoot"]
+current = true
+
+[node name="ViewportContainer2" type="ViewportContainer" parent="HBoxContainer/HSplitContainer/VSplitContainer"]
+margin_top = 366.0
+margin_right = 847.0
+margin_bottom = 720.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+stretch = true
+
+[node name="EffectViewViewport" type="Viewport" parent="HBoxContainer/HSplitContainer/VSplitContainer/ViewportContainer2"]
+size = Vector2( 847, 354 )
+own_world = true
+handle_input_locally = false
+render_target_update_mode = 3
+
+[node name="EffectViewRoot" type="Node2D" parent="HBoxContainer/HSplitContainer/VSplitContainer/ViewportContainer2/EffectViewViewport"]
+
+[node name="Camera2D" type="Camera2D" parent="HBoxContainer/HSplitContainer/VSplitContainer/ViewportContainer2/EffectViewViewport/EffectViewRoot"]
+current = true
+
+[node name="MainControlContainer" type="VBoxContainer" parent="HBoxContainer/HSplitContainer"]
+margin_left = 859.0
+margin_right = 1280.0
+margin_bottom = 720.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="NameLabel" type="Label" parent="HBoxContainer/HSplitContainer/MainControlContainer"]
+margin_right = 421.0
+margin_bottom = 14.0
+text = "<NAME>"
+align = 1
+
+[node name="SizeLabel" type="Label" parent="HBoxContainer/HSplitContainer/MainControlContainer"]
+margin_top = 18.0
+margin_right = 421.0
+margin_bottom = 32.0
+text = "123x456"
+align = 1
+
+[node name="LoadButton" type="Button" parent="HBoxContainer/HSplitContainer/MainControlContainer"]
+margin_top = 36.0
+margin_right = 421.0
+margin_bottom = 56.0
+text = "Load Themeable"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HSeparator" type="HSeparator" parent="HBoxContainer/HSplitContainer/MainControlContainer"]
+margin_top = 60.0
+margin_right = 421.0
+margin_bottom = 64.0
+
+[node name="LoadThemeButton" type="Button" parent="HBoxContainer/HSplitContainer/MainControlContainer"]
+margin_top = 68.0
+margin_right = 421.0
+margin_bottom = 88.0
+text = "Load Example Theme"
+
+[node name="PrimaryContainer" parent="HBoxContainer/HSplitContainer/MainControlContainer" instance=ExtResource( 1 )]
+margin_top = 92.0
+margin_right = 421.0
+margin_bottom = 112.0
+
+[node name="SecondaryContainer" parent="HBoxContainer/HSplitContainer/MainControlContainer" instance=ExtResource( 1 )]
+margin_top = 116.0
+margin_right = 421.0
+margin_bottom = 136.0
+
+[node name="TertiaryContainer" parent="HBoxContainer/HSplitContainer/MainControlContainer" instance=ExtResource( 1 )]
+margin_top = 140.0
+margin_right = 421.0
+margin_bottom = 160.0

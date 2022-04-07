@@ -417,7 +417,7 @@ public class TilesetEditor : Control
     {
         if (!_loaded)
         {
-            foreach (var it in GetChildrenRecrusively<Control>(_mainContainer))
+            foreach (var it in _mainContainer.GetChildrenRecrusively<Control>())
             {
                 if (it is Button b)
                 {
@@ -436,7 +436,7 @@ public class TilesetEditor : Control
             _listMode = ListMode.NOTHING;
             return;
         }
-        foreach (var it in GetChildrenRecrusively<Control>(_mainContainer))
+        foreach (var it in _mainContainer.GetChildrenRecrusively<Control>())
         {
             if (it is Button b)
             {

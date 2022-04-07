@@ -41,7 +41,6 @@ uniform float background_alpha = 1.0;
 
 void vertex() 
 {
-	UV=UV*uv1_scale.xy+uv1_offset.xy;
 	if(billboard_enabled)
 		MODELVIEW_MATRIX = INV_CAMERA_MATRIX * mat4(CAMERA_MATRIX[0],CAMERA_MATRIX[1],CAMERA_MATRIX[2],WORLD_MATRIX[3]);
 }

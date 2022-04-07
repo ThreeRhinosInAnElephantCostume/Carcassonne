@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -20,10 +24,10 @@ using Expression = System.Linq.Expressions.Expression;
 [Tool]
 public class MeshProp : MeshInstance, IProp
 {
-    PersonalTheme IProp._theme {get; set;}
-    string IProp._examplePlayerTheme {get; set;}
-    List<IProp> IProp._children {get; set;} = new List<IProp>();
-    IProp IProp._parent {get; set;}
+    PersonalTheme IProp._theme { get; set; }
+    string IProp._examplePlayerTheme { get; set; }
+    List<IProp> IProp._children { get; set; } = new List<IProp>();
+    IProp IProp._parent { get; set; }
     public List<(bool primary, bool secondary, bool tertiary)> SurfaceSettings = new List<(bool, bool, bool)>();
     void MaybeInitSurfaces()
     {
@@ -109,7 +113,7 @@ public class MeshProp : MeshInstance, IProp
                 mat.VertexColorUseAsAlbedo = false;
                 mat.AlbedoColor = col;
             }
-            GD.Print("Set color to: ", mat.AlbedoColor);
+            //GD.Print("Set color to: ", mat.AlbedoColor);
             mesh.Mesh.SurfaceSetMaterial(indx, mat);
         }
         var ret = new List<Action<PersonalTheme>>();
@@ -136,7 +140,7 @@ public class MeshProp : MeshInstance, IProp
 
     void IProp.UpdateTheme()
     {
-        if(_setters == null || _setters.Count == 0)
+        if (_setters == null || _setters.Count == 0)
         {
             _setters = GenerateThemeSetters();
         }

@@ -591,7 +591,7 @@ public class BannerProp : Spatial, IProp, IExtendedProperties
         {
             _bannerMeshInstance = this.GetNodeSafe<MeshInstance>("BannerMesh");
         }
-        catch (KeyNotFoundException)
+        catch (Exception)
         {
             Assert(Engine.EditorHint, @"Invalid BannerProp instance outside of an editor!
                 BannerProp should have a properly set up MeshInstance as its child!");

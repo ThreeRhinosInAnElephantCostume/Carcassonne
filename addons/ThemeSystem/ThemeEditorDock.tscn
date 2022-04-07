@@ -1,0 +1,120 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://addons/ThemeSystem/ThemeEditorDock.cs" type="Script" id=1]
+[ext_resource path="res://ThemeEditor/ThemeConfigurationPanel.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Props/Sprite2DProp.cs" type="Script" id=3]
+[ext_resource path="res://Icons/Themeable/PlayerIcons/DefaultIcon.png" type="Texture" id=4]
+[ext_resource path="res://Props/Sprite2DProp.gdshader" type="Shader" id=5]
+[ext_resource path="res://Icons/Themeable/PlayerAvatars/DefaultAvatar.png" type="Texture" id=6]
+
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 5 )
+shader_param/primary_color = Color( 1, 0, 0, 1 )
+shader_param/secondary_color = Color( 0, 1, 0, 1 )
+shader_param/tertiary_color = Color( 0, 0, 1, 1 )
+shader_param/mask_enabled = false
+shader_param/primary_enabled = true
+shader_param/secondary_enabled = true
+shader_param/tertiary_enabled = true
+shader_param/icon_enabled = false
+shader_param/icon_centered = true
+shader_param/icon_scale = null
+shader_param/icon_offset = null
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = ExtResource( 5 )
+shader_param/primary_color = Color( 1, 0, 0, 1 )
+shader_param/secondary_color = Color( 0, 1, 0, 1 )
+shader_param/tertiary_color = Color( 0, 0, 1, 1 )
+shader_param/mask_enabled = false
+shader_param/primary_enabled = true
+shader_param/secondary_enabled = true
+shader_param/tertiary_enabled = true
+shader_param/icon_enabled = false
+shader_param/icon_centered = true
+shader_param/icon_scale = null
+shader_param/icon_offset = null
+
+[node name="ThemeEditorDock" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ThemeConfigurationPanel" parent="Panel/VBoxContainer" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 1280.0
+margin_bottom = 358.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/VBoxContainer"]
+margin_top = 362.0
+margin_right = 1280.0
+margin_bottom = 720.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ViewportContainer" type="ViewportContainer" parent="Panel/VBoxContainer/HBoxContainer"]
+margin_right = 634.0
+margin_bottom = 358.0
+size_flags_horizontal = 3
+stretch = true
+
+[node name="Viewport" type="Viewport" parent="Panel/VBoxContainer/HBoxContainer/ViewportContainer"]
+size = Vector2( 634, 358 )
+handle_input_locally = false
+render_target_update_mode = 3
+
+[node name="IconProp" type="Sprite" parent="Panel/VBoxContainer/HBoxContainer/ViewportContainer/Viewport"]
+material = SubResource( 1 )
+position = Vector2( 32, 32 )
+texture = ExtResource( 4 )
+script = ExtResource( 3 )
+ShowIcon = false
+
+[node name="Camera2D" type="Camera2D" parent="Panel/VBoxContainer/HBoxContainer/ViewportContainer/Viewport"]
+anchor_mode = 0
+
+[node name="HSeparator" type="HSeparator" parent="Panel/VBoxContainer/HBoxContainer"]
+margin_left = 638.0
+margin_right = 641.0
+margin_bottom = 358.0
+
+[node name="ViewportContainer2" type="ViewportContainer" parent="Panel/VBoxContainer/HBoxContainer"]
+margin_left = 645.0
+margin_right = 1280.0
+margin_bottom = 358.0
+size_flags_horizontal = 3
+stretch = true
+
+[node name="Viewport" type="Viewport" parent="Panel/VBoxContainer/HBoxContainer/ViewportContainer2"]
+size = Vector2( 635, 358 )
+handle_input_locally = false
+render_target_update_mode = 3
+
+[node name="AvatarProp" type="Sprite" parent="Panel/VBoxContainer/HBoxContainer/ViewportContainer2/Viewport"]
+material = SubResource( 2 )
+position = Vector2( 64, 64 )
+texture = ExtResource( 6 )
+script = ExtResource( 3 )
+ShowIcon = false
+
+[node name="Camera2D" type="Camera2D" parent="Panel/VBoxContainer/HBoxContainer/ViewportContainer2/Viewport"]
+anchor_mode = 0

@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -18,13 +22,14 @@ using static Utils;
 public class Tile3D : Spatial
 {
     public Tile AssociatedTile { get; protected set; }
-    TileDataLoader.TileModel _model;
-    Spatial _root;
+
+    readonly TileDataLoader.TileModel _model;
+    readonly Spatial _root;
 
     Vector2I _position = new Vector2I();
-    Dictionary<string, Vector3> _groupAveragePosition = new Dictionary<string, Vector3>();
-    List<PotentialMeeplePlacement> _potentialPlacements = new List<PotentialMeeplePlacement>();
-    List<MeeplePlacement> _placements = new List<MeeplePlacement>();
+    readonly Dictionary<string, Vector3> _groupAveragePosition = new Dictionary<string, Vector3>();
+    readonly List<PotentialMeeplePlacement> _potentialPlacements = new List<PotentialMeeplePlacement>();
+    readonly List<MeeplePlacement> _placements = new List<MeeplePlacement>();
     public Vector3 CalculateAttributePlacementPosition(int indx)
     {
         List<string> associated = new List<string>();
@@ -119,7 +124,7 @@ public class Tile3D : Spatial
             dict.Keys.ToList().ForEach(s =>
             {
                 int n = 0;
-                GetChildrenRecrusively<MeshInstance>(_root.GetNode<Spatial>(s)).ForEach(
+                _root.GetNode<Spatial>(s).GetChildrenRecrusively<MeshInstance>().ForEach(
                 mi =>
                 {
                     n++;
