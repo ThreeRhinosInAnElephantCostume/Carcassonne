@@ -1,0 +1,92 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://UI/ThemeColorPicker.tscn" type="PackedScene" id=1]
+[ext_resource path="res://ThemeEditor/ThemeConfigurationPanel.cs" type="Script" id=2]
+
+[node name="ThemeConfigurationPanel" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LoadFileDialog" type="FileDialog" parent="."]
+margin_left = 106.0
+margin_top = 72.0
+margin_right = 606.0
+margin_bottom = 472.0
+rect_min_size = Vector2( 500, 400 )
+popup_exclusive = true
+window_title = "Open a File"
+resizable = true
+mode = 0
+filters = PoolStringArray( "*.png", "*.jpg", "*.bmp" )
+current_dir = "res://Icons"
+current_file = "Themable"
+current_path = "res://Icons/Themable"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_right = 1280.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PrimaryColorPicker" parent="VBoxContainer" instance=ExtResource( 1 )]
+margin_right = 1280.0
+margin_bottom = 20.0
+DisplayedName = "Primary Color"
+
+[node name="SecondaryColorPicker" parent="VBoxContainer" instance=ExtResource( 1 )]
+margin_top = 24.0
+margin_right = 1280.0
+margin_bottom = 44.0
+DisplayedName = "Secondary Color"
+
+[node name="TertiaryColorPicker" parent="VBoxContainer" instance=ExtResource( 1 )]
+margin_top = 48.0
+margin_right = 1280.0
+margin_bottom = 68.0
+DisplayedName = "Tertiary Color"
+
+[node name="IconPicker" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 72.0
+margin_right = 1280.0
+margin_bottom = 92.0
+
+[node name="Label" type="Label" parent="VBoxContainer/IconPicker"]
+margin_top = 3.0
+margin_right = 32.0
+margin_bottom = 17.0
+text = "Icon:"
+
+[node name="SelectIconButton" type="Button" parent="VBoxContainer/IconPicker"]
+anchor_left = 1.0
+anchor_right = 1.0
+grow_horizontal = 0
+text = "<NONE>"
+
+[node name="AvatarPicker" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 96.0
+margin_right = 1280.0
+margin_bottom = 116.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="VBoxContainer/AvatarPicker"]
+margin_top = 3.0
+margin_right = 44.0
+margin_bottom = 17.0
+text = "Avatar:"
+
+[node name="SelectAvatarButton" type="Button" parent="VBoxContainer/AvatarPicker"]
+anchor_left = 1.0
+anchor_right = 1.0
+grow_horizontal = 0
+text = "<NONE>"

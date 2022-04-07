@@ -101,7 +101,7 @@ public class TileGraphicsEditor : VBoxContainer
     {
         Spatial root = _modelRoot.GetNode<Spatial>(group);
         Assert(root != null);
-        foreach (var it in GetChildrenRecrusively<MeshInstance>(root))
+        foreach (var it in root.GetChildrenRecrusively<MeshInstance>())
         {
             if (enabled)
             {
@@ -579,7 +579,7 @@ public class TileGraphicsEditor : VBoxContainer
         _modelGroups.ForEach(s =>
             {
                 int n = 0;
-                GetChildrenRecrusively<MeshInstance>(_modelRoot.GetNode<Spatial>(s)).ForEach(
+                _modelRoot.GetNode<Spatial>(s).GetChildrenRecrusively<MeshInstance>().ForEach(
                 mi =>
                 {
                     n++;

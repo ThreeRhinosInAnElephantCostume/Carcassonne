@@ -31,7 +31,7 @@ window/size/height=720
 
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/extra_math_cs/plugin.cfg" )
+enabled=PoolStringArray( "res://addons/ThemeSystem/plugin.cfg", "res://addons/extra_math_cs/plugin.cfg" )
 
 [gdnative]
 

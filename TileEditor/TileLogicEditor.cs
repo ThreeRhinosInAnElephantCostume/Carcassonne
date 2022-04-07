@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -21,8 +25,8 @@ public class TileLogicEditor : Control
 {
     class ButtonHandleObject : Godot.Object
     {
-        int indx;
-        Action<int> action;
+        readonly int indx;
+        readonly Action<int> action;
         public void Pressed()
         {
             action(indx);
@@ -306,7 +310,7 @@ public class TileLogicEditor : Control
     {
         void togglebuttons(Container con)
         {
-            GetChildrenRecrusively<Button>(con).ForEach(bt => bt.Disabled = !b);
+            con.GetChildrenRecrusively<Button>().ForEach(bt => bt.Disabled = !b);
         }
         togglebuttons(_toolboxContainer);
         togglebuttons(_attributeButtonContainer);

@@ -1,12 +1,14 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://Themes/PlayerThemes/ThemeEditor/ThemeSingleColorPicker.cs" type="Script" id=1]
+[ext_resource path="res://ThemeEditor/ThemeSingleColorPicker.cs" type="Script" id=1]
 
 [node name="ThemeColorPicker" type="HBoxContainer"]
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+DisplayedName = "<INSERT COLOR NAME>"
+PickedColor = Color( 0, 0, 0, 1 )
 
 [node name="Label" type="Label" parent="."]
 margin_top = 3.0
@@ -14,16 +16,8 @@ margin_right = 151.0
 margin_bottom = 17.0
 text = "<INSERT COLOR NAME>"
 
-[node name="Control" type="Control" parent="."]
-margin_left = 155.0
-margin_right = 155.0
-margin_bottom = 20.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
 [node name="ColorPicker" type="ColorPickerButton" parent="."]
-margin_left = 159.0
-margin_right = 247.0
-margin_bottom = 20.0
-size_flags_vertical = 3
+anchor_left = 1.0
+anchor_right = 1.0
+grow_horizontal = 0
 text = "Select Color"
