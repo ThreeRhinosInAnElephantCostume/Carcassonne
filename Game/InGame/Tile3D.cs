@@ -74,6 +74,7 @@ public class Tile3D : Spatial
         if (_placements.Any(it => it.Agent == agent && it.Index == indx && it.IsAttribute))
             return;
         var meep = Globals.MeeplePlacementPacked.Instance<MeeplePlacement>();
+        (meep as IProp).CurrentTheme = agent.CurrentTheme;
         meep.Agent = agent;
         meep.IsAttribute = false;
         meep.Index = indx;
@@ -86,6 +87,7 @@ public class Tile3D : Spatial
         if (_placements.Any(it => it.Agent == agent && it.Index == indx && !it.IsAttribute))
             return;
         var meep = Globals.MeeplePlacementPacked.Instance<MeeplePlacement>();
+        (meep as IProp).CurrentTheme = agent.CurrentTheme;
         meep.Agent = agent;
         meep.IsAttribute = false;
         meep.Index = indx;

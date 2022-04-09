@@ -49,9 +49,9 @@ public class MainMenuLoad : Control
         while (_remainingPrototypePaths.TryDequeue(out path))
         {
             TilePrototype prot = TileDataLoader.LoadTilePrototype(path);
-            Assert(prot != null);
+            Assert(prot != null, $"Could not deserialize {path}");
             var models = TileDataLoader.LoadPrototypeModels(path);
-            Assert(models.Count != 0);
+            Assert(models.Count != 0, $"Tile {path} does not have any models assigned!");
             _lastProcessedPaths.Enqueue(path);
         }
         (state as AutoResetEvent).Set();
