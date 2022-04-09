@@ -73,7 +73,7 @@ public interface IProp
     public void UpdateProp()
     {
         if (_parent != null)
-            this.CurrentTheme = _parent.CurrentTheme;
+            this._theme = _parent.CurrentTheme;
         if (CurrentTheme == null)
             return;
         foreach (var it in _children)

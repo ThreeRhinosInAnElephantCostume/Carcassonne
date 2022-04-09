@@ -14,12 +14,24 @@ using static System.Math;
 using static Carcassonne.GameEngine;
 using static Utils;
 
-public class MeeplePlacement : Spatial
+public class MeeplePlacement : SpatialProp, IProp
 {
 	MeshInstance _mesh;
 	Game.GameAgent _agent;
+
+    void IProp.UpdateTheme()
+	{
+		UpdateColor();
+	}
 	void UpdateColor()
 	{
+		if(_mesh == null)
+		{
+			Defer(UpdateColor);
+			return;
+		}
+		if((this as IProp).CurrentTheme == null)
+			return;
 		RepeatN(_mesh.GetSurfaceMaterialCount(), i =>
 		{
 			var mat = _mesh.Mesh.SurfaceGetMaterial(i) as SpatialMaterial;
@@ -27,7 +39,7 @@ public class MeeplePlacement : Spatial
 				return;
 			mat.ResourceLocalToScene = true;
 			mat = (SpatialMaterial)mat.Duplicate(true);
-			mat.AlbedoColor = _agent.BaseColor;
+			mat.AlbedoColor = (this as IProp).CurrentTheme.PrimaryColor;
 			mat.DepthEnabled = false;
 			mat.RenderPriority = 1;
 			mat.FlagsNoDepthTest = true;
