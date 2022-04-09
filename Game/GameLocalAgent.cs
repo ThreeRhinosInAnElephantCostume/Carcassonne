@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -19,6 +23,10 @@ public partial class Game
     public class GameLocalAgent : GameAgent
     {
         public bool IsMyMove => _game.CurrentAgent == this;
+        public override void OnTurn(GameEngine engine)
+        {
+
+        }
         public void PlaceTile(Vector2I pos, int rot)
         {
             _game.Engine.PlaceCurrentTile(pos, rot);

@@ -79,6 +79,15 @@ public class GlobalScript : Node
         SaveSettings(clearmodified, _saveIndex + 1);
         _saveSettingsMX.ReleaseMutex();
     }
+    public static void AddTheme(string name, PersonalTheme theme)
+    {
+        if (PersonalThemesList == null)
+            PersonalThemesList = new List<PersonalTheme>();
+        if (PersonalThemes == null)
+            PersonalThemes = new Dictionary<string, PersonalTheme>();
+        PersonalThemesList.Add(theme);
+        PersonalThemes.Add(name, theme);
+    }
     public override void _Ready()
     {
         List<string> requiredpaths = new List<string>()
@@ -122,6 +131,64 @@ public class GlobalScript : Node
             SerializeToFile(Constants.DataPaths.DEFAULT_PLAYER_THEME_PATH, theme);
         }
         DefaultTheme = DeserializeFromFile<PersonalTheme>(Constants.DataPaths.DEFAULT_PLAYER_THEME_PATH);
+
+        // TODO: Load those from files.
+        AddTheme("red", new PersonalTheme()
+        {
+            PrimaryColor = new Color(0.7f, 0f, 0f),
+            SecondaryColor = new Color(0.9f, 0.1f, 0.1f),
+            TertiaryColor = new Color(0.75f, 0.3f, 0.3f),
+            IconPath = Constants.DataPaths.DEFAULT_PLAYER_ICON_PATH,
+            AvatarPath = Constants.DataPaths.DEFAULT_PLAYER_AVATAR_PATH,
+        });
+        AddTheme("green", new PersonalTheme()
+        {
+            PrimaryColor = new Color(0.0f, 0.7f, 0f),
+            SecondaryColor = new Color(0.1f, 0.9f, 0.1f),
+            TertiaryColor = new Color(0.3f, 0.75f, 0.3f),
+            IconPath = Constants.DataPaths.DEFAULT_PLAYER_ICON_PATH,
+            AvatarPath = Constants.DataPaths.DEFAULT_PLAYER_AVATAR_PATH,
+        });
+        AddTheme("blue", new PersonalTheme()
+        {
+            PrimaryColor = new Color(0.0f, 0f, 0.7f),
+            SecondaryColor = new Color(0.1f, 0.1f, 0.9f),
+            TertiaryColor = new Color(0.3f, 0.3f, 0.75f),
+            IconPath = Constants.DataPaths.DEFAULT_PLAYER_ICON_PATH,
+            AvatarPath = Constants.DataPaths.DEFAULT_PLAYER_AVATAR_PATH,
+        });
+        AddTheme("yellow", new PersonalTheme()
+        {
+            PrimaryColor = new Color(0.8f, 0.8f, 0.0f),
+            SecondaryColor = new Color(0.9f, 0.9f, 0.2f),
+            TertiaryColor = new Color(1f, 1f, 0.3f),
+            IconPath = Constants.DataPaths.DEFAULT_PLAYER_ICON_PATH,
+            AvatarPath = Constants.DataPaths.DEFAULT_PLAYER_AVATAR_PATH,
+        });
+        AddTheme("white", new PersonalTheme()
+        {
+            PrimaryColor = new Color(0.9f, 0.9f, 0.9f),
+            SecondaryColor = new Color(0.3f, 0.3f, 0.3f),
+            TertiaryColor = new Color(0.1f, 0.1f, 0.1f),
+            IconPath = Constants.DataPaths.DEFAULT_PLAYER_ICON_PATH,
+            AvatarPath = Constants.DataPaths.DEFAULT_PLAYER_AVATAR_PATH,
+        });
+        AddTheme("black", new PersonalTheme()
+        {
+            PrimaryColor = new Color(0.01f, 0.01f, 0.01f),
+            SecondaryColor = new Color(0.33f, 0.23f, 0.35f),
+            TertiaryColor = new Color(0.9f, 0.9f, 0.9f),
+            IconPath = Constants.DataPaths.DEFAULT_PLAYER_ICON_PATH,
+            AvatarPath = Constants.DataPaths.DEFAULT_PLAYER_AVATAR_PATH,
+        });
+        AddTheme("gray", new PersonalTheme()
+        {
+            PrimaryColor = new Color(0.5f, 0.5f, 0.5f),
+            SecondaryColor = new Color(0.6f, 0.6f, 0.6f),
+            TertiaryColor = new Color(0.3f, 0.3f, 0.3f),
+            IconPath = Constants.DataPaths.DEFAULT_PLAYER_ICON_PATH,
+            AvatarPath = Constants.DataPaths.DEFAULT_PLAYER_AVATAR_PATH,
+        });
 
         // Example use for OnChangeHandle:
 

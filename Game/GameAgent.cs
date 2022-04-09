@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -22,7 +26,7 @@ public partial class Game
         public string Name { get; set; }
         public GameEngine.Player Player { get; protected set; }
         public PlayerType Type { get; protected set; }
-        public Color BaseColor { get; set; }
+        public PersonalTheme CurrentTheme { get; protected set; }
         protected void ExecuteAction(GameEngine.Action action)
         {
             _game.AgentExecute(this, action);
@@ -31,16 +35,18 @@ public partial class Game
         {
             _game.AgentExecuteImplied(this);
         }
-        public GameAgent(Game game, string name, PlayerType type, GameEngine.Player player)
+        public abstract void OnTurn(GameEngine engine);
+        public GameAgent(Game game, string name, PlayerType type, GameEngine.Player player, PersonalTheme theme = null)
         {
             this._game = game;
             this.Name = name;
             this.Player = player;
             this.Type = type;
-            if (player.ID >= Game.PlayerColors.Length)
-                BaseColor = Game.PlayerColors.Last();
-            else
-                BaseColor = Game.PlayerColors[player.ID];
+            this.CurrentTheme = theme;
+            if (this.CurrentTheme == null)
+            {
+                this.CurrentTheme = Globals.PersonalThemesList[(int)player.ID % Globals.PersonalThemesList.Count];
+            }
         }
     }
 }
