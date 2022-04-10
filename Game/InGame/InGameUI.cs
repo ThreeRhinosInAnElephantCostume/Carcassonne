@@ -220,6 +220,11 @@ public class InGameUI : Control, Game.IGameHandles
     {
         GetTree().Quit();
     }
+
+    void OnSkipMepleButtonPressed()
+    {
+        GetTree().Quit();
+    }
 }
 
 
