@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/MeshPropIcon.png-093b00f1ca4d1b88cab480cb8775ab39.stex"
+path="res://.import/meeple-skip.png-bf48deb0d535e44eb4a494b7dbba89d2.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Icons/Nodes/MeshPropIcon.png"
-dest_files=[ "res://.import/MeshPropIcon.png-093b00f1ca4d1b88cab480cb8775ab39.stex" ]
+source_file="res://GUI/img/meeple-skip.png"
+dest_files=[ "res://.import/meeple-skip.png-bf48deb0d535e44eb4a494b7dbba89d2.stex" ]
 
 [params]
 
