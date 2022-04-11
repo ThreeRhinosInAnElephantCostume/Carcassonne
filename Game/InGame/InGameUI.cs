@@ -30,6 +30,8 @@ public class InGameUI : Control, Game.IGameHandles
     List<Label> _playerPoints = new List<Label>();
     List<Label> _playerStatus = new List<Label>();
 
+    TextureButton _skipPlacementButton;
+
     HSlider _musicVolumeSlider;
     HSlider _effectsVolumeSlider;
 
@@ -67,6 +69,8 @@ public class InGameUI : Control, Game.IGameHandles
                 s.Text = "";
             }
         }
+
+        _skipPlacementButton.Disabled = !(_game.Engine.CurrentState == State.PLACE_PAWN);
     }
     void Game.IGameHandles.OnAction(Game.GameAgent agent, GameEngine.Action action)
     {
@@ -107,6 +111,8 @@ public class InGameUI : Control, Game.IGameHandles
         _map = new TileMap3D(_game);
         _map.Engine = _game.Engine;
         _inGame3D.AddChild(_map);
+
+        _skipPlacementButton = this.GetNodeSafe<TextureButton>("CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/HBoxContainer2/SkipMepleButton");
 
         _stateLabel = new Label();
         _mainInfoContainer.AddChild(_stateLabel);
@@ -223,7 +229,8 @@ public class InGameUI : Control, Game.IGameHandles
 
     void OnSkipMepleButtonPressed()
     {
-        GetTree().Quit();
+        _game.Engine.SkipPlacingPawn();
+        _game.AgentExecuteImplied(_game.CurrentAgent);
     }
 }
 

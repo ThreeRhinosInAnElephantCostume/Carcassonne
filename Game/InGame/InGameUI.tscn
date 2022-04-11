@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=2]
+[gd_scene load_steps=31 format=2]
 
 [ext_resource path="res://Game/InGame/InGame3D.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Game/InGame/InGameUI.cs" type="Script" id=2]
@@ -28,6 +28,7 @@
 [ext_resource path="res://GUI/img/meeple-skip.png" type="Texture" id=26]
 [ext_resource path="res://GUI/img/empty128x128.png" type="Texture" id=27]
 [ext_resource path="res://GUI/img/meeple-skip-h.png" type="Texture" id=28]
+[ext_resource path="res://GUI/img/meeple-skip-d.png" type="Texture" id=29]
 
 [sub_resource type="World" id=1]
 environment = ExtResource( 3 )
@@ -669,6 +670,7 @@ margin_right = 260.0
 margin_bottom = 128.0
 texture_normal = ExtResource( 26 )
 texture_hover = ExtResource( 28 )
+texture_disabled = ExtResource( 29 )
 
 [node name="AspectRatioContainer" type="AspectRatioContainer" parent="CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer"]
 margin_top = 308.0
