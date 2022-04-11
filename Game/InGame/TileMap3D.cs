@@ -66,11 +66,12 @@ public class TileMap3D : Spatial
         for (int i = 0; i < GameEngine.N_SIDES; i++)
         {
             if (RepeatN(GameEngine.N_SIDES * GameEngine.N_CONNECTORS, indx =>
-                 unchanged.Connections[indx].INode.Index == unchanged.Connections[indx].INode.Index &&
-                 unchanged.Connections[indx].Type == unchanged.Connections[indx].Type).TrueForAll(it => it))
+                 tile.Connections[indx].INode.Index == unchanged.Connections[indx].INode.Index &&
+                 tile.Connections[indx].Type == unchanged.Connections[indx].Type).TrueForAll(it => it))
             {
                 return i;
             }
+            unchanged.Rotate(1);
         }
         throw new Exception();
     }

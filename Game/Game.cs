@@ -50,6 +50,7 @@ public partial class Game
     public bool IsMultiplayer => (Mode == GameMode.MULTIPLAYER_CLIENT || Mode == GameMode.MULTIPLAYER_SERVER);
     public List<GameAgent> Agents { get; protected set; } = new List<GameAgent>();
     public GameAgent CurrentAgent => (State == GameState.ENDED) ? null : GetAgent(Engine.CurrentPlayer);
+    RNG _rng;
     public static Color[] PlayerColors { get; set; } = new Color[]
     {
         new Color(1f, 0.3f, 0.3f),
@@ -71,6 +72,7 @@ public partial class Game
         {
             State = GameState.AWAITING_MOVE;
             Handles.OnNextPlayerTurn(CurrentAgent);
+            Defer(() => CurrentAgent.OnTurn(Engine));
         }
     }
     public GameAgent GetAgent(GameEngine.Player p)
@@ -86,13 +88,24 @@ public partial class Game
     {
         UpdateEngine(agent);
     }
-    public static Game NewLocalGame(IGameHandles handles, int players, string tileset)
+    public static Game NewLocalGame(IGameHandles handles, int localplayers, int AI, string tileset, ulong seed)
     {
+        int players = localplayers + AI;   
         Game game = new Game(handles);
+        game._rng = new RNG(seed);
         game.Mode = GameMode.LOCAL;
         game.State = GameState.AWAITING_MOVE;
-        game.Engine = GameEngine.CreateBaseGame(TileDataLoader.GlobalLoader, 666, players, tileset);
-        game.Agents = game.Engine.Players.ConvertAll<GameAgent>(it => new GameLocalAgent(game, $"PLAYER {it.ID}", it));
+        game.Engine = GameEngine.CreateBaseGame(TileDataLoader.GlobalLoader, seed, players, tileset);
+        game.Agents = new List<GameAgent>();
+        for(int i = 0; i < localplayers; i++)
+        {
+            game.Agents.Add(new GameLocalAgent(game, $"PLAYER {i}", game.Engine.Players[i]));
+        }
+        for(int i = 0; i < AI; i++)
+        {
+            game.Agents.Add(new GameAIAgent(game, $"AI {i}", game.Engine.Players[i+localplayers], new AI.RandomAI(new RNG(game._rng.NextULong()))));
+        }
+        //game.Agents = game.Engine.Players.ConvertAll<GameAgent>(it => new GameLocalAgent(game, $"PLAYER {it.ID}", it));
         return game;
     }
     Game(IGameHandles handles)

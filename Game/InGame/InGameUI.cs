@@ -99,7 +99,7 @@ public class InGameUI : Control, Game.IGameHandles
 
         _mainInfoContainer = GetNode<VBoxContainer>("CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer");
 
-        _game = Game.NewLocalGame(this, 4, "BaseGame/BaseTileset.json");
+        _game = Game.NewLocalGame(this, 1, 1, "BaseGame/BaseTileset.json", 666);
         _previewRoot = GetNode<Spatial>("CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/AspectRatioContainer/ViewportContainer/Viewport/PreviewRoot");
 
         _mainCamera = GetNode<Camera>("InGame3D/Camera");
