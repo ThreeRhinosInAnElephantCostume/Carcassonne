@@ -34,6 +34,8 @@ public class InGameUI : Control, Game.IGameHandles
     HSlider _effectsVolumeSlider;
 
     AudioPlayer _gameAudio;
+
+    TextureButton _skipPlacementButton;
     //Viewport _viewport;
     public void Start(Game game)
     {
@@ -67,6 +69,7 @@ public class InGameUI : Control, Game.IGameHandles
                 s.Text = "";
             }
         }
+        _skipPlacementButton.Disabled = !(_game.Engine.CurrentState == State.PLACE_PAWN);
     }
     void Game.IGameHandles.OnAction(Game.GameAgent agent, GameEngine.Action action)
     {
@@ -103,6 +106,8 @@ public class InGameUI : Control, Game.IGameHandles
         _previewRoot = GetNode<Spatial>("CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/AspectRatioContainer/ViewportContainer/Viewport/PreviewRoot");
 
         _mainCamera = GetNode<Camera>("InGame3D/Camera");
+
+        _skipPlacementButton = this.GetNodeSafe<TextureButton>("CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/HBoxContainer2/SkipMepleButton");
 
         _map = new TileMap3D(_game);
         _map.Engine = _game.Engine;
@@ -223,7 +228,8 @@ public class InGameUI : Control, Game.IGameHandles
 
     void OnSkipMepleButtonPressed()
     {
-        GetTree().Quit();
+        _game.Engine.SkipPlacingPawn();
+        _game.AgentExecuteImplied(_game.CurrentAgent);
     }
 }
 
