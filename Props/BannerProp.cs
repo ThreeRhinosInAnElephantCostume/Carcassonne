@@ -593,8 +593,8 @@ public class BannerProp : Spatial, IProp, IExtendedProperties
         }
         catch (Exception)
         {
-            Assert(Engine.EditorHint, @"Invalid BannerProp instance outside of an editor!
-                BannerProp should have a properly set up MeshInstance as its child!");
+            // Assert(Engine.EditorHint, @"Invalid BannerProp instance outside of an editor!
+            //     BannerProp should have a properly set up MeshInstance as its child!");
             _bannerMeshInstance = new MeshInstance();
             _bannerMeshInstance.Mesh = new QuadMesh();
             _bannerMeshInstance.Name = "BannerMesh";

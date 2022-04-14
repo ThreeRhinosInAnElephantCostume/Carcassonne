@@ -13,6 +13,9 @@ func _enter_tree():
 	add_custom_type("SpatialProp", "Spatial", preload("res://Props/SpatialProp.cs"), preload("res://Icons/Nodes/SpatialPropIcon.png"))
 	add_custom_type("ControlProp", "Control", preload("res://Props/ControlProp.cs"), preload("res://Icons/Nodes/ControlPropIcon.png"))
 	add_custom_type("Sprite2DProp", "Sprite", preload("res://Props/Sprite2DProp.cs"), preload("res://Icons/Nodes/Sprite2DPropIcon.png"))
+
+	add_custom_type("CapturableProp", "Spatial", preload("res://Props/CapturableProp.cs"), preload("res://Icons/Nodes/SpatialPropIcon.png"))
+
 	dock = preload("res://addons/ThemeSystem/ThemeEditorDock.tscn").instance()
 	add_control_to_dock(DOCK_SLOT_LEFT_UL, dock)
 	connect("scene_changed", self, "_scene_changed")
