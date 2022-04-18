@@ -164,12 +164,12 @@ public class TileMap3D : Spatial
                 var tile3d = this._tiles.Find(it => it.AssociatedTile == m.CurrentTile);
                 Assert(tile3d != null);
                 var owner = (Game.GameAgent)_game.GetAgent((Player)m.Owner);
-                if (m._place is Tile.TileAttribute attr)
+                if (m.Container  is Tile.TileAttribute attr)
                 {
                     int indx = attr.tile.Attributes.IndexOf(attr);
                     tile3d.AddAttributePlacement(owner, attr.tile.Attributes.IndexOf(attr));
                 }
-                else if (m._place is InternalNode node)
+                else if (m.Container  is InternalNode node)
                 {
                     tile3d.AddNodePlacement(owner, node.Index);
                 }
