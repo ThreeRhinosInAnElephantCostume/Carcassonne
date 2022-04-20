@@ -34,4 +34,12 @@ func _input(event):
 				currentSelected -= 1
 				currentColumnSpot -= 1
 				position.x -= paintingOffset.x
-	
+				
+		elif event.scancode == KEY_ENTER:
+			print("KEY_ENTER was pressed")
+			if gameVersions[currentSelected].name == "Single":
+				print("go to LobbySingleplayer")
+				get_tree().change_scene("res://Game/LobbySingleplayer/LobbySingleplayer.tscn")
+			elif gameVersions[currentSelected].name == "Multi":
+				print("go to LobbyMultiplayer")
+				#get_tree...
