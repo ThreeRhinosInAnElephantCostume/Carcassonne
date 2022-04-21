@@ -12,6 +12,7 @@ using System.Reflection;
 using System.Reflection.PortableExecutable;
 using System.Runtime;
 using System.Runtime.CompilerServices;
+using System.Security.AccessControl;
 using System.Threading;
 using ExtraMath;
 using Godot;
@@ -64,15 +65,7 @@ public class MainMenuLoad : Control
         int scene_steps = 0;
         int scene_steps_completed = 0;
 
-        List<(string path, Action<Resource> onend)> scenestoload =
-            new List<(string path, Action<Resource> onend)>()
-            {
-                ("res://Game/MainMenu/MainMenu.tscn", r => Globals.MainMenuPacked = (PackedScene)r),
-                ("res://Game/InGame/InGameUI.tscn", r => Globals.InGameUIPacked = (PackedScene)r),
-                ("res://Game/InGame/PotentialTile.tscn", r => Globals.PotentialTilePacked = (PackedScene)r),
-                ("res://Game/InGame/MeeplePlacement.tscn", r => Globals.MeeplePlacementPacked = (PackedScene)r),
-                ("res://Game/InGame/PotentialMeeplePlacement.tscn", r => Globals.PotentialMeeplePlacementPacked = (PackedScene)r),
-            };
+        List<(string path, Action<Resource> onend)> scenestoload = LoadFrom.ToLoad;
         scenestoload.ForEach(it => Assert(FileExists(it.path), "Could not find resource: " + it.path));
         var loaders
             = scenestoload.ConvertAll<(ResourceInteractiveLoader loader, Action<Resource> onend)>(it =>
@@ -147,7 +140,7 @@ public class MainMenuLoad : Control
                 }
             case LoadSteps.COMPLETE:
                 {
-                    var scene = Globals.MainMenuPacked.Instance();
+                    var scene = Globals.Scenes.MainMenuPacked.Instance();
                     GetTree().Root.AddChild(scene);
                     DestroyNode(this);
                     return;

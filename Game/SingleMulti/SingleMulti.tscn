@@ -39,16 +39,12 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Single" type="TextureRect" parent="GridContainer" groups=[
-"GameVersions",
-]]
+[node name="Single" type="TextureRect" parent="GridContainer" groups=["GameVersions"]]
 margin_right = 360.0
 margin_bottom = 320.0
 texture = ExtResource( 1 )
 
-[node name="Multi" type="TextureRect" parent="GridContainer" groups=[
-"GameVersions",
-]]
+[node name="Multi" type="TextureRect" parent="GridContainer" groups=["GameVersions"]]
 margin_left = 510.0
 margin_right = 870.0
 margin_bottom = 320.0

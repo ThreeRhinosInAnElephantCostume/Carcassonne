@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -25,16 +29,17 @@ public class LobbySingleplayer : Control
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
-        _play = GetNode<Button>("Play");
-        _play.Connect("pressed", this, nameof(OnPlayPressed));
+        _play = this.GetNodeSafe<Button>("Play");
+        _play.OnButtonPressed(OnPlayPressed);
 
-        _quit = GetNode<Button>("Quit");
-        _quit.Connect("pressed", this, nameof(OnQuitPressed));
+        _quit = this.GetNodeSafe<Button>("Quit");
+        _quit.OnButtonPressed(OnQuitPressed);
     }
 
     void OnPlayPressed()
     {
-        GD.Print("Play pressed!");
+        GetTree().Root.AddChild(Globals.Scenes.InGameUIPacked.Instance());
+        DestroyNode(this);
     }
 
     void OnQuitPressed()

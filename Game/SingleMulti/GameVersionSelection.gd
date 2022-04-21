@@ -39,6 +39,8 @@ func _input(event):
 			print("KEY_ENTER was pressed")
 			if gameVersions[currentSelected].name == "Single":
 				print("go to LobbySingleplayer")
+				queue_free()
+				get_parent().queue_free()
 				get_tree().change_scene("res://Game/LobbySingleplayer/LobbySingleplayer.tscn")
 			elif gameVersions[currentSelected].name == "Multi":
 				print("go to LobbyMultiplayer")

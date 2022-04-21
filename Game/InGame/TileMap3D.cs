@@ -125,7 +125,7 @@ public class TileMap3D : Spatial
                     _potDict[it.pos].AddRotation(it.rot);
                     continue;
                 }
-                var pot = Globals.PotentialTilePacked.Instance<PotentialTile3D>();
+                var pot = Globals.Scenes.PotentialTilePacked.Instance<PotentialTile3D>();
                 pot.PTile = NextTile;
                 pot.PotentialPosition = it.pos;
                 pot.AddRotation(it.rot);
@@ -175,7 +175,7 @@ public class TileMap3D : Spatial
                     int indx = attr.tile.Attributes.IndexOf(attr);
                     tile3d.AddAttributePlacement(owner, attr.tile.Attributes.IndexOf(attr));
                 }
-                else if (m.Container  is InternalNode node)
+                else if (m.Container is InternalNode node)
                 {
                     tile3d.AddNodePlacement(owner, node.Index);
                 }
