@@ -175,7 +175,7 @@ public class TileMap3D : Spatial
                     int indx = attr.tile.Attributes.IndexOf(attr);
                     tile3d.AddAttributePlacement(owner, attr.tile.Attributes.IndexOf(attr));
                 }
-                else if (m.Container is InternalNode node)
+                else if (m.Container  is InternalNode node)
                 {
                     tile3d.AddNodePlacement(owner, node.Index);
                 }
