@@ -77,6 +77,7 @@ public class ThemeConfigurationPanel : Control
         }
 
     }
+    Action<string> OnFileSelected = s => { };
     void IconSelected(string dir)
     {
         if (CurrentTheme != null && Utils.FileExists(dir))
@@ -97,14 +98,12 @@ public class ThemeConfigurationPanel : Control
     }
     void SelectIconPressed()
     {
-        _loadFileDialog.Disconnect("dir_selected", this, nameof(AvatarSelected));
-        _loadFileDialog.Connect("dir_selected", this, nameof(IconSelected));
+        OnFileSelected = IconSelected;
         _loadFileDialog.Show();
     }
     void SelectAvatarPressed()
     {
-        _loadFileDialog.Disconnect("dir_selected", this, nameof(IconSelected));
-        _loadFileDialog.Connect("dir_selected", this, nameof(AvatarSelected));
+        OnFileSelected = AvatarSelected;
         _loadFileDialog.Show();
     }
     public override void _Ready()
@@ -118,11 +117,11 @@ public class ThemeConfigurationPanel : Control
 
         _selectIconButton.Connect("pressed", this, nameof(SelectIconPressed));
         _selectAvatarButton.Connect("pressed", this, nameof(SelectAvatarPressed));
+        _loadFileDialog.OnFileSelected(s =>
+        { // workaround for a partially implemented API
+            if (s == null || s == "")
+                s = _loadFileDialog.CurrentPath;
+            this.OnFileSelected(s);
+        });
     }
-
-    //  // Called every frame. 'delta' is the elapsed time since the previous frame.
-    //  public override void _Process(float delta)
-    //  {
-    //      
-    //  }
 }

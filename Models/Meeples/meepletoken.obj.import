@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/meepletoken.obj-e0e2e0439d4a3c86ac3e6bb2eac9b869.mesh"
+
+[deps]
+
+files=[ "res://.import/meepletoken.obj-e0e2e0439d4a3c86ac3e6bb2eac9b869.mesh" ]
+
+source_file="res://Models/Meeples/meepletoken.obj"
+dest_files=[ "res://.import/meepletoken.obj-e0e2e0439d4a3c86ac3e6bb2eac9b869.mesh", "res://.import/meepletoken.obj-e0e2e0439d4a3c86ac3e6bb2eac9b869.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true

@@ -293,13 +293,11 @@ public class BannerProp : Spatial, IProp, IExtendedProperties
     {
         if (refreshing)
             return;
-        refreshing = true;
         Defer(() => RealRefresh());
+        refreshing = true;
     }
     ShaderMaterial GetShaderMaterial()
     {
-        if (_bannerMeshInstance == null)
-            _bannerMeshInstance = this.GetNodeSafe<MeshInstance>("BannerMesh", "Error, BannerMesh not found!");
         Assert(_bannerMeshInstance != null, "_bannerMeshInstance is null! Invalid init?");
         Assert(_bannerMeshInstance.GetSurfaceMaterialCount() > 0, "Error no surface materials!");
         var rawmat = _bannerMeshInstance.GetActiveMaterial(0);
@@ -330,6 +328,10 @@ public class BannerProp : Spatial, IProp, IExtendedProperties
     }
     void SetTheme(PersonalTheme t)
     {
+        if (t == null || _bannerMeshInstance == null)
+        {
+            return;
+        }
         var ep = (IExtendedProperties)this;
         var mat = GetShaderMaterial();
         mat.SetShaderParam("albedo", Background switch
@@ -423,8 +425,8 @@ public class BannerProp : Spatial, IProp, IExtendedProperties
         {
             if (Globals.DefaultTheme == null)
                 Globals.DefaultTheme = DeserializeFromFile<PersonalTheme>(Constants.DataPaths.DEFAULT_PLAYER_THEME_PATH);
-            SetTheme(Globals.DefaultTheme);
         }
+        SetTheme(Globals.DefaultTheme);
     }
     public override void _Notification(int what)
     {
@@ -455,14 +457,14 @@ public class BannerProp : Spatial, IProp, IExtendedProperties
     public override Godot.Collections.Array _GetPropertyList()
     {
         var ep = (this as IExtendedProperties);
-        if (!ep.IsValid())
+        if (!ep.IsValid() && Engine.EditorHint)
             RealRefresh();
         return ep.OnGetPropertyList();
     }
 
     void IProp.UpdateTheme()
     {
-        RealRefresh();
+        Defer(RealRefresh);
     }
     void IExtendedProperties.LoadProperties()
     {
@@ -593,8 +595,6 @@ public class BannerProp : Spatial, IProp, IExtendedProperties
         }
         catch (Exception)
         {
-            Assert(Engine.EditorHint, @"Invalid BannerProp instance outside of an editor!
-                BannerProp should have a properly set up MeshInstance as its child!");
             _bannerMeshInstance = new MeshInstance();
             _bannerMeshInstance.Mesh = new QuadMesh();
             _bannerMeshInstance.Name = "BannerMesh";
@@ -602,6 +602,7 @@ public class BannerProp : Spatial, IProp, IExtendedProperties
             _bannerMeshInstance.MaterialOverride = mat;
             mat.Shader = ResourceLoader.Load<Shader>(Constants.AssetPaths.BANNER_PROP_SHADER);
             this.AddChild(_bannerMeshInstance);
+            _bannerMeshInstance.Owner = this;
         }
         (this as IProp).InitHierarchy();
         Refresh();

@@ -28,6 +28,7 @@ public class Tile3D : Spatial
 
     Vector2I _position = new Vector2I();
     readonly Dictionary<string, Vector3> _groupAveragePosition = new Dictionary<string, Vector3>();
+    readonly Dictionary<string, List<IProp>> _propGroups = new Dictionary<string, List<IProp>>();
     readonly List<PotentialMeeplePlacement> _potentialPlacements = new List<PotentialMeeplePlacement>();
     readonly List<MeeplePlacement> _placements = new List<MeeplePlacement>();
     public Vector3 CalculateAttributePlacementPosition(int indx)
@@ -71,29 +72,46 @@ public class Tile3D : Spatial
     }
     public void AddAttributePlacement(Game.GameAgent agent, int indx)
     {
-        if (_placements.Any(it => it.Agent == agent && it.Index == indx && it.IsAttribute))
-            return;
-        var meep = Globals.MeeplePlacementPacked.Instance<MeeplePlacement>();
-        (meep as IProp).CurrentTheme = agent.CurrentTheme;
-        meep.Agent = agent;
-        meep.IsAttribute = false;
-        meep.Index = indx;
-        meep.Translation = CalculateAttributePlacementPosition(indx);
-        AddChild(meep);
-        _placements.Add(meep);
+        // if (_placements.Any(it => it.Agent == agent && it.Index == indx && it.IsAttribute))
+        //     return;
+        // var meep = Globals.MeeplePlacementPacked.Instance<MeeplePlacement>();
+        // (meep as IProp).CurrentTheme = agent.CurrentTheme;
+        // meep.Agent = agent;
+        // meep.IsAttribute = false;
+        // meep.Index = indx;
+        // meep.Translation = CalculateAttributePlacementPosition(indx);
+        // AddChild(meep);
+        // _placements.Add(meep);
+
+        var rootnode = _model.Config.AttributeAssociations.Keys.ToList().Find(it =>
+            _model.Config.AttributeAssociations[it] == indx);
+        Defer(() => AddOccupierPlacement(agent, rootnode));
     }
     public void AddNodePlacement(Game.GameAgent agent, int indx)
     {
-        if (_placements.Any(it => it.Agent == agent && it.Index == indx && !it.IsAttribute))
-            return;
-        var meep = Globals.MeeplePlacementPacked.Instance<MeeplePlacement>();
-        (meep as IProp).CurrentTheme = agent.CurrentTheme;
-        meep.Agent = agent;
-        meep.IsAttribute = false;
-        meep.Index = indx;
-        meep.Translation = CalculateNodePlacementPosition(indx);
-        AddChild(meep);
-        _placements.Add(meep);
+        // if (_placements.Any(it => it.Agent == agent && it.Index == indx && !it.IsAttribute))
+        //     return;
+        // var meep = Globals.MeeplePlacementPacked.Instance<MeeplePlacement>();
+        // (meep as IProp).CurrentTheme = agent.CurrentTheme;
+        // meep.Agent = agent;
+        // meep.IsAttribute = false;
+        // meep.Index = indx;
+        // meep.Translation = CalculateNodePlacementPosition(indx);
+        // AddChild(meep);
+        // _placements.Add(meep);
+        var rootnode = _model.Config.NodeAssociations.Keys.ToList().Find(it =>
+            _model.Config.NodeAssociations[it] == indx);
+        Defer(() => AddOccupierPlacement(agent, rootnode));
+    }
+    void AddOccupierPlacement(Game.GameAgent agent, string rootnode)
+    {
+        Assert(_propGroups.ContainsKey(rootnode));
+        _propGroups[rootnode].ForEach(prop =>
+        {
+            if (prop is CapturableProp cap)
+                cap.Potential = false;
+            prop.CurrentTheme = agent.CurrentTheme;
+        });
     }
     public Vector2I Pos
     {
@@ -149,6 +167,44 @@ public class Tile3D : Spatial
         // Note: Change if meshes get proper transforms. TAGS: translations, transforms, meshinstances
         Cache(_model.Config.NodeAssociations);
         Cache(_model.Config.AttributeAssociations);
+    }
+    void PreProcessProps()
+    {
+        void ProcessPotentialPropNodes(Dictionary<string, int> dict, bool attribute)
+        {
+            dict.Keys.ToList().ForEach(s =>
+            {
+                var l = new List<IProp>();
+                var node = _root.GetNodeSafe<Spatial>(s);
+                if (node is IProp prop)
+                {
+                    l.Add(prop);
+                }
+                else if (node is CapturableProp cap)
+                {
+                    l.Add(cap);
+                }
+                l.AddRange(node.GetChildrenRecrusively<IProp>());
+                int indx = dict[s];
+                OccupierContainer cont = (attribute) ? (OccupierContainer)AssociatedTile.Attributes[indx] : (OccupierContainer)AssociatedTile.Nodes[indx];
+
+                foreach (IProp p in l)
+                {
+                    if (p is CapturableProp cap)
+                    {
+                        cap.Data = (cont, (attribute) ? null : ((InternalNode)cont).Graph);
+                    }
+                    p.CurrentTheme = null;
+                }
+                _propGroups.Add(s, l);
+            });
+        }
+        ProcessPotentialPropNodes(_model.Config.NodeAssociations, false);
+        ProcessPotentialPropNodes(_model.Config.AttributeAssociations, true);
+    }
+    public override void _Ready()
+    {
+        PreProcessProps();
     }
     public Tile3D(Tile tile, int rot, RNG rng)
     {

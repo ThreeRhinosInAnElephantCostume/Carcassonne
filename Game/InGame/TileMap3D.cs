@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO.Enumeration;
@@ -21,11 +25,12 @@ public class TileMap3D : Spatial
     public Action<int> OnMeeplePlacedOnNode;
     public Action<int> OnMeeplePlacedOnAttribute;
     public Tile3D NextTile { get; protected set; }
-    List<PotentialTile3D> _potentialTile3Ds = new List<PotentialTile3D>();
-    Game _game;
-    Dictionary<Vector2I, PotentialTile3D> _potDict = new Dictionary<Vector2I, PotentialTile3D>();
+
+    readonly List<PotentialTile3D> _potentialTile3Ds = new List<PotentialTile3D>();
+    readonly Game _game;
+    readonly Dictionary<Vector2I, PotentialTile3D> _potDict = new Dictionary<Vector2I, PotentialTile3D>();
     GameEngine _engine = null;
-    RNG _rng = new RNG(777);
+    readonly RNG _rng = new RNG(777);
     public GameEngine Engine
     {
         get => _engine;
@@ -49,7 +54,8 @@ public class TileMap3D : Spatial
         }
     }
     public Game.GameLocalAgent Player { get; set; }
-    List<Tile3D> _tiles = new List<Tile3D>();
+
+    readonly List<Tile3D> _tiles = new List<Tile3D>();
     bool _calledUpdate = false;
     void Clear()
     {
@@ -164,7 +170,7 @@ public class TileMap3D : Spatial
                 var tile3d = this._tiles.Find(it => it.AssociatedTile == m.CurrentTile);
                 Assert(tile3d != null);
                 var owner = (Game.GameAgent)_game.GetAgent((Player)m.Owner);
-                if (m.Container  is Tile.TileAttribute attr)
+                if (m.Container is Tile.TileAttribute attr)
                 {
                     int indx = attr.tile.Attributes.IndexOf(attr);
                     tile3d.AddAttributePlacement(owner, attr.tile.Attributes.IndexOf(attr));

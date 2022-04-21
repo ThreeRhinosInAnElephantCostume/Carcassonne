@@ -74,14 +74,12 @@ public interface IProp
     {
         if (_parent != null)
             this._theme = _parent.CurrentTheme;
-        if (CurrentTheme == null)
-            return;
         foreach (var it in _children)
         {
             it._theme = _theme;
             it.UpdateProp();
         }
-        UpdateTheme();
+        Defer(UpdateTheme);
     }
     public void InitHierarchy()
     {

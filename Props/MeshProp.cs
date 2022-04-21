@@ -55,7 +55,7 @@ public class MeshProp : MeshInstance, IProp
         {
             int num = int.Parse(property.Split("#")[1]);
             Assert(num >= 0 && num < SurfaceSettings.Count);
-            if (this.Mesh.SurfaceGetMaterial(num) is SpatialMaterial)
+            if (this.GetSurfaceMaterial(num) is SpatialMaterial)
             {
                 int val = ((SurfaceSettings[num].primary) ? 1 : 0) |
                     ((SurfaceSettings[num].secondary) ? 2 : 0) |
@@ -85,7 +85,9 @@ public class MeshProp : MeshInstance, IProp
         MaybeInitSurfaces();
         void SetMat(MeshInstance mesh, int indx, PersonalTheme theme, bool p, bool s, bool t)
         {
-            var mat = (SpatialMaterial)mesh.Mesh.SurfaceGetMaterial(indx);
+            var mat = (SpatialMaterial)mesh.GetSurfaceMaterial(indx);
+            if (mat == null)
+                mat = new SpatialMaterial();
             Color col = new Color(0, 0, 0, 1);
             int n = 0;
             if (p)
@@ -114,12 +116,12 @@ public class MeshProp : MeshInstance, IProp
                 mat.AlbedoColor = col;
             }
             //GD.Print("Set color to: ", mat.AlbedoColor);
-            mesh.Mesh.SurfaceSetMaterial(indx, mat);
+            mesh.SetSurfaceMaterial(indx, mat);
         }
         var ret = new List<Action<PersonalTheme>>();
         RepeatN(this.GetSurfaceMaterialCount(), i =>
         {
-            var mat = this.Mesh.SurfaceGetMaterial(i);
+            var mat = this.GetSurfaceMaterial(i);
             if (mat is SpatialMaterial)
             {
                 var ss = SurfaceSettings[i];
@@ -140,6 +142,8 @@ public class MeshProp : MeshInstance, IProp
 
     void IProp.UpdateTheme()
     {
+        if ((this as IProp).CurrentTheme == null)
+            return;
         if (_setters == null || _setters.Count == 0)
         {
             _setters = GenerateThemeSetters();

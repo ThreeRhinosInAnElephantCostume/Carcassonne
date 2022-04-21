@@ -84,12 +84,13 @@ render_target_update_mode = 3
 
 [node name="IconProp" type="Sprite" parent="Panel/VBoxContainer/HBoxContainer/ViewportContainer/Viewport"]
 material = SubResource( 1 )
-position = Vector2( 32, 32 )
+position = Vector2( 8, 8 )
 texture = ExtResource( 4 )
 script = ExtResource( 3 )
 ShowIcon = false
 
 [node name="Camera2D" type="Camera2D" parent="Panel/VBoxContainer/HBoxContainer/ViewportContainer/Viewport"]
+scale = Vector2( 39.625, 22.375 )
 anchor_mode = 0
 
 [node name="HSeparator" type="HSeparator" parent="Panel/VBoxContainer/HBoxContainer"]
@@ -117,4 +118,5 @@ script = ExtResource( 3 )
 ShowIcon = false
 
 [node name="Camera2D" type="Camera2D" parent="Panel/VBoxContainer/HBoxContainer/ViewportContainer2/Viewport"]
+scale = Vector2( 4.96094, 2.79688 )
 anchor_mode = 0
