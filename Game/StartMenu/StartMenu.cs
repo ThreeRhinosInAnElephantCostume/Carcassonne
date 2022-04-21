@@ -1,5 +1,11 @@
-﻿using System;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System;
 using Godot;
+using static Utils;
+
 
 
 public class StartMenu : Control
@@ -21,6 +27,7 @@ public class StartMenu : Control
     {
         GD.Print("Play pressed!");
         GetTree().ChangeScene("res://Game/Loading/MainMenuLoad.tscn");
+        DestroyNode(this);
     }
 
     void OnQuitPressed()

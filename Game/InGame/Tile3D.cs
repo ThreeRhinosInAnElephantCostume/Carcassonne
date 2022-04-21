@@ -50,7 +50,7 @@ public class Tile3D : Spatial
     }
     public void AddPotentialAttributePlacement(Game.GameLocalAgent agent, int indx)
     {
-        var pot = Globals.PotentialMeeplePlacementPacked.Instance<PotentialMeeplePlacement>();
+        var pot = Globals.Scenes.PotentialMeeplePlacementPacked.Instance<PotentialMeeplePlacement>();
         pot.Agent = agent;
         pot.Index = indx;
         pot.IsAttribute = true;
@@ -61,7 +61,7 @@ public class Tile3D : Spatial
     }
     public void AddPotentialNodePlacement(Game.GameLocalAgent agent, int indx)
     {
-        var pot = Globals.PotentialMeeplePlacementPacked.Instance<PotentialMeeplePlacement>();
+        var pot = Globals.Scenes.PotentialMeeplePlacementPacked.Instance<PotentialMeeplePlacement>();
         pot.Agent = agent;
         pot.Index = indx;
         pot.IsAttribute = false;

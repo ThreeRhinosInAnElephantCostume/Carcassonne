@@ -49,4 +49,3 @@ __meta__ = {
 }
 
 [connection signal="mouse_entered" from="Quit" to="." method="_onQuitMouseEntered"]
-[connection signal="pressed" from="Quit" to="." method="_onQuitPressed"]
