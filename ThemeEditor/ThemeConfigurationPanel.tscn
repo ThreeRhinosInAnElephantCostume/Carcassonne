@@ -66,8 +66,9 @@ margin_bottom = 17.0
 text = "Icon:"
 
 [node name="SelectIconButton" type="Button" parent="VBoxContainer/IconPicker"]
-anchor_left = 1.0
-anchor_right = 1.0
+margin_left = 36.0
+margin_right = 102.0
+margin_bottom = 20.0
 grow_horizontal = 0
 text = "<NONE>"
 
@@ -86,7 +87,8 @@ margin_bottom = 17.0
 text = "Avatar:"
 
 [node name="SelectAvatarButton" type="Button" parent="VBoxContainer/AvatarPicker"]
-anchor_left = 1.0
-anchor_right = 1.0
+margin_left = 48.0
+margin_right = 114.0
+margin_bottom = 20.0
 grow_horizontal = 0
 text = "<NONE>"

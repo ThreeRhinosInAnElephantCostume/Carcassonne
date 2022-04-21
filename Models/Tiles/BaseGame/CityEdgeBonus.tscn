@@ -7487,6 +7487,7 @@ mesh = SubResource( 368 )
 material/0 = null
 
 [node name="KnightMeepleToken" parent="CITY" instance=ExtResource( 9 )]
+transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0.301026, 0 )
 
 [node name="GRASS" type="Spatial" parent="."]
 

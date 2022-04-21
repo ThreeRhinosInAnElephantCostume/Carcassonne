@@ -40,7 +40,7 @@ public class CapturableProp : SpatialProp, IProp
     }
 
     public bool Potential = false;
-    (OccupierContainer container, Map.Graph graph) _data;
+    (OccupierContainer container, Map.Graph graph)? _data = null;
     public (OccupierContainer container, Map.Graph graph)? Data
     {
         get => _data;
@@ -57,7 +57,7 @@ public class CapturableProp : SpatialProp, IProp
     void IProp.UpdateTheme()
     {
         var prop = (IProp)this;
-        if(Engine.EditorHint)
+        if (Engine.EditorHint)
         {
             Visible = true;
             return;
@@ -79,7 +79,12 @@ public class CapturableProp : SpatialProp, IProp
         if (!showprop)
             goto end;
         int nowners;
-        if(data.graph == null)
+        if (data.graph == null)
+        {
+            if (data.container is InternalNode node)
+                data.graph = node.Graph;
+        }
+        if (data.graph == null)
             nowners = data.container.Occupiers.Count;
         else
             nowners = data.graph.Owners.Count;

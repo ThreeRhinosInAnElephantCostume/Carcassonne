@@ -108,7 +108,7 @@ public class Tile3D : Spatial
         Assert(_propGroups.ContainsKey(rootnode));
         _propGroups[rootnode].ForEach(prop =>
         {
-            if(prop is CapturableProp cap)
+            if (prop is CapturableProp cap)
                 cap.Potential = false;
             prop.CurrentTheme = agent.CurrentTheme;
         });
@@ -170,29 +170,29 @@ public class Tile3D : Spatial
     }
     void PreProcessProps()
     {
-        void ProcessPotentialPropNodes(Dictionary <string, int> dict, bool attribute)
-        {   
-            dict.Keys.ToList().ForEach(s => 
+        void ProcessPotentialPropNodes(Dictionary<string, int> dict, bool attribute)
+        {
+            dict.Keys.ToList().ForEach(s =>
             {
                 var l = new List<IProp>();
                 var node = _root.GetNodeSafe<Spatial>(s);
-                if(node is IProp prop)
+                if (node is IProp prop)
                 {
                     l.Add(prop);
                 }
-                else if(node is CapturableProp cap)
+                else if (node is CapturableProp cap)
                 {
                     l.Add(cap);
                 }
                 l.AddRange(node.GetChildrenRecrusively<IProp>());
                 int indx = dict[s];
-                OccupierContainer cont = (attribute) ?  (OccupierContainer) AssociatedTile.Attributes[indx] : (OccupierContainer)AssociatedTile.Nodes[indx];
+                OccupierContainer cont = (attribute) ? (OccupierContainer)AssociatedTile.Attributes[indx] : (OccupierContainer)AssociatedTile.Nodes[indx];
 
-                foreach(IProp p in l)
+                foreach (IProp p in l)
                 {
-                    if(p is CapturableProp cap)
+                    if (p is CapturableProp cap)
                     {
-                        cap.Data = (cont, (attribute)?null:AssociatedTile.Nodes[indx].Graph);
+                        cap.Data = (cont, (attribute) ? null : ((InternalNode)cont).Graph);
                     }
                     p.CurrentTheme = null;
                 }

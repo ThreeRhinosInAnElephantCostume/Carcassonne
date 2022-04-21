@@ -86,6 +86,8 @@ public class MeshProp : MeshInstance, IProp
         void SetMat(MeshInstance mesh, int indx, PersonalTheme theme, bool p, bool s, bool t)
         {
             var mat = (SpatialMaterial)mesh.GetSurfaceMaterial(indx);
+            if (mat == null)
+                mat = new SpatialMaterial();
             Color col = new Color(0, 0, 0, 1);
             int n = 0;
             if (p)
@@ -140,7 +142,7 @@ public class MeshProp : MeshInstance, IProp
 
     void IProp.UpdateTheme()
     {
-        if((this as IProp).CurrentTheme == null)
+        if ((this as IProp).CurrentTheme == null)
             return;
         if (_setters == null || _setters.Count == 0)
         {
