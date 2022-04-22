@@ -1,8 +1,24 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://GUI/DarkTheme/Fonts/Frederic.tres" type="DynamicFont" id=1]
 [ext_resource path="res://GUI/DarkTheme/Dark.theme" type="Theme" id=2]
 [ext_resource path="res://Game/LobbySingleplayer/LobbySingleplayer.cs" type="Script" id=3]
+[ext_resource path="res://GUI/img/avatars-in-color_200x203/bot_easy_blue.png" type="Texture" id=4]
+[ext_resource path="res://GUI/img/avatars-in-color_200x203/bot_easy_black.png" type="Texture" id=5]
+[ext_resource path="res://GUI/img/avatars-in-color_200x203/bot_easy_green.png" type="Texture" id=6]
+[ext_resource path="res://GUI/img/avatars-in-color_200x203/meeple_red.png" type="Texture" id=7]
+[ext_resource path="res://GUI/img/avatars-in-color_200x203/bot_mid_black.png" type="Texture" id=8]
+[ext_resource path="res://GUI/img/avatars-in-color_200x203/blank_200x203.png" type="Texture" id=9]
+[ext_resource path="res://GUI/img/avatars-in-color_200x203/bot_mid_green.png" type="Texture" id=10]
+[ext_resource path="res://GUI/img/avatars-in-color_200x203/bot_hard_yellow.png" type="Texture" id=11]
+[ext_resource path="res://GUI/img/avatars-in-color_200x203/bot_hard_green.png" type="Texture" id=12]
+[ext_resource path="res://GUI/img/avatars-in-color_200x203/bot_easy_yellow.png" type="Texture" id=13]
+[ext_resource path="res://GUI/img/avatars-in-color_200x203/bot_mid_blue.png" type="Texture" id=14]
+[ext_resource path="res://GUI/img/avatars-in-color_200x203/bot_mid_yellow.png" type="Texture" id=15]
+[ext_resource path="res://GUI/img/avatars-in-color_200x203/bot_hard_black.png" type="Texture" id=16]
+[ext_resource path="res://GUI/img/avatars-in-color_200x203/bot_hard_blue.png" type="Texture" id=17]
+[ext_resource path="res://GUI/scenes/wall.tscn" type="PackedScene" id=18]
+[ext_resource path="res://GUI/scenes/Selector.tscn" type="PackedScene" id=19]
 
 [node name="LobbySingle" type="Control"]
 anchor_right = 1.0
@@ -15,11 +31,13 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="wall" parent="." instance=ExtResource( 18 )]
+
 [node name="Quit" type="Button" parent="."]
-anchor_left = 0.664
-anchor_top = 0.819
-anchor_right = 0.937
-anchor_bottom = 0.931
+anchor_left = 0.646638
+anchor_top = 1.08577
+anchor_right = 0.919638
+anchor_bottom = 1.19777
 margin_left = 0.0799561
 margin_top = 0.319946
 margin_right = 0.639893
@@ -31,21 +49,130 @@ __meta__ = {
 "_edit_use_anchors_": true
 }
 
-[node name="Label2" type="Label" parent="."]
-margin_left = 208.0
-margin_top = 150.0
-margin_right = 753.4
-margin_bottom = 218.4
-text = "WORK IN PROGRESS"
-
 [node name="Play" type="Button" parent="."]
-margin_left = 856.0
-margin_top = 379.0
-margin_right = 1192.0
-margin_bottom = 446.0
+margin_left = 932.925
+margin_top = 645.341
+margin_right = 1268.92
+margin_bottom = 712.341
 text = "Play"
-__meta__ = {
-"_edit_use_anchors_": false
-}
+
+[node name="Selector0" parent="." instance=ExtResource( 19 )]
+position = Vector2( 200, 130 )
+
+[node name="Selector1" parent="." instance=ExtResource( 19 )]
+position = Vector2( 425, 130 )
+
+[node name="GridContainer" type="GridContainer" parent="."]
+margin_left = 100.0
+margin_top = 30.0
+margin_right = 1112.0
+margin_bottom = 645.0
+custom_constants/hseparation = 25
+columns = 5
+
+[node name="Player" type="TextureRect" parent="GridContainer"]
+margin_right = 200.0
+margin_bottom = 203.0
+texture = ExtResource( 7 )
+stretch_mode = 1
+
+[node name="BotEasyBlack" type="TextureRect" parent="GridContainer"]
+margin_left = 225.0
+margin_right = 425.0
+margin_bottom = 203.0
+texture = ExtResource( 5 )
+
+[node name="BotEasyBlue" type="TextureRect" parent="GridContainer"]
+margin_left = 450.0
+margin_right = 650.0
+margin_bottom = 203.0
+texture = ExtResource( 4 )
+
+[node name="BotEasyYellow" type="TextureRect" parent="GridContainer"]
+margin_left = 675.0
+margin_right = 875.0
+margin_bottom = 203.0
+texture = ExtResource( 13 )
+
+[node name="BotEasyGreen" type="TextureRect" parent="GridContainer"]
+margin_left = 900.0
+margin_right = 1100.0
+margin_bottom = 203.0
+texture = ExtResource( 6 )
+
+[node name="blank" type="TextureRect" parent="GridContainer"]
+margin_top = 206.0
+margin_right = 200.0
+margin_bottom = 409.0
+texture = ExtResource( 9 )
+
+[node name="BotMidBlack" type="TextureRect" parent="GridContainer"]
+margin_left = 225.0
+margin_top = 206.0
+margin_right = 425.0
+margin_bottom = 409.0
+texture = ExtResource( 8 )
+
+[node name="BotMidBlue" type="TextureRect" parent="GridContainer"]
+margin_left = 450.0
+margin_top = 206.0
+margin_right = 650.0
+margin_bottom = 409.0
+texture = ExtResource( 14 )
+
+[node name="BotMidYellow" type="TextureRect" parent="GridContainer"]
+margin_left = 675.0
+margin_top = 206.0
+margin_right = 875.0
+margin_bottom = 409.0
+texture = ExtResource( 15 )
+
+[node name="BotMidGreen" type="TextureRect" parent="GridContainer"]
+margin_left = 900.0
+margin_top = 206.0
+margin_right = 1100.0
+margin_bottom = 409.0
+texture = ExtResource( 10 )
+
+[node name="blank2" type="TextureRect" parent="GridContainer"]
+margin_top = 412.0
+margin_right = 200.0
+margin_bottom = 615.0
+texture = ExtResource( 9 )
+
+[node name="BotHardBlack" type="TextureRect" parent="GridContainer"]
+margin_left = 225.0
+margin_top = 412.0
+margin_right = 425.0
+margin_bottom = 615.0
+texture = ExtResource( 16 )
+
+[node name="BotHardBlue" type="TextureRect" parent="GridContainer"]
+margin_left = 450.0
+margin_top = 412.0
+margin_right = 650.0
+margin_bottom = 615.0
+texture = ExtResource( 17 )
+
+[node name="BotHardYellow" type="TextureRect" parent="GridContainer"]
+margin_left = 675.0
+margin_top = 412.0
+margin_right = 875.0
+margin_bottom = 615.0
+texture = ExtResource( 11 )
+
+[node name="BotHardGreen" type="TextureRect" parent="GridContainer"]
+margin_left = 900.0
+margin_top = 412.0
+margin_right = 1100.0
+margin_bottom = 615.0
+texture = ExtResource( 12 )
+
+[node name="Label2" type="Label" parent="."]
+margin_left = 191.01
+margin_top = 640.814
+margin_right = 736.411
+margin_bottom = 709.214
+text = "WORK IN PROGRESS"
 
 [connection signal="mouse_entered" from="Quit" to="." method="_onQuitMouseEntered"]
