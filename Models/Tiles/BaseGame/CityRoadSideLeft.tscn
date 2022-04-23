@@ -1,14 +1,15 @@
 [gd_scene load_steps=255 format=2]
 
-[ext_resource path="res://Models/Tiles/BaseGame/MATERIALS/Material-Grass_Green.material" type="Material" id=1]
-[ext_resource path="res://Models/Tiles/BaseGame/MATERIALS/Material-Road_Sand.material" type="Material" id=2]
-[ext_resource path="res://Models/Tiles/BaseGame/MATERIALS/Material-Brick_Light_Grey.material" type="Material" id=3]
-[ext_resource path="res://Models/Tiles/BaseGame/MATERIALS/Material-Earth_Brown.material" type="Material" id=4]
-[ext_resource path="res://Models/Tiles/BaseGame/MATERIALS/Material-Wood_Dark.material" type="Material" id=5]
-[ext_resource path="res://Models/Tiles/BaseGame/MATERIALS/Material-Brick_Dark_Grey.material" type="Material" id=6]
+[ext_resource path="res://Models/MATERIALS/Material-Grass_Green.material" type="Material" id=1]
+[ext_resource path="res://Models/MATERIALS/Material-Road_Sand.material" type="Material" id=2]
+[ext_resource path="res://Models/MATERIALS/Material-Brick_Light_Grey.material" type="Material" id=3]
+[ext_resource path="res://Models/MATERIALS/Material-Earth_Brown.material" type="Material" id=4]
+[ext_resource path="res://Models/MATERIALS/Material-Wood_Dark.material" type="Material" id=5]
+[ext_resource path="res://Models/MATERIALS/Material-Brick_Dark_Grey.material" type="Material" id=6]
 [ext_resource path="res://Models/Meeples/HighwaymanMeepleToken.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Models/Meeples/KnightMeepleToken.tscn" type="PackedScene" id=8]
 [ext_resource path="res://Models/Meeples/FarmerMeepleToken.tscn" type="PackedScene" id=9]
+
 
 [sub_resource type="ArrayMesh" id=2]
 resource_name = "Tree"
