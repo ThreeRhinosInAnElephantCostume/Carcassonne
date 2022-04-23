@@ -1,4 +1,4 @@
-[gd_scene load_steps=295 format=2]
+[gd_scene load_steps=298 format=2]
 
 [ext_resource path="res://Models/Tiles/BaseGame/MATERIALS/Material-Road_Sand.material" type="Material" id=1]
 [ext_resource path="res://Models/Tiles/BaseGame/MATERIALS/Material-Brick_Dark_Grey.material" type="Material" id=2]
@@ -6,6 +6,9 @@
 [ext_resource path="res://Models/Tiles/BaseGame/MATERIALS/Material-Brick_Light_Grey.material" type="Material" id=4]
 [ext_resource path="res://Models/Tiles/BaseGame/MATERIALS/Material-Earth_Brown.material" type="Material" id=5]
 [ext_resource path="res://Models/Tiles/BaseGame/MATERIALS/Material-Wood_Dark.material" type="Material" id=6]
+[ext_resource path="res://Models/Meeples/HighwaymanMeepleToken.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Models/Meeples/KnightMeepleToken.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Models/Meeples/FarmerMeepleToken.tscn" type="PackedScene" id=9]
 
 [sub_resource type="ArrayMesh" id=98]
 resource_name = "Base"
@@ -4606,17 +4609,26 @@ material/0 = null
 mesh = SubResource( 287 )
 material/0 = null
 
+[node name="HighwaymanMeepleToken" parent="ROAD_2" instance=ExtResource( 7 )]
+transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -0.340487, 0.135, 0 )
+
 [node name="ROAD_1" type="Spatial" parent="."]
 
 [node name="Road54" type="MeshInstance" parent="ROAD_1"]
 mesh = SubResource( 281 )
 material/0 = null
 
+[node name="HighwaymanMeepleToken" parent="ROAD_1" instance=ExtResource( 7 )]
+transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0.346958, 0.135, 0 )
+
 [node name="ROAD_0" type="Spatial" parent="."]
 
 [node name="Road53" type="MeshInstance" parent="ROAD_0"]
 mesh = SubResource( 115 )
 material/0 = null
+
+[node name="HighwaymanMeepleToken" parent="ROAD_0" instance=ExtResource( 7 )]
+transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0.135, 0.301726 )
 
 [node name="CROSSROAD" type="Spatial" parent="."]
 
@@ -5042,6 +5054,9 @@ material/0 = null
 mesh = SubResource( 286 )
 material/0 = null
 
+[node name="FarmerMeepleToken" parent="GRASS_2" instance=ExtResource( 9 )]
+transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0.367564, 0.135, -0.204276 )
+
 [node name="GRASS_1" type="Spatial" parent="."]
 
 [node name="Grass3" type="MeshInstance" parent="GRASS_1"]
@@ -5060,6 +5075,9 @@ material/0 = null
 mesh = SubResource( 279 )
 material/0 = null
 
+[node name="FarmerMeepleToken" parent="GRASS_1" instance=ExtResource( 9 )]
+transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0.28353, 0.135, 0.255923 )
+
 [node name="GRASS_0" type="Spatial" parent="."]
 
 [node name="Grass2" type="MeshInstance" parent="GRASS_0"]
@@ -5077,6 +5095,9 @@ material/0 = null
 [node name="Grass17" type="MeshInstance" parent="GRASS_0"]
 mesh = SubResource( 285 )
 material/0 = null
+
+[node name="FarmerMeepleToken" parent="GRASS_0" instance=ExtResource( 9 )]
+transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -0.2381, 0.135, 0.263236 )
 
 [node name="TREES" type="Spatial" parent="."]
 
@@ -5733,3 +5754,6 @@ material/0 = null
 [node name="Tower2" type="MeshInstance" parent="CITY"]
 mesh = SubResource( 32 )
 material/0 = null
+
+[node name="KnightMeepleToken" parent="CITY" instance=ExtResource( 8 )]
+transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0.234459, -0.422229 )

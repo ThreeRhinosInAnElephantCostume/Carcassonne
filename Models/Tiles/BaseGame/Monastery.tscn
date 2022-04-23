@@ -1,10 +1,12 @@
-[gd_scene load_steps=60 format=2]
+[gd_scene load_steps=62 format=2]
 
 [ext_resource path="res://Models/Tiles/BaseGame/MATERIALS/Material-Brick_Light_Grey.material" type="Material" id=1]
 [ext_resource path="res://Models/Tiles/BaseGame/MATERIALS/Material-Brick_Dark_Grey.material" type="Material" id=2]
 [ext_resource path="res://Models/Tiles/BaseGame/MATERIALS/Material-Earth_Brown.material" type="Material" id=3]
 [ext_resource path="res://Models/Tiles/BaseGame/MATERIALS/Material-Wood_Dark.material" type="Material" id=4]
 [ext_resource path="res://Models/Tiles/BaseGame/MATERIALS/Material-Grass_Green.material" type="Material" id=5]
+[ext_resource path="res://Models/Meeples/FarmerMeepleToken.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Models/Meeples/MonkMeepleToken.tscn" type="PackedScene" id=7]
 
 [sub_resource type="SpatialMaterial" id=51]
 resource_name = "Material-Grass_Green"
@@ -974,6 +976,9 @@ material/0 = ExtResource( 5 )
 mesh = SubResource( 40 )
 material/0 = ExtResource( 5 )
 
+[node name="FarmerMeepleToken" parent="GRASS" instance=ExtResource( 6 )]
+transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0.253099, 0.135, 0.294685 )
+
 [node name="BASE" type="Spatial" parent="."]
 
 [node name="Base" type="MeshInstance" parent="BASE"]
@@ -1045,3 +1050,6 @@ material/0 = ExtResource( 2 )
 [node name="Church8" type="MeshInstance" parent="MONASTERY"]
 mesh = SubResource( 20 )
 material/0 = ExtResource( 2 )
+
+[node name="MonkMeepleToken" parent="MONASTERY" instance=ExtResource( 7 )]
+transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0.40507, 0 )

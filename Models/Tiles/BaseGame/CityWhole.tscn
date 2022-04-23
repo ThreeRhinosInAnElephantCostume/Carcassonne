@@ -1,4 +1,4 @@
-[gd_scene load_steps=455 format=2]
+[gd_scene load_steps=456 format=2]
 
 [ext_resource path="res://Models/Tiles/BaseGame/MATERIALS/Material-Earth_Brown.material" type="Material" id=1]
 [ext_resource path="res://Models/Tiles/BaseGame/MATERIALS/Material-Grass_Green.material" type="Material" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://Models/Tiles/BaseGame/MATERIALS/Material-Road_Sand.material" type="Material" id=5]
 [ext_resource path="res://Models/Tiles/BaseGame/MATERIALS/Material-Brick_Light_Grey.material" type="Material" id=6]
 [ext_resource path="res://Models/Tiles/BaseGame/MATERIALS/Material-Wood_Dark.material" type="Material" id=7]
+[ext_resource path="res://Models/Meeples/KnightMeepleToken.tscn" type="PackedScene" id=8]
 
 [sub_resource type="ArrayMesh" id=13]
 resource_name = "Base"
@@ -8884,6 +8885,9 @@ material/0 = null
 [node name="Cobblestone90" type="MeshInstance" parent="CITY"]
 mesh = SubResource( 148 )
 material/0 = null
+
+[node name="KnightMeepleToken" parent="CITY" instance=ExtResource( 8 )]
+transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0.303568, 0 )
 
 [node name="BONUS" type="Spatial" parent="."]
 

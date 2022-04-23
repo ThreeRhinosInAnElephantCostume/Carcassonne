@@ -1,4 +1,4 @@
-[gd_scene load_steps=393 format=2]
+[gd_scene load_steps=394 format=2]
 
 [ext_resource path="res://Models/Tiles/BaseGame/MATERIALS/Material-Brick_Light_Grey.material" type="Material" id=1]
 [ext_resource path="res://Models/Tiles/BaseGame/MATERIALS/Material-Grass_Green.material" type="Material" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://Models/Tiles/BaseGame/MATERIALS/Material-Plastic_Blue.material" type="Material" id=7]
 [ext_resource path="res://Props/CapturableProp.cs" type="Script" id=8]
 [ext_resource path="res://Models/Meeples/KnightMeepleToken.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Models/Meeples/FarmerMeepleToken.tscn" type="PackedScene" id=10]
 
 [sub_resource type="ArrayMesh" id=1]
 surfaces/0 = {
@@ -7502,6 +7503,9 @@ material/0 = null
 [node name="Grass17" type="MeshInstance" parent="GRASS"]
 mesh = SubResource( 371 )
 material/0 = null
+
+[node name="FarmerMeepleToken" parent="GRASS" instance=ExtResource( 10 )]
+transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0.135, 0.385094 )
 
 [node name="TREES" type="Spatial" parent="."]
 

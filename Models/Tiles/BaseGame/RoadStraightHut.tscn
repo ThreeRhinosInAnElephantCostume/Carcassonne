@@ -1,10 +1,12 @@
-[gd_scene load_steps=91 format=2]
+[gd_scene load_steps=93 format=2]
 
 [ext_resource path="res://Models/Tiles/BaseGame/MATERIALS/Material-Grass_Green.material" type="Material" id=1]
 [ext_resource path="res://Models/Tiles/BaseGame/MATERIALS/Material-Road_Sand.material" type="Material" id=2]
 [ext_resource path="res://Models/Tiles/BaseGame/MATERIALS/Material-Wood_Dark.material" type="Material" id=3]
 [ext_resource path="res://Models/Tiles/BaseGame/MATERIALS/Material-Brick_Light_Grey.material" type="Material" id=4]
 [ext_resource path="res://Models/Tiles/BaseGame/MATERIALS/Material-Earth_Brown.material" type="Material" id=5]
+[ext_resource path="res://Models/Meeples/HighwaymanMeepleToken.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Models/Meeples/FarmerMeepleToken.tscn" type="PackedScene" id=7]
 
 [sub_resource type="SpatialMaterial" id=1]
 resource_name = "Material-Road_Sand"
@@ -1279,6 +1281,9 @@ material/0 = ExtResource( 2 )
 mesh = SubResource( 4 )
 material/0 = ExtResource( 2 )
 
+[node name="HighwaymanMeepleToken" parent="ROAD" instance=ExtResource( 6 )]
+transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0.135, 0.276 )
+
 [node name="HUT" type="Spatial" parent="."]
 
 [node name="Hut" type="MeshInstance" parent="HUT"]
@@ -1495,6 +1500,9 @@ material/0 = ExtResource( 1 )
 mesh = SubResource( 60 )
 material/0 = ExtResource( 1 )
 
+[node name="FarmerMeepleToken" parent="GRASS_0" instance=ExtResource( 7 )]
+transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -0.308, 0.135, -0.089 )
+
 [node name="GRASS_1" type="Spatial" parent="."]
 
 [node name="Grass2" type="MeshInstance" parent="GRASS_1"]
@@ -1520,6 +1528,9 @@ material/0 = ExtResource( 1 )
 [node name="Grass12" type="MeshInstance" parent="GRASS_1"]
 mesh = SubResource( 66 )
 material/0 = ExtResource( 1 )
+
+[node name="FarmerMeepleToken" parent="GRASS_1" instance=ExtResource( 7 )]
+transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0.293, 0.135, 0 )
 
 [node name="COBBLESTONE" type="Spatial" parent="."]
 
