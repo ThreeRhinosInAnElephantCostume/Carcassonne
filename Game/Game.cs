@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -90,20 +94,20 @@ public partial class Game
     }
     public static Game NewLocalGame(IGameHandles handles, int localplayers, int AI, string tileset, ulong seed)
     {
-        int players = localplayers + AI;   
+        int players = localplayers + AI;
         Game game = new Game(handles);
         game._rng = new RNG(seed);
         game.Mode = GameMode.LOCAL;
         game.State = GameState.AWAITING_MOVE;
         game.Engine = GameEngine.CreateBaseGame(TileDataLoader.GlobalLoader, seed, players, tileset);
         game.Agents = new List<GameAgent>();
-        for(int i = 0; i < localplayers; i++)
+        for (int i = 0; i < localplayers; i++)
         {
             game.Agents.Add(new GameLocalAgent(game, $"PLAYER {i}", game.Engine.Players[i]));
         }
-        for(int i = 0; i < AI; i++)
+        for (int i = 0; i < AI; i++)
         {
-            game.Agents.Add(new GameAIAgent(game, $"AI {i}", game.Engine.Players[i+localplayers], new AI.RandomAI(new RNG(game._rng.NextULong()))));
+            game.Agents.Add(new GameAIAgent(game, $"AI {i}", game.Engine.Players[i + localplayers], new AI.RandomAI(new RNG(game._rng.NextULong())), null));
         }
         //game.Agents = game.Engine.Players.ConvertAll<GameAgent>(it => new GameLocalAgent(game, $"PLAYER {it.ID}", it));
         return game;

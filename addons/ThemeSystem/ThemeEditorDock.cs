@@ -73,8 +73,14 @@ public class ThemeEditorDock : Control
         _iconProp = this.GetNodeSafe<TextureRectProp>("Panel/VBoxContainer/HBoxContainer/IconView");
         _themeConfigurationPanel = this.GetNodeSafe<ThemeConfigurationPanel>("Panel/VBoxContainer/ThemeConfigurationPanel");
         _themeConfigurationPanel.CurrentTheme = CurrentTheme;
-        _themeConfigurationPanel.OnChangeHandle += UpdateTheme;
+        _themeConfigurationPanel.OnChangeHandle = UpdateTheme;
         CallDeferred(nameof(UpdateTheme));
+    }
+    public override void _Process(float delta)
+    {
+        if (_themeConfigurationPanel == null || _themeConfigurationPanel.GetParent() != this)
+            _themeConfigurationPanel = this.GetNodeSafe<ThemeConfigurationPanel>("Panel/VBoxContainer/ThemeConfigurationPanel");
+        _themeConfigurationPanel.OnChangeHandle = UpdateTheme;
     }
 
     //  // Called every frame. 'delta' is the elapsed time since the previous frame.

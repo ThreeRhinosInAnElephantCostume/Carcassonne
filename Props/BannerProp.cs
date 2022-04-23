@@ -28,7 +28,17 @@ using Expression = System.Linq.Expressions.Expression;
 [Tool]
 public class BannerProp : Spatial, IProp, IExtendedProperties
 {
-    MeshInstance _bannerMeshInstance;
+    MeshInstance _bannerMeshInstance = null;
+    MeshInstance BannerMeshInstance
+    {
+        get
+        {
+            if (_bannerMeshInstance == null)
+                UpdateBannerMesh();
+            return _bannerMeshInstance;
+        }
+        set => _bannerMeshInstance = value;
+    }
 
     Dictionary<string, (Func<object> getter, Action<object> setter, Func<bool> predicate, GDProperty prop)>
         IExtendedProperties.ExtendedProperties
@@ -298,12 +308,12 @@ public class BannerProp : Spatial, IProp, IExtendedProperties
     }
     ShaderMaterial GetShaderMaterial()
     {
-        Assert(_bannerMeshInstance != null, "_bannerMeshInstance is null! Invalid init?");
-        Assert(_bannerMeshInstance.GetSurfaceMaterialCount() > 0, "Error no surface materials!");
-        var rawmat = _bannerMeshInstance.GetActiveMaterial(0);
+        Assert(BannerMeshInstance != null, "_bannerMeshInstance is null! Invalid init?");
+        Assert(BannerMeshInstance.GetSurfaceMaterialCount() > 0, "Error no surface materials!");
+        var rawmat = BannerMeshInstance.GetActiveMaterial(0);
         Assert(rawmat != null, "The only surface material is null!");
         Assert(rawmat is ShaderMaterial, "Material not set to a shadermaterial.");
-        var mat = (ShaderMaterial)_bannerMeshInstance.GetActiveMaterial(0);
+        var mat = (ShaderMaterial)BannerMeshInstance.GetActiveMaterial(0);
         Assert(mat.Shader != null, "Shader not set!");
         return mat;
     }
@@ -328,7 +338,7 @@ public class BannerProp : Spatial, IProp, IExtendedProperties
     }
     void SetTheme(PersonalTheme t)
     {
-        if (t == null || _bannerMeshInstance == null)
+        if (t == null || BannerMeshInstance == null)
         {
             return;
         }
@@ -584,13 +594,10 @@ public class BannerProp : Spatial, IProp, IExtendedProperties
             }
         }
     }
-
-    public BannerProp()
+    void UpdateBannerMesh()
     {
-
-    }
-    public override void _Ready()
-    {
+        if (_bannerMeshInstance != null && _bannerMeshInstance.GetParent() == this)
+            return;
         try
         {
             _bannerMeshInstance = this.GetNodeSafe<MeshInstance>("BannerMesh");
@@ -606,6 +613,14 @@ public class BannerProp : Spatial, IProp, IExtendedProperties
             this.AddChild(_bannerMeshInstance);
             _bannerMeshInstance.Owner = this;
         }
+    }
+    public BannerProp()
+    {
+
+    }
+    public override void _Ready()
+    {
+        UpdateBannerMesh();
         (this as IProp).InitHierarchy();
         Refresh();
     }

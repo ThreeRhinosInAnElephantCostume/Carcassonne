@@ -11,7 +11,7 @@ albedo_color = Color( 0, 1, 0, 2 )
 
 [sub_resource type="SpatialMaterial" id=2]
 resource_local_to_scene = true
-albedo_color = Color( 1, 0, 0, 2 )
+albedo_color = Color( 1, 0.796078, 0, 2 )
 
 [node name="KnightMeepleToken" type="Spatial"]
 transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0 )
