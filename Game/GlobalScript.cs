@@ -141,11 +141,11 @@ public class GlobalScript : Node
             IconPath = Constants.DataPaths.DEFAULT_PLAYER_ICON_PATH,
             AvatarPath = Constants.DataPaths.DEFAULT_PLAYER_AVATAR_PATH,
         });
-        AddTheme("green", new PersonalTheme()
+        AddTheme("black", new PersonalTheme()
         {
-            PrimaryColor = new Color(0.0f, 0.7f, 0f),
-            SecondaryColor = new Color(0.1f, 0.9f, 0.1f),
-            TertiaryColor = new Color(0.3f, 0.75f, 0.3f),
+            PrimaryColor = new Color(0.01f, 0.01f, 0.01f),
+            SecondaryColor = new Color(0.33f, 0.23f, 0.35f),
+            TertiaryColor = new Color(0.9f, 0.9f, 0.9f),
             IconPath = Constants.DataPaths.DEFAULT_PLAYER_ICON_PATH,
             AvatarPath = Constants.DataPaths.DEFAULT_PLAYER_AVATAR_PATH,
         });
@@ -165,19 +165,19 @@ public class GlobalScript : Node
             IconPath = Constants.DataPaths.DEFAULT_PLAYER_ICON_PATH,
             AvatarPath = Constants.DataPaths.DEFAULT_PLAYER_AVATAR_PATH,
         });
+        AddTheme("green", new PersonalTheme()
+        {
+            PrimaryColor = new Color(0.0f, 0.7f, 0f),
+            SecondaryColor = new Color(0.1f, 0.9f, 0.1f),
+            TertiaryColor = new Color(0.3f, 0.75f, 0.3f),
+            IconPath = Constants.DataPaths.DEFAULT_PLAYER_ICON_PATH,
+            AvatarPath = Constants.DataPaths.DEFAULT_PLAYER_AVATAR_PATH,
+        });
         AddTheme("white", new PersonalTheme()
         {
             PrimaryColor = new Color(0.9f, 0.9f, 0.9f),
             SecondaryColor = new Color(0.3f, 0.3f, 0.3f),
             TertiaryColor = new Color(0.1f, 0.1f, 0.1f),
-            IconPath = Constants.DataPaths.DEFAULT_PLAYER_ICON_PATH,
-            AvatarPath = Constants.DataPaths.DEFAULT_PLAYER_AVATAR_PATH,
-        });
-        AddTheme("black", new PersonalTheme()
-        {
-            PrimaryColor = new Color(0.01f, 0.01f, 0.01f),
-            SecondaryColor = new Color(0.33f, 0.23f, 0.35f),
-            TertiaryColor = new Color(0.9f, 0.9f, 0.9f),
             IconPath = Constants.DataPaths.DEFAULT_PLAYER_ICON_PATH,
             AvatarPath = Constants.DataPaths.DEFAULT_PLAYER_AVATAR_PATH,
         });
