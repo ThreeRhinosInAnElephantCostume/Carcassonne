@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://GUI/DarkTheme/Fonts/Frederic.tres" type="DynamicFont" id=1]
 [ext_resource path="res://GUI/DarkTheme/Dark.theme" type="Theme" id=2]
@@ -19,6 +19,8 @@
 [ext_resource path="res://GUI/img/avatars-in-color_200x203/bot_hard_blue.png" type="Texture" id=17]
 [ext_resource path="res://GUI/scenes/wall.tscn" type="PackedScene" id=18]
 [ext_resource path="res://GUI/scenes/Selector.tscn" type="PackedScene" id=19]
+[ext_resource path="res://Game/LobbySingleplayer/Selector1.gd" type="Script" id=20]
+[ext_resource path="res://GUI/img/ramka-wstega_200x203.png" type="Texture" id=21]
 
 [node name="LobbySingle" type="Control"]
 anchor_right = 1.0
@@ -27,9 +29,6 @@ margin_top = -1.0
 margin_bottom = -1.0
 theme = ExtResource( 2 )
 script = ExtResource( 3 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="wall" parent="." instance=ExtResource( 18 )]
 
@@ -61,6 +60,9 @@ position = Vector2( 200, 130 )
 
 [node name="Selector1" parent="." instance=ExtResource( 19 )]
 position = Vector2( 425, 130 )
+script = ExtResource( 20 )
+selectorTexture = ExtResource( 21 )
+avatarsOffset = Vector2( 0, 206 )
 
 [node name="GridContainer" type="GridContainer" parent="."]
 margin_left = 100.0
@@ -76,7 +78,7 @@ margin_bottom = 203.0
 texture = ExtResource( 7 )
 stretch_mode = 1
 
-[node name="BotEasyBlack" type="TextureRect" parent="GridContainer"]
+[node name="BotEasyBlack" type="TextureRect" parent="GridContainer" groups=["BotLevels_1"]]
 margin_left = 225.0
 margin_right = 425.0
 margin_bottom = 203.0
@@ -106,7 +108,7 @@ margin_right = 200.0
 margin_bottom = 409.0
 texture = ExtResource( 9 )
 
-[node name="BotMidBlack" type="TextureRect" parent="GridContainer"]
+[node name="BotMidBlack" type="TextureRect" parent="GridContainer" groups=["BotLevels_1"]]
 margin_left = 225.0
 margin_top = 206.0
 margin_right = 425.0
@@ -140,7 +142,7 @@ margin_right = 200.0
 margin_bottom = 615.0
 texture = ExtResource( 9 )
 
-[node name="BotHardBlack" type="TextureRect" parent="GridContainer"]
+[node name="BotHardBlack" type="TextureRect" parent="GridContainer" groups=["BotLevels_1"]]
 margin_left = 225.0
 margin_top = 412.0
 margin_right = 425.0
