@@ -1,13 +1,14 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Props/CapturableProp.cs" type="Script" id=1]
 [ext_resource path="res://Props/MeshProp.cs" type="Script" id=2]
 [ext_resource path="res://Models/Meeples/meepletoken.obj" type="ArrayMesh" id=3]
 [ext_resource path="res://Props/BannerProp.cs" type="Script" id=4]
+[ext_resource path="res://GUI/avatars/avatar3.png" type="Texture" id=5]
 
 [sub_resource type="SpatialMaterial" id=1]
 resource_local_to_scene = true
-albedo_color = Color( 0, 1, 0, 2 )
+albedo_color = Color( 1, 1, 1, 2 )
 
 [sub_resource type="SpatialMaterial" id=2]
 resource_local_to_scene = true
@@ -27,10 +28,10 @@ script = ExtResource( 2 )
 "Surface #1" = 1
 
 [node name="BannerProp" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 0.0221639, 0.999754, 0, -0.999754, 0.0221639, 0, 0.230938, 0 )
+transform = Transform( 2, 0, 0, 0, 0.0443278, 1.99951, 0, -1.99951, 0.0443278, 0, 0.230938, 0 )
 script = ExtResource( 4 )
 Billboard = false
-ShowIcon = true
-CenterIcon = true
-IconOffset = Vector2( 0, 0 )
-IconScale = Vector2( 1, 1 )
+Content = 1
+ShowIcon = false
+Texture = ExtResource( 5 )
+MaskEnabled = false
