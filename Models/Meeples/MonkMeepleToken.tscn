@@ -1,17 +1,32 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Props/CapturableProp.cs" type="Script" id=1]
 [ext_resource path="res://Props/MeshProp.cs" type="Script" id=2]
 [ext_resource path="res://Models/Meeples/meepletoken.obj" type="ArrayMesh" id=3]
 [ext_resource path="res://Props/BannerProp.cs" type="Script" id=4]
+[ext_resource path="res://GUI/avatars/avatarbot3.png" type="Texture" id=7]
+[ext_resource path="res://GUI/avatars/avatar2.png" type="Texture" id=8]
 
 [sub_resource type="SpatialMaterial" id=1]
 resource_local_to_scene = true
-albedo_color = Color( 0, 1, 0, 2 )
+albedo_color = Color( 1, 0, 0, 2 )
 
 [sub_resource type="SpatialMaterial" id=2]
 resource_local_to_scene = true
 albedo_color = Color( 1, 0, 0, 2 )
+
+[sub_resource type="SpriteFrames" id=3]
+animations = [ {
+"frames": [ ExtResource( 8 ) ],
+"loop": true,
+"name": "player",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 7 ) ],
+"loop": true,
+"name": "bot",
+"speed": 5.0
+} ]
 
 [node name="MonkMeepleToken" type="Spatial"]
 transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0 )
@@ -23,14 +38,26 @@ mesh = ExtResource( 3 )
 material/0 = SubResource( 1 )
 material/1 = SubResource( 2 )
 script = ExtResource( 2 )
-"Surface #0" = 2
+"Surface #0" = 1
 "Surface #1" = 1
 
 [node name="BannerProp" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 0.0221639, 0.999754, 0, -0.999754, 0.0221639, 0, 0.230938, 0 )
+visible = false
 script = ExtResource( 4 )
 Billboard = false
 ShowIcon = true
 CenterIcon = true
 IconOffset = Vector2( 0, 0 )
 IconScale = Vector2( 1, 1 )
+
+[node name="Avatar_Player" type="AnimatedSprite3D" parent="."]
+transform = Transform( 0.2, 0, 0, 0, -8.74228e-09, -1, 0, 0.2, -4.37114e-08, 0, 0.25, 0 )
+frames = SubResource( 3 )
+animation = "player"
+
+[node name="Avatar_Bot" type="AnimatedSprite3D" parent="."]
+transform = Transform( 0.2, 0, 0, 0, -8.74228e-09, -1, 0, 0.2, -4.37114e-08, 0, 0.25, 0 )
+visible = false
+frames = SubResource( 3 )
+animation = "bot"
