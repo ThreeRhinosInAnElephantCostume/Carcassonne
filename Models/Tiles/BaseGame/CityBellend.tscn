@@ -1,4 +1,4 @@
-[gd_scene load_steps=208 format=2]
+[gd_scene load_steps=210 format=2]
 
 [ext_resource path="res://Models/Tiles/BaseGame/MATERIALS/Material-Earth_Brown.material" type="Material" id=1]
 [ext_resource path="res://Models/Tiles/BaseGame/MATERIALS/Material-Brick_Light_Grey.material" type="Material" id=2]
@@ -6,6 +6,8 @@
 [ext_resource path="res://Models/Tiles/BaseGame/MATERIALS/Material-Brick_Dark_Grey.material" type="Material" id=4]
 [ext_resource path="res://Models/Tiles/BaseGame/MATERIALS/Material-Wood_Dark.material" type="Material" id=5]
 [ext_resource path="res://Models/Tiles/BaseGame/MATERIALS/Material-Grass_Green.material" type="Material" id=6]
+[ext_resource path="res://Models/Meeples/FarmerMeepleToken.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Models/Meeples/KnightMeepleToken.tscn" type="PackedScene" id=8]
 
 [sub_resource type="ArrayMesh" id=3]
 resource_name = "Tree_Bark"
@@ -3299,6 +3301,9 @@ material/0 = null
 mesh = SubResource( 169 )
 material/0 = null
 
+[node name="FarmerMeepleToken" parent="GRASS" instance=ExtResource( 7 )]
+transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -0.148907, 0.135, 0.168967 )
+
 [node name="CITY" type="Spatial" parent="."]
 
 [node name="Stairs" type="MeshInstance" parent="CITY"]
@@ -3992,3 +3997,6 @@ material/0 = null
 [node name="Grass16" type="MeshInstance" parent="CITY"]
 mesh = SubResource( 201 )
 material/0 = null
+
+[node name="KnightMeepleToken" parent="CITY" instance=ExtResource( 8 )]
+transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0.208662, -0.407241 )
