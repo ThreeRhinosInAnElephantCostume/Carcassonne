@@ -22,7 +22,7 @@ using static Utils;
 using Expression = System.Linq.Expressions.Expression;
 
 [Tool]
-public class ControlProp : Control, IProp, IExtendedProperties
+public class TextureButtonProp : TextureButton, IProp, IExtendedProperties
 {
     bool _dirty = true;
 

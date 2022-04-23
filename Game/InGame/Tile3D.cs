@@ -184,7 +184,7 @@ public class Tile3D : Spatial
                 {
                     l.Add(cap);
                 }
-                l.AddRange(node.GetChildrenRecrusively<IProp>());
+                l.AddRange(node.GetChildrenRecrusively<IProp>().FindAll(it => it._parent == null));
                 int indx = dict[s];
                 OccupierContainer cont = (attribute) ? (OccupierContainer)AssociatedTile.Attributes[indx] : (OccupierContainer)AssociatedTile.Nodes[indx];
 

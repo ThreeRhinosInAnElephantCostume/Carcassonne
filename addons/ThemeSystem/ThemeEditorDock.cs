@@ -28,10 +28,8 @@ using static Utils;
 public class ThemeEditorDock : Control
 {
     ThemeConfigurationPanel _themeConfigurationPanel;
-    Sprite2DProp _iconProp;
-    Sprite2DProp _avatarProp;
-    Camera2D _iconCamera;
-    Camera2D _avatarCamera;
+    TextureRectProp _iconProp;
+    TextureRectProp _avatarProp;
     Node _sceneRoot;
     public PersonalTheme CurrentTheme { get; protected set; }
     void SetScene(Node root)
@@ -45,11 +43,7 @@ public class ThemeEditorDock : Control
         if (this.CurrentTheme != null)
         {
             _iconProp.Texture = CurrentTheme.Icon;
-            _iconProp.Position = CurrentTheme.Icon.GetSize() / 2;
-            _iconCamera.Scale = _iconCamera.GetViewport().Size / CurrentTheme.Icon.GetSize();
             _avatarProp.Texture = CurrentTheme.Avatar;
-            _avatarProp.Position = CurrentTheme.Avatar.GetSize() / 2;
-            _avatarCamera.Scale = _avatarCamera.GetViewport().Size / CurrentTheme.Avatar.GetSize();
             (_iconProp as IProp).CurrentTheme = CurrentTheme;
             (_avatarProp as IProp).CurrentTheme = CurrentTheme;
         }
@@ -75,13 +69,11 @@ public class ThemeEditorDock : Control
         if (Globals.DefaultTheme == null)
             Globals.DefaultTheme = DeserializeFromFile<PersonalTheme>(Constants.DataPaths.DEFAULT_PLAYER_THEME_PATH);
         CurrentTheme = Globals.DefaultTheme;
+        _avatarProp = this.GetNodeSafe<TextureRectProp>("Panel/VBoxContainer/HBoxContainer/AvatarView");
+        _iconProp = this.GetNodeSafe<TextureRectProp>("Panel/VBoxContainer/HBoxContainer/IconView");
         _themeConfigurationPanel = this.GetNodeSafe<ThemeConfigurationPanel>("Panel/VBoxContainer/ThemeConfigurationPanel");
         _themeConfigurationPanel.CurrentTheme = CurrentTheme;
         _themeConfigurationPanel.OnChangeHandle += UpdateTheme;
-        _avatarProp = this.GetNodeSafe<Sprite2DProp>("Panel/VBoxContainer/HBoxContainer/ViewportContainer2/Viewport/AvatarProp");
-        _avatarCamera = this.GetNodeSafe<Camera2D>("Panel/VBoxContainer/HBoxContainer/ViewportContainer2/Viewport/Camera2D");
-        _iconProp = this.GetNodeSafe<Sprite2DProp>("Panel/VBoxContainer/HBoxContainer/ViewportContainer/Viewport/IconProp");
-        _iconCamera = this.GetNodeSafe<Camera2D>("Panel/VBoxContainer/HBoxContainer/ViewportContainer/Viewport/Camera2D");
         CallDeferred(nameof(UpdateTheme));
     }
 

@@ -3,6 +3,7 @@ shader_type canvas_item;
 uniform vec4 primary_color : hint_color;
 uniform vec4 secondary_color : hint_color;
 uniform vec4 tertiary_color : hint_color;
+uniform vec4 background_color : hint_color = vec4(0, 0, 0, 0);
 
 uniform bool mask_enabled;
 uniform sampler2D mask_texture;
@@ -31,8 +32,9 @@ void fragment()
 	vec3 combcolor = v.r  * albedo_tex.r * primary_color.rgb + 
 		v.g * albedo_tex.g * secondary_color.rgb + 
 		v.b * albedo_tex.b * tertiary_color.rgb;
-	albedo_tex = vec4(combcolor + albedo_tex.rgb * vec3(1.0f-v.r, 1.0f-v.g, 1.0f-v.b), albedo_tex.a);
+	albedo_tex = vec4(combcolor + (albedo_tex.rgb * channels_inv), albedo_tex.a);
 	vec4 color = albedo_tex;
+	color +=  (1.0-albedo_tex.a) * background_color;
 	if(icon_enabled)
 	{
 		vec2 icon_coords;
