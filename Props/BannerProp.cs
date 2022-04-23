@@ -425,8 +425,10 @@ public class BannerProp : Spatial, IProp, IExtendedProperties
         {
             if (Globals.DefaultTheme == null)
                 Globals.DefaultTheme = DeserializeFromFile<PersonalTheme>(Constants.DataPaths.DEFAULT_PLAYER_THEME_PATH);
+            if ((this as IProp).CurrentTheme == null)
+                (this as IProp).CurrentTheme = Globals.DefaultTheme;
         }
-        SetTheme(Globals.DefaultTheme);
+        SetTheme((this as IProp).CurrentTheme);
     }
     public override void _Notification(int what)
     {

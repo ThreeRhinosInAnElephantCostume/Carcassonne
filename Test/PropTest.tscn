@@ -1,21 +1,8 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Props/SpatialProp.cs" type="Script" id=1]
 [ext_resource path="res://Props/BannerProp.cs" type="Script" id=2]
 [ext_resource path="res://Props/MeshProp.cs" type="Script" id=3]
-[ext_resource path="res://GUI/img/meeple_green.png" type="Texture" id=4]
-[ext_resource path="res://GUI/img/meeple_red.png" type="Texture" id=5]
-[ext_resource path="res://GUI/img/meeple_yellow.png" type="Texture" id=6]
-[ext_resource path="res://GUI/img/meeple_black.png" type="Texture" id=7]
-[ext_resource path="res://GUI/img/meeple_blue.png" type="Texture" id=8]
-
-[sub_resource type="SpriteFrames" id=1]
-animations = [ {
-"frames": [ ExtResource( 7 ), ExtResource( 8 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 6 ) ],
-"loop": true,
-"name": "default",
-"speed": 1.0
-} ]
 
 [sub_resource type="CapsuleMesh" id=2]
 
@@ -29,7 +16,7 @@ visible = false
 script = ExtResource( 2 )
 Content = 2
 ShowIcon = false
-Frames = SubResource( 1 )
+Frames = null
 MaskEnabled = false
 
 [node name="MeshProp" type="MeshInstance" parent="SpatialProp"]

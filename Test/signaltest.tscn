@@ -1,0 +1,46 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Test/signaltest.cs" type="Script" id=1]
+[ext_resource path="res://Props/ControlProp.cs" type="Script" id=2]
+[ext_resource path="res://Props/Sprite2DProp.gdshader" type="Shader" id=3]
+
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 3 )
+shader_param/primary_color = Color( 1, 0, 0, 1 )
+shader_param/secondary_color = Color( 0, 1, 0, 1 )
+shader_param/tertiary_color = Color( 0, 0, 1, 1 )
+shader_param/background_color = Color( 0, 0, 0, 0 )
+shader_param/mask_enabled = false
+shader_param/primary_enabled = true
+shader_param/secondary_enabled = true
+shader_param/tertiary_enabled = true
+shader_param/icon_enabled = false
+shader_param/icon_centered = true
+shader_param/icon_scale = null
+shader_param/icon_offset = null
+
+[node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+
+[node name="Button" type="Button" parent="."]
+anchor_right = 0.125
+anchor_bottom = 0.091
+margin_right = -148.0
+margin_bottom = -45.52
+text = "BTN"
+
+[node name="CheckBox" type="CheckBox" parent="."]
+margin_left = 79.0
+margin_top = 2.0
+margin_right = 130.0
+margin_bottom = 26.0
+text = "chb"
+
+[node name="TextureButtonProp" type="TextureButton" parent="."]
+material = SubResource( 1 )
+margin_right = 40.0
+margin_bottom = 40.0
+script = ExtResource( 2 )
+ShowIcon = false
