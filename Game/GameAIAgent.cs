@@ -1,4 +1,4 @@
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
@@ -22,14 +22,14 @@ public partial class Game
 {
     public class GameAIAgent : GameAgent
     {
-        public AI.AIPlayer AI {get; protected set;}
+        public AI.AIPlayer AI { get; protected set; }
         public override void OnTurn(GameEngine engine)
         {
             Assert(this._game.CurrentAgent.Player == this.Player);
             AI.MakeMove(engine);
             this._game.AgentExecuteImplied(_game.CurrentAgent);
         }
-        public GameAIAgent(Game game, string name, GameEngine.Player player, AI.AIPlayer AI) : base(game, name, PlayerType.AI, player)
+        public GameAIAgent(Game game, string name, GameEngine.Player player, AI.AIPlayer AI, PersonalTheme theme) : base(game, name, PlayerType.AI, player, theme)
         {
             Assert(AI != null);
             this.AI = AI;
