@@ -57,12 +57,13 @@ public partial class Game
     RNG _rng;
     public static Color[] PlayerColors { get; set; } = new Color[]
     {
-        new Color(1f, 0.3f, 0.3f),
-        new Color(0.5f, 0.5f, 1f),
-        new Color(1, 0.5f, 1f),
-        new Color(0.7f, 1, 0.7f),
-        new Color(1f, 1f, 1f),
-        new Color(0.5f, 0.5f, 0.5f),
+        new Color(1f, 0.3f, 0.3f), // red
+        new Color(0.5f, 0.5f, 0.5f),  //black
+        new Color(0.5f, 0.5f, 1f), // blue
+        new Color(1, 1f, 0.5f),    // yellow
+        new Color(0.7f, 1, 0.7f),  // green
+        new Color(1f, 1f, 1f),     // white
+        
     };
     public void UpdateEngine(GameAgent agent)
     {
