@@ -26,7 +26,14 @@ public class LobbySingleplayer : Control
     Button _play;
     Button _quit;
 
-    int _amountOfBots = 2;
+    int _amountOfBots = 4;  // zmienna, która będzie przechwytywana z popup'a
+
+    enum BotLevel
+    {
+        Easy,
+        Mid,
+        Hard
+    }
 
 
     List<TextureRect> _bots = new List<TextureRect>();
@@ -56,19 +63,25 @@ public class LobbySingleplayer : Control
 
     void OnPlayPressed()
     {
-        //var botEasyPath = "res://GUI/avatars/avatarbot3.png";
-        //var botMidPath = "res://GUI/avatars/avatarbot2.png";
-        //var botHardPath = "res://GUI/avatars/avatarbot1.png";
-
         var blacktheme = Globals.PersonalThemes["black"].Copy();
-        // TODO: drugi parametr przechwycony ze sceny - rodzaj bota
-        BotLevel(blacktheme);
-
+        var bluetheme = Globals.PersonalThemes["blue"].Copy();
+        var yellowtheme = Globals.PersonalThemes["yellow"].Copy();
+        var greentheme = Globals.PersonalThemes["green"].Copy();
+        
         var generators = new List<Game.AgentGenerator>()
         {
             (g, e, i, p, rng) => new Game.GameLocalAgent(g, $"Player", p, Globals.PersonalThemes["red"].Copy()),
-            (g, e, i, p, rng) => new Game.GameAIAgent(g, $"AI", p, new AI.RandomAI(new RNG(rng.NextULong())), blacktheme),
         };
+
+        // choose and add bots
+        ChooseBot(blacktheme, BotLevel.Easy, generators);
+        if(_amountOfBots > 1)
+            ChooseBot(bluetheme, BotLevel.Easy, generators);
+        if(_amountOfBots > 2)    
+            ChooseBot(yellowtheme, BotLevel.Easy, generators);
+        if(_amountOfBots > 3)   
+            ChooseBot(greentheme, BotLevel.Easy, generators);
+
         var ui = (InGameUI)Globals.Scenes.InGameUIPacked.Instance();
         var game = Game.NewLocalGame(ui, generators, "BaseGame/BaseTileset.json", 666);
         ui.SetGame(game);
@@ -76,15 +89,40 @@ public class LobbySingleplayer : Control
         DestroyNode(this);
     }
 
-    void BotLevel(PersonalTheme theme)
+    // choose and add bot to the game
+    void ChooseBot(PersonalTheme theme, BotLevel level, List<Game.AgentGenerator> generator)
     {
-        var botEasyPath = "res://GUI/avatars/avatarbot3.png";
-        var botMidPath = "res://GUI/avatars/avatarbot2.png";
-        var botHardPath = "res://GUI/avatars/avatarbot1.png";
-
-        theme.IconPath = botEasyPath;
-        theme.AvatarPath = botEasyPath;
-
+        var avatarbotPath = "";
+        Game.AgentGenerator bot = null; 
+        switch (level)
+        {
+            case BotLevel.Easy:
+                avatarbotPath = "res://GUI/avatars/avatarbot3.png";
+                theme.IconPath = avatarbotPath;
+                theme.AvatarPath = avatarbotPath;
+                bot = (g, e, i, p, rng) => new Game.GameAIAgent(g, $"AI", p, new AI.RandomAI(new RNG(rng.NextULong())), theme);
+                break;
+            case BotLevel.Mid:
+                avatarbotPath = "res://GUI/avatars/avatarbot2.png";
+                theme.IconPath = avatarbotPath;
+                theme.AvatarPath = avatarbotPath;
+                bot = (g, e, i, p, rng) => new Game.GameAIAgent(g, $"AI", p, new AI.RandomAI(new RNG(rng.NextULong())), theme); //zmienić na AI.Medium
+                break;
+            case BotLevel.Hard:
+                avatarbotPath = "res://GUI/avatars/avatarbot1.png";
+                theme.IconPath = avatarbotPath;
+                theme.AvatarPath = avatarbotPath;
+                bot = (g, e, i, p, rng) => new Game.GameAIAgent(g, $"AI", p, new AI.RandomAI(new RNG(rng.NextULong())), theme); //zmienić na AI.Hard
+                break;
+            default:
+                avatarbotPath = "res://GUI/avatars/avatarbot3.png";
+                theme.IconPath = avatarbotPath;
+                theme.AvatarPath = avatarbotPath;
+                bot = (g, e, i, p, rng) => new Game.GameAIAgent(g, $"AI", p, new AI.RandomAI(new RNG(rng.NextULong())), theme);
+                break;
+        }
+                
+        generator.Add(bot);
     }
 
     void PrepareBots(int amountOfBots)
@@ -99,7 +137,6 @@ public class LobbySingleplayer : Control
 
     void BotsAdd(string color)
     {
-
         _bots.Add(this.GetNodeSafe<TextureRect>($"GridContainer/GridContainerBots/HBoxContainerBotsEasy/BotEasy{color}"));
         _bots.Add(this.GetNodeSafe<TextureRect>($"GridContainer/GridContainerBots/HBoxContainerBotsMid/BotMid{color}"));
         _bots.Add(this.GetNodeSafe<TextureRect>($"GridContainer/GridContainerBots/HBoxContainerBotsHard/BotHard{color}"));
