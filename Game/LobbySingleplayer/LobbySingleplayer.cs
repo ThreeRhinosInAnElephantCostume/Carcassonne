@@ -26,6 +26,10 @@ public class LobbySingleplayer : Control
     Button _play;
     Button _quit;
 
+    // TODO: zczytana liczba przeciwników i ich rodzaj i generowanie w kolejności kolorów:
+    // black -> blue -> yellow -> green
+    // moze selektor zrobić przyciskiem?
+
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
@@ -38,12 +42,12 @@ public class LobbySingleplayer : Control
 
     void OnPlayPressed()
     {
-        var aitheme = Globals.PersonalThemes["red"].Copy();
+        var aitheme = Globals.PersonalThemes["black"].Copy();
         aitheme.IconPath = "res://GUI/avatars/avatarbot3.png";
         aitheme.AvatarPath = "res://GUI/avatars/avatarbot3.png";
         var generators = new List<Game.AgentGenerator>()
         {
-            (g, e, i, p, rng) => new Game.GameLocalAgent(g, $"Player", p, Globals.PersonalThemes["blue"].Copy()),
+            (g, e, i, p, rng) => new Game.GameLocalAgent(g, $"Player", p, Globals.PersonalThemes["red"].Copy()),
             (g, e, i, p, rng) => new Game.GameAIAgent(g, $"AI", p, new AI.RandomAI(new RNG(rng.NextULong())), aitheme),
         };
         var ui = (InGameUI)Globals.Scenes.InGameUIPacked.Instance();
