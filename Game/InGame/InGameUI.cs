@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -23,12 +27,6 @@ public class InGameUI : Control, Game.IGameHandles
     Spatial _previewRoot;
     Camera _mainCamera;
     VBoxContainer _mainInfoContainer;
-    Label _stateLabel;
-    List<Label> _playerLabels = new List<Label>();
-
-    List<HBoxContainer> _playerContainers = new List<HBoxContainer>();
-    List<Label> _playerPoints = new List<Label>();
-    List<Label> _playerStatus = new List<Label>();
 
     TextureButton _skipPlacementButton;
 
@@ -36,7 +34,7 @@ public class InGameUI : Control, Game.IGameHandles
     HSlider _effectsVolumeSlider;
 
     AudioPlayer _gameAudio;
-    //Viewport _viewport;
+    readonly List<PlayerInfoContainer> _playerInfoContainers = new List<PlayerInfoContainer>();
     public void Start(Game game)
     {
         this._game = game;
@@ -50,27 +48,9 @@ public class InGameUI : Control, Game.IGameHandles
             _map.Player = (Game.GameLocalAgent)_game.CurrentAgent;
         }
         _map.Update();
-        //		_stateLabel.Text = $"STATE: {_engine.CurrentPlayer}";
-        for (int i = 0; i < _engine.Players.Count; i++)
-        {
-            var p = _engine.Players[i];
-            var l = _playerLabels[i];
-            var pp = _playerPoints[i];
-            var s = _playerStatus[i];
-            //			l.Text = $"Player {p.ID}: {p.Score} (+{p.PotentialScore})\n";
-            pp.Text = $"{p.Score} (+{p.PotentialScore})";
-            if (p == _engine.CurrentPlayer)
-            {
-                //				l.Text += " <<<<<";
-                s.Text = "active";
-            }
-            else
-            {
-                s.Text = "";
-            }
-        }
 
         _skipPlacementButton.Disabled = !(_game.Engine.CurrentState == State.PLACE_PAWN);
+        _playerInfoContainers.ForEach(pic => pic.UpdatePlayer());
     }
     void Game.IGameHandles.OnAction(Game.GameAgent agent, GameEngine.Action action)
     {
@@ -86,6 +66,11 @@ public class InGameUI : Control, Game.IGameHandles
     {
         UpdateUI();
     }
+    public void SetGame(Game game)
+    {
+        Assert(_game == null);
+        _game = game;
+    }
     public override void _Process(float delta)
     {
         if (_map == null)
@@ -99,11 +84,11 @@ public class InGameUI : Control, Game.IGameHandles
 
     public override void _Ready()
     {
+        Assert(_game != null, "_game is null. Remember to call SetGame before initialization!");
         _inGame3D = GetNode<Spatial>("InGame3D");
 
         _mainInfoContainer = GetNode<VBoxContainer>("CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer");
 
-        _game = Game.NewLocalGame(this, 1, 4, "BaseGame/BaseTileset.json", 666);
         _previewRoot = GetNode<Spatial>("CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/AspectRatioContainer/ViewportContainer/Viewport/PreviewRoot");
 
         _mainCamera = GetNode<Camera>("InGame3D/Camera");
@@ -114,39 +99,13 @@ public class InGameUI : Control, Game.IGameHandles
 
         _skipPlacementButton = this.GetNodeSafe<TextureButton>("CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/HBoxContainer2/SkipMepleButton");
 
-        _stateLabel = new Label();
-        _mainInfoContainer.AddChild(_stateLabel);
-
-        _playerContainers.Add(GetNode<HBoxContainer>("CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player1Container"));
-        _playerContainers.Add(GetNode<HBoxContainer>("CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player2Container"));
-        _playerContainers.Add(GetNode<HBoxContainer>("CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player3Container"));
-        _playerContainers.Add(GetNode<HBoxContainer>("CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player4Container"));
-        _playerContainers.Add(GetNode<HBoxContainer>("CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player5Container"));
-        PlayerContainerVisibilityOff();
-
-        _playerPoints.Add(GetNode<Label>("CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player1Container/Player1StatusContainer/PointsContainer/PointsPlayer1"));
-        _playerPoints.Add(GetNode<Label>("CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player2Container/Player2StatusContainer/PointsContainer/PointsPlayer2"));
-        _playerPoints.Add(GetNode<Label>("CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player3Container/Player3StatusContainer/PointsContainer/PointsPlayer3"));
-        _playerPoints.Add(GetNode<Label>("CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player4Container/Player4StatusContainer/PointsContainer/PointsPlayer4"));
-        _playerPoints.Add(GetNode<Label>("CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player5Container/Player4StatusContainer/PointsContainer/PointsPlayer5"));
-
-        _playerStatus.Add(GetNode<Label>("CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player1Container/Player1StatusContainer/StatusPlayer1"));
-        _playerStatus.Add(GetNode<Label>("CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player2Container/Player2StatusContainer/StatusPlayer2"));
-        _playerStatus.Add(GetNode<Label>("CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player3Container/Player3StatusContainer/StatusPlayer3"));
-        _playerStatus.Add(GetNode<Label>("CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player4Container/Player4StatusContainer/StatusPlayer4"));
-        _playerStatus.Add(GetNode<Label>("CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer/Player5Container/Player4StatusContainer/StatusPlayer5"));
-
-
-        PlayerContainerVisibilityOn();
 
         RepeatN(_engine.Players.Count, i =>
         {
-            var l = new Label();
-            var s = new Label();
-            _playerLabels.Add(l);
-            _playerStatus.Add(s);
-            _mainInfoContainer.AddChild(l);
-            _mainInfoContainer.AddChild(s);
+            var pic = (PlayerInfoContainer)Globals.Scenes.PlayerInfoContainerPacked.Instance();
+            pic.SetPlayer(_game.Agents[i]);
+            _playerInfoContainers.Add(pic);
+            _mainInfoContainer.AddChild(pic);
         });
 
         Start(_game);
@@ -162,25 +121,6 @@ public class InGameUI : Control, Game.IGameHandles
         _musicVolumeSlider.Value = _musicVolumeSlider.MaxValue * Globals.Settings.Audio.MusicVolume;
 
     }
-
-    void PlayerContainerVisibilityOff()
-    {
-        //_playerContainers.ForEach(this.Visible = false);
-        for (int i = 0; i < 5; i++)
-        {
-            _playerContainers[i].Visible = false;
-        }
-    }
-
-    void PlayerContainerVisibilityOn()
-    {
-        //_playerContainers.ForEach(this.Visible = false);
-        for (int i = 0; i < _engine.Players.Count; i++)
-        {
-            _playerContainers[i].Visible = true;
-        }
-    }
-
 
     void OnMusicToggleButtonToggled(bool button_pressed)
     {

@@ -42,7 +42,7 @@ public partial class Game
             _game.Engine.PlacePawnOnNode(indx);
             ExecuteImplied();
         }
-        public GameLocalAgent(Game game, string name, GameEngine.Player player) : base(game, name, PlayerType.LOCAL, player)
+        public GameLocalAgent(Game game, string name, GameEngine.Player player, PersonalTheme theme) : base(game, name, PlayerType.LOCAL, player, theme)
         {
 
         }

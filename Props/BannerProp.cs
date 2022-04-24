@@ -598,11 +598,9 @@ public class BannerProp : Spatial, IProp, IExtendedProperties
     {
         if (_bannerMeshInstance != null && _bannerMeshInstance.GetParent() == this)
             return;
-        try
-        {
+        if (this.HasNode("BannerMesh"))
             _bannerMeshInstance = this.GetNodeSafe<MeshInstance>("BannerMesh");
-        }
-        catch (Exception)
+        else
         {
             _bannerMeshInstance = new MeshInstance();
             _bannerMeshInstance.Mesh = new QuadMesh();
@@ -611,7 +609,7 @@ public class BannerProp : Spatial, IProp, IExtendedProperties
             _bannerMeshInstance.MaterialOverride = mat;
             mat.Shader = ResourceLoader.Load<Shader>(Constants.AssetPaths.BANNER_PROP_SHADER);
             this.AddChild(_bannerMeshInstance);
-            _bannerMeshInstance.Owner = this;
+            _bannerMeshInstance.Owner = this.Owner;
         }
     }
     public BannerProp()

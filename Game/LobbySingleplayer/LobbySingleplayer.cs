@@ -38,7 +38,18 @@ public class LobbySingleplayer : Control
 
     void OnPlayPressed()
     {
-        GetTree().Root.AddChild(Globals.Scenes.InGameUIPacked.Instance());
+        var aitheme = Globals.PersonalThemes["red"].Copy();
+        aitheme.IconPath = "res://GUI/avatars/avatarbot3.png";
+        aitheme.AvatarPath = "res://GUI/avatars/avatarbot3.png";
+        var generators = new List<Game.AgentGenerator>()
+        {
+            (g, e, i, p, rng) => new Game.GameLocalAgent(g, $"Player", p, Globals.PersonalThemes["blue"].Copy()),
+            (g, e, i, p, rng) => new Game.GameAIAgent(g, $"AI", p, new AI.RandomAI(new RNG(rng.NextULong())), aitheme),
+        };
+        var ui = (InGameUI)Globals.Scenes.InGameUIPacked.Instance();
+        var game = Game.NewLocalGame(ui, generators, "BaseGame/BaseTileset.json", 666);
+        ui.SetGame(game);
+        GetTree().Root.AddChild(ui);
         DestroyNode(this);
     }
 
