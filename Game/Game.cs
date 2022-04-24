@@ -55,15 +55,6 @@ public partial class Game
     public List<GameAgent> Agents { get; protected set; } = new List<GameAgent>();
     public GameAgent CurrentAgent => (State == GameState.ENDED) ? null : GetAgent(Engine.CurrentPlayer);
     RNG _rng;
-    public static Color[] PlayerColors { get; set; } = new Color[]
-    {
-        new Color(1f, 0.3f, 0.3f),
-        new Color(0.5f, 0.5f, 1f),
-        new Color(1, 0.5f, 1f),
-        new Color(0.7f, 1, 0.7f),
-        new Color(1f, 1f, 1f),
-        new Color(0.5f, 0.5f, 0.5f),
-    };
     public void UpdateEngine(GameAgent agent)
     {
         Handles.OnAction(agent, Engine.History.Last());
