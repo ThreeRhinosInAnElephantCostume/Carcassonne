@@ -57,13 +57,12 @@ public partial class Game
     RNG _rng;
     public static Color[] PlayerColors { get; set; } = new Color[]
     {
-        new Color(1f, 0.3f, 0.3f), // red
-        new Color(0.5f, 0.5f, 0.5f),  //black
-        new Color(0.5f, 0.5f, 1f), // blue
-        new Color(1, 1f, 0.5f),    // yellow
-        new Color(0.7f, 1, 0.7f),  // green
-        new Color(1f, 1f, 1f),     // white
-        
+        new Color(1f, 0.3f, 0.3f),
+        new Color(0.5f, 0.5f, 1f),
+        new Color(1, 0.5f, 1f),
+        new Color(0.7f, 1, 0.7f),
+        new Color(1f, 1f, 1f),
+        new Color(0.5f, 0.5f, 0.5f),
     };
     public void UpdateEngine(GameAgent agent)
     {
@@ -93,24 +92,21 @@ public partial class Game
     {
         UpdateEngine(agent);
     }
-    public static Game NewLocalGame(IGameHandles handles, int localplayers, int AI, string tileset, ulong seed)
+    public delegate GameAgent AgentGenerator(Game game, GameEngine engine, int indx, GameEngine.Player player, RNG rng);
+    public static Game NewLocalGame(IGameHandles handles, List<AgentGenerator> agentGenerators, string tileset, ulong seed)
     {
-        int players = localplayers + AI;
+        Assert(agentGenerators.Count > 1);
+        int players = agentGenerators.Count;
         Game game = new Game(handles);
-        game._rng = new RNG(seed);
+        game._rng = new RNG(new RNG(seed).NextULong() + seed);
         game.Mode = GameMode.LOCAL;
         game.State = GameState.AWAITING_MOVE;
         game.Engine = GameEngine.CreateBaseGame(TileDataLoader.GlobalLoader, seed, players, tileset);
         game.Agents = new List<GameAgent>();
-        for (int i = 0; i < localplayers; i++)
+        for (int i = 0; i < agentGenerators.Count; i++)
         {
-            game.Agents.Add(new GameLocalAgent(game, $"PLAYER {i}", game.Engine.Players[i]));
+            game.Agents.Add(agentGenerators[i](game, game.Engine, i, game.Engine.Players[i], game._rng));
         }
-        for (int i = 0; i < AI; i++)
-        {
-            game.Agents.Add(new GameAIAgent(game, $"AI {i}", game.Engine.Players[i + localplayers], new AI.RandomAI(new RNG(game._rng.NextULong())), null));
-        }
-        //game.Agents = game.Engine.Players.ConvertAll<GameAgent>(it => new GameLocalAgent(game, $"PLAYER {it.ID}", it));
         return game;
     }
     Game(IGameHandles handles)

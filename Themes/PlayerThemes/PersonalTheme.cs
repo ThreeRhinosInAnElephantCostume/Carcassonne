@@ -121,4 +121,8 @@ public class PersonalTheme
         imgtex.CreateFromImage(TransformImage(tex.GetData()));
         return imgtex;
     }
+    public PersonalTheme Copy()
+    {
+        return DeserializeFromString<PersonalTheme>(SerializeToString(this));
+    }
 }

@@ -38,5 +38,7 @@ public static partial class Globals
         public static PackedScene PotentialTilePacked { get; set; }
         [LoadFrom("res://Game/InGame/PotentialMeeplePlacement.tscn")]
         public static PackedScene PotentialMeeplePlacementPacked { get; set; }
+        [LoadFrom("res://Game/InGame/PlayerInfoContainer.tscn")]
+        public static PackedScene PlayerInfoContainerPacked { get; set; }
     }
 }

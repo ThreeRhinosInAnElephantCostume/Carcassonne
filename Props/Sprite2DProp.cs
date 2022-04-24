@@ -136,6 +136,7 @@ public class Sprite2DProp : Sprite, IProp, IExtendedProperties
             shad.Shader = ResourceLoader.Load<Shader>(Constants.AssetPaths.SPRITE2D_PROP_SHADER); ;
             this.Material = shad;
         }
+        this.Material.ResourceLocalToScene = true;
         return (ShaderMaterial)this.Material;
     }
     public void ShaderUpdate()
