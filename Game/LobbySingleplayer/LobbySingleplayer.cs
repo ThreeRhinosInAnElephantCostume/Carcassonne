@@ -26,22 +26,19 @@ public class LobbySingleplayer : Control
     Button _play;
     Button _quit;
 
-    int _amountOfBots = 1;
-
-    HBoxContainer _botsEasy;
-    
-    HBoxContainer _botsMid;
-    HBoxContainer _botsHard;
+    int _amountOfBots = 2;
 
 
     List<TextureRect> _bots = new List<TextureRect>();
 
 
-
-
-    // TODO: zczytana liczba przeciwników i ich rodzaj i generowanie w kolejności kolorów:
+    // TODO: popup: (Enter your name: . How many opponents do you want? ) zczytana liczba przeciwników, min 1 max 4 (jeśli mniej niż 1, ustaw 1, jeśli więcej niż 4 ustaw 4)
+    // TODO: liczba botów przekazana do _amountOfBots
+    // TODO: nazwa gracza przekazana do Label gracza
+    // TODO: odświeżenie sceny
+    //
     // black -> blue -> yellow -> green
-    // moze selektor zrobić przyciskiem?
+    // 
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -53,21 +50,24 @@ public class LobbySingleplayer : Control
         _quit.OnButtonPressed(OnQuitPressed);
 
         // widoczne boty tylko w liczbie amountOfBots
-        PrepareBots();
+        PrepareBots(_amountOfBots);
         BotsVisibilityOn();
-        //_botsGreen[0].Visible = true;
-
     }
 
     void OnPlayPressed()
     {
-        var aitheme = Globals.PersonalThemes["black"].Copy();
-        aitheme.IconPath = "res://GUI/avatars/avatarbot3.png";
-        aitheme.AvatarPath = "res://GUI/avatars/avatarbot3.png";
+        //var botEasyPath = "res://GUI/avatars/avatarbot3.png";
+        //var botMidPath = "res://GUI/avatars/avatarbot2.png";
+        //var botHardPath = "res://GUI/avatars/avatarbot1.png";
+
+        var blacktheme = Globals.PersonalThemes["black"].Copy();
+        // TODO: drugi parametr przechwycony ze sceny - rodzaj bota
+        BotLevel(blacktheme);
+
         var generators = new List<Game.AgentGenerator>()
         {
             (g, e, i, p, rng) => new Game.GameLocalAgent(g, $"Player", p, Globals.PersonalThemes["red"].Copy()),
-            (g, e, i, p, rng) => new Game.GameAIAgent(g, $"AI", p, new AI.RandomAI(new RNG(rng.NextULong())), aitheme),
+            (g, e, i, p, rng) => new Game.GameAIAgent(g, $"AI", p, new AI.RandomAI(new RNG(rng.NextULong())), blacktheme),
         };
         var ui = (InGameUI)Globals.Scenes.InGameUIPacked.Instance();
         var game = Game.NewLocalGame(ui, generators, "BaseGame/BaseTileset.json", 666);
@@ -76,11 +76,25 @@ public class LobbySingleplayer : Control
         DestroyNode(this);
     }
 
-    void PrepareBots()
+    void BotLevel(PersonalTheme theme)
     {
-        BotsAdd("Blue");
-        BotsAdd("Yellow");
-        BotsAdd("Green");
+        var botEasyPath = "res://GUI/avatars/avatarbot3.png";
+        var botMidPath = "res://GUI/avatars/avatarbot2.png";
+        var botHardPath = "res://GUI/avatars/avatarbot1.png";
+
+        theme.IconPath = botEasyPath;
+        theme.AvatarPath = botEasyPath;
+
+    }
+
+    void PrepareBots(int amountOfBots)
+    {
+        if(amountOfBots > 1)
+            BotsAdd("Blue");
+        if(amountOfBots > 2)    
+            BotsAdd("Yellow");
+        if(amountOfBots > 3)   
+            BotsAdd("Green");
     }
 
     void BotsAdd(string color)
