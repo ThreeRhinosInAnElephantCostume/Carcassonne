@@ -9,10 +9,11 @@ z_index = 1
 texture = ExtResource( 1 )
 
 [node name="Label" type="Label" parent="."]
-margin_left = -41.5
-margin_top = 61.5
-margin_right = 21.5
-margin_bottom = 92.9
+margin_left = -70.0
+margin_top = 66.0
+margin_right = 71.0
+margin_bottom = 97.4
 theme = ExtResource( 3 )
 custom_fonts/font = ExtResource( 2 )
 text = "zzz"
+align = 1

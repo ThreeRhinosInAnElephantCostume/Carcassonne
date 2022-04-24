@@ -26,6 +26,19 @@ public class LobbySingleplayer : Control
     Button _play;
     Button _quit;
 
+    int _amountOfBots = 1;
+
+    HBoxContainer _botsEasy;
+    
+    HBoxContainer _botsMid;
+    HBoxContainer _botsHard;
+
+
+    List<TextureRect> _bots = new List<TextureRect>();
+
+
+
+
     // TODO: zczytana liczba przeciwników i ich rodzaj i generowanie w kolejności kolorów:
     // black -> blue -> yellow -> green
     // moze selektor zrobić przyciskiem?
@@ -38,6 +51,12 @@ public class LobbySingleplayer : Control
 
         _quit = this.GetNodeSafe<Button>("Quit");
         _quit.OnButtonPressed(OnQuitPressed);
+
+        // widoczne boty tylko w liczbie amountOfBots
+        PrepareBots();
+        BotsVisibilityOn();
+        //_botsGreen[0].Visible = true;
+
     }
 
     void OnPlayPressed()
@@ -55,6 +74,30 @@ public class LobbySingleplayer : Control
         ui.SetGame(game);
         GetTree().Root.AddChild(ui);
         DestroyNode(this);
+    }
+
+    void PrepareBots()
+    {
+        BotsAdd("Blue");
+        BotsAdd("Yellow");
+        BotsAdd("Green");
+    }
+
+    void BotsAdd(string color)
+    {
+
+        _bots.Add(this.GetNodeSafe<TextureRect>($"GridContainer/GridContainerBots/HBoxContainerBotsEasy/BotEasy{color}"));
+        _bots.Add(this.GetNodeSafe<TextureRect>($"GridContainer/GridContainerBots/HBoxContainerBotsMid/BotMid{color}"));
+        _bots.Add(this.GetNodeSafe<TextureRect>($"GridContainer/GridContainerBots/HBoxContainerBotsHard/BotHard{color}"));
+    }
+
+    void BotsVisibilityOn()
+    {
+        //_playerContainers.ForEach(this.Visible = false);
+        for (int i = 0; i < _bots.Count; i++)
+        {
+            _bots[i].Visible = true;
+        }
     }
 
     void OnQuitPressed()
