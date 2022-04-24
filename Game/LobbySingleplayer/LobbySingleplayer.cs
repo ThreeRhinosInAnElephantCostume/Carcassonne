@@ -1,6 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
-// See the LICENSE file in the project root for more information.
+﻿
 
 using System;
 using System.Collections.Concurrent;
@@ -25,8 +23,7 @@ public class LobbySingleplayer : Control
 {
     Button _play;
     Button _quit;
-
-    int _amountOfBots = 4;  // zmienna, która będzie przechwytywana z popup'a
+    readonly int _amountOfBots = 4;  // zmienna, która będzie przechwytywana z popup'a
 
     enum BotLevel
     {
@@ -35,8 +32,7 @@ public class LobbySingleplayer : Control
         Hard
     }
 
-
-    List<TextureRect> _bots = new List<TextureRect>();
+    readonly List<TextureRect> _bots = new List<TextureRect>();
 
 
     // TODO: popup: (Enter your name: . How many opponents do you want? ) zczytana liczba przeciwników, min 1 max 4 (jeśli mniej niż 1, ustaw 1, jeśli więcej niż 4 ustaw 4)
@@ -67,7 +63,7 @@ public class LobbySingleplayer : Control
         var bluetheme = Globals.PersonalThemes["blue"].Copy();
         var yellowtheme = Globals.PersonalThemes["yellow"].Copy();
         var greentheme = Globals.PersonalThemes["green"].Copy();
-        
+
         var generators = new List<Game.AgentGenerator>()
         {
             (g, e, i, p, rng) => new Game.GameLocalAgent(g, $"Player", p, Globals.PersonalThemes["red"].Copy()),
@@ -75,11 +71,11 @@ public class LobbySingleplayer : Control
 
         // choose and add bots
         ChooseBot(blacktheme, BotLevel.Easy, generators);
-        if(_amountOfBots > 1)
+        if (_amountOfBots > 1)
             ChooseBot(bluetheme, BotLevel.Easy, generators);
-        if(_amountOfBots > 2)    
+        if (_amountOfBots > 2)
             ChooseBot(yellowtheme, BotLevel.Easy, generators);
-        if(_amountOfBots > 3)   
+        if (_amountOfBots > 3)
             ChooseBot(greentheme, BotLevel.Easy, generators);
 
         var ui = (InGameUI)Globals.Scenes.InGameUIPacked.Instance();
@@ -93,7 +89,7 @@ public class LobbySingleplayer : Control
     void ChooseBot(PersonalTheme theme, BotLevel level, List<Game.AgentGenerator> generator)
     {
         var avatarbotPath = "";
-        Game.AgentGenerator bot = null; 
+        Game.AgentGenerator bot = null;
         switch (level)
         {
             case BotLevel.Easy:
@@ -121,17 +117,17 @@ public class LobbySingleplayer : Control
                 bot = (g, e, i, p, rng) => new Game.GameAIAgent(g, $"AI", p, new AI.RandomAI(new RNG(rng.NextULong())), theme);
                 break;
         }
-                
+
         generator.Add(bot);
     }
 
     void PrepareBots(int amountOfBots)
     {
-        if(amountOfBots > 1)
+        if (amountOfBots > 1)
             BotsAdd("Blue");
-        if(amountOfBots > 2)    
+        if (amountOfBots > 2)
             BotsAdd("Yellow");
-        if(amountOfBots > 3)   
+        if (amountOfBots > 3)
             BotsAdd("Green");
     }
 

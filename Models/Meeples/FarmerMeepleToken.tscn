@@ -1,9 +1,11 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Props/CapturableProp.cs" type="Script" id=1]
 [ext_resource path="res://Props/MeshProp.cs" type="Script" id=2]
 [ext_resource path="res://Models/Meeples/meepletoken.obj" type="ArrayMesh" id=3]
 [ext_resource path="res://Props/BannerProp.cs" type="Script" id=4]
+[ext_resource path="res://Icons/Themeable/PlayerIcons/DefaultIcon.png" type="Texture" id=5]
+[ext_resource path="res://Props/PropBanner.gdshader" type="Shader" id=6]
 
 [sub_resource type="SpatialMaterial" id=1]
 resource_local_to_scene = true
@@ -12,6 +14,37 @@ albedo_color = Color( 0, 1, 0, 2 )
 [sub_resource type="SpatialMaterial" id=2]
 resource_local_to_scene = true
 albedo_color = Color( 1, 0, 0, 2 )
+
+[sub_resource type="ShaderMaterial" id=3]
+shader = ExtResource( 6 )
+shader_param/albedo = Color( 1, 1, 1, 0 )
+shader_param/specular = null
+shader_param/metallic = null
+shader_param/roughness = null
+shader_param/point_size = null
+shader_param/uv1_scale = null
+shader_param/uv1_offset = null
+shader_param/uv2_scale = null
+shader_param/uv2_offset = null
+shader_param/primary_color = Color( 1, 0, 0, 1 )
+shader_param/secondary_color = Color( 0, 1, 0, 1 )
+shader_param/tertiary_color = Color( 0, 0, 1, 1 )
+shader_param/primary_enabled = true
+shader_param/secondary_enabled = true
+shader_param/tertiary_enabled = true
+shader_param/icon_enabled = true
+shader_param/icon_centered = true
+shader_param/icon_transform = false
+shader_param/icon_scale = Vector2( 1, 1 )
+shader_param/icon_offset = Vector2( 0, 0 )
+shader_param/mask_enabled = null
+shader_param/billboard_enabled = false
+shader_param/texture_enabled = false
+shader_param/sprite_index = -1
+shader_param/background_alpha = 0.0
+shader_param/icon_texture = ExtResource( 5 )
+
+[sub_resource type="QuadMesh" id=4]
 
 [node name="FarmerMeepleToken" type="Spatial"]
 transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0 )
@@ -31,6 +64,12 @@ transform = Transform( 1, 0, 0, 0, 0.0221639, 0.999754, 0, -0.999754, 0.0221639,
 script = ExtResource( 4 )
 Billboard = false
 ShowIcon = true
+TransformIcon = false
 CenterIcon = true
 IconOffset = Vector2( 0, 0 )
 IconScale = Vector2( 1, 1 )
+
+[node name="BannerMesh" type="MeshInstance" parent="BannerProp"]
+material_override = SubResource( 3 )
+mesh = SubResource( 4 )
+material/0 = null

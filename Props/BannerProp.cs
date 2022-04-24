@@ -1,6 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
-// See the LICENSE file in the project root for more information.
+﻿
 
 using System;
 using System.Collections.Generic;
@@ -92,6 +90,16 @@ public class BannerProp : Spatial, IProp, IExtendedProperties
     }
     bool _showIcon = false;
     public bool ShowIcon { get => _showIcon; set { if (ShowIcon != value) { _showIcon = value; Refresh(); } } }
+    bool _transformIcon = true;
+    public bool TransformIcon
+    {
+        get => _transformIcon;
+        set
+        {
+            _transformIcon = value;
+            ShaderUpdate();
+        }
+    }
     bool _centerIcon = true;
     public bool CenterIcon { get => _centerIcon; set { if (_centerIcon != value) { _centerIcon = value; ShaderUpdate(); } } }
     Vector2 _iconOffset = new Vector2(0, 0);
@@ -353,7 +361,10 @@ public class BannerProp : Spatial, IProp, IExtendedProperties
             _ => throw new InvalidOperationException("This should not happen"),
         });
         if (ShowIcon)
+        {
             t.SetFullShader(mat, true, IconScale, IconOffset);
+            mat.SetShaderParam(SHADER_ICON_TRANSFORM, TransformIcon);
+        }
         else
             t.SetFullShader(mat, false);
         if (Background == 0)
@@ -485,6 +496,8 @@ public class BannerProp : Spatial, IProp, IExtendedProperties
             () => ShowIcon, o => ShowIcon = (bool)o);
         if (ShowIcon)
         {
+            ep.AddProperty(new GDProperty("TransformIcon", Variant.Type.Bool, PropertyHint.None),
+                () => TransformIcon, o => TransformIcon = (bool)o);
             ep.AddProperty(new GDProperty("CenterIcon", Variant.Type.Bool, PropertyHint.None),
                 () => CenterIcon, o => CenterIcon = (bool)o);
             ep.AddProperty(new GDProperty("IconOffset", Variant.Type.Vector2, PropertyHint.None),

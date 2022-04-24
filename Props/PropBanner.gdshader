@@ -23,6 +23,7 @@ uniform bool tertiary_enabled = true;
 
 uniform bool icon_enabled;
 uniform bool icon_centered;
+uniform bool icon_transform = true;
 uniform sampler2D icon_texture;
 uniform vec2 icon_scale;
 uniform vec2 icon_offset;
@@ -104,10 +105,13 @@ void fragment()
 		else
 		{
 			vec4 icon_albedo = texture(icon_texture, icon_coords);
-			icon_albedo = vec4(icon_albedo.r * primary_color.rgb + 
-				icon_albedo.g * secondary_color.rgb + 
-				icon_albedo.b * tertiary_color.rgb,
-				icon_albedo.a);
+			if(icon_transform)
+			{
+				icon_albedo = vec4(icon_albedo.r * primary_color.rgb + 
+					icon_albedo.g * secondary_color.rgb + 
+					icon_albedo.b * tertiary_color.rgb,
+					icon_albedo.a);
+			}	
 			ALBEDO = icon_albedo.rgb + (base_albedo * (1.0-icon_albedo.a));
 			ALPHA = clamp(icon_albedo.a + clamp(base_alpha, 0, 1), 0, 1);
 		}
