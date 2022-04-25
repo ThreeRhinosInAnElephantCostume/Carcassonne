@@ -609,21 +609,24 @@ public class BannerProp : Spatial, IProp, IExtendedProperties
     }
     void UpdateBannerMesh()
     {
-        if (_bannerMeshInstance != null && _bannerMeshInstance.GetParent() == this)
-            return;
-        if (this.HasNode("BannerMesh"))
-            _bannerMeshInstance = this.GetNodeSafe<MeshInstance>("BannerMesh");
-        else
+        if (_bannerMeshInstance == null || _bannerMeshInstance.GetParent() != this)
         {
-            _bannerMeshInstance = new MeshInstance();
-            _bannerMeshInstance.Mesh = new QuadMesh();
-            _bannerMeshInstance.Name = "BannerMesh";
-            var mat = new ShaderMaterial();
-            _bannerMeshInstance.MaterialOverride = mat;
-            mat.Shader = ResourceLoader.Load<Shader>(Constants.AssetPaths.BANNER_PROP_SHADER);
-            this.AddChild(_bannerMeshInstance);
-            _bannerMeshInstance.Owner = this.Owner;
+            if (this.HasNode("BannerMesh"))
+                _bannerMeshInstance = this.GetNodeSafe<MeshInstance>("BannerMesh");
+            else
+            {
+                _bannerMeshInstance = new MeshInstance();
+                _bannerMeshInstance.Mesh = new QuadMesh();
+                _bannerMeshInstance.Name = "BannerMesh";
+                this.AddChild(_bannerMeshInstance);
+            }
         }
+
+        var mat = new ShaderMaterial();
+        _bannerMeshInstance.MaterialOverride = mat;
+        mat.Shader = ResourceLoader.Load<Shader>(Constants.AssetPaths.BANNER_PROP_SHADER);
+        _bannerMeshInstance.MaterialOverride.ResourceLocalToScene = true;
+        _bannerMeshInstance.Owner = this.Owner;
     }
     public BannerProp()
     {
