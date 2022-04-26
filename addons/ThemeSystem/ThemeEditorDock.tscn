@@ -8,6 +8,7 @@
 [ext_resource path="res://Icons/Themeable/PlayerAvatars/DefaultAvatar.png" type="Texture" id=6]
 
 [sub_resource type="ShaderMaterial" id=1]
+resource_local_to_scene = true
 shader = ExtResource( 4 )
 shader_param/primary_color = Color( 1, 0, 0, 1 )
 shader_param/secondary_color = Color( 0, 1, 0, 1 )
@@ -23,6 +24,7 @@ shader_param/icon_scale = null
 shader_param/icon_offset = null
 
 [sub_resource type="ShaderMaterial" id=2]
+resource_local_to_scene = true
 shader = ExtResource( 4 )
 shader_param/primary_color = Color( 1, 0, 0, 1 )
 shader_param/secondary_color = Color( 0, 1, 0, 1 )
@@ -74,6 +76,7 @@ margin_bottom = 358.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource( 5 )
+expand = true
 stretch_mode = 6
 script = ExtResource( 3 )
 ShowIcon = false
@@ -91,6 +94,7 @@ margin_bottom = 358.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource( 6 )
+expand = true
 stretch_mode = 6
 script = ExtResource( 3 )
 ShowIcon = false
