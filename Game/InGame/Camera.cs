@@ -24,13 +24,21 @@ public class Camera : Godot.Camera
     const string CAMERA_BACK_ACTION = "camera_back";
     const string CAMERA_UP_ACTION = "camera_up";
     const string CAMERA_DOWN_ACTION = "camera_down";
-    static readonly string[] ACTIONS
-        = new string[] { CAMERA_FORWARD_ACTION, CAMERA_RIGHT_ACTION, CAMERA_LEFT_ACTION, CAMERA_BACK_ACTION, CAMERA_UP_ACTION, CAMERA_DOWN_ACTION };
+    const string CAMERA_ROTATE_LEFT = "camera_rotate_left";
+    const string CAMERA_ROTATE_RIGHT = "camera_rotate_right";
+    const string CAMERA_ZOOM_IN = "camera_zoom_in";
+    const string CAMERA_ZOOM_OUT = "camera_zoom_out";
+    const string CAMERA_CYCLE_VIEW_ACTION = "camera_cycle_view";
+    const string CAMERA_RESET_VIEW_ACTION = "camera_reset_view";
+    static readonly string[] ACTIONS = new string[]
+    {
+        CAMERA_FORWARD_ACTION, CAMERA_RIGHT_ACTION, CAMERA_LEFT_ACTION, CAMERA_BACK_ACTION,
+        CAMERA_UP_ACTION, CAMERA_DOWN_ACTION, CAMERA_ROTATE_LEFT, CAMERA_ROTATE_RIGHT,
+        CAMERA_ZOOM_IN, CAMERA_ZOOM_OUT, CAMERA_CYCLE_VIEW_ACTION, CAMERA_RESET_VIEW_ACTION,
+    };
 
     [Export]
-    public bool MovementMomentum = true;
-    [Export]
-    public float MomentumGainMultpilier = 0.07f;
+    public float MomentumGainMultpilier = 0.2f;
     [Export]
     public float MomentumLossMultiplier = 400.0f;
     [Export]
@@ -43,19 +51,37 @@ public class Camera : Godot.Camera
     public float MouseRotateSpeedMultip = 0.005f;
     [Export]
     public float KeyboardMoveSpeedMultip = 0.1f;
+    [Export]
+    public float KeyboardRotateSpeedMultip = 1f;
+    [Export]
+    public float ZoomSpeedMultip = 0.15f;
+    [Export]
+    public float ZoomUpFactor = 0.4f;
 
     [Export]
-    public float CameraUpStep = 0.1f;
+    public float CameraUpStep = 1.8f;
 
     [Export]
-    public float VMax = 0f * (float)PI;
+    public float TiltMax = -0.05f * (float)PI;
     [Export]
-    public float VMin = -0.25f * (float)PI;
+    public float TiltMin = -0.3f * (float)PI;
+    Vector2 _defaultRotation = new Vector2(-0.2f * (float)PI, 0);
+    [Export]
+    public Vector2 DefaultRotation
+    {
+        get => _defaultRotation;
+        set
+        {
+            _defaultRotation = value;
+            Rotation = new Vector3(_defaultRotation.x, _defaultRotation.y, 0);
+        }
+    }
 
     [Export]
-    public float MinHeight = 1;
+    public float MinHeight = 0.5f;
     [Export]
     public float MaxHeight = 3;
+
 
 
     [Export]
@@ -74,6 +100,42 @@ public class Camera : Godot.Camera
             Translation = new Vector3(Translation.x, Math.Max(Math.Min(value, MaxHeight), MinHeight), Translation.z);
         }
     }
+    float _defaultHeight = 3.0f;
+    [Export]
+    public float DefaultHeight
+    {
+        get => _defaultHeight;
+        set
+        {
+            _defaultHeight = value;
+            Height = value;
+        }
+    }
+
+
+    public enum Mode
+    {
+        NORMAL = 0,
+        TOP = 1
+    }
+    [Export(PropertyHint.Enum, "Normal,Top")]
+    int CameraViewMode
+    {
+        get => (int)ViewMode;
+        set => ViewMode = (Mode)value;
+    }
+    Mode _viewMode = Mode.NORMAL;
+    Mode ViewMode
+    {
+        get => _viewMode;
+        set
+        {
+            if (value == _viewMode)
+                return;
+            _viewMode = value;
+            UpdateViewMode();
+        }
+    }
 
 
     Vector2 _velocity = new Vector2();
@@ -84,15 +146,14 @@ public class Camera : Godot.Camera
 
     bool _moveDown = false;
     bool _rotateDown = false;
-
-    object _physMX = new object(); // will be nessessary if we ever decide to use multithreaded physics
+    readonly object _physMX = new object(); // will be nessessary if we ever decide to use multithreaded physics
 
     void Rotate(Vector2 rot)
     {
         var r = Rotation;
         r.x += rot.y;
         r.y += rot.x;
-        r.x = Clamp(r.x, VMin, VMax);
+        r.x = Clamp(r.x, TiltMin, TiltMax);
         Rotation = r;
     }
 
@@ -112,18 +173,6 @@ public class Camera : Godot.Camera
     {
         return btn.ButtonIndex == ((int)ButtonList.Middle) && !btn.Pressed;
     }
-    int GetZoomStep(InputEventMouseButton btn)
-    {
-        if (!btn.Pressed)
-            return 0;
-        int r = 0;
-        if (btn.ButtonIndex == (int)ButtonList.WheelUp)
-            r++;
-        if (btn.ButtonIndex == (int)ButtonList.WheelDown)
-            r--;
-        return r;
-
-    }
     Vector2 MoveDirection()
     {
         var dir = new Vector2();
@@ -134,19 +183,52 @@ public class Camera : Godot.Camera
         dir = dir.Rotated(-Rotation.y);
         return dir;
     }
+    Vector2 RotatedAbsoluteMove(Vector2 v)
+    {
+        return v.Rotated(-Rotation.y);
+    }
+    public void ResetView()
+    {
+
+    }
+    void UpdateViewMode()
+    {
+
+    }
+    void StepZoom(float mousevec, float delta)
+    {
+        bool zi = Input.IsActionPressed(CAMERA_ZOOM_IN);
+        bool zo = Input.IsActionPressed(CAMERA_ZOOM_OUT);
+        float dir = 0;
+        if (zi == zo)
+            return;
+        else if (zi)
+            dir = 1.0f;
+        else
+            dir = -1.0f;
+        float forward = dir * ZoomSpeedMultip * delta;
+
+        //Vector2 upfactor = new Vector2(mousevec, 0).Rotated(Rotation.x);
+
+        //float upward = upfactor.x * ZoomUpFactor * delta;
+        float upward = mousevec * ZoomUpFactor * delta;
+
+
+        Position += RotatedAbsoluteMove(new Vector2(0, forward));
+        Height += upward;
+
+    }
     public override void _UnhandledInput(InputEvent @event)
     {
 
         lock (_physMX)
         {
-            float delta = (float)(DateTime.Now - _lastTime).TotalSeconds;
             _lastTime = DateTime.Now;
             if (@event is InputEventMouseMotion mmev)
             {
                 if (_moveDown)
                 {
-                    if (MovementMomentum)
-                        _momentum += (mmev.Speed * MomentumGainMultpilier).Rotated(-Rotation.y);
+                    _momentum += (mmev.Speed * MomentumGainMultpilier).Rotated(-Rotation.y);
                     _lastDisplacement += (mmev.Relative).Rotated(-Rotation.y);
                 }
                 if (_rotateDown)
@@ -158,17 +240,13 @@ public class Camera : Godot.Camera
             {
                 if (_moveDown && IsMoveRelease(mbev))
                 {
-                    if (MovementMomentum)
-                    {
-                        _velocity = _momentum;
-                        _momentum = new Vector2(0, 0);
-                    }
+                    _velocity = _momentum;
+                    _momentum = new Vector2(0, 0);
                     _moveDown = false;
                 }
                 else if (!_moveDown && IsMoveTrigger(mbev))
                 {
-                    if (MovementMomentum)
-                        _momentum = new Vector2(0, 0);
+                    _momentum = new Vector2(0, 0);
                     _velocity = new Vector2(0, 0);
                     _moveDown = true;
                 }
@@ -180,7 +258,11 @@ public class Camera : Godot.Camera
                 {
                     _rotateDown = true;
                 }
-                Height += ((float)GetZoomStep(mbev)) * CameraUpStep;
+                if (Input.IsActionJustPressed(CAMERA_ZOOM_IN) || Input.IsActionJustPressed(CAMERA_ZOOM_OUT))
+                {
+                    float mousevec = -((mbev.GlobalPosition - GetViewport().Size * 0.5f) / (GetViewport().Size)).y;
+                    StepZoom(mousevec, 1.0f);
+                }
             }
         }
 
@@ -189,15 +271,11 @@ public class Camera : Godot.Camera
     {
         lock (_physMX)
         {
-            //GD.Print(Position, _momentum, _velocity);
-            if (MovementMomentum)
-            {
-                if (_velocity.Length() > MaxSpeed)
-                    _velocity = _velocity.Normalized() * MaxSpeed;
-                _velocity = FadeVector(_velocity, VelocityLossMultiplier * delta);
-                _momentum = FadeVector(_momentum, MomentumLossMultiplier * delta);
-                _momentum *= 0.99f;
-            }
+            if (_velocity.Length() > MaxSpeed)
+                _velocity = _velocity.Normalized() * MaxSpeed;
+            _velocity = FadeVector(_velocity, VelocityLossMultiplier * delta);
+            _momentum = FadeVector(_momentum, MomentumLossMultiplier * delta);
+            _momentum *= 0.99f;
             Position -= _velocity * delta * MouseMoveSpeedMultip;
             Position -= _lastDisplacement * MouseMoveSpeedMultip;
             Position += MoveDirection() * KeyboardMoveSpeedMultip;
@@ -206,11 +284,16 @@ public class Camera : Godot.Camera
             _lastDisplacement = new Vector2(0, 0);
             _lastRotation = new Vector2(0, 0);
 
-            if (Input.IsActionPressed(CAMERA_UP_ACTION))
-                Height += delta * CameraUpStep;
-            else if (Input.IsActionPressed(CAMERA_DOWN_ACTION))
-                Height -= delta * CameraUpStep;
+            Vector2 keyboardrot = new Vector2();
+            keyboardrot.x -= (Input.IsActionPressed(CAMERA_ROTATE_LEFT) ? 1.0f : 0.0f);
+            keyboardrot.x += (Input.IsActionPressed(CAMERA_ROTATE_RIGHT) ? 1.0f : 0.0f);
+            Rotate(keyboardrot * KeyboardRotateSpeedMultip * delta);
 
+            if (Input.IsActionPressed(CAMERA_UP_ACTION) || Input.IsActionJustPressed(CAMERA_UP_ACTION))
+                Height += delta * CameraUpStep;
+            else if (Input.IsActionPressed(CAMERA_DOWN_ACTION) || Input.IsActionJustPressed(CAMERA_DOWN_ACTION))
+                Height -= delta * CameraUpStep;
+            StepZoom(0.0f, delta);
         }
     }
 
@@ -221,5 +304,7 @@ public class Camera : Godot.Camera
         {
             Assert(InputMap.HasAction(it), $"Undefined camera action: {it}");
         }
+        DefaultRotation = DefaultRotation;
+        DefaultHeight = DefaultHeight;
     }
 }
