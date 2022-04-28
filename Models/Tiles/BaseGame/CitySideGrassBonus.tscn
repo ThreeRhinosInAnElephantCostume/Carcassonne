@@ -9,7 +9,7 @@
 [ext_resource path="res://Models/MATERIALS/Material-Road_Sand.material" type="Material" id=7]
 [ext_resource path="res://Models/Meeples/FarmerMeepleToken.tscn" type="PackedScene" id=8]
 [ext_resource path="res://Models/Meeples/KnightMeepleToken.tscn" type="PackedScene" id=9]
-
+[ext_resource path="res://Models/MATERIALS/Material-Plastic_White.material" type="Material" id=10]
 
 [sub_resource type="ArrayMesh" id=2]
 resource_name = "Tower"
@@ -4049,7 +4049,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 84,
-"material": ExtResource( 7 ),
+"material": ExtResource( 3 ),
 "name": "Material-Road_Sand",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -4072,12 +4072,6 @@ surfaces/0 = {
 "vertex_count": 24
 }
 
-[sub_resource type="SpatialMaterial" id=229]
-params_cull_mode = 2
-albedo_color = Color( 0.980392, 0.980392, 0.980392, 1 )
-metallic = 1.0
-roughness = 0.0764706
-
 [sub_resource type="ArrayMesh" id=230]
 resource_name = "Bonus"
 surfaces/0 = {
@@ -4087,7 +4081,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 36,
-"material": SubResource( 229 ),
+"material": ExtResource( 10 ),
 "primitive": 4,
 "skeleton_aabb": [  ],
 "vertex_count": 24
@@ -4102,7 +4096,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 36,
-"material": SubResource( 229 ),
+"material": ExtResource( 10 ),
 "primitive": 4,
 "skeleton_aabb": [  ],
 "vertex_count": 24
@@ -4149,7 +4143,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 36,
-"material": SubResource( 229 ),
+"material": ExtResource( 10 ),
 "primitive": 4,
 "skeleton_aabb": [  ],
 "vertex_count": 24
@@ -4164,7 +4158,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 36,
-"material": SubResource( 229 ),
+"material": ExtResource( 10 ),
 "primitive": 4,
 "skeleton_aabb": [  ],
 "vertex_count": 24
@@ -4210,7 +4204,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 42,
-"material": ExtResource( 7 ),
+"material": ExtResource( 3 ),
 "name": "Material-Road_Sand",
 "primitive": 4,
 "skeleton_aabb": [  ],

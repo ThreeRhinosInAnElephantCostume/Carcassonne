@@ -1,4 +1,4 @@
-[gd_scene load_steps=69 format=2]
+[gd_scene load_steps=63 format=2]
 
 [ext_resource path="res://Models/MATERIALS/Material-Grass_Green.material" type="Material" id=1]
 [ext_resource path="res://Models/MATERIALS/Material-Earth_Brown.material" type="Material" id=2]
@@ -10,13 +10,6 @@
 [ext_resource path="res://Models/Meeples/HighwaymanMeepleToken.tscn" type="PackedScene" id=8]
 [ext_resource path="res://Models/Meeples/MonkMeepleToken.tscn" type="PackedScene" id=9]
 
-[sub_resource type="SpatialMaterial" id=54]
-resource_name = "Material-Earth_Brown"
-params_cull_mode = 2
-albedo_color = Color( 0.803922, 0.521569, 0, 1 )
-metallic = 0.85098
-roughness = -0.000294118
-
 [sub_resource type="ArrayMesh" id=43]
 resource_name = "Base"
 surfaces/0 = {
@@ -26,7 +19,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 36,
-"material": SubResource( 54 ),
+"material": ExtResource( 2 ),
 "name": "Material-Earth_Brown",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -42,7 +35,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 36,
-"material": SubResource( 54 ),
+"material": ExtResource( 2 ),
 "name": "Material-Earth_Brown",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -58,7 +51,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 36,
-"material": SubResource( 54 ),
+"material": ExtResource( 2 ),
 "name": "Material-Earth_Brown",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -74,7 +67,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 36,
-"material": SubResource( 54 ),
+"material": ExtResource( 2 ),
 "name": "Material-Earth_Brown",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -90,7 +83,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 36,
-"material": SubResource( 54 ),
+"material": ExtResource( 2 ),
 "name": "Material-Earth_Brown",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -106,7 +99,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 36,
-"material": SubResource( 54 ),
+"material": ExtResource( 2 ),
 "name": "Material-Earth_Brown",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -122,7 +115,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 36,
-"material": SubResource( 54 ),
+"material": ExtResource( 2 ),
 "name": "Material-Earth_Brown",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -138,7 +131,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 36,
-"material": SubResource( 54 ),
+"material": ExtResource( 2 ),
 "name": "Material-Earth_Brown",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -154,19 +147,12 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 36,
-"material": SubResource( 54 ),
+"material": ExtResource( 2 ),
 "name": "Material-Earth_Brown",
 "primitive": 4,
 "skeleton_aabb": [  ],
 "vertex_count": 24
 }
-
-[sub_resource type="SpatialMaterial" id=55]
-resource_name = "Material-Grass_Green"
-params_cull_mode = 2
-albedo_color = Color( 0.580392, 0.737255, 0.447059, 1 )
-metallic = 0.85098
-roughness = -0.000294118
 
 [sub_resource type="ArrayMesh" id=42]
 resource_name = "Grass"
@@ -177,7 +163,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 36,
-"material": SubResource( 55 ),
+"material": ExtResource( 1 ),
 "name": "Material-Grass_Green",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -193,7 +179,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 36,
-"material": SubResource( 55 ),
+"material": ExtResource( 1 ),
 "name": "Material-Grass_Green",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -209,7 +195,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 36,
-"material": SubResource( 55 ),
+"material": ExtResource( 1 ),
 "name": "Material-Grass_Green",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -225,7 +211,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 36,
-"material": SubResource( 55 ),
+"material": ExtResource( 1 ),
 "name": "Material-Grass_Green",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -241,7 +227,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 36,
-"material": SubResource( 55 ),
+"material": ExtResource( 1 ),
 "name": "Material-Grass_Green",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -257,7 +243,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 36,
-"material": SubResource( 55 ),
+"material": ExtResource( 1 ),
 "name": "Material-Grass_Green",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -273,7 +259,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 36,
-"material": SubResource( 55 ),
+"material": ExtResource( 1 ),
 "name": "Material-Grass_Green",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -289,7 +275,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 48,
-"material": SubResource( 55 ),
+"material": ExtResource( 1 ),
 "name": "Material-Grass_Green",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -305,7 +291,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 48,
-"material": SubResource( 55 ),
+"material": ExtResource( 1 ),
 "name": "Material-Grass_Green",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -321,19 +307,12 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 36,
-"material": SubResource( 55 ),
+"material": ExtResource( 1 ),
 "name": "Material-Grass_Green",
 "primitive": 4,
 "skeleton_aabb": [  ],
 "vertex_count": 24
 }
-
-[sub_resource type="SpatialMaterial" id=56]
-resource_name = "Material-Brick_Light_Grey"
-params_cull_mode = 2
-albedo_color = Color( 0.662745, 0.662745, 0.662745, 1 )
-metallic = 0.85098
-roughness = -0.000294118
 
 [sub_resource type="ArrayMesh" id=3]
 resource_name = "Church"
@@ -344,19 +323,12 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 444,
-"material": SubResource( 56 ),
+"material": ExtResource( 3 ),
 "name": "Material-Brick_Light_Grey",
 "primitive": 4,
 "skeleton_aabb": [  ],
 "vertex_count": 244
 }
-
-[sub_resource type="SpatialMaterial" id=57]
-resource_name = "Material-Brick_Dark_Grey"
-params_cull_mode = 2
-albedo_color = Color( 0.32549, 0.32549, 0.32549, 1 )
-metallic = 0.85098
-roughness = -0.000294118
 
 [sub_resource type="ArrayMesh" id=4]
 resource_name = "Church"
@@ -367,7 +339,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 24,
-"material": SubResource( 57 ),
+"material": ExtResource( 4 ),
 "name": "Material-Brick_Dark_Grey",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -383,7 +355,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 18,
-"material": SubResource( 57 ),
+"material": ExtResource( 4 ),
 "name": "Material-Brick_Dark_Grey",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -399,7 +371,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 24,
-"material": SubResource( 57 ),
+"material": ExtResource( 4 ),
 "name": "Material-Brick_Dark_Grey",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -415,7 +387,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 18,
-"material": SubResource( 57 ),
+"material": ExtResource( 4 ),
 "name": "Material-Brick_Dark_Grey",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -431,7 +403,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 18,
-"material": SubResource( 57 ),
+"material": ExtResource( 4 ),
 "name": "Material-Brick_Dark_Grey",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -447,7 +419,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 18,
-"material": SubResource( 57 ),
+"material": ExtResource( 4 ),
 "name": "Material-Brick_Dark_Grey",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -463,7 +435,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 21,
-"material": SubResource( 57 ),
+"material": ExtResource( 4 ),
 "name": "Material-Brick_Dark_Grey",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -479,7 +451,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 126,
-"material": SubResource( 57 ),
+"material": ExtResource( 4 ),
 "name": "Material-Brick_Dark_Grey",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -495,7 +467,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 24,
-"material": SubResource( 55 ),
+"material": ExtResource( 1 ),
 "name": "Material-Grass_Green",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -511,7 +483,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 24,
-"material": SubResource( 55 ),
+"material": ExtResource( 1 ),
 "name": "Material-Grass_Green",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -527,7 +499,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 36,
-"material": SubResource( 54 ),
+"material": ExtResource( 2 ),
 "name": "Material-Earth_Brown",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -543,7 +515,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 24,
-"material": SubResource( 55 ),
+"material": ExtResource( 1 ),
 "name": "Material-Grass_Green",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -559,7 +531,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 24,
-"material": SubResource( 55 ),
+"material": ExtResource( 1 ),
 "name": "Material-Grass_Green",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -575,7 +547,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 36,
-"material": SubResource( 54 ),
+"material": ExtResource( 2 ),
 "name": "Material-Earth_Brown",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -591,7 +563,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 36,
-"material": SubResource( 54 ),
+"material": ExtResource( 2 ),
 "name": "Material-Earth_Brown",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -607,7 +579,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 24,
-"material": SubResource( 55 ),
+"material": ExtResource( 1 ),
 "name": "Material-Grass_Green",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -623,7 +595,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 36,
-"material": SubResource( 54 ),
+"material": ExtResource( 2 ),
 "name": "Material-Earth_Brown",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -639,19 +611,12 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 24,
-"material": SubResource( 55 ),
+"material": ExtResource( 1 ),
 "name": "Material-Grass_Green",
 "primitive": 4,
 "skeleton_aabb": [  ],
 "vertex_count": 20
 }
-
-[sub_resource type="SpatialMaterial" id=58]
-resource_name = "Material-Wood_Dark"
-params_cull_mode = 2
-albedo_color = Color( 0.545098, 0.47451, 0.368627, 1 )
-metallic = 0.85098
-roughness = -0.000294118
 
 [sub_resource type="ArrayMesh" id=31]
 resource_name = "Fence"
@@ -662,7 +627,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 36,
-"material": SubResource( 58 ),
+"material": ExtResource( 6 ),
 "name": "Material-Wood_Dark",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -678,7 +643,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 36,
-"material": SubResource( 58 ),
+"material": ExtResource( 6 ),
 "name": "Material-Wood_Dark",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -694,7 +659,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 36,
-"material": SubResource( 58 ),
+"material": ExtResource( 6 ),
 "name": "Material-Wood_Dark",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -710,7 +675,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 36,
-"material": SubResource( 58 ),
+"material": ExtResource( 6 ),
 "name": "Material-Wood_Dark",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -726,7 +691,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 36,
-"material": SubResource( 58 ),
+"material": ExtResource( 6 ),
 "name": "Material-Wood_Dark",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -742,7 +707,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 36,
-"material": SubResource( 58 ),
+"material": ExtResource( 6 ),
 "name": "Material-Wood_Dark",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -758,7 +723,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 36,
-"material": SubResource( 58 ),
+"material": ExtResource( 6 ),
 "name": "Material-Wood_Dark",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -774,7 +739,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 36,
-"material": SubResource( 58 ),
+"material": ExtResource( 6 ),
 "name": "Material-Wood_Dark",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -790,7 +755,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 48,
-"material": SubResource( 54 ),
+"material": ExtResource( 2 ),
 "name": "Material-Earth_Brown",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -806,7 +771,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 72,
-"material": SubResource( 54 ),
+"material": ExtResource( 2 ),
 "name": "Material-Earth_Brown",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -822,7 +787,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 72,
-"material": SubResource( 54 ),
+"material": ExtResource( 2 ),
 "name": "Material-Earth_Brown",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -838,7 +803,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 48,
-"material": SubResource( 54 ),
+"material": ExtResource( 2 ),
 "name": "Material-Earth_Brown",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -854,7 +819,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 36,
-"material": SubResource( 54 ),
+"material": ExtResource( 2 ),
 "name": "Material-Earth_Brown",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -870,19 +835,12 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 60,
-"material": SubResource( 54 ),
+"material": ExtResource( 2 ),
 "name": "Material-Earth_Brown",
 "primitive": 4,
 "skeleton_aabb": [  ],
 "vertex_count": 36
 }
-
-[sub_resource type="SpatialMaterial" id=59]
-resource_name = "Material-Road_Sand"
-params_cull_mode = 2
-albedo_color = Color( 0.807843, 0.764706, 0.686275, 1 )
-metallic = 0.85098
-roughness = -0.000294118
 
 [sub_resource type="ArrayMesh" id=30]
 resource_name = "Road"
@@ -893,7 +851,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 36,
-"material": SubResource( 59 ),
+"material": ExtResource( 5 ),
 "name": "Material-Road_Sand",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -906,39 +864,39 @@ surfaces/0 = {
 
 [node name="Base4" type="MeshInstance" parent="BASE"]
 mesh = SubResource( 43 )
-material/0 = ExtResource( 2 )
+material/0 = null
 
 [node name="Base5" type="MeshInstance" parent="BASE"]
 mesh = SubResource( 45 )
-material/0 = ExtResource( 2 )
+material/0 = null
 
 [node name="Base7" type="MeshInstance" parent="BASE"]
 mesh = SubResource( 49 )
-material/0 = ExtResource( 2 )
+material/0 = null
 
 [node name="Base8" type="MeshInstance" parent="BASE"]
 mesh = SubResource( 51 )
-material/0 = ExtResource( 2 )
+material/0 = null
 
 [node name="Base9" type="MeshInstance" parent="BASE"]
 mesh = SubResource( 53 )
-material/0 = ExtResource( 2 )
+material/0 = null
 
 [node name="Base3" type="MeshInstance" parent="BASE"]
 mesh = SubResource( 41 )
-material/0 = ExtResource( 2 )
+material/0 = null
 
 [node name="Base6" type="MeshInstance" parent="BASE"]
 mesh = SubResource( 47 )
-material/0 = ExtResource( 2 )
+material/0 = null
 
 [node name="Base" type="MeshInstance" parent="BASE"]
 mesh = SubResource( 1 )
-material/0 = ExtResource( 2 )
+material/0 = null
 
 [node name="Base2" type="MeshInstance" parent="BASE"]
 mesh = SubResource( 23 )
-material/0 = ExtResource( 2 )
+material/0 = null
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 
@@ -946,43 +904,43 @@ material/0 = ExtResource( 2 )
 
 [node name="Grass5" type="MeshInstance" parent="GRASS"]
 mesh = SubResource( 42 )
-material/0 = ExtResource( 1 )
+material/0 = null
 
 [node name="Grass6" type="MeshInstance" parent="GRASS"]
 mesh = SubResource( 44 )
-material/0 = ExtResource( 1 )
+material/0 = null
 
 [node name="Grass7" type="MeshInstance" parent="GRASS"]
 mesh = SubResource( 46 )
-material/0 = ExtResource( 1 )
+material/0 = null
 
 [node name="Grass4" type="MeshInstance" parent="GRASS"]
 mesh = SubResource( 40 )
-material/0 = ExtResource( 1 )
+material/0 = null
 
 [node name="Grass8" type="MeshInstance" parent="GRASS"]
 mesh = SubResource( 48 )
-material/0 = ExtResource( 1 )
+material/0 = null
 
 [node name="Grass9" type="MeshInstance" parent="GRASS"]
 mesh = SubResource( 50 )
-material/0 = ExtResource( 1 )
+material/0 = null
 
 [node name="Grass10" type="MeshInstance" parent="GRASS"]
 mesh = SubResource( 52 )
-material/0 = ExtResource( 1 )
+material/0 = null
 
 [node name="Grass2" type="MeshInstance" parent="GRASS"]
 mesh = SubResource( 24 )
-material/0 = ExtResource( 1 )
+material/0 = null
 
 [node name="Grass3" type="MeshInstance" parent="GRASS"]
 mesh = SubResource( 25 )
-material/0 = ExtResource( 1 )
+material/0 = null
 
 [node name="Grass" type="MeshInstance" parent="GRASS"]
 mesh = SubResource( 2 )
-material/0 = ExtResource( 1 )
+material/0 = null
 
 [node name="FarmerMeepleToken" parent="GRASS" instance=ExtResource( 7 )]
 transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -0.290169, 0.135, -0.279333 )
@@ -991,39 +949,39 @@ transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -0.290169, 0.135, -0.279
 
 [node name="Church" type="MeshInstance" parent="MONASTERY"]
 mesh = SubResource( 3 )
-material/0 = ExtResource( 3 )
+material/0 = null
 
 [node name="Church2" type="MeshInstance" parent="MONASTERY"]
 mesh = SubResource( 4 )
-material/0 = ExtResource( 4 )
+material/0 = null
 
 [node name="Church3" type="MeshInstance" parent="MONASTERY"]
 mesh = SubResource( 5 )
-material/0 = ExtResource( 4 )
+material/0 = null
 
 [node name="Church4" type="MeshInstance" parent="MONASTERY"]
 mesh = SubResource( 6 )
-material/0 = ExtResource( 4 )
+material/0 = null
 
 [node name="Church5" type="MeshInstance" parent="MONASTERY"]
 mesh = SubResource( 7 )
-material/0 = ExtResource( 4 )
+material/0 = null
 
 [node name="Church6" type="MeshInstance" parent="MONASTERY"]
 mesh = SubResource( 8 )
-material/0 = ExtResource( 4 )
+material/0 = null
 
 [node name="Church7" type="MeshInstance" parent="MONASTERY"]
 mesh = SubResource( 9 )
-material/0 = ExtResource( 4 )
+material/0 = null
 
 [node name="Church8" type="MeshInstance" parent="MONASTERY"]
 mesh = SubResource( 10 )
-material/0 = ExtResource( 4 )
+material/0 = null
 
 [node name="Church9" type="MeshInstance" parent="MONASTERY"]
 mesh = SubResource( 11 )
-material/0 = ExtResource( 4 )
+material/0 = null
 
 [node name="MonkMeepleToken" parent="MONASTERY" instance=ExtResource( 9 )]
 transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0.389108, 0 )
@@ -1032,43 +990,43 @@ transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0.389108, 0 )
 
 [node name="Tree" type="MeshInstance" parent="TREES"]
 mesh = SubResource( 12 )
-material/0 = ExtResource( 1 )
+material/0 = null
 
 [node name="Tree2" type="MeshInstance" parent="TREES"]
 mesh = SubResource( 13 )
-material/0 = ExtResource( 1 )
+material/0 = null
 
 [node name="Tree3" type="MeshInstance" parent="TREES"]
 mesh = SubResource( 14 )
-material/0 = ExtResource( 6 )
+material/0 = null
 
 [node name="Tree4" type="MeshInstance" parent="TREES"]
 mesh = SubResource( 15 )
-material/0 = ExtResource( 1 )
+material/0 = null
 
 [node name="Tree5" type="MeshInstance" parent="TREES"]
 mesh = SubResource( 16 )
-material/0 = ExtResource( 1 )
+material/0 = null
 
 [node name="Tree6" type="MeshInstance" parent="TREES"]
 mesh = SubResource( 17 )
-material/0 = ExtResource( 6 )
+material/0 = null
 
 [node name="Tree7" type="MeshInstance" parent="TREES"]
 mesh = SubResource( 26 )
-material/0 = ExtResource( 6 )
+material/0 = null
 
 [node name="Tree8" type="MeshInstance" parent="TREES"]
 mesh = SubResource( 27 )
-material/0 = ExtResource( 1 )
+material/0 = null
 
 [node name="Tree9" type="MeshInstance" parent="TREES"]
 mesh = SubResource( 28 )
-material/0 = ExtResource( 6 )
+material/0 = null
 
 [node name="Tree10" type="MeshInstance" parent="TREES"]
 mesh = SubResource( 29 )
-material/0 = ExtResource( 1 )
+material/0 = null
 
 [node name="FENCE" type="Spatial" parent="."]
 
@@ -1116,34 +1074,33 @@ material/0 = null
 
 [node name="Cobblestone" type="MeshInstance" parent="COBBLESTONE"]
 mesh = SubResource( 18 )
-material/0 = ExtResource( 2 )
+material/0 = null
 
 [node name="Cobblestone2" type="MeshInstance" parent="COBBLESTONE"]
 mesh = SubResource( 19 )
-material/0 = ExtResource( 2 )
+material/0 = null
 
 [node name="Cobblestone3" type="MeshInstance" parent="COBBLESTONE"]
 mesh = SubResource( 20 )
-material/0 = ExtResource( 2 )
+material/0 = null
 
 [node name="Cobblestone4" type="MeshInstance" parent="COBBLESTONE"]
 mesh = SubResource( 21 )
-material/0 = ExtResource( 2 )
+material/0 = null
 
 [node name="Cobblestone5" type="MeshInstance" parent="COBBLESTONE"]
 mesh = SubResource( 22 )
-material/0 = ExtResource( 2 )
+material/0 = null
 
 [node name="Cobblestone6" type="MeshInstance" parent="COBBLESTONE"]
 mesh = SubResource( 39 )
-material/0 = ExtResource( 2 )
+material/0 = null
 
 [node name="ROAD" type="Spatial" parent="."]
 
 [node name="Road" type="MeshInstance" parent="ROAD"]
-material_override = ExtResource( 5 )
 mesh = SubResource( 30 )
-material/0 = ExtResource( 5 )
+material/0 = null
 
 [node name="HighwaymanMeepleToken" parent="ROAD" instance=ExtResource( 8 )]
 transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0.135, 0.369876 )

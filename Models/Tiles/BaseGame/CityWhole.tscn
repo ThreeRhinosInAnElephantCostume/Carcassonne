@@ -8,7 +8,7 @@
 [ext_resource path="res://Models/MATERIALS/Material-Brick_Light_Grey.material" type="Material" id=6]
 [ext_resource path="res://Models/MATERIALS/Material-Wood_Dark.material" type="Material" id=7]
 [ext_resource path="res://Models/Meeples/KnightMeepleToken.tscn" type="PackedScene" id=8]
-
+[ext_resource path="res://Models/MATERIALS/Material-Plastic_White.material" type="Material" id=9]
 
 [sub_resource type="ArrayMesh" id=13]
 resource_name = "Base"
@@ -6978,7 +6978,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 42,
-"material": ExtResource( 5 ),
+"material": ExtResource( 1 ),
 "name": "Material-Road_Sand",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -6994,7 +6994,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 84,
-"material": ExtResource( 5 ),
+"material": ExtResource( 1 ),
 "name": "Material-Road_Sand",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -7017,12 +7017,6 @@ surfaces/0 = {
 "vertex_count": 24
 }
 
-[sub_resource type="SpatialMaterial" id=51]
-params_cull_mode = 2
-albedo_color = Color( 0.980392, 0.980392, 0.980392, 1 )
-metallic = 1.0
-roughness = 0.0764706
-
 [sub_resource type="ArrayMesh" id=52]
 resource_name = "Bonus"
 surfaces/0 = {
@@ -7032,7 +7026,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 36,
-"material": SubResource( 51 ),
+"material": ExtResource( 9 ),
 "primitive": 4,
 "skeleton_aabb": [  ],
 "vertex_count": 24
@@ -7047,7 +7041,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 36,
-"material": SubResource( 51 ),
+"material": ExtResource( 9 ),
 "primitive": 4,
 "skeleton_aabb": [  ],
 "vertex_count": 24
@@ -7094,7 +7088,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 36,
-"material": SubResource( 51 ),
+"material": ExtResource( 9 ),
 "primitive": 4,
 "skeleton_aabb": [  ],
 "vertex_count": 24
@@ -7109,7 +7103,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 36,
-"material": SubResource( 51 ),
+"material": ExtResource( 9 ),
 "primitive": 4,
 "skeleton_aabb": [  ],
 "vertex_count": 24
