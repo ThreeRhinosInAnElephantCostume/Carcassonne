@@ -67,6 +67,7 @@ func _input(event):
 			enterPressed = true
 			botYellowLevel = currentSelected
 			print(botYellowLevel)
+			nextSelector.previousSelected = true
 			mainScript._yellow = currentSelected
 			
 			if botGreen.visible == true:
