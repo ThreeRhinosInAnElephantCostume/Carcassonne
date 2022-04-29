@@ -16,9 +16,9 @@ export (Vector2) var avatarsOffset
 export (int) var botBlackLevel
 #export (Label) var selectorLabel_1 = "Easy bot"
 
-onready var gridContainer = get_parent().get_node("GridContainer")
-
-onready var selector1 = get_parent().get_node("Selector1")
+onready var mainScript = get_parent()
+onready var gridContainer = get_node("../GridContainer")
+onready var selector1 = get_node("../Selector1")
 onready var selectorLabel1 = selector1.get_node("Label")
 onready var nextSelector = get_node("../Selector2")
 onready var botBlue = get_node("/root/LobbySingle/GridContainer/GridContainerBots/HBoxContainerBotsEasy/BotEasyBlue")
@@ -68,6 +68,7 @@ func _input(event):
 			botBlackLevel = currentSelected
 			print(botBlackLevel)
 			nextSelector.previousSelected = true
+			mainScript._black = currentSelected
 			
 			if botBlue.visible == true:
 				nextSelector.visible = true

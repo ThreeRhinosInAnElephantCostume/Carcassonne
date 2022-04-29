@@ -23,7 +23,7 @@ public class LobbySingleplayer : Control
 {
     Button _play;
     Button _quit;
-    int _amountOfBots = 4;  // zmienna, która będzie przechwytywana z popup'a
+    readonly int _amountOfBots = 4;  // zmienna, która będzie przechwytywana z popup'a
 
     enum BotLevel
     {
@@ -34,11 +34,7 @@ public class LobbySingleplayer : Control
 
     readonly List<TextureRect> _bots = new List<TextureRect>();
 
-    // initialize levels of bots with default value
-    BotLevel _botBlack = BotLevel.Easy;
-    BotLevel _botBlue = BotLevel.Easy;
-    BotLevel _botYellow = BotLevel.Easy;
-    BotLevel _botGreen = BotLevel.Easy;
+    int _black, _blue, _yellow, _green ;
     // TODO: popup: (Enter your name: . How many opponents do you want? ) zczytana liczba przeciwników, min 1 max 4 (jeśli mniej niż 1, ustaw 1, jeśli więcej niż 4 ustaw 4)
     // TODO: liczba botów przekazana do _amountOfBots
     // TODO: nazwa gracza przekazana do Label gracza
@@ -63,6 +59,16 @@ public class LobbySingleplayer : Control
 
     void OnPlayPressed()
     {
+        // Load levels of bots
+        BotLevel _botBlack = (BotLevel) _black;
+        GD.Print($"Black bot is {_botBlack}");
+        BotLevel _botBlue = (BotLevel) _blue;
+        GD.Print($"Blue bot is {_botBlue}");
+        BotLevel _botYellow = (BotLevel) _yellow;
+        GD.Print($"Yellow bot is {_botYellow}");
+        BotLevel _botGreen = (BotLevel) _green;
+        GD.Print($"Green bot is {_botGreen}");
+
         var blacktheme = Globals.PersonalThemes["black"].Copy();
         var bluetheme = Globals.PersonalThemes["blue"].Copy();
         var yellowtheme = Globals.PersonalThemes["yellow"].Copy();

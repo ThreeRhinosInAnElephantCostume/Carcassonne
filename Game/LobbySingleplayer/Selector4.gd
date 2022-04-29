@@ -16,8 +16,8 @@ export (int) var amountOfRows = 3      # The total amount of rows the character 
 export (Vector2) var avatarsOffset
 export (int) var botGreenLevel
 
+onready var mainScript = get_parent()
 onready var gridContainer = get_parent().get_node("GridContainer")
-
 onready var selector4 = get_node("../Selector4")
 onready var selectorLabel4 = selector4.get_node("Label")
 #onready var nextSelector = get_node("../Selector4")
@@ -67,3 +67,4 @@ func _input(event):
 			enterPressed = true
 			botGreenLevel = currentSelected
 			print(botGreenLevel)
+			mainScript._green = currentSelected
