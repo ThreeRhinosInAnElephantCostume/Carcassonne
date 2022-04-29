@@ -5,6 +5,7 @@ var botLevels_1 = []
 var currentSelected = 0		# Spot of the FrameSelector within the botLevels_1[]
 var currentColumnSpot = 0	# Spot of the FrameSelector based on the column
 var currentRowSpot = 0
+var enterPressed = false
 
 var botLevelsNames = ["Easy bot", "Mid", "Hard"]
 
@@ -19,6 +20,8 @@ onready var gridContainer = get_parent().get_node("GridContainer")
 
 onready var selector1 = get_parent().get_node("Selector1")
 onready var selectorLabel1 = selector1.get_node("Label")
+onready var nextSelector = get_node("../Selector2")
+onready var botBlue = get_node("/root/LobbySingle/GridContainer/GridContainerBots/HBoxContainerBotsEasy/BotEasyBlue")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -35,7 +38,7 @@ func _ready():
 	
 	
 func _input(event):
-	if event is InputEventKey and event.pressed:
+	if event is InputEventKey and event.pressed and not enterPressed:
 		
 		
 		if event.scancode == KEY_UP:
@@ -61,5 +64,9 @@ func _input(event):
 		print(selectorLabel1.text)
 		
 		if event.scancode == KEY_ENTER:
+			enterPressed = true
 			botBlackLevel = currentSelected
 			print(botBlackLevel)
+			
+			if botBlue.visible == true:
+				nextSelector.visible = true

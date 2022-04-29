@@ -63,6 +63,12 @@ script = ExtResource( 20 )
 selectorTexture = ExtResource( 21 )
 avatarsOffset = Vector2( 0, 206 )
 
+[node name="Selector2" type="Sprite" parent="."]
+visible = false
+position = Vector2( 625, 130 )
+z_index = 1
+texture = ExtResource( 21 )
+
 [node name="GridContainer" type="GridContainer" parent="."]
 margin_left = 100.0
 margin_top = 30.0
