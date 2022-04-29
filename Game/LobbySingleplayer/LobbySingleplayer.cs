@@ -23,7 +23,7 @@ public class LobbySingleplayer : Control
 {
     Button _play;
     Button _quit;
-    readonly int _amountOfBots = 4;  // zmienna, która będzie przechwytywana z popup'a
+    int _amountOfBots = 4;  // zmienna, która będzie przechwytywana z popup'a
 
     enum BotLevel
     {
@@ -34,7 +34,11 @@ public class LobbySingleplayer : Control
 
     readonly List<TextureRect> _bots = new List<TextureRect>();
 
-
+    // initialize levels of bots with default value
+    BotLevel _botBlack = BotLevel.Easy;
+    BotLevel _botBlue = BotLevel.Easy;
+    BotLevel _botYellow = BotLevel.Easy;
+    BotLevel _botGreen = BotLevel.Easy;
     // TODO: popup: (Enter your name: . How many opponents do you want? ) zczytana liczba przeciwników, min 1 max 4 (jeśli mniej niż 1, ustaw 1, jeśli więcej niż 4 ustaw 4)
     // TODO: liczba botów przekazana do _amountOfBots
     // TODO: nazwa gracza przekazana do Label gracza
@@ -70,13 +74,13 @@ public class LobbySingleplayer : Control
         };
 
         // choose and add bots
-        ChooseBot(blacktheme, BotLevel.Easy, generators);
+        ChooseBot(blacktheme, _botBlack, generators);
         if (_amountOfBots > 1)
-            ChooseBot(bluetheme, BotLevel.Easy, generators);
+            ChooseBot(bluetheme, _botBlue, generators);
         if (_amountOfBots > 2)
-            ChooseBot(yellowtheme, BotLevel.Easy, generators);
+            ChooseBot(yellowtheme, _botYellow, generators);
         if (_amountOfBots > 3)
-            ChooseBot(greentheme, BotLevel.Easy, generators);
+            ChooseBot(greentheme, _botGreen, generators);
 
         var ui = (InGameUI)Globals.Scenes.InGameUIPacked.Instance();
         var game = Game.NewLocalGame(ui, generators, "BaseGame/BaseTileset.json", 666);

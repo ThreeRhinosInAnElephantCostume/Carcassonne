@@ -12,6 +12,7 @@ var botLevelsNames = ["Easy bot", "Mid", "Hard"]
 export (Texture) var selectorTexture
 export (int) var amountOfRows = 3      # The total amount of rows the character select is able to show 
 export (Vector2) var avatarsOffset
+export (int) var botBlackLevel
 #export (Label) var selectorLabel_1 = "Easy bot"
 
 onready var gridContainer = get_parent().get_node("GridContainer")
@@ -58,3 +59,7 @@ func _input(event):
 		elif currentSelected == 2:
 			selectorLabel1.text = "Hard bot"
 		print(selectorLabel1.text)
+		
+		if event.scancode == KEY_ENTER:
+			botBlackLevel = currentSelected
+			print(botBlackLevel)
