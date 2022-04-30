@@ -1,15 +1,12 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://GUI/DarkTheme/Dark.theme" type="Theme" id=1]
 [ext_resource path="res://GUI/fonts/Frederic.tres" type="DynamicFont" id=2]
-[ext_resource path="res://Game/LobbySingleplayer/HalloDialog.gd" type="Script" id=4]
 
 [node name="HalloDialog" type="WindowDialog"]
-visible = true
 margin_right = 320.0
 margin_bottom = 151.0
 theme = ExtResource( 1 )
-script = ExtResource( 4 )
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 margin_left = 10.0
@@ -18,11 +15,11 @@ margin_right = 310.0
 margin_bottom = 144.0
 
 [node name="VBox" type="VBoxContainer" parent="MarginContainer"]
-margin_right = 300.0
+margin_right = 308.0
 margin_bottom = 134.0
 
 [node name="HBox1" type="HBoxContainer" parent="MarginContainer/VBox"]
-margin_right = 300.0
+margin_right = 308.0
 margin_bottom = 31.0
 
 [node name="NameLabel" type="Label" parent="MarginContainer/VBox/HBox1"]
@@ -32,18 +29,17 @@ margin_bottom = 30.4
 custom_fonts/font = ExtResource( 2 )
 text = "Your name:"
 
-[node name="Name" type="TextEdit" parent="MarginContainer/VBox/HBox1"]
+[node name="Name" type="LineEdit" parent="MarginContainer/VBox/HBox1"]
 margin_left = 112.0
-margin_right = 300.0
+margin_right = 308.0
 margin_bottom = 31.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 2 )
-text = "zzzz"
 
 [node name="HBox2" type="HBoxContainer" parent="MarginContainer/VBox"]
 margin_top = 34.0
-margin_right = 300.0
+margin_right = 308.0
 margin_bottom = 65.0
 
 [node name="OpponentsLabel" type="Label" parent="MarginContainer/VBox/HBox2"]
@@ -53,21 +49,23 @@ margin_bottom = 30.4
 custom_fonts/font = ExtResource( 2 )
 text = "Numbers of oppenents:"
 
-[node name="Opponents" type="TextEdit" parent="MarginContainer/VBox/HBox2"]
+[node name="Opponents" type="LineEdit" parent="MarginContainer/VBox/HBox2"]
 margin_left = 220.0
-margin_right = 300.0
+margin_right = 308.0
 margin_bottom = 31.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 2 )
-text = "zzz"
 
 [node name="Button" type="Button" parent="MarginContainer/VBox"]
 margin_top = 68.0
-margin_right = 300.0
+margin_right = 308.0
 margin_bottom = 134.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.0
 custom_fonts/font = ExtResource( 2 )
 text = "OK"
+
+[connection signal="text_entered" from="MarginContainer/VBox/HBox1/Name" to="." method="_on_Name_text_entered"]
+[connection signal="button_down" from="MarginContainer/VBox/Button" to="." method="_on_Button_button_down"]

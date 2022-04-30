@@ -23,7 +23,7 @@ public class LobbySingleplayer : Control
 {
     Button _play;
     Button _quit;
-    readonly int _amountOfBots = 4;  // zmienna, która będzie przechwytywana z popup'a
+    readonly int _amountOfBots = 1;  // zmienna, która będzie przechwytywana z popup'a
 
     enum BotLevel
     {
@@ -34,7 +34,9 @@ public class LobbySingleplayer : Control
 
     readonly List<TextureRect> _bots = new List<TextureRect>();
 
+
     int _black, _blue, _yellow, _green ;
+
     // TODO: popup: (Enter your name: . How many opponents do you want? ) zczytana liczba przeciwników, min 1 max 4 (jeśli mniej niż 1, ustaw 1, jeśli więcej niż 4 ustaw 4)
     // TODO: liczba botów przekazana do _amountOfBots
     // TODO: nazwa gracza przekazana do Label gracza
@@ -55,6 +57,12 @@ public class LobbySingleplayer : Control
         GetNode<WindowDialog>("HalloDialog").PopupCentered();
 
         // widoczne boty tylko w liczbie amountOfBots
+        PrepareBots(_amountOfBots);
+        BotsVisibilityOn();
+    }
+
+    void OnPopupHide()
+    {
         PrepareBots(_amountOfBots);
         BotsVisibilityOn();
     }

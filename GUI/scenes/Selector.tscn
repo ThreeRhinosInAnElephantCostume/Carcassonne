@@ -15,5 +15,4 @@ margin_right = 71.0
 margin_bottom = 97.4
 theme = ExtResource( 3 )
 custom_fonts/font = ExtResource( 2 )
-text = "zzz"
 align = 1
