@@ -31,11 +31,7 @@ func _ready():
 	texture = selectorTexture
 	
 	selectorLabel1.text = "Easy bot"
-	print(selectorLabel1.text)
-	
-	
-		
-	
+
 	
 func _input(event):
 	if event is InputEventKey and event.pressed and not enterPressed:
