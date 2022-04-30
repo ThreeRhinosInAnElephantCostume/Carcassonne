@@ -54,7 +54,7 @@ public class LobbySingleplayer : Control
         _quit = this.GetNodeSafe<Button>("Quit");
         _quit.OnButtonPressed(OnQuitPressed);
 
-        GetNode<WindowDialog>("HalloDialog").PopupCentered();
+        this.GetNodeSafe<WindowDialog>("HalloDialog").PopupCentered();
 
         // widoczne boty tylko w liczbie amountOfBots
         PrepareBots(_amountOfBots);
