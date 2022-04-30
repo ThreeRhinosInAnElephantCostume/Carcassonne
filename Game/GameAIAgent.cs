@@ -8,7 +8,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime;
 using System.Runtime.CompilerServices;
-using System.Threading;
+using System.Threading.Tasks;
 using Carcassonne;
 using ExtraMath;
 using Godot;
@@ -21,9 +21,10 @@ public partial class Game
     public class GameAIAgent : GameAgent
     {
         public AI.AIPlayer AI { get; protected set; }
-        public override void OnTurn(GameEngine engine)
+        public override async void OnTurn(GameEngine engine)
         {
             Assert(this._game.CurrentAgent.Player == this.Player);
+            await Task.Delay(1000);
             AI.MakeMove(engine);
             this._game.AgentExecuteImplied(_game.CurrentAgent);
         }
