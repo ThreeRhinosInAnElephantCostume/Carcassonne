@@ -1,13 +1,11 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Props/TextureRectProp.cs" type="Script" id=1]
 [ext_resource path="res://GUI/fonts/Frederic.tres" type="DynamicFont" id=2]
-[ext_resource path="res://GUI/img/BlasonCarcassonne-player.png" type="Texture" id=3]
 [ext_resource path="res://GUI/img/money-bag.png" type="Texture" id=4]
 [ext_resource path="res://Props/Sprite2DProp.gdshader" type="Shader" id=5]
 [ext_resource path="res://Icons/Themeable/ThemableMeepleIcon16x16.png" type="Texture" id=6]
 [ext_resource path="res://Game/InGame/PlayerInfoContainer.cs" type="Script" id=7]
-[ext_resource path="res://Icons/Themeable/PlayerIcons/DefaultIcon.png" type="Texture" id=8]
 [ext_resource path="res://GUI/scenes/InfoPanelAvatar.tscn" type="PackedScene" id=9]
 
 [sub_resource type="ShaderMaterial" id=1]
@@ -24,23 +22,6 @@ shader_param/icon_enabled = false
 shader_param/icon_centered = true
 shader_param/icon_scale = null
 shader_param/icon_offset = null
-
-[sub_resource type="ShaderMaterial" id=3]
-resource_local_to_scene = true
-shader = ExtResource( 5 )
-shader_param/primary_color = Color( 1, 0, 0, 1 )
-shader_param/secondary_color = Color( 0, 1, 0, 1 )
-shader_param/tertiary_color = Color( 0, 0, 1, 1 )
-shader_param/background_color = Color( 1, 0, 0, 1 )
-shader_param/mask_enabled = false
-shader_param/primary_enabled = false
-shader_param/secondary_enabled = false
-shader_param/tertiary_enabled = false
-shader_param/icon_enabled = false
-shader_param/icon_centered = true
-shader_param/icon_scale = Vector2( 1, 1 )
-shader_param/icon_offset = Vector2( 0, 0 )
-shader_param/icon_texture = ExtResource( 8 )
 
 [sub_resource type="ShaderMaterial" id=2]
 resource_local_to_scene = true
@@ -71,23 +52,6 @@ size_flags_vertical = 3
 [node name="InfoPanelAvatar" parent="PlayerContainerH" instance=ExtResource( 9 )]
 margin_right = 100.0
 margin_bottom = 102.0
-
-[node name="ShieldPlayer" type="TextureRect" parent="PlayerContainerH"]
-visible = false
-material = SubResource( 3 )
-margin_bottom = 83.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 3 )
-expand = true
-stretch_mode = 6
-script = ExtResource( 1 )
-PrimaryEnabled = false
-SecondaryEnabled = false
-TertiaryEnabled = false
-BackgroundColor = 1
-BackgroundTransparency = 1.0
-ShowIcon = false
 
 [node name="PlayerStatusContainer" type="VBoxContainer" parent="PlayerContainerH"]
 margin_left = 104.0
