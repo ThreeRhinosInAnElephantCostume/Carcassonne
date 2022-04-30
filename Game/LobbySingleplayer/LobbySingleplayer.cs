@@ -79,14 +79,19 @@ public class LobbySingleplayer : Control
         BotLevel _botGreen = (BotLevel) _green;
         GD.Print($"Green bot is {_botGreen}");
 
+        var redtheme = Globals.PersonalThemes["red"].Copy();
         var blacktheme = Globals.PersonalThemes["black"].Copy();
         var bluetheme = Globals.PersonalThemes["blue"].Copy();
         var yellowtheme = Globals.PersonalThemes["yellow"].Copy();
         var greentheme = Globals.PersonalThemes["green"].Copy();
 
+        var avatarplayerPath = "res://GUI/avatars/avatar3.png";
+        redtheme.IconPath = avatarplayerPath;
+        redtheme.AvatarPath = avatarplayerPath;
+
         var generators = new List<Game.AgentGenerator>()
         {
-            (g, e, i, p, rng) => new Game.GameLocalAgent(g, $"Player", p, Globals.PersonalThemes["red"].Copy()),
+            (g, e, i, p, rng) => new Game.GameLocalAgent(g, $"Player", p, redtheme),
         };
 
         // choose and add bots
