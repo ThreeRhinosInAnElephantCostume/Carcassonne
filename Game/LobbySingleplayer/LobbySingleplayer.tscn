@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://GUI/DarkTheme/Fonts/Frederic.tres" type="DynamicFont" id=1]
 [ext_resource path="res://GUI/DarkTheme/Dark.theme" type="Theme" id=2]
@@ -23,6 +23,7 @@
 [ext_resource path="res://GUI/img/ramka-wstega_200x203.png" type="Texture" id=21]
 [ext_resource path="res://Game/LobbySingleplayer/Selector3.gd" type="Script" id=22]
 [ext_resource path="res://Game/LobbySingleplayer/Selector4.gd" type="Script" id=23]
+[ext_resource path="res://Game/LobbySingleplayer/HalloDialog.tscn" type="PackedScene" id=24]
 
 [node name="LobbySingle" type="Control"]
 anchor_right = 1.0
@@ -208,5 +209,12 @@ margin_top = 640.814
 margin_right = 736.411
 margin_bottom = 709.214
 text = "WORK IN PROGRESS"
+
+[node name="HalloDialog" parent="." instance=ExtResource( 24 )]
+visible = false
+margin_left = 600.0
+margin_top = 300.0
+margin_right = 920.0
+margin_bottom = 451.0
 
 [connection signal="mouse_entered" from="Quit" to="." method="_onQuitMouseEntered"]
