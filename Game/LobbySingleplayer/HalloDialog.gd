@@ -26,6 +26,7 @@ func _on_Button_button_down():
 	print(opponents)
 	print("___________")
 	mainScript._amountOfBots = opponents
+	mainScript._namePlayer = name
 	mainScript.BotsVisibilityOn()
 	hide()
 	

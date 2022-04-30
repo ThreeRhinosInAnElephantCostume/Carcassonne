@@ -37,13 +37,7 @@ public class LobbySingleplayer : Control
 
     int _black, _blue, _yellow, _green ;
 
-    // TODO: popup: (Enter your name: . How many opponents do you want? ) zczytana liczba przeciwników, min 1 max 4 (jeśli mniej niż 1, ustaw 1, jeśli więcej niż 4 ustaw 4)
-    // TODO: liczba botów przekazana do _amountOfBots
-    // TODO: nazwa gracza przekazana do Label gracza
-    // TODO: odświeżenie sceny
-    //
-    // black -> blue -> yellow -> green
-    // 
+    string _namePlayer = "Player"; 
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -91,7 +85,7 @@ public class LobbySingleplayer : Control
 
         var generators = new List<Game.AgentGenerator>()
         {
-            (g, e, i, p, rng) => new Game.GameLocalAgent(g, $"Player", p, redtheme),
+            (g, e, i, p, rng) => new Game.GameLocalAgent(g, _namePlayer, p, redtheme),
         };
 
         // choose and add bots
@@ -121,19 +115,19 @@ public class LobbySingleplayer : Control
                 avatarbotPath = "res://GUI/avatars/avatarbot3.png";
                 theme.IconPath = avatarbotPath;
                 theme.AvatarPath = avatarbotPath;
-                bot = (g, e, i, p, rng) => new Game.GameAIAgent(g, $"AI", p, new AI.RandomAI(new RNG(rng.NextULong())), theme);
+                bot = (g, e, i, p, rng) => new Game.GameAIAgent(g, $"Easy bot", p, new AI.RandomAI(new RNG(rng.NextULong())), theme);
                 break;
             case BotLevel.Mid:
                 avatarbotPath = "res://GUI/avatars/avatarbot2.png";
                 theme.IconPath = avatarbotPath;
                 theme.AvatarPath = avatarbotPath;
-                bot = (g, e, i, p, rng) => new Game.GameAIAgent(g, $"AI", p, new AI.RandomAI(new RNG(rng.NextULong())), theme); //zmienić na AI.Medium
+                bot = (g, e, i, p, rng) => new Game.GameAIAgent(g, $"Mid bot", p, new AI.RandomAI(new RNG(rng.NextULong())), theme); //zmienić na AI.Medium
                 break;
             case BotLevel.Hard:
                 avatarbotPath = "res://GUI/avatars/avatarbot1.png";
                 theme.IconPath = avatarbotPath;
                 theme.AvatarPath = avatarbotPath;
-                bot = (g, e, i, p, rng) => new Game.GameAIAgent(g, $"AI", p, new AI.RandomAI(new RNG(rng.NextULong())), theme); //zmienić na AI.Hard
+                bot = (g, e, i, p, rng) => new Game.GameAIAgent(g, $"Hard bot", p, new AI.RandomAI(new RNG(rng.NextULong())), theme); //zmienić na AI.Hard
                 break;
             default:
                 avatarbotPath = "res://GUI/avatars/avatarbot3.png";
