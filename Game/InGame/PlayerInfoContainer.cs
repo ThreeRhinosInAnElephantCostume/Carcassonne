@@ -28,6 +28,7 @@ public class PlayerInfoContainer : ControlProp
     Label _nMeeplesLabel;
     Label _nPointsLabel;
     Label _playerNameLabel;
+    TextureRect _playerFrame;
     public void SetPlayer(Game.GameAgent player)
     {
         this._agent = player;
@@ -48,7 +49,7 @@ public class PlayerInfoContainer : ControlProp
     void RealUpdatePlayer()
     {
         Assert(_player != null);
-        _nMeeplesLabel.Text = $"{_player.Pawns.Count(it => it is Meeple)}";
+        _nMeeplesLabel.Text = $"{_player.Pawns.Count(it => it is Meeple)}"; // dlaczego nie aktualizuje się liczba meepli?
         _nPointsLabel.Text = $"{_player.Score}(+{_player.PotentialScore})";
         _playerNameLabel.Text = _agent.Name;
     }
@@ -57,7 +58,8 @@ public class PlayerInfoContainer : ControlProp
         _nMeeplesLabel = this.GetNodeSafe<Label>("PlayerContainerH/PlayerStatusContainer/MeepleContainer/MeeplesPlayer");
         _nPointsLabel = this.GetNodeSafe<Label>("PlayerContainerH/PlayerStatusContainer/PointsContainer/PointsPlayer");
         _playerNameLabel = this.GetNodeSafe<Label>("PlayerContainerH/PlayerStatusContainer/PlayerName");
-        _playerAvatarRect = this.GetNodeSafe<TextureRectProp>("PlayerContainerH/ShieldPlayer");
+        _playerFrame = this.GetNodeSafe<TextureRect>("PlayerContainerH/InfoPanelAvatar");
+        _playerAvatarRect = _playerFrame.GetNodeSafe<TextureRectProp>("Background");
         _playerMeepleRect = this.GetNodeSafe<TextureRectProp>("PlayerContainerH/PlayerStatusContainer/MeepleContainer/MeepleImg");
     }
 }
