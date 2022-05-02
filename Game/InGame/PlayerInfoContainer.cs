@@ -49,7 +49,7 @@ public class PlayerInfoContainer : ControlProp
     void RealUpdatePlayer()
     {
         Assert(_player != null);
-        _nMeeplesLabel.Text = $"{_player.Pawns.Count(it => it is Meeple)}"; // dlaczego nie aktualizuje się liczba meepli?
+        _nMeeplesLabel.Text = $"{_player.Pawns.Count(it => it is Meeple meep && !meep.IsInPlay)}/{_player.Pawns.Count(it => it is Meeple)}"; // dlaczego nie aktualizuje się liczba meepli?
         _nPointsLabel.Text = $"{_player.Score}(+{_player.PotentialScore})";
         _playerNameLabel.Text = _agent.Name;
     }

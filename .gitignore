@@ -13,6 +13,17 @@ export_presets.cfg
 .mono/
 data_*/
 mono_crash.*.json
+mono_crash.*.blob
+_.mono/assemblies/Debug/api_hash_cache.cfg
+_.mono/assemblies/Debug/GodotSharp.dll
+_.mono/assemblies/Debug/GodotSharp.pdb
+_.mono/assemblies/Debug/GodotSharp.xml
+_.mono/assemblies/Debug/GodotSharpEditor.dll
+_.mono/assemblies/Debug/GodotSharpEditor.pdb
+_.mono/assemblies/Debug/GodotSharpEditor.xml
+_.mono/metadata/ide_messaging_meta.txt
+_.mono/metadata/scripts_metadata.editor
+_.mono/metadata/scripts_metadata.editor_player
 
 # System/tool-specific ignores
 .directory
@@ -36,13 +47,3 @@ bin/
 temp/
 .setup.sh.kate-swp
 Test/Saves/
-_.mono/assemblies/Debug/api_hash_cache.cfg
-_.mono/assemblies/Debug/GodotSharp.dll
-_.mono/assemblies/Debug/GodotSharp.pdb
-_.mono/assemblies/Debug/GodotSharp.xml
-_.mono/assemblies/Debug/GodotSharpEditor.dll
-_.mono/assemblies/Debug/GodotSharpEditor.pdb
-_.mono/assemblies/Debug/GodotSharpEditor.xml
-_.mono/metadata/ide_messaging_meta.txt
-_.mono/metadata/scripts_metadata.editor
-_.mono/metadata/scripts_metadata.editor_player
