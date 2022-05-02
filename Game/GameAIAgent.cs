@@ -36,7 +36,7 @@ public partial class Game
                 if (dif > 0)
                     System.Threading.Thread.Sleep((int)(dif * 1000f));
 
-                this._game.AgentExecute(this, clone.History.Last());
+                Defer(() => this._game.AgentExecute(this, clone.History.Last()));
             }, null);
         }
         public GameAIAgent(Game game, string name, GameEngine.Player player, AI.AIPlayer AI, PersonalTheme theme) : base(game, name, PlayerType.AI, player, theme)
