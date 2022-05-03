@@ -35,9 +35,9 @@ public class LobbySingleplayer : Control
     readonly List<TextureRect> _bots = new List<TextureRect>();
 
 
-    int _black, _blue, _yellow, _green ;
+    int _black, _blue, _yellow, _green;
 
-    string _namePlayer = "Player"; 
+    string _namePlayer = "Player";
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -64,13 +64,13 @@ public class LobbySingleplayer : Control
     void OnPlayPressed()
     {
         // Load levels of bots
-        BotLevel _botBlack = (BotLevel) _black;
+        BotLevel _botBlack = (BotLevel)_black;
         GD.Print($"Black bot is {_botBlack}");
-        BotLevel _botBlue = (BotLevel) _blue;
+        BotLevel _botBlue = (BotLevel)_blue;
         GD.Print($"Blue bot is {_botBlue}");
-        BotLevel _botYellow = (BotLevel) _yellow;
+        BotLevel _botYellow = (BotLevel)_yellow;
         GD.Print($"Yellow bot is {_botYellow}");
-        BotLevel _botGreen = (BotLevel) _green;
+        BotLevel _botGreen = (BotLevel)_green;
         GD.Print($"Green bot is {_botGreen}");
 
         var redtheme = Globals.PersonalThemes["red"].Copy();
@@ -121,7 +121,7 @@ public class LobbySingleplayer : Control
                 avatarbotPath = "res://GUI/avatars/avatarbot2.png";
                 theme.IconPath = avatarbotPath;
                 theme.AvatarPath = avatarbotPath;
-                bot = (g, e, i, p, rng) => new Game.GameAIAgent(g, $"Mid bot", p, new AI.RandomAI(new RNG(rng.NextULong())), theme); //zmienić na AI.Medium
+                bot = (g, e, i, p, rng) => new Game.GameAIAgent(g, $"Mid bot", p, new AI.MediumAI(new RNG(rng.NextULong())), theme); //zmienić na AI.Medium
                 break;
             case BotLevel.Hard:
                 avatarbotPath = "res://GUI/avatars/avatarbot1.png";
