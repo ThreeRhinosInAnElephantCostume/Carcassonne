@@ -76,8 +76,8 @@ public partial class Game
             Handles.OnNextPlayerTurn(CurrentAgent);
             Defer(() => CurrentAgent.OnTurn(Engine));
         }
-        // if(Engine.Turn > 4)
-        //     SaveStatistics(true);
+        if (Engine.Turn > 5)
+            SaveStatistics(true);
     }
     public GameAgent GetAgent(GameEngine.Player p)
     {
