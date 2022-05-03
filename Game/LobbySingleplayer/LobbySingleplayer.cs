@@ -64,7 +64,7 @@ public class LobbySingleplayer : Control
     void OnPlayPressed()
     {
         // Load levels of bots
-        BotLevel _botBlack = BotLevel.Mid;
+        BotLevel _botBlack = (BotLevel)_black;
         GD.Print($"Black bot is {_botBlack}");
         BotLevel _botBlue = (BotLevel)_blue;
         GD.Print($"Blue bot is {_botBlue}");
