@@ -1,6 +1,4 @@
-﻿
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -45,6 +43,7 @@ public partial class Game
         void OnNextPlayerTurn(GameAgent agent);
         void OnGameOver(List<GameAgent> winners);
     }
+    protected ulong _seed;
     public IGameHandles Handles { get; set; }
     public GameEngine Engine { get; protected set; }
     public GameMode Mode { get; protected set; }
@@ -69,6 +68,7 @@ public partial class Game
         {
             State = GameState.ENDED;
             Handles.OnGameOver(Engine.GetWinners().ConvertAll<GameAgent>(it => GetAgent(it)));
+            SaveStatistics(true);
         }
         else
         {
@@ -76,6 +76,8 @@ public partial class Game
             Handles.OnNextPlayerTurn(CurrentAgent);
             Defer(() => CurrentAgent.OnTurn(Engine));
         }
+        // if(Engine.Turn > 4)
+        //     SaveStatistics(true);
     }
     public GameAgent GetAgent(GameEngine.Player p)
     {
@@ -96,6 +98,7 @@ public partial class Game
         Assert(agentGenerators.Count > 1);
         int players = agentGenerators.Count;
         Game game = new Game(handles);
+        game._seed = seed;
         game._rng = new RNG(new RNG(seed).NextULong() + seed);
         game.Mode = GameMode.LOCAL;
         game.State = GameState.AWAITING_MOVE;
