@@ -81,6 +81,15 @@ public partial class Game
         public GameInfo(Game game, bool IncludeActions)
         {
             Assert(game.Engine.Turn > 0);
+            
+            game.Agents.ForEach
+            (
+                it =>
+                {
+                    PlayerIDsByName.Add(it.Name, it.Player.ID);
+                    PlayerNamesByID.Add(it.Player.ID, it.Name);
+                }
+            );
 
             Seed = game._seed;
             Date = DateTime.Now;
@@ -95,14 +104,6 @@ public partial class Game
             PlayerDescriptors = game.Agents.ConvertAll<string>(it => it.ToString()).ToArray();
             PlayerTypes = game.Agents.ConvertAll<PlayerType>(it => it.Type).ToArray();
             PlayerTypeNames = PlayerTypes.ToList().ConvertAll<string>(it => it.ToString()).ToArray();
-            game.Agents.ForEach
-            (
-                it =>
-                {
-                    PlayerIDsByName.Add(it.Name, it.Player.ID);
-                    PlayerNamesByID.Add(it.Player.ID, it.Name);
-                }
-            );
 
             Statistics = game.Engine.GatherStatistics(IncludeActions);
         }

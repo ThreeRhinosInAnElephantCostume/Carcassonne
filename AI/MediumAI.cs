@@ -18,8 +18,16 @@ namespace AI
 {
     public class MediumAI : AIPlayer
     {
+        Queue<GameEngine.Action> _precomputed_actions = new Queue<GameEngine.Action>();
         public override void MakeMove(GameEngine engine)
         {
+            if(_precomputed_actions.Count > 0)
+            {
+                var act = _precomputed_actions.Dequeue();
+                engine.ExecuteAction(act);
+                return;
+            }
+            var enginecopy = engine.Clone();
             if (engine.CurrentState == State.PLACE_TILE)
             {
                 /* MID BOT:
@@ -64,13 +72,15 @@ namespace AI
                         }
                     }
                 }
-                engine.PlaceCurrentTile(selected_tile_placement.pos, selected_tile_placement.rot);
-                if (engine.CurrentState == State.PLACE_PAWN)
+                enginecopy.PlaceCurrentTile(selected_tile_placement.pos, selected_tile_placement.rot);
+                engine.ExecuteAction(enginecopy.LastAction);
+                if (enginecopy.CurrentState == State.PLACE_PAWN)
                 {
                     if (selected_meeple_placement.indx == -1)
-                        engine.SkipPlacingPawn();
+                        enginecopy.SkipPlacingPawn();
                     else
-                        engine.PlacePawn(selected_meeple_placement.isattribute, selected_meeple_placement.indx);
+                        enginecopy.PlacePawn(selected_meeple_placement.isattribute, selected_meeple_placement.indx);
+                    _precomputed_actions.Enqueue(enginecopy.History.Last());
                 }
             }
             else
