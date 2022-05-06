@@ -134,9 +134,9 @@ public partial class Game
                 ("Potential Points", p => Statistics.FinalTurn.PlayerData[p].points.Potential),
 
                 ("From Cities", p => Statistics.FinalTurn.PlayerData[p].points.FromCities),
-                ("From Roads", p => Statistics.FinalTurn.PlayerData[p].points.FromCities),
-                ("From Monasteries", p => Statistics.FinalTurn.PlayerData[p].points.FromCities),
-                ("From Farms", p => Statistics.FinalTurn.PlayerData[p].points.FromCities),
+                ("From Roads", p => Statistics.FinalTurn.PlayerData[p].points.FromRoads),
+                ("From Monasteries", p => Statistics.FinalTurn.PlayerData[p].points.FromMonasteries),
+                ("From Farms", p => Statistics.FinalTurn.PlayerData[p].points.FromFarms),
 
                 ("Total Placed Meeples", p => Statistics.FinalTurn.PlayerData[p].TotalPlacedMeeples),
                 ("Total Placed Knights", p => Statistics.FinalTurn.PlayerData[p].TotalPlacedKnights),

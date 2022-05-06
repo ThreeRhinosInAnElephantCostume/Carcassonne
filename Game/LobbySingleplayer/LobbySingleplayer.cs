@@ -33,11 +33,8 @@ public class LobbySingleplayer : Control
     }
 
     readonly List<TextureRect> _bots = new List<TextureRect>();
-
-
-    int _black, _blue, _yellow, _green;
-
-    string _namePlayer = "Player";
+    readonly int _black, _blue, _yellow, _green;
+    readonly string _namePlayer = "Player";
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -98,7 +95,10 @@ public class LobbySingleplayer : Control
             ChooseBot(greentheme, _botGreen, generators);
 
         var ui = (InGameUI)Globals.Scenes.InGameUIPacked.Instance();
-        var game = Game.NewLocalGame(ui, generators, "BaseGame/BaseTileset.json", 666);
+        ulong seed = new RNG().NextULong(); // TODO: find a better way to do this
+        //seed = 666; // <--- UNCOMMENT FOR TESTING
+        GD.Print("Seed is: ", seed);
+        var game = Game.NewLocalGame(ui, generators, "BaseGame/BaseTileset.json", seed);
         ui.SetGame(game);
         GetTree().Root.AddChild(ui);
         DestroyNode(this);
