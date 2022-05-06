@@ -50,6 +50,21 @@ public class CapturableProp : SpatialProp, IProp
         }
     }
 
+    readonly List<Meeple> AttachedHandles = new List<Meeple>();
+    void OnMeepleRemoved()
+    {
+        DetachHandles();
+        (this as IProp).UpdateProp();
+    }
+    void AttachHandle(Meeple meep)
+    {
+        meep.OnRemove += OnMeepleRemoved;
+    }
+    void DetachHandles()
+    {
+        AttachedHandles.ForEach(it => it.OnRemove -= OnMeepleRemoved);
+    }
+
     void IProp.UpdateTheme()
     {
         var prop = (IProp)this;
@@ -72,6 +87,11 @@ public class CapturableProp : SpatialProp, IProp
             _ => data.container.Occupiers.Any(it => it is Meeple meep &&
                  meep.CurrentRole == (Meeple.Role)RequiredMeeple)
         };
+        if (RequiredMeeple != 0 && showprop)
+        {
+            DetachHandles();
+            data.container.Occupiers.FindAll(it => it is Meeple meep).ForEach(it => AttachHandle(it as Meeple));
+        }
         if (!showprop)
             goto end;
         int nowners;
@@ -117,6 +137,10 @@ end:;
             _dirty = false;
             (this as IProp).UpdateProp();
         }
+    }
+    ~CapturableProp()
+    {
+        DetachHandles();
     }
 
 }
