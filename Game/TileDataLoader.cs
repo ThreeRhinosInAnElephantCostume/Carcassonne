@@ -28,6 +28,7 @@ public static class TileDataLoader
     static readonly Dictionary<string, TilePrototype> _prototypeCache = new Dictionary<string, TilePrototype>();
     static readonly Dictionary<string, EditableTileset> _tilesetCache = new Dictionary<string, EditableTileset>();
     static readonly Dictionary<string, List<TileModel>> _modelsByPrototypeCache = new Dictionary<string, List<TileModel>>();
+    static readonly List<string> _modPathsBeingLoaded = new List<string>();
     public static List<TileModel> LoadPrototypeModels(string protpath, bool cached = true)
     {
         lock (_modelsByPrototypeCache)
@@ -58,11 +59,29 @@ public static class TileDataLoader
                 continue;
             }
             mod.Config = conf.Configs[protpath];
+            while (true)
+            {
+                lock (_modPathsBeingLoaded)
+                {
+                    if (_modPathsBeingLoaded.Contains(modpath))
+                        continue;
+                    else
+                    {
+                        _modPathsBeingLoaded.Add(modpath);
+                        break;
+                    }
+                }
+            }
             var loader = ResourceLoader.LoadInteractive(modpath);
             loader.Wait();
 
             mod.Scene = (PackedScene)loader.GetResource();
             models.Add(mod);
+
+            lock (_modPathsBeingLoaded)
+            {
+                _modPathsBeingLoaded.Remove(modpath);
+            }
         }
         if (models.Count == 0)
         {

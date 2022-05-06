@@ -47,6 +47,7 @@ public class MainMenuLoad : Control
         string path;
         while (_remainingPrototypePaths.TryDequeue(out path))
         {
+            GD.Print(Thread.CurrentThread.ManagedThreadId, ": " + path);
             TilePrototype prot = TileDataLoader.LoadTilePrototype(path);
             Assert(prot != null, $"Could not deserialize {path}");
             var models = TileDataLoader.LoadPrototypeModels(path);
@@ -86,6 +87,7 @@ public class MainMenuLoad : Control
         _step = LoadSteps.LOADING_TILES;
         _remainingPrototypePaths = new ConcurrentQueue<string>(_prototypePaths);
         int nthreads = Max(1, System.Environment.ProcessorCount - 1);
+        nthreads = 1;
         var events = RepeatN<WaitHandle>(nthreads, i => new AutoResetEvent(false));
         RepeatN(nthreads, i => ThreadPool.QueueUserWorkItem(TileLoader, events[i]));
         AutoResetEvent.WaitAll(events.ToArray());
