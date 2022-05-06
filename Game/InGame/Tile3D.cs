@@ -31,12 +31,14 @@ public class Tile3D : Spatial
     readonly List<MeeplePlacement> _placements = new List<MeeplePlacement>();
     public Vector3 CalculateAttributePlacementPosition(int indx)
     {
+        Assert(_groupAveragePosition.Count > 0, $"_groupAveragePosition was not calculated for tile {_model.Scene.ResourcePath}");
         List<string> associated = new List<string>();
         return _groupAveragePosition[_model.Config.AttributeAssociations.Keys.ToList().Find(it =>
             _model.Config.AttributeAssociations[it] == indx)];
     }
     public Vector3 CalculateNodePlacementPosition(int indx)
     {
+        Assert(_groupAveragePosition.Count > 0, $"_groupAveragePosition was not calculated for tile {_model.Scene.ResourcePath}");
         List<string> associated = new List<string>();
         return _groupAveragePosition[_model.Config.NodeAssociations.Keys.ToList().Find(it =>
             _model.Config.NodeAssociations[it] == indx)];
@@ -83,6 +85,7 @@ public class Tile3D : Spatial
 
         var rootnode = _model.Config.AttributeAssociations.Keys.ToList().Find(it =>
             _model.Config.AttributeAssociations[it] == indx);
+        Assert(rootnode != null);
         Defer(() => AddOccupierPlacement(agent, rootnode));
     }
     public void AddNodePlacement(Game.GameAgent agent, int indx)
@@ -99,6 +102,7 @@ public class Tile3D : Spatial
         // _placements.Add(meep);
         var rootnode = _model.Config.NodeAssociations.Keys.ToList().Find(it =>
             _model.Config.NodeAssociations[it] == indx);
+        Assert(rootnode != null);
         Defer(() => AddOccupierPlacement(agent, rootnode));
     }
     void AddOccupierPlacement(Game.GameAgent agent, string rootnode)
@@ -213,6 +217,7 @@ public class Tile3D : Spatial
         Assert(models.Count > 0);
         _model = models[(int)(((uint)rng.NextLong()) % models.Count)];
         _root = (Spatial)_model.Scene.Instance();
+        Assert(_model.Config.NodeAssociations.Count > 0, "Possible uninitialized node association");
         this.AddChild(_root);
 
         _root.RotateY((float)(_model.Config.Rotation * PI / 2));

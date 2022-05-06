@@ -1,1 +1,17 @@
-{"Path":"","Configs":{"res://Data/Tiles/BaseGame/RoadStraight.json":{"Rotation":0,"NodeAssociations":{},"AttributeAssociations":{},"Unassociated":[]}}}
+{
+    "Path": "",
+    "Configs": {
+        "res://Data/Tiles/BaseGame/RoadStraight.json": {
+            "Rotation": 0,
+            "NodeAssociations": {
+                "ROAD": 1,
+                "GRASS_0": 2,
+                "GRASS_1": 0
+            },
+            "AttributeAssociations": {},
+            "Unassociated": [
+                "BASE"
+            ]
+        }
+    }
+}
