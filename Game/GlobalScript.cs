@@ -120,6 +120,7 @@ public class GlobalScript : Node
 
         if (!FileExists(Constants.DataPaths.DEFAULT_PLAYER_THEME_PATH))
         {
+            GD.PrintErr(Constants.DataPaths.DEFAULT_PLAYER_THEME_PATH + " not found");
             var theme = new PersonalTheme();
             theme.PrimaryColor = new Color(1f, 0f, 0f);
             theme.SecondaryColor = new Color(0f, 1f, 0f);
