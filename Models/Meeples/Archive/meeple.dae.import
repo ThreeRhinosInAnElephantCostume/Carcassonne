@@ -2,12 +2,12 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.import/meeple.dae-bf4823f0e84614b9c105d9bad7dfc941.scn"
+path="res://.import/meeple.dae-148975249fa462ede9c3f3e94e278799.scn"
 
 [deps]
 
-source_file="res://Models/Meeples/meeple.dae"
-dest_files=[ "res://.import/meeple.dae-bf4823f0e84614b9c105d9bad7dfc941.scn" ]
+source_file="res://Models/Meeples/Archive/meeple.dae"
+dest_files=[ "res://.import/meeple.dae-148975249fa462ede9c3f3e94e278799.scn" ]
 
 [params]
 
@@ -20,6 +20,7 @@ nodes/use_legacy_names=false
 materials/location=1
 materials/storage=1
 materials/keep_on_reimport=true
+meshes/octahedral_compression=true
 meshes/compress=true
 meshes/ensure_tangents=true
 meshes/storage=0

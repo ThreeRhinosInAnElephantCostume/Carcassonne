@@ -1,7 +1,8 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://Game/InGame/MeeplePlacement.cs" type="Script" id=1]
-[ext_resource path="res://Models/Meeples/meeple.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Models/Meeples/Archive/meeple.tscn" type="PackedScene" id=2]
+
 
 [node name="MeeplePlacement" type="Spatial"]
 script = ExtResource( 1 )

@@ -1,11 +1,12 @@
 [gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Props/MeshProp.cs" type="Script" id=1]
-[ext_resource path="res://Models/Meeples/meeple.dae" type="PackedScene" id=2]
+[ext_resource path="res://Models/Meeples/Archive/meeple.dae" type="PackedScene" id=2]
 [ext_resource path="res://Props/SpatialProp.cs" type="Script" id=3]
 [ext_resource path="res://Props/BannerProp.cs" type="Script" id=4]
 [ext_resource path="res://Icons/Themeable/PlayerIcons/DefaultIcon.png" type="Texture" id=5]
 [ext_resource path="res://Props/PropBanner.gdshader" type="Shader" id=6]
+
 
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 6 )
