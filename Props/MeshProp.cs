@@ -105,7 +105,10 @@ public class MeshProp : MeshInstance, IProp
             }
             if (n == 0)
             {
-                mat = ResourceLoader.Load<SpatialMaterial>(mat.ResourcePath);
+                if (mat.ResourcePath != "" && mat.ResourcePath != "res://")
+                    mat = ResourceLoader.Load<SpatialMaterial>(mat.ResourcePath);
+                else
+                    mat.AlbedoColor = new Color(1, 1, 1, 0);
             }
             else
             {
