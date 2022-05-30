@@ -40,6 +40,7 @@ public class ConnectionIndicator : Spatial
         }
         var mat = (SpatialMaterial)_mainMesh.GetActiveMaterial(0);
         var col = GetNodeTypeColor(Type);
+        mat.ResourceLocalToScene = true;
         mat.AlbedoColor = col;
         _mainMesh.Visible = true;
         mat.EmissionEnabled = true;

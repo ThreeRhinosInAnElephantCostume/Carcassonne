@@ -124,6 +124,7 @@ public class TileMap3D : Spatial
                     continue;
                 }
                 var pot = Globals.Scenes.PotentialTilePacked.Instance<PotentialTile3D>();
+                pot.game = _game;
                 pot.PTile = NextTile;
                 pot.PotentialPosition = it.pos;
                 pot.AddRotation(it.rot);

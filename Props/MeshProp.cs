@@ -119,7 +119,7 @@ public class MeshProp : MeshInstance, IProp
         var ret = new List<Action<PersonalTheme>>();
         RepeatN(this.GetSurfaceMaterialCount(), i =>
         {
-            var mat = this.GetSurfaceMaterial(i);
+            var mat = this.Mesh.SurfaceGetMaterial(i);
             if (mat is SpatialMaterial)
             {
                 var ss = SurfaceSettings[i];

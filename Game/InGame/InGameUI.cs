@@ -18,6 +18,7 @@ using static Utils;
 
 public class InGameUI : Control, Game.IGameHandles
 {
+    const string SKIP_MEEPLE_PLACEMENT_ACTION = "ui_skip_meeple";
     Game _game = null;
     TileMap3D _map;
     GameEngine _engine => _game.Engine;
@@ -30,6 +31,8 @@ public class InGameUI : Control, Game.IGameHandles
 
     HSlider _musicVolumeSlider;
     HSlider _effectsVolumeSlider;
+
+    TileEdgeIndicators _previewEdgeIndicator;
 
     AudioPlayer _gameAudio;
     readonly List<PlayerInfoContainer> _playerInfoContainers = new List<PlayerInfoContainer>();
@@ -73,15 +76,35 @@ public class InGameUI : Control, Game.IGameHandles
     {
         if (_map == null)
             return;
-        if (_map.NextTile != null && _map.NextTile.GetParent() == null)
+        if (_map.NextTile == null)
+        {
+            _previewEdgeIndicator.LoseParent();
+        }
+        else if (_map.NextTile.GetParent() == null)
         {
             _previewRoot.AddChild(_map.NextTile);
+            if (_previewEdgeIndicator.GetParent() != _map.NextTile)
+            {
+                _map.NextTile.StealChild(_previewEdgeIndicator);
+            }
+            _previewEdgeIndicator.SetUpFromTile(_map.NextTile);
+            _previewEdgeIndicator.Translation = new Vector3(0, Constants.TILE_HEIGHT, 0);
+            _previewEdgeIndicator.Visible = true;
+        }
+        else if (_map.NextTile.GetParent() != _previewRoot)
+        {
+            _previewEdgeIndicator.Visible = false;
         }
         _previewRoot.Rotation = new Vector3(-_mainCamera.Rotation.x, _mainCamera.Rotation.y, _mainCamera.Rotation.z);
+        if (!_skipPlacementButton.Disabled && Input.IsActionJustPressed(SKIP_MEEPLE_PLACEMENT_ACTION))
+            OnSkipMepleButtonPressed();
     }
 
     public override void _Ready()
     {
+        _previewEdgeIndicator = Globals.Scenes.TileEdgeIndicatorsPacked.Instance<TileEdgeIndicators>();
+        _previewEdgeIndicator.Name = "PEI";
+
         Assert(_game != null, "_game is null. Remember to call SetGame before initialization!");
         _inGame3D = GetNode<Spatial>("InGame3D");
 
@@ -96,7 +119,6 @@ public class InGameUI : Control, Game.IGameHandles
         _inGame3D.AddChild(_map);
 
         _skipPlacementButton = this.GetNodeSafe<TextureButton>("CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/HBoxContainer2/SkipMepleButton");
-
 
         RepeatN(_engine.Players.Count, i =>
         {
