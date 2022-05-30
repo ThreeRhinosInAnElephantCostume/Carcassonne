@@ -1,0 +1,20 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/outline.obj-e9cdbcb11d4c9d8a2e497d139f58fc6c.mesh"
+
+[deps]
+
+files=[ "res://.import/outline.obj-e9cdbcb11d4c9d8a2e497d139f58fc6c.mesh" ]
+
+source_file="res://Game/InGame/outline.obj"
+dest_files=[ "res://.import/outline.obj-e9cdbcb11d4c9d8a2e497d139f58fc6c.mesh", "res://.import/outline.obj-e9cdbcb11d4c9d8a2e497d139f58fc6c.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+octahedral_compression=true
+optimize_mesh_flags=4286
