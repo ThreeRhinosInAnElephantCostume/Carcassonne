@@ -15,6 +15,13 @@ using static Carcassonne.GameEngine;
 using static Utils;
 public class PotentialTile3D : Spatial
 {
+
+    const float EMISSION_CHANGE_FACTOR = 0.8f;
+    const float EMISSION_CHANGE_SPEED = 0.004f;
+    const float EMISSION_MIN = 0.8f;
+    const float EMISSION_MAX = 1.5f;
+    readonly EmissionCurve _emissionCurve =
+        new Utils.EmissionCurve(EMISSION_CHANGE_FACTOR, EMISSION_CHANGE_SPEED, EMISSION_MIN, EMISSION_MAX);
     const string PLACE_ACTION = "map_tile_place";
     const string ROTATE_ACTION = "map_tile_rotate";
     static readonly string[] ACTIONS = new string[] { PLACE_ACTION, ROTATE_ACTION }; public Action<Vector2I, int> OnPlaceHandle;
@@ -132,7 +139,20 @@ public class PotentialTile3D : Spatial
             rot.Visible = false;
         }
     }
-
+    public override void _Process(float delta)
+    {
+        float em = _emissionCurve.Next(delta);
+        foreach (var it in _rotationIndicators)
+        {
+            if (it is MeshInstance mesh)
+            {
+                if (mesh.GetActiveMaterial(0) is SpatialMaterial smat)
+                {
+                    smat.EmissionEnergy = em;
+                }
+            }
+        }
+    }
     private void _OnPotentialTileTreeExiting()
     {
         _gameAudio.PlaySound("TilePlacedSound");
