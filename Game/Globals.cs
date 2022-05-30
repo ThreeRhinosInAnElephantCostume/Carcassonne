@@ -26,16 +26,28 @@ public static partial class Globals
     {
         [LoadFrom("res://Game/InGame/InGameUI.tscn")]
         public static PackedScene InGameUIPacked { get; set; }
+
         [LoadFrom("res://Game/MainMenu/MainMenu.tscn")]
         public static PackedScene MainMenuPacked { get; set; }
+
         [LoadFrom("res://Game/SingleMulti/SingleMulti.tscn")]
         public static PackedScene SingleMultiSelectionPacked { get; set; }
+
         [LoadFrom("res://Game/LobbySingleplayer/LobbySingleplayer.tscn")]
         public static PackedScene LobbySingleplayerPacked { get; set; }
-        [LoadFrom("res://Game/InGame/PotentialTile.tscn")]
+
+        [LoadFrom("res://Game/InGame/Tile/Edge/ConnectionIndicator.tscn")]
+        public static PackedScene ConnectionIndicatorPacked { get; set; }
+
+        [LoadFrom("res://Game/InGame/Tile/Edge/TileEdgeIndicators.tscn")]
+        public static PackedScene TileEdgeIndicatorsPacked { get; set; }
+
+        [LoadFrom("res://Game/InGame/Tile/PotentialTile.tscn")]
         public static PackedScene PotentialTilePacked { get; set; }
+
         [LoadFrom("res://Game/InGame/PotentialMeeplePlacement.tscn")]
         public static PackedScene PotentialMeeplePlacementPacked { get; set; }
+
         [LoadFrom("res://Game/InGame/PlayerInfoContainer.tscn")]
         public static PackedScene PlayerInfoContainerPacked { get; set; }
     }
