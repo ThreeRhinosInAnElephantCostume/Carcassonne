@@ -166,7 +166,7 @@ public class Tile3D : Spatial
             });
         }
 
-        // Note: Change if meshes get proper transforms. TAGS: translations, transforms, meshinstances
+        // TODO: Change when meshes get proper transforms. TAGS: translations, transforms, meshinstances
         Cache(_model.Config.NodeAssociations);
         Cache(_model.Config.AttributeAssociations);
     }

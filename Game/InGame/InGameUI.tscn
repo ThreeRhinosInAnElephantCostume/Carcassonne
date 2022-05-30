@@ -2,7 +2,7 @@
 
 [ext_resource path="res://Game/InGame/InGame3D.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Game/InGame/InGameUI.cs" type="Script" id=2]
-[ext_resource path="res://Game/InGame/BaseEnvironment.tres" type="Environment" id=3]
+[ext_resource path="res://default_env.tres" type="Environment" id=3]
 [ext_resource path="res://Audio/Img/Icons/SpeakerOn.png" type="Texture" id=4]
 [ext_resource path="res://Audio/Img/Icons/SpeakerOff.png" type="Texture" id=5]
 [ext_resource path="res://GUI/img/exit-n.png" type="Texture" id=6]
@@ -32,9 +32,6 @@ mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource( 2 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -255,7 +252,6 @@ stretch = true
 
 [node name="Viewport" type="Viewport" parent="CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/AspectRatioContainer/ViewportContainer"]
 size = Vector2( 347, 347 )
-own_world = true
 world = SubResource( 1 )
 transparent_bg = true
 handle_input_locally = false

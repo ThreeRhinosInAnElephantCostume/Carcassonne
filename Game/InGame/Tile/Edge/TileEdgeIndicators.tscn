@@ -1,0 +1,59 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Game/InGame/Tile/Edge/outline.obj" type="ArrayMesh" id=1]
+[ext_resource path="res://Game/InGame/Tile/Edge/ConnectionIndicator.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Game/InGame/Tile/Edge/TileEdgeIndicators.cs" type="Script" id=3]
+
+[sub_resource type="SpatialMaterial" id=1]
+emission_enabled = true
+emission = Color( 1, 1, 1, 1 )
+emission_energy = 1.0
+emission_operator = 0
+emission_on_uv2 = false
+
+[node name="TileEdgeIndicators" type="Spatial"]
+script = ExtResource( 3 )
+
+[node name="Outline" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, -1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0 )
+mesh = ExtResource( 1 )
+material/0 = SubResource( 1 )
+
+[node name="ConnectionIndicators" type="Spatial" parent="."]
+transform = Transform( 0.973689, 0, 0, 0, 1, 0, 0, 0, 0.976545, 0, 0, 0 )
+
+[node name="0" parent="ConnectionIndicators" instance=ExtResource( 2 )]
+transform = Transform( 0.99, 0, 0, 0, 1, 0, 0, 0, 1, 0.33, 0, 0.5 )
+
+[node name="1" parent="ConnectionIndicators" instance=ExtResource( 2 )]
+transform = Transform( 0.99, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.5 )
+
+[node name="2" parent="ConnectionIndicators" instance=ExtResource( 2 )]
+transform = Transform( 0.99, 0, 0, 0, 1, 0, 0, 0, 1, -0.33, 0, 0.5 )
+
+[node name="3" parent="ConnectionIndicators" instance=ExtResource( 2 )]
+transform = Transform( -4.32743e-08, 0, -1, 0, 1, 0, 0.99, 0, -4.37114e-08, -0.500082, 0, 0.330121 )
+
+[node name="4" parent="ConnectionIndicators" instance=ExtResource( 2 )]
+transform = Transform( -4.32743e-08, 0, -1, 0, 1, 0, 0.99, 0, -4.37114e-08, -0.499903, 0, 0.000120968 )
+
+[node name="5" parent="ConnectionIndicators" instance=ExtResource( 2 )]
+transform = Transform( -4.32743e-08, 0, -1, 0, 1, 0, 0.99, 0, -4.37114e-08, -0.499725, 0, -0.329879 )
+
+[node name="6" parent="ConnectionIndicators" instance=ExtResource( 2 )]
+transform = Transform( -0.99, 0, -1.50996e-07, 0, 1, 0, 1.49486e-07, 0, -1, 0.33, 0, -0.5 )
+
+[node name="7" parent="ConnectionIndicators" instance=ExtResource( 2 )]
+transform = Transform( -0.99, 0, -1.50996e-07, 0, 1, 0, 1.49486e-07, 0, -1, 0, 0, -0.5 )
+
+[node name="8" parent="ConnectionIndicators" instance=ExtResource( 2 )]
+transform = Transform( -0.99, 0, -1.50996e-07, 0, 1, 0, 1.49486e-07, 0, -1, -0.33, 0, -0.5 )
+
+[node name="9" parent="ConnectionIndicators" instance=ExtResource( 2 )]
+transform = Transform( -4.32743e-08, -4.57745e-12, 1, -0.000103673, 1, 0, -0.99, -0.00010472, -4.37114e-08, 0.5, 0, 0.330121 )
+
+[node name="10" parent="ConnectionIndicators" instance=ExtResource( 2 )]
+transform = Transform( -4.32743e-08, -4.57745e-12, 1, -0.000103673, 1, 0, -0.99, -0.00010472, -4.37114e-08, 0.5, 0, 0.000120968 )
+
+[node name="11" parent="ConnectionIndicators" instance=ExtResource( 2 )]
+transform = Transform( -4.32743e-08, -4.57745e-12, 1, -0.000103673, 1, 0, -0.99, -0.00010472, -4.37114e-08, 0.5, 0, -0.329879 )
