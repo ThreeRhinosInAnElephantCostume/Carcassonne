@@ -90,6 +90,7 @@ __meta__ = {
 }
 
 [node name="AudioMenu" type="Control" parent="CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/HBoxContainer"]
+visible = false
 margin_left = 215.0
 margin_right = 215.0
 margin_bottom = 40.0
@@ -100,7 +101,6 @@ __meta__ = {
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/HBoxContainer/AudioMenu"]
-visible = false
 margin_left = 4.0
 grow_horizontal = 0
 size_flags_horizontal = 3
@@ -178,23 +178,23 @@ margin_bottom = 40.0
 size_flags_vertical = 3
 alignment = 2
 
-[node name="PlayNextSongButton" type="TextureButton" parent="CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/HBoxContainer/HBoxContainer2"]
-margin_right = 40.0
-margin_bottom = 40.0
-texture_normal = ExtResource( 21 )
-texture_pressed = ExtResource( 7 )
-texture_hover = ExtResource( 25 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="AudioMenuButton" type="TextureButton" parent="CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/HBoxContainer/HBoxContainer2"]
-margin_left = 44.0
-margin_right = 84.0
+margin_right = 40.0
 margin_bottom = 40.0
 texture_normal = ExtResource( 22 )
 texture_pressed = ExtResource( 8 )
 texture_hover = ExtResource( 23 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PlayNextSongButton" type="TextureButton" parent="CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/HBoxContainer/HBoxContainer2"]
+margin_left = 44.0
+margin_right = 84.0
+margin_bottom = 40.0
+texture_normal = ExtResource( 21 )
+texture_pressed = ExtResource( 7 )
+texture_hover = ExtResource( 25 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -277,7 +277,7 @@ size = 1.61217
 [connection signal="value_changed" from="CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/HBoxContainer/AudioMenu/VBoxContainer/HBoxContainer/SoundVolumeSlider" to="." method="OnSoundVolumeSliderValueChanged"]
 [connection signal="toggled" from="CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/HBoxContainer/AudioMenu/VBoxContainer/HBoxContainer2/MusicToggleButton" to="." method="OnMusicToggleButtonToggled"]
 [connection signal="value_changed" from="CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/HBoxContainer/AudioMenu/VBoxContainer/HBoxContainer2/MusicVolumeSlider" to="." method="OnMusicVolumeSliderValueChanged"]
-[connection signal="pressed" from="CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/HBoxContainer/HBoxContainer2/PlayNextSongButton" to="." method="OnPlayNextSongButtonPressed"]
 [connection signal="pressed" from="CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/HBoxContainer/HBoxContainer2/AudioMenuButton" to="." method="OnAudioMenuButtonPressed"]
+[connection signal="pressed" from="CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/HBoxContainer/HBoxContainer2/PlayNextSongButton" to="." method="OnPlayNextSongButtonPressed"]
 [connection signal="pressed" from="CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/HBoxContainer/HBoxContainer2/QuitButton" to="." method="OnQuitButtonPressed"]
 [connection signal="pressed" from="CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/HBoxContainer2/SkipMepleButton" to="." method="OnSkipMepleButtonPressed"]
