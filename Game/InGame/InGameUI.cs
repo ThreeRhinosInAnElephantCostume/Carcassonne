@@ -169,12 +169,12 @@ public class InGameUI : Control, Game.IGameHandles
         Globals.Settings.Audio.MusicVolume.Value = value / 100.0f;
     }
 
-    public bool AudioMenuToggle()
+    public void AudioMenuToggle()
     {
         Control audioMenu = GetNode<Control>("CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/HBoxContainer/AudioMenu");
         if (audioMenu.Visible && Globals.Settings.Audio.Modified)
             GlobalScript.GS.SaveSettingsAsync(true);
-        return (audioMenu.Visible = !audioMenu.Visible);
+        audioMenu.Visible = !audioMenu.Visible;
     }
 
     void OnAudioMenuButtonPressed()

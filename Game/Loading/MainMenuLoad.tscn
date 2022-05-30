@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Game/Loading/MainMenuLoad.cs" type="Script" id=1]
 [ext_resource path="res://GUI/DarkTheme/Dark.theme" type="Theme" id=2]
-[ext_resource path="res://Game/Loading/splash-screen.webm" type="VideoStream" id=3]
+[ext_resource path="res://GUI/img/carcassonne-painting.png" type="Texture" id=3]
+[ext_resource path="res://GUI/img/pexels-henry-&-co-1939485.jpg" type="Texture" id=4]
 
 [node name="MainMenuLoad" type="Control"]
 anchor_right = 1.0
@@ -11,18 +12,17 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource( 2 )
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="VideoPlayer" type="VideoPlayer" parent="."]
+[node name="back" type="TextureRect" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+texture = ExtResource( 4 )
+
+[node name="splash" type="TextureRect" parent="."]
 margin_right = 1280.0
 margin_bottom = 720.0
-stream = ExtResource( 3 )
-autoplay = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
+texture = ExtResource( 3 )
+stretch_mode = 6
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 anchor_right = 1.0
@@ -30,20 +30,18 @@ anchor_bottom = 1.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 alignment = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer"]
 margin_right = 1280.0
-margin_bottom = 111.0
+margin_bottom = 541.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+size_flags_stretch_ratio = 33.04
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer"]
-margin_top = 114.0
+margin_top = 544.0
 margin_right = 1280.0
-margin_bottom = 251.0
+margin_bottom = 681.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 alignment = 1
@@ -90,9 +88,9 @@ text = "LOADING XXXXX"
 align = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
-margin_top = 254.0
+margin_top = 684.0
 margin_right = 1280.0
 margin_bottom = 720.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-size_flags_stretch_ratio = 4.16
+size_flags_stretch_ratio = 2.19

@@ -25,6 +25,7 @@ public class MainMenuLoad : Control
 {
     public enum LoadSteps
     {
+        AWAITING_INPUT = -2,
         COMPLETE = -1,
         NONE = 0,
         LOADING_RESOURCES = 35,
@@ -94,6 +95,7 @@ public class MainMenuLoad : Control
         Assert(_remainingPrototypePaths.Count == 0);
         while (_lastProcessedPaths.Count > 0)
             Thread.Sleep(1);
+        Thread.Sleep(100);
         _step = LoadSteps.COMPLETE;
     }
     public override void _Ready()
@@ -104,8 +106,11 @@ public class MainMenuLoad : Control
         _progressBar = GetNode<ProgressBar>("VBoxContainer/VBoxContainer/HBoxContainer/LoadingProgressBar");
         ThreadPool.QueueUserWorkItem(LoadControlThread);
     }
+    bool _skipWait = false;
     public override void _Process(float delta)
     {
+        if (Input.IsKeyPressed((int)KeyList.Enter) || Input.IsKeyPressed((int)KeyList.Escape))
+            _skipWait = true;
         float stepfactor = (((float)_step - (float)EnumPrev(_step)) / (float)LoadSteps.END);
         float progress = SLIDER_STEP * ((float)EnumPrev(_step));
         switch (_step)
@@ -113,6 +118,8 @@ public class MainMenuLoad : Control
             case LoadSteps.NONE:
                 {
                     _loadingLabel.Text = "Initializing...";
+                    _gameAudio.StopMainMenuMusic();
+                    _gameAudio.PlayIntroMusic(0);
                     break;
                 }
             case LoadSteps.LOADING_RESOURCES:
@@ -140,15 +147,28 @@ public class MainMenuLoad : Control
                 }
             case LoadSteps.COMPLETE:
                 {
-                    var scene = Globals.Scenes.MainMenuPacked.Instance();
-                    GetTree().Root.AddChild(scene);
-                    DestroyNode(this);
-                    return;
+                    _gameAudio.StopIntroMusic();
+                    _gameAudio.PlayMainMenuMusic(0);
+                    _loadingLabel.Text = "PRESS <ENTER> TO CONTINUE";
+                    _progressBar.Visible = false;
+                    _step = LoadSteps.AWAITING_INPUT;
+                    break;
+                }
+            case LoadSteps.AWAITING_INPUT:
+                {
+                    if (_skipWait || Input.IsActionJustPressed("ui_accept") || Input.IsActionPressed("ui_accept") ||
+                        Input.IsKeyPressed((int)KeyList.Tab) || Input.IsMouseButtonPressed((int)ButtonList.Left) ||
+                        Input.IsMouseButtonPressed((int)ButtonList.Right) || Input.IsMouseButtonPressed((int)ButtonList.Middle))
+                    {
+                        var scene = Globals.Scenes.MainMenuPacked.Instance();
+                        GetTree().Root.AddChild(scene);
+                        DestroyNode(this);
+                        return;
+                    }
+                    break;
                 }
         }
 
-        _gameAudio.StopMainMenuMusic();
-        _gameAudio.PlayIntroMusic(0);
 
         _progressBar.Value = (_progressBar.MaxValue * progress);
         Progress = progress;
