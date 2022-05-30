@@ -7,6 +7,7 @@
 
 [sub_resource type="SpatialMaterial" id=3]
 resource_local_to_scene = true
+flags_no_depth_test = true
 flags_do_not_receive_shadows = true
 emission_enabled = true
 emission = Color( 1, 1, 1, 1 )
@@ -16,6 +17,9 @@ emission_on_uv2 = false
 
 [sub_resource type="SpatialMaterial" id=4]
 resource_local_to_scene = true
+render_priority = 1
+flags_unshaded = true
+flags_no_depth_test = true
 albedo_color = Color( 1, 0, 0, 2 )
 
 [node name="ConnectionIndicator" type="Spatial"]
@@ -31,4 +35,4 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0193123, -0.0324998 )
 mesh = ExtResource( 4 )
 material/0 = SubResource( 4 )
 script = ExtResource( 2 )
-"Surface #0" = 1
+"Surface #0" = 0

@@ -19,6 +19,7 @@ radial_segments = 128
 rings = 2
 
 [sub_resource type="SpatialMaterial" id=5]
+resource_local_to_scene = true
 flags_do_not_receive_shadows = true
 emission_enabled = true
 emission = Color( 1, 1, 1, 1 )

@@ -17,6 +17,13 @@ using static Utils;
 
 public class TileEdgeIndicators : Spatial
 {
+
+    const float EMISSION_CHANGE_FACTOR = 0.8f;
+    const float EMISSION_CHANGE_SPEED = 0.004f;
+    const float EMISSION_MIN = 0.8f;
+    const float EMISSION_MAX = 2f;
+    readonly EmissionCurve _emissionCurve =
+        new Utils.EmissionCurve(EMISSION_CHANGE_FACTOR, EMISSION_CHANGE_SPEED, EMISSION_MIN, EMISSION_MAX);
     MeshInstance _outline;
     Spatial _connectionIndicatorRoot;
     readonly List<ConnectionIndicator> _indicators = new List<ConnectionIndicator>();
@@ -112,5 +119,9 @@ public class TileEdgeIndicators : Spatial
             _indicators.Add(ind);
         }
     }
-
+    public override void _Process(float delta)
+    {
+        var mat = (SpatialMaterial)_outline.GetActiveMaterial(0);
+        mat.EmissionEnergy = _emissionCurve.Next(delta);
+    }
 }
