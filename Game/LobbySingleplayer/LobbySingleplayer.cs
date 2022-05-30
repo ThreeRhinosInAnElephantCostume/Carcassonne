@@ -96,7 +96,7 @@ public class LobbySingleplayer : Control
 
         var ui = (InGameUI)Globals.Scenes.InGameUIPacked.Instance();
         ulong seed = new RNG().NextULong(); // TODO: find a better way to do this
-        //seed = 666; // <--- UNCOMMENT FOR TESTING
+        seed = 666; // <--- UNCOMMENT FOR TESTING
         GD.Print("Seed is: ", seed);
         var game = Game.NewLocalGame(ui, generators, "BaseGame/BaseTileset.json", seed);
         ui.SetGame(game);

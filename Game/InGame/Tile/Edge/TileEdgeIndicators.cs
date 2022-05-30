@@ -20,19 +20,35 @@ public class TileEdgeIndicators : Spatial
     MeshInstance _outline;
     Spatial _connectionIndicatorRoot;
     readonly List<ConnectionIndicator> _indicators = new List<ConnectionIndicator>();
-    void SetUpFromNeighboursNoReset(Game game, Vector2I pos)
+    void SetUpConnectionFromTile(Tile3D tile, int indx)
+    {
+        int i = AbsMod((indx - (GameEngine.N_TOTAL_CONNECTORS / 2)), (GameEngine.N_CONNECTORS * GameEngine.N_SIDES));
+        i = AbsMod((i - tile.Rot * GameEngine.N_CONNECTORS), GameEngine.N_TOTAL_CONNECTORS);
+        var con = tile.AssociatedTile.Connections[i];
+        _indicators[indx].Type = con.INode.Type;
+        //Console.WriteLine($"indx: {indx} i: {i} type: {con.INode.Type}");
+        _indicators[indx].Owner = null;
+    }
+    void SetUp(Game game, Vector2I pos, Tile3D tile = null)
     {
         var map = game.Engine.map;
         int i = 0;
-        foreach (var npos in pos.Neighbours)
+        var revn = (pos.Neighbours.Skip(2).Concat(pos.Neighbours.Take(2))).ToList();
+        foreach (var npos in revn)
         {
             var n = map[npos];
             if (n != null)
             {
                 for (int ii = i; ii < i + 3; ii++)
                 {
-                    int oii = AbsMod(ii + 6, GameEngine.N_CONNECTORS * GameEngine.N_SIDES);
-                    _indicators[ii].Type = n.Connections[oii].INode.Graph.Type;
+                    //int oii = AbsMod(ii-(GameEngine.N_TOTAL_CONNECTORS/2), GameEngine.N_TOTAL_CONNECTORS);
+                    int oii = ii;
+                    _indicators[ii].Type = n.Connections[oii].INode.Type;
+                    if (n.Connections[oii].INode.Graph == null)
+                    {
+                        _indicators[ii].OwningAgent = null;
+                        continue;
+                    }
                     var owners = game.Engine.ListGraphOwners(n.Connections[oii].INode.Graph);
                     if (owners.Count != 1)
                     {
@@ -42,27 +58,41 @@ public class TileEdgeIndicators : Spatial
                     _indicators[ii].OwningAgent = game.GetAgent(owners[0]);
                 }
             }
+            else if (tile != null)
+            {
+                for (int ii = i; ii < i + 3; ii++)
+                {
+                    SetUpConnectionFromTile(tile, ii);
+                }
+            }
+            else
+            {
+                for (int ii = i; ii < i + 3; ii++)
+                {
+                    _indicators[ii].Owner = null;
+                    _indicators[ii].Type = NodeType.ERR;
+                }
+            }
             i += 3;
         }
     }
     public void SetUpFromNeighbours(Game game, Vector2I pos)
     {
         Reset();
-        SetUpFromNeighboursNoReset(game, pos);
+        SetUp(game, pos);
     }
     public void SetUpFromTile(Tile3D tile)
     {
-        for (int i = 0; i < tile.AssociatedTile.Connections.Count; i++)
+        Reset();
+        for (int _i = 0; _i < tile.AssociatedTile.Connections.Count; _i++)
         {
-            _indicators[i].Type = tile.AssociatedTile.Connections[i].INode.Graph.Type;
-            _indicators[i].Owner = null;
+            SetUpConnectionFromTile(tile, _i);
         }
     }
     public void SetUpFromNeighboursAndtile(Game game, Vector2I pos, Tile3D tile)
     {
         Reset();
-        SetUpFromTile(tile);
-        SetUpFromNeighboursNoReset(game, pos);
+        SetUp(game, pos, tile);
     }
     public void Reset()
     {

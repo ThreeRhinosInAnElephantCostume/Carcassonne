@@ -29,6 +29,33 @@ public class Tile3D : Spatial
     readonly Dictionary<string, List<IProp>> _propGroups = new Dictionary<string, List<IProp>>();
     readonly List<PotentialMeeplePlacement> _potentialPlacements = new List<PotentialMeeplePlacement>();
     readonly List<MeeplePlacement> _placements = new List<MeeplePlacement>();
+    List<MeshInstance> _allMeshes = new List<MeshInstance>();
+    readonly List<MeshInstance> _transparentMeshes = new List<MeshInstance>();
+    float _alpha = 1.0f;
+    public float Alpha
+    {
+        get => _alpha;
+        set
+        {
+            return;
+            if (_alpha == value)
+                return;
+            _alpha = value;
+            foreach (var it in _transparentMeshes)
+            {
+                for (int i = 0; i < it.GetSurfaceMaterialCount(); i++)
+                {
+                    if (it.Mesh.SurfaceGetMaterial(i) is SpatialMaterial smat)
+                    {
+                        smat.ResourceLocalToScene = true;
+                        smat.FlagsTransparent = (_alpha == 1.0f) ? false : true;
+                        smat.AlbedoColor = new Color(smat.AlbedoColor, _alpha);
+                        it.Mesh.SurfaceSetMaterial(i, smat);
+                    }
+                }
+            }
+        }
+    }
     public Vector3 CalculateAttributePlacementPosition(int indx)
     {
         Assert(_groupAveragePosition.Count > 0, $"_groupAveragePosition was not calculated for tile {_model.Scene.ResourcePath}");
@@ -204,9 +231,31 @@ public class Tile3D : Spatial
         ProcessPotentialPropNodes(_model.Config.NodeAssociations, false);
         ProcessPotentialPropNodes(_model.Config.AttributeAssociations, true);
     }
+    public void PrepareTransparency()
+    {
+        _allMeshes = _root.FindChildrenRecursively<MeshInstance>();
+        foreach (var it in _allMeshes)
+        {
+            if (it is IProp || it is MeshProp)
+                continue;
+            bool b = false;
+            for (int i = 0; i < it.GetSurfaceMaterialCount(); i++)
+            {
+                var mat = it.Mesh.SurfaceGetMaterial(i);
+                if (mat is SpatialMaterial smat)
+                {
+                    b = true;
+                    break;
+                }
+            }
+            if (b)
+                _transparentMeshes.Add(it);
+        }
+    }
     public override void _Ready()
     {
         PreProcessProps();
+        PrepareTransparency();
     }
     public Tile3D(Tile tile, int rot, RNG rng)
     {
