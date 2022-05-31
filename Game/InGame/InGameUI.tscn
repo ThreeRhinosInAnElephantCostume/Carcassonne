@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://Game/InGame/InGame3D.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Game/InGame/InGameUI.cs" type="Script" id=2]
@@ -12,6 +12,9 @@
 [ext_resource path="res://Audio/Img/Icons/meepleHover.png" type="Texture" id=10]
 [ext_resource path="res://Audio/Img/Icons/Note.png" type="Texture" id=11]
 [ext_resource path="res://Audio/Img/Icons/NoteHoover.png" type="Texture" id=12]
+[ext_resource path="res://GUI/img/save-n.png" type="Texture" id=13]
+[ext_resource path="res://GUI/img/save-p.png" type="Texture" id=14]
+[ext_resource path="res://GUI/img/save-h.png" type="Texture" id=15]
 [ext_resource path="res://GUI/img/play-n.png" type="Texture" id=21]
 [ext_resource path="res://GUI/img/lute-1.png" type="Texture" id=22]
 [ext_resource path="res://GUI/img/lute-3.png" type="Texture" id=23]
@@ -172,7 +175,7 @@ __meta__ = {
 }
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/HBoxContainer"]
-margin_left = 219.0
+margin_left = 175.0
 margin_right = 347.0
 margin_bottom = 40.0
 size_flags_vertical = 3
@@ -199,9 +202,17 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="QuitButton" type="TextureButton" parent="CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/HBoxContainer/HBoxContainer2"]
+[node name="SaveButton" type="TextureButton" parent="CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/HBoxContainer/HBoxContainer2"]
 margin_left = 88.0
 margin_right = 128.0
+margin_bottom = 40.0
+texture_normal = ExtResource( 13 )
+texture_pressed = ExtResource( 14 )
+texture_hover = ExtResource( 15 )
+
+[node name="QuitButton" type="TextureButton" parent="CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/HBoxContainer/HBoxContainer2"]
+margin_left = 132.0
+margin_right = 172.0
 margin_bottom = 40.0
 texture_normal = ExtResource( 6 )
 texture_pressed = ExtResource( 24 )
