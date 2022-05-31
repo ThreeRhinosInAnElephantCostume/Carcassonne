@@ -33,6 +33,12 @@ public class InGameUI : Control, Game.IGameHandles
     TileEdgeIndicators _previewEdgeIndicator;
 
     AudioPlayer _gameAudio;
+
+    TextureButton _menuButton;
+
+    Control _inGameMenuRoot;
+    InGameMenu _inGameMenu;
+
     readonly List<PlayerInfoContainer> _playerInfoContainers = new List<PlayerInfoContainer>();
     public void Start(Game game)
     {
@@ -70,6 +76,18 @@ public class InGameUI : Control, Game.IGameHandles
         Assert(_game == null);
         _game = game;
     }
+    public static void LoadGameFromFile(string path, SceneTree tree)
+    {
+        var ui = (InGameUI)Globals.Scenes.InGameUIPacked.Instance();
+        var game = Game.LoadLocalGame(ui, path);
+        ui.SetGame(game);
+        tree.Root.AddChild(ui);
+    }
+    public void LoadGameFromFile(string path)
+    {
+        LoadGameFromFile(path, GetTree());
+        DestroyNode(this);
+    }
     public override void _Process(float delta)
     {
         if (_map == null)
@@ -100,17 +118,30 @@ public class InGameUI : Control, Game.IGameHandles
 
     public override void _Ready()
     {
+        _inGameMenuRoot = this.GetNodeSafe<Control>("CanvasLayer/GameUIRoot/InGameMenuRoot/");
+        _inGameMenuRoot.Visible = false;
+        _inGameMenu = this.GetNodeSafe<InGameMenu>("CanvasLayer/GameUIRoot/InGameMenuRoot/InGameMenu");
+        _inGameMenu.Init(_game, this);
+
+        _inGameMenu.OnResume += () =>
+        {
+            _inGameMenuRoot.Visible = false;
+        };
+
+        _menuButton = this.GetNodeSafe<TextureButton>("CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/HBoxContainer/HBoxContainer2/MenuButton");
+        _menuButton.OnButtonPressed(OnShowInGameMenuButtonPressed);
+
         _previewEdgeIndicator = Globals.Scenes.TileEdgeIndicatorsPacked.Instance<TileEdgeIndicators>();
         _previewEdgeIndicator.Name = "PEI";
 
         Assert(_game != null, "_game is null. Remember to call SetGame before initialization!");
-        _inGame3D = GetNode<Spatial>("InGame3D");
+        _inGame3D = this.GetNodeSafe<Spatial>("InGame3D");
 
-        _mainInfoContainer = GetNode<VBoxContainer>("CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer");
+        _mainInfoContainer = this.GetNodeSafe<VBoxContainer>("CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer");
 
-        _previewRoot = GetNode<Spatial>("CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/AspectRatioContainer/ViewportContainer/Viewport/PreviewRoot");
+        _previewRoot = this.GetNodeSafe<Spatial>("CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/AspectRatioContainer/ViewportContainer/Viewport/PreviewRoot");
 
-        _mainCamera = GetNode<Camera>("InGame3D/Camera");
+        _mainCamera = this.GetNodeSafe<Camera>("InGame3D/Camera");
 
         _map = new TileMap3D(_game);
         _map.Engine = _game.Engine;
@@ -128,16 +159,24 @@ public class InGameUI : Control, Game.IGameHandles
 
         Start(_game);
 
-        _gameAudio = GetNode<AudioPlayer>("/root/AudioPlayer");
+        _gameAudio = this.GetNodeSafe<AudioPlayer>("/root/AudioPlayer");
 
-        _effectsVolumeSlider = GetNode<HSlider>("CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/HBoxContainer/AudioMenu/VBoxContainer/HBoxContainer/SoundVolumeSlider");
+        _effectsVolumeSlider = this.GetNodeSafe<HSlider>("CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/HBoxContainer/AudioMenu/VBoxContainer/HBoxContainer/SoundVolumeSlider");
         _effectsVolumeSlider.MaxValue = 100;
         _effectsVolumeSlider.Value = _effectsVolumeSlider.MaxValue * Globals.Settings.Audio.EffectsVolume;
 
-        _musicVolumeSlider = GetNode<HSlider>("CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/HBoxContainer/AudioMenu/VBoxContainer/HBoxContainer2/MusicVolumeSlider");
+        _musicVolumeSlider = this.GetNodeSafe<HSlider>("CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/HBoxContainer/AudioMenu/VBoxContainer/HBoxContainer2/MusicVolumeSlider");
         _musicVolumeSlider.MaxValue = 100;
         _musicVolumeSlider.Value = _musicVolumeSlider.MaxValue * Globals.Settings.Audio.MusicVolume;
 
+    }
+
+    public override void _PhysicsProcess(float delta)
+    {
+        if (Input.IsActionPressed("ui_cancel") && !_inGameMenu.Visible)
+        {
+            OnShowInGameMenuButtonPressed();
+        }
     }
 
     void OnMusicToggleButtonToggled(bool button_pressed)
@@ -180,10 +219,16 @@ public class InGameUI : Control, Game.IGameHandles
         AudioMenuToggle();
     }
 
-    void OnQuitButtonPressed()
+    void OnShowInGameMenuButtonPressed()
     {
-        GetTree().Quit();
+        _inGameMenuRoot.Visible = true;
+        _inGameMenu.Visible = true;
     }
+
+    // void OnQuitButtonPressed()
+    // {
+    //     GetTree().Quit();
+    // }
 
     void OnSkipMepleButtonPressed()
     {

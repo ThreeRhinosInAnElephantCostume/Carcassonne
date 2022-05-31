@@ -12,6 +12,7 @@ using System.Threading;
 using Carcassonne;
 using ExtraMath;
 using Godot;
+using Newtonsoft.Json;
 using static System.Math;
 using static Carcassonne.GameEngine;
 using static Utils;
@@ -20,6 +21,7 @@ public partial class Game
 {
     public class GameLocalAgent : GameAgent
     {
+        [JsonIgnore]
         public bool IsMyMove => _game.CurrentAgent == this;
         public override void OnTurn(GameEngine engine)
         {

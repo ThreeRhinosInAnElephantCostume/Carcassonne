@@ -122,7 +122,7 @@ public class ThemeableIconPreview : Control
             GD.PrintErr("Could not load texture from: " + path);
             return;
         }
-        _nameLabel.Text = path.BaseName();
+        _nameLabel.Text = path.GetFile();
         _sizeLabel.Text = $"{_currentTexture.GetSize().x}x{_currentTexture.GetSize().y}";
         CreateIcons();
         UpdateColors();

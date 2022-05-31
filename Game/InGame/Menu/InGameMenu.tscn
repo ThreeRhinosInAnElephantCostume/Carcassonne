@@ -1,0 +1,155 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://GUI/DarkTheme/Fonts/Frederic.tres" type="DynamicFont" id=1]
+[ext_resource path="res://Game/InGame/Menu/InGameMenu.cs" type="Script" id=2]
+[ext_resource path="res://Game/SaveLoadGame/SaveLoadGame.tscn" type="PackedScene" id=3]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0, 0, 0, 0.152941 )
+
+[node name="InGameMenu" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource( 2 )
+
+[node name="Panel" type="Panel" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_styles/panel = SubResource( 1 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 1
+
+[node name="Control3" type="Control" parent="Panel/HBoxContainer"]
+margin_right = 424.0
+margin_bottom = 720.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Control2" type="Control" parent="Panel/HBoxContainer"]
+margin_left = 428.0
+margin_right = 852.0
+margin_bottom = 720.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/HBoxContainer/Control2"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 1
+
+[node name="Control" type="Control" parent="Panel/HBoxContainer/Control2/VBoxContainer"]
+margin_right = 424.0
+margin_bottom = 158.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Control2" type="Control" parent="Panel/HBoxContainer/Control2/VBoxContainer"]
+margin_top = 162.0
+margin_right = 424.0
+margin_bottom = 478.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 2.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/HBoxContainer/Control2/VBoxContainer/Control2"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/separation = 24
+alignment = 1
+
+[node name="ResumeButton" type="Button" parent="Panel/HBoxContainer/Control2/VBoxContainer/Control2/VBoxContainer"]
+margin_right = 424.0
+margin_bottom = 68.0
+custom_fonts/font = ExtResource( 1 )
+toggle_mode = true
+text = "Resume"
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="SaveButton" type="Button" parent="Panel/HBoxContainer/Control2/VBoxContainer/Control2/VBoxContainer"]
+margin_top = 92.0
+margin_right = 424.0
+margin_bottom = 160.0
+custom_fonts/font = ExtResource( 1 )
+toggle_mode = true
+text = "Save"
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="LoadButton" type="Button" parent="Panel/HBoxContainer/Control2/VBoxContainer/Control2/VBoxContainer"]
+margin_top = 184.0
+margin_right = 424.0
+margin_bottom = 252.0
+custom_fonts/font = ExtResource( 1 )
+toggle_mode = true
+text = "Load"
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="SettingsButton" type="Button" parent="Panel/HBoxContainer/Control2/VBoxContainer/Control2/VBoxContainer"]
+margin_top = 276.0
+margin_right = 424.0
+margin_bottom = 344.0
+custom_fonts/font = ExtResource( 1 )
+toggle_mode = true
+text = "Settings"
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="ExitButton" type="Button" parent="Panel/HBoxContainer/Control2/VBoxContainer/Control2/VBoxContainer"]
+margin_top = 368.0
+margin_right = 424.0
+margin_bottom = 436.0
+custom_fonts/font = ExtResource( 1 )
+toggle_mode = true
+text = "Exit"
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Control3" type="Control" parent="Panel/HBoxContainer/Control2/VBoxContainer"]
+margin_top = 482.0
+margin_right = 424.0
+margin_bottom = 720.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 1.5
+
+[node name="Control" type="Control" parent="Panel/HBoxContainer"]
+margin_left = 856.0
+margin_right = 1280.0
+margin_bottom = 720.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="SaveLoadRoot" type="CenterContainer" parent="Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="SaveLoadGame" parent="Panel/SaveLoadRoot" instance=ExtResource( 3 )]
+visible = false
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 340.0
+margin_right = 940.0
+margin_bottom = 720.0
