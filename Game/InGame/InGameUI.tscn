@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://Game/InGame/InGame3D.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Game/InGame/InGameUI.cs" type="Script" id=2]
@@ -12,9 +12,7 @@
 [ext_resource path="res://Audio/Img/Icons/meepleHover.png" type="Texture" id=10]
 [ext_resource path="res://Audio/Img/Icons/Note.png" type="Texture" id=11]
 [ext_resource path="res://Audio/Img/Icons/NoteHoover.png" type="Texture" id=12]
-[ext_resource path="res://GUI/img/save-n.png" type="Texture" id=13]
-[ext_resource path="res://GUI/img/save-p.png" type="Texture" id=14]
-[ext_resource path="res://GUI/img/save-h.png" type="Texture" id=15]
+[ext_resource path="res://Game/InGame/Menu/InGameMenu.tscn" type="PackedScene" id=13]
 [ext_resource path="res://GUI/img/play-n.png" type="Texture" id=21]
 [ext_resource path="res://GUI/img/lute-1.png" type="Texture" id=22]
 [ext_resource path="res://GUI/img/lute-3.png" type="Texture" id=23]
@@ -44,9 +42,6 @@ anchor_bottom = 1.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/GameUIRoot"]
 anchor_right = 1.0
@@ -202,7 +197,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="SaveButton" type="TextureButton" parent="CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/HBoxContainer/HBoxContainer2"]
+[node name="MenuButton" type="TextureButton" parent="CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/HBoxContainer/HBoxContainer2"]
 margin_left = 88.0
 margin_right = 128.0
 margin_bottom = 40.0
@@ -222,6 +217,7 @@ texture_hover = ExtResource( 24 )
 margin_top = 44.0
 margin_right = 347.0
 margin_bottom = 334.0
+mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 1.16
@@ -229,6 +225,7 @@ size_flags_stretch_ratio = 1.16
 [node name="empty" type="TextureButton" parent="CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/HBoxContainer3"]
 margin_right = 128.0
 margin_bottom = 290.0
+mouse_filter = 2
 texture_normal = ExtResource( 27 )
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer"]
@@ -282,6 +279,16 @@ transform = Transform( 1, 0, 0, 0, 0.637868, 0.770146, 0, -0.770146, 0.637868, 0
 projection = 1
 size = 1.61217
 
+[node name="InGameMenuRoot" type="Control" parent="CanvasLayer/GameUIRoot"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="InGameMenu" parent="CanvasLayer/GameUIRoot/InGameMenuRoot" instance=ExtResource( 13 )]
+visible = false
+
 [node name="InGame3D" parent="." instance=ExtResource( 1 )]
 
 [connection signal="toggled" from="CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/HBoxContainer/AudioMenu/VBoxContainer/HBoxContainer/SoundToggleButton" to="." method="OnSoundToggleButtonToggled"]
@@ -290,5 +297,4 @@ size = 1.61217
 [connection signal="value_changed" from="CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/HBoxContainer/AudioMenu/VBoxContainer/HBoxContainer2/MusicVolumeSlider" to="." method="OnMusicVolumeSliderValueChanged"]
 [connection signal="pressed" from="CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/HBoxContainer/HBoxContainer2/AudioMenuButton" to="." method="OnAudioMenuButtonPressed"]
 [connection signal="pressed" from="CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/HBoxContainer/HBoxContainer2/PlayNextSongButton" to="." method="OnPlayNextSongButtonPressed"]
-[connection signal="pressed" from="CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/HBoxContainer/HBoxContainer2/QuitButton" to="." method="OnQuitButtonPressed"]
 [connection signal="pressed" from="CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/HBoxContainer2/SkipMepleButton" to="." method="OnSkipMepleButtonPressed"]

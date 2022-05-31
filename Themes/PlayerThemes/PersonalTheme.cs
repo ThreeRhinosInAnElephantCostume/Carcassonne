@@ -23,7 +23,7 @@ public class PersonalTheme
     public Color PrimaryColor;
     public Color SecondaryColor;
     public Color TertiaryColor;
-    public string _iconPath;
+    public string _iconPath { get; set; }
     [JsonIgnore]
     public string IconPath { get => _iconPath; set { if (_icon != null) _icon.Dispose(); _icon = null; _iconPath = value; } }
     [JsonIgnore]
@@ -41,7 +41,7 @@ public class PersonalTheme
             return _icon;
         }
     }
-    public string _avatarPath;
+    public string _avatarPath { get; set; }
     [JsonIgnore]
     public string AvatarPath { get => _avatarPath; set { if (_avatar != null) _avatar.Dispose(); _avatar = null; _avatarPath = value; } }
     [JsonIgnore]
@@ -122,5 +122,16 @@ public class PersonalTheme
     public PersonalTheme Copy()
     {
         return DeserializeFromString<PersonalTheme>(SerializeToString(this));
+    }
+    public void SerializeToDirectory(string dir)
+    {
+        EnsurePathExists(dir);
+        SerializeToFile(ConcatPaths(dir, "ThemeData.json"), this, true, true);
+    }
+    public static PersonalTheme DeserializeFromDirectory(string dir)
+    {
+        string path = ConcatPaths(dir, "ThemeData.json");
+        Assert(FileExists(path));
+        return DeserializeFromFile<PersonalTheme>(path);
     }
 }

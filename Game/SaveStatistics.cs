@@ -204,11 +204,15 @@ public partial class Game
             Statistics = game.Engine.GatherStatistics(IncludeActions);
         }
     }
-    public GameInfo SaveStatistics(bool exportCSV)
+    public GameInfo SaveStatistics(bool exportCSV, string override_path = null)
     {
         GameInfo info = new GameInfo(this, true);
 
-        string directory = ConcatPaths(Constants.DataPaths.STATISTICS_PATH, info.Mode.ToString(), info.Date.ToString("s"));
+        string directory;
+        if (override_path != null)
+            directory = override_path;
+        else
+            directory = ConcatPaths(Constants.DataPaths.STATISTICS_PATH, info.Mode.ToString(), info.Date.ToString("s"));
         Utils.EnsurePathExists(directory);
         string path = ConcatPaths(directory, "GameInfo.json");
         Assert(!FileExists(path));

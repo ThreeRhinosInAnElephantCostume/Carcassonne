@@ -42,7 +42,7 @@ public static partial class Globals
         [LoadFrom("res://Game/InGame/Tile/PotentialTile.tscn")]
         public static PackedScene PotentialTilePacked { get; set; }
 
-        //[LoadFrom("res://Game/InGame/Tile/Edge/TileEdgeIndicators.tscn")] This specific scene is bugged
+        //[LoadFrom("res://Game/InGame/Tile/Edge/TileEdgeIndicators.tscn")] //This specific scene is bugged
         public static PackedScene TileEdgeIndicatorsPacked { get; set; } = ResourceLoader.Load<PackedScene>("res://Game/InGame/Tile/Edge/TileEdgeIndicators.tscn");
 
         [LoadFrom("res://Game/InGame/PotentialMeeplePlacement.tscn")]

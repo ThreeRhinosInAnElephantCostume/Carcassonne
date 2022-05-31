@@ -1,6 +1,4 @@
-﻿
-
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -98,8 +96,20 @@ public class MainMenuLoad : Control
         Thread.Sleep(100);
         _step = LoadSteps.COMPLETE;
     }
+    abstract class a
+    {
+        public int y { get; set; } = 444;
+        public abstract void f();
+    }
+    class c : a
+    {
+        public int x { get; protected set; } = 555;
+        public override void f() { }
+    }
     public override void _Ready()
     {
+        string s = SerializeToString(new c(), true, true);
+        Console.WriteLine(s);
         _gameAudio = GetNode<AudioPlayer>("/root/AudioPlayer");
 
         _loadingLabel = GetNode<Label>("VBoxContainer/VBoxContainer/LoadingLabel");
