@@ -211,6 +211,7 @@ texture_hover = ExtResource( 24 )
 margin_top = 44.0
 margin_right = 347.0
 margin_bottom = 334.0
+mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 1.16
@@ -218,6 +219,7 @@ size_flags_stretch_ratio = 1.16
 [node name="empty" type="TextureButton" parent="CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/HBoxContainer3"]
 margin_right = 128.0
 margin_bottom = 290.0
+mouse_filter = 2
 texture_normal = ExtResource( 27 )
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer"]
