@@ -170,7 +170,7 @@ __meta__ = {
 }
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/HBoxContainer"]
-margin_left = 219.0
+margin_left = 175.0
 margin_right = 347.0
 margin_bottom = 40.0
 size_flags_vertical = 3
@@ -200,6 +200,14 @@ __meta__ = {
 [node name="MenuButton" type="TextureButton" parent="CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/HBoxContainer/HBoxContainer2"]
 margin_left = 88.0
 margin_right = 128.0
+margin_bottom = 40.0
+texture_normal = ExtResource( 13 )
+texture_pressed = ExtResource( 14 )
+texture_hover = ExtResource( 15 )
+
+[node name="QuitButton" type="TextureButton" parent="CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/HBoxContainer/HBoxContainer2"]
+margin_left = 132.0
+margin_right = 172.0
 margin_bottom = 40.0
 texture_normal = ExtResource( 6 )
 texture_pressed = ExtResource( 24 )

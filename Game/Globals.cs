@@ -36,6 +36,9 @@ public static partial class Globals
         [LoadFrom("res://Game/LobbySingleplayer/LobbySingleplayer.tscn")]
         public static PackedScene LobbySingleplayerPacked { get; set; }
 
+        [LoadFrom("res://Game/LobbyMultiplayer/LobbyMultiplayer.tscn")]
+        public static PackedScene LobbyMultiplayerPacked { get; set; }
+
         [LoadFrom("res://Game/InGame/Tile/PotentialTile.tscn")]
         public static PackedScene PotentialTilePacked { get; set; }
 
