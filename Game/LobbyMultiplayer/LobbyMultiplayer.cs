@@ -23,16 +23,16 @@ public class LobbyMultiplayer : Control
 {
     Button _play;
     Button _quit;
-    readonly int _amountOfBots = 1;  // zmienna, która będzie przechwytywana z popup'a
+    readonly int _amountOfPlayers = 2;  // zmienna, która będzie przechwytywana z popup'a
 
-    enum BotLevel
+    enum PlayerAvatar
     {
-        Easy,
-        Mid,
-        Hard
+        Avatar1,
+        Avatar2,
+        Avatar4
     }
 
-    readonly List<TextureRect> _bots = new List<TextureRect>();
+    readonly List<TextureRect> _players = new List<TextureRect>();
     readonly int _black, _blue, _yellow, _green;
     readonly string _namePlayer = "Player";
 
@@ -45,30 +45,30 @@ public class LobbyMultiplayer : Control
         _quit = this.GetNodeSafe<Button>("Quit");
         _quit.OnButtonPressed(OnQuitPressed);
 
-        this.GetNodeSafe<WindowDialog>("HalloDialog").PopupCentered();
+        this.GetNodeSafe<WindowDialog>("Dialog0").PopupCentered();
 
-        // widoczne boty tylko w liczbie amountOfBots
-        PrepareBots(_amountOfBots);
-        BotsVisibilityOn();
+        // widoczni gracze tylko w liczbie amountOfPlayers
+        PreparePlayers(_amountOfPlayers);
+        PlayersVisibilityOn();
     }
 
     void OnPopupHide()
     {
-        PrepareBots(_amountOfBots);
-        BotsVisibilityOn();
+        PreparePlayers(_amountOfPlayers);
+        PlayersVisibilityOn();
     }
 
     void OnPlayPressed()
     {
-        // Load levels of bots
-        BotLevel _botBlack = (BotLevel)_black;
-        GD.Print($"Black bot is {_botBlack}");
-        BotLevel _botBlue = (BotLevel)_blue;
-        GD.Print($"Blue bot is {_botBlue}");
-        BotLevel _botYellow = (BotLevel)_yellow;
-        GD.Print($"Yellow bot is {_botYellow}");
-        BotLevel _botGreen = (BotLevel)_green;
-        GD.Print($"Green bot is {_botGreen}");
+        // Load avatars of players
+        PlayerAvatar _playerBlack = (PlayerAvatar)_black;
+        GD.Print($"Black player is {_playerBlack}");
+        PlayerAvatar _playerBlue = (PlayerAvatar)_blue;
+        GD.Print($"Blue player is {_playerBlue}");
+        PlayerAvatar _playerYellow = (PlayerAvatar)_yellow;
+        GD.Print($"Yellow player is {_playerYellow}");
+        PlayerAvatar _playerGreen = (PlayerAvatar)_green;
+        GD.Print($"Green player is {_playerGreen}");
 
         var redtheme = Globals.PersonalThemes["red"].Copy();
         var blacktheme = Globals.PersonalThemes["black"].Copy();
@@ -85,14 +85,14 @@ public class LobbyMultiplayer : Control
             (g, e, i, p, rng) => new Game.GameLocalAgent(g, _namePlayer, p, redtheme),
         };
 
-        // choose and add bots
-        ChooseBot(blacktheme, _botBlack, generators);
-        if (_amountOfBots > 1)
-            ChooseBot(bluetheme, _botBlue, generators);
-        if (_amountOfBots > 2)
-            ChooseBot(yellowtheme, _botYellow, generators);
-        if (_amountOfBots > 3)
-            ChooseBot(greentheme, _botGreen, generators);
+        // choose and add players
+        ChoosePlayer(blacktheme, _playerBlack, generators);
+        if (_amountOfPlayers > 2)
+            ChoosePlayer(bluetheme, _playerBlue, generators);
+        if (_amountOfPlayers > 3)
+            ChoosePlayer(yellowtheme, _playerYellow, generators);
+        if (_amountOfPlayers > 4)
+            ChoosePlayer(greentheme, _playerGreen, generators);
 
         var ui = (InGameUI)Globals.Scenes.InGameUIPacked.Instance();
         ulong seed = new RNG().NextULong(); // TODO: find a better way to do this
@@ -104,65 +104,65 @@ public class LobbyMultiplayer : Control
         DestroyNode(this);
     }
 
-    // choose and add bot to the game
-    void ChooseBot(PersonalTheme theme, BotLevel level, List<Game.AgentGenerator> generator)
+    // choose and add player to the game
+    void ChoosePlayer(PersonalTheme theme, PlayerAvatar avatar, List<Game.AgentGenerator> generator)
     {
-        var avatarbotPath = "";
-        Game.AgentGenerator bot = null;
-        switch (level)
+        var avatarPath = "";
+        Game.AgentGenerator player = null;
+        switch (avatar)
         {
-            case BotLevel.Easy:
-                avatarbotPath = "res://GUI/avatars/avatarbot3.png";
-                theme.IconPath = avatarbotPath;
-                theme.AvatarPath = avatarbotPath;
-                bot = (g, e, i, p, rng) => new Game.GameAIAgent(g, $"Easy bot", p, new AI.RandomAI(new RNG(rng.NextULong())), theme);
+            case PlayerAvatar.Avatar1:
+                avatarPath = "res://GUI/avatars/avatar1.png";
+                theme.IconPath = avatarPath;
+                theme.AvatarPath = avatarPath;
+                player = (g, e, i, p, rng) => new Game.GameLocalAgent(g, $"Player", p, theme);
                 break;
-            case BotLevel.Mid:
-                avatarbotPath = "res://GUI/avatars/avatarbot2.png";
-                theme.IconPath = avatarbotPath;
-                theme.AvatarPath = avatarbotPath;
-                bot = (g, e, i, p, rng) => new Game.GameAIAgent(g, $"Mid bot", p, new AI.MediumAI(new RNG(rng.NextULong())), theme); //zmienić na AI.Medium
+            case PlayerAvatar.Avatar2:
+                avatarPath = "res://GUI/avatars/avatar2.png";
+                theme.IconPath = avatarPath;
+                theme.AvatarPath = avatarPath;
+                player = (g, e, i, p, rng) => new Game.GameLocalAgent(g, $"Player", p, theme);
                 break;
-            case BotLevel.Hard:
-                avatarbotPath = "res://GUI/avatars/avatarbot1.png";
-                theme.IconPath = avatarbotPath;
-                theme.AvatarPath = avatarbotPath;
-                bot = (g, e, i, p, rng) => new Game.GameAIAgent(g, $"Hard bot", p, new AI.RandomAI(new RNG(rng.NextULong())), theme); //zmienić na AI.Hard
+            case PlayerAvatar.Avatar4:
+                avatarPath = "res://GUI/avatars/avatar4.png";
+                theme.IconPath = avatarPath;
+                theme.AvatarPath = avatarPath;
+                player = (g, e, i, p, rng) => new Game.GameLocalAgent(g, $"Player", p, theme);
                 break;
             default:
-                avatarbotPath = "res://GUI/avatars/avatarbot3.png";
-                theme.IconPath = avatarbotPath;
-                theme.AvatarPath = avatarbotPath;
-                bot = (g, e, i, p, rng) => new Game.GameAIAgent(g, $"AI", p, new AI.RandomAI(new RNG(rng.NextULong())), theme);
+                avatarPath = "res://GUI/avatars/avatar3.png";
+                theme.IconPath = avatarPath;
+                theme.AvatarPath = avatarPath;
+                player = (g, e, i, p, rng) => new Game.GameLocalAgent(g, $"Player", p, theme);
                 break;
         }
 
-        generator.Add(bot);
+        generator.Add(player);
     }
 
-    void PrepareBots(int amountOfBots)
+    void PreparePlayers(int amountOfPlayers)
     {
-        if (amountOfBots > 1)
-            BotsAdd("Blue");
-        if (amountOfBots > 2)
-            BotsAdd("Yellow");
-        if (amountOfBots > 3)
-            BotsAdd("Green");
+        if (amountOfPlayers > 2)
+            PlayersAdd("Blue");
+        if (amountOfPlayers > 3)
+            PlayersAdd("Yellow");
+        if (amountOfPlayers > 4)
+            PlayersAdd("Green");
     }
 
-    void BotsAdd(string color)
+    void PlayersAdd(string color)
     {
-        _bots.Add(this.GetNodeSafe<TextureRect>($"GridContainer/GridContainerBots/HBoxContainerBotsEasy/BotEasy{color}"));
-        _bots.Add(this.GetNodeSafe<TextureRect>($"GridContainer/GridContainerBots/HBoxContainerBotsMid/BotMid{color}"));
-        _bots.Add(this.GetNodeSafe<TextureRect>($"GridContainer/GridContainerBots/HBoxContainerBotsHard/BotHard{color}"));
+        _players.Add(this.GetNodeSafe<TextureRect>($"GridContainer/GridContainerAvatars/HBoxContainerAvatar1/Avatar1{color}"));
+        _players.Add(this.GetNodeSafe<TextureRect>($"GridContainer/GridContainerAvatars/HBoxContainerAvatar2/Avatar2{color}"));
+        _players.Add(this.GetNodeSafe<TextureRect>($"GridContainer/GridContainerAvatars/HBoxContainerAvatar4/Avatar4{color}"));
     }
 
-    void BotsVisibilityOn()
+    void PlayersVisibilityOn()
     {
         //_playerContainers.ForEach(this.Visible = false);
-        for (int i = 0; i < _bots.Count; i++)
+        for (int i = 0; i < _players.Count; i++)
         {
-            _bots[i].Visible = true;
+            _players[i].Visible = true;
         }
     }
 

@@ -1,6 +1,6 @@
 extends WindowDialog
 
-var opponents
+var players
 
 onready var mainScript = get_parent()
 onready var selector0 = get_node("../Selector0")
@@ -20,14 +20,14 @@ func _on_Button_button_down():
 	if name.empty():
 		name = "Player"
 	selectorLabel0.text = name
-	opponents = find_node("Opponents").text.strip_edges()
+	players = find_node("Players").text.strip_edges()
 	print("___________")
-	print("Liczba przeciwników:")
-	print(opponents)
+	print("Liczba graczy:")
+	print(players)
 	print("___________")
-	mainScript._amountOfBots = opponents
+	mainScript._amountOfPlayers = players
 	mainScript._namePlayer = name
-	mainScript.BotsVisibilityOn()
+	mainScript.PlayersVisibilityOn()
 	hide()
 	
 func _on_Name_text_entered(_new_text):
