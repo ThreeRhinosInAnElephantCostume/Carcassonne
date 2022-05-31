@@ -44,4 +44,6 @@ func _input(event):
 				get_tree().change_scene("res://Game/LobbySingleplayer/LobbySingleplayer.tscn")
 			elif gameVersions[currentSelected].name == "Multi":
 				print("go to LobbyMultiplayer")
-				#get_tree...
+				queue_free()
+				get_parent().queue_free()
+				get_tree().change_scene("res://Game/LobbyMultiplayer/LobbyMultiplayer.tscn")
