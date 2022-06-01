@@ -134,7 +134,7 @@ public class InGameMenu : Control, SaveLoadGame.ISaveLoadHandler
 
     void SaveLoadGame.ISaveLoadHandler.OnDelete(string path)
     {
-        throw new NotImplementedException();
+
     }
 
     void SaveLoadGame.ISaveLoadHandler.OnCancelled()
