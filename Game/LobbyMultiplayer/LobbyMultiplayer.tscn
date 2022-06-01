@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=2]
+[gd_scene load_steps=29 format=2]
 
 [ext_resource path="res://GUI/DarkTheme/Fonts/Frederic.tres" type="DynamicFont" id=1]
 [ext_resource path="res://GUI/DarkTheme/Dark.theme" type="Theme" id=2]
@@ -27,6 +27,7 @@
 [ext_resource path="res://Game/LobbyMultiplayer/Selector1.gd" type="Script" id=25]
 [ext_resource path="res://Game/LobbyMultiplayer/Selector2.gd" type="Script" id=26]
 [ext_resource path="res://Game/LobbyMultiplayer/Selector3.gd" type="Script" id=27]
+[ext_resource path="res://Game/LobbyMultiplayer/Selector4.gd" type="Script" id=28]
 
 [node name="LobbyMulti" type="Control"]
 anchor_right = 1.0
@@ -91,6 +92,9 @@ avatarsOffset = Vector2( 0, 206 )
 [node name="Selector4" parent="." instance=ExtResource( 19 )]
 visible = false
 position = Vector2( 1012, 130 )
+script = ExtResource( 28 )
+selectorTexture = ExtResource( 24 )
+avatarsOffset = Vector2( 0, 206 )
 
 [node name="GridContainer" type="GridContainer" parent="."]
 margin_left = 100.0
