@@ -66,7 +66,11 @@ func _on_Button_button_down():
 		name4 = "Player 5"
 	selectorLabel4.text = name4
 	
-	
+	mainScript._namePlayer0 = name0
+	mainScript._namePlayer1 = name1
+	mainScript._namePlayer2 = name2
+	mainScript._namePlayer3 = name3
+	mainScript._namePlayer4 = name4
 	hide()
 
 
@@ -100,5 +104,4 @@ func _on_Ok_button_down():
 		HBox4.visible = false
 	
 	mainScript._amountOfPlayers = players
-	#mainScript._namePlayer0 = name0
 	mainScript.PlayersVisibilityOn()
