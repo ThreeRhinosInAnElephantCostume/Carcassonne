@@ -241,7 +241,7 @@ public class SaveLoadGame : Control
             if (ns != s)
                 _saveNameEdit.Text = ns;
             if (Mode == SLMode.Save)
-                _selectButton.Disabled = (s.Length > 0);
+                _selectButton.Disabled = !(s.Length > 0);
         });
         _saveNameEdit.OnTextSubmitted(s =>
         {
