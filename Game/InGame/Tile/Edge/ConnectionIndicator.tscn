@@ -3,6 +3,7 @@
 [ext_resource path="res://Game/InGame/Tile/Edge/ConnectionIndicator.obj" type="ArrayMesh" id=1]
 [ext_resource path="res://Props/MeshProp.cs" type="Script" id=2]
 [ext_resource path="res://Game/InGame/Tile/Edge/ConnectionIndicator.cs" type="Script" id=3]
+[ext_resource path="res://Game/InGame/Tile/Edge/ConnectionIndicator.tres" type="Material" id=4]
 
 [sub_resource type="SpatialMaterial" id=3]
 resource_local_to_scene = true
@@ -15,15 +16,9 @@ emission_operator = 0
 emission_on_uv2 = false
 
 [sub_resource type="SphereMesh" id=5]
+material = ExtResource( 4 )
 radius = 0.014
 height = 0.028
-
-[sub_resource type="SpatialMaterial" id=4]
-resource_local_to_scene = true
-render_priority = 2
-flags_unshaded = true
-flags_no_depth_test = true
-albedo_color = Color( 1, 0, 0, 2 )
 
 [sub_resource type="SphereMesh" id=6]
 radius = 0.015
@@ -46,7 +41,7 @@ material/0 = SubResource( 3 )
 [node name="OwnerIndicator" type="MeshInstance" parent="."]
 transform = Transform( 0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, 0, 0.00345263, -0.0324998 )
 mesh = SubResource( 5 )
-material/0 = SubResource( 4 )
+material/0 = ExtResource( 4 )
 script = ExtResource( 2 )
 "Surface #0" = 1
 

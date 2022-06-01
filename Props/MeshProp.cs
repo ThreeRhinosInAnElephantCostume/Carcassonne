@@ -29,7 +29,7 @@ public class MeshProp : MeshInstance, IProp
     public List<(bool primary, bool secondary, bool tertiary)> SurfaceSettings = new List<(bool, bool, bool)>();
     void MaybeInitSurfaces()
     {
-        if (SurfaceSettings.Count != GetSurfaceMaterialCount())
+        if (SurfaceSettings.Count != GetSurfaceMaterialCount() || SurfaceSettings.Count == 0)
         {
             SurfaceSettings.Clear();
             RepeatN(GetSurfaceMaterialCount(), i => SurfaceSettings.Add((false, false, false)));
