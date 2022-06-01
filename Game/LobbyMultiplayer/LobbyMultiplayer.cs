@@ -33,7 +33,7 @@ public class LobbyMultiplayer : Control
     }
 
     readonly List<TextureRect> _players = new List<TextureRect>();
-    readonly int _black, _blue, _yellow, _green;
+    readonly int _red, _black, _blue, _yellow, _green;
     readonly string _namePlayer = "Player";
 
     // Called when the node enters the scene tree for the first time.
@@ -61,6 +61,8 @@ public class LobbyMultiplayer : Control
     void OnPlayPressed()
     {
         // Load avatars of players
+        PlayerAvatar _playerRed = (PlayerAvatar)_red;
+        GD.Print($"Red player is {_playerRed}");
         PlayerAvatar _playerBlack = (PlayerAvatar)_black;
         GD.Print($"Black player is {_playerBlack}");
         PlayerAvatar _playerBlue = (PlayerAvatar)_blue;
@@ -76,16 +78,12 @@ public class LobbyMultiplayer : Control
         var yellowtheme = Globals.PersonalThemes["yellow"].Copy();
         var greentheme = Globals.PersonalThemes["green"].Copy();
 
-        var avatarplayerPath = "res://GUI/avatars/avatar3.png";
-        redtheme.IconPath = avatarplayerPath;
-        redtheme.AvatarPath = avatarplayerPath;
-
         var generators = new List<Game.AgentGenerator>()
         {
-            (g, e, i, p, rng) => new Game.GameLocalAgent(g, _namePlayer, p, redtheme),
         };
 
         // choose and add players
+        ChoosePlayer(redtheme, _playerRed, generators);
         ChoosePlayer(blacktheme, _playerBlack, generators);
         if (_amountOfPlayers > 2)
             ChoosePlayer(bluetheme, _playerBlue, generators);
