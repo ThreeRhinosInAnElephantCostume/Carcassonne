@@ -34,7 +34,7 @@ public class LobbyMultiplayer : Control
 
     readonly List<TextureRect> _players = new List<TextureRect>();
     readonly int _red, _black, _blue, _yellow, _green;
-    readonly string _namePlayer = "Player";
+    readonly string _namePlayer0 = "Player 1";
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()

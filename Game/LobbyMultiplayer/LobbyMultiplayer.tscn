@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://GUI/DarkTheme/Fonts/Frederic.tres" type="DynamicFont" id=1]
 [ext_resource path="res://GUI/DarkTheme/Dark.theme" type="Theme" id=2]
@@ -22,6 +22,8 @@
 [ext_resource path="res://Game/LobbyMultiplayer/Dialog0.tscn" type="PackedScene" id=20]
 [ext_resource path="res://GUI/img/avatars-in-color_200x203/avatar4_red.png" type="Texture" id=21]
 [ext_resource path="res://GUI/img/avatars-in-color_200x203/avatar4_blue.png" type="Texture" id=22]
+[ext_resource path="res://Game/LobbyMultiplayer/Selector0.gd" type="Script" id=23]
+[ext_resource path="res://GUI/img/ramka-wstega_200x203.png" type="Texture" id=24]
 
 [node name="LobbyMulti" type="Control"]
 anchor_right = 1.0
@@ -58,6 +60,9 @@ text = "Play"
 
 [node name="Selector0" parent="." instance=ExtResource( 19 )]
 position = Vector2( 200, 130 )
+script = ExtResource( 23 )
+selectorTexture = ExtResource( 24 )
+avatarsOffset = Vector2( 0, 206 )
 
 [node name="Selector1" parent="." instance=ExtResource( 19 )]
 position = Vector2( 403, 130 )
