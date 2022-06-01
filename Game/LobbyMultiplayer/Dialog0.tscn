@@ -5,7 +5,9 @@
 
 [node name="Dialog0" type="WindowDialog"]
 margin_right = 320.0
-margin_bottom = 151.0
+margin_bottom = 251.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 theme = ExtResource( 1 )
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
@@ -18,38 +20,18 @@ margin_bottom = 144.0
 margin_right = 300.0
 margin_bottom = 134.0
 
-[node name="HBox1" type="HBoxContainer" parent="MarginContainer/VBox"]
+[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox"]
 margin_right = 300.0
 margin_bottom = 31.0
 
-[node name="NameLabel" type="Label" parent="MarginContainer/VBox/HBox1"]
-margin_top = -1.0
-margin_right = 165.4
-margin_bottom = 30.4
-custom_fonts/font = ExtResource( 2 )
-text = "1st player's name:"
-
-[node name="Name" type="LineEdit" parent="MarginContainer/VBox/HBox1"]
-margin_left = 168.0
-margin_right = 300.0
-margin_bottom = 31.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-custom_fonts/font = ExtResource( 2 )
-
-[node name="HBox2" type="HBoxContainer" parent="MarginContainer/VBox"]
-margin_top = 34.0
-margin_right = 300.0
-margin_bottom = 65.0
-
-[node name="PlayersLabel" type="Label" parent="MarginContainer/VBox/HBox2"]
+[node name="PlayersLabel" type="Label" parent="MarginContainer/VBox/HBox"]
 margin_top = -1.0
 margin_right = 188.4
 margin_bottom = 30.4
 custom_fonts/font = ExtResource( 2 )
 text = "Numbers of players:"
 
-[node name="Players" type="LineEdit" parent="MarginContainer/VBox/HBox2"]
+[node name="Players" type="LineEdit" parent="MarginContainer/VBox/HBox"]
 margin_left = 191.0
 margin_right = 300.0
 margin_bottom = 31.0
@@ -57,8 +39,111 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 2 )
 
-[node name="Button" type="Button" parent="MarginContainer/VBox"]
+[node name="HBox0" type="HBoxContainer" parent="MarginContainer/VBox"]
+margin_top = 34.0
+margin_right = 300.0
+margin_bottom = 65.0
+
+[node name="Name0Label" type="Label" parent="MarginContainer/VBox/HBox0"]
+margin_top = -1.0
+margin_right = 165.4
+margin_bottom = 30.4
+custom_fonts/font = ExtResource( 2 )
+text = "1st player's name:"
+
+[node name="Name0" type="LineEdit" parent="MarginContainer/VBox/HBox0"]
+margin_left = 168.0
+margin_right = 300.0
+margin_bottom = 31.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_fonts/font = ExtResource( 2 )
+
+[node name="HBox1" type="HBoxContainer" parent="MarginContainer/VBox"]
 margin_top = 68.0
+margin_right = 300.0
+margin_bottom = 99.0
+
+[node name="Name1Label" type="Label" parent="MarginContainer/VBox/HBox1"]
+margin_top = -1.0
+margin_right = 173.4
+margin_bottom = 30.4
+custom_fonts/font = ExtResource( 2 )
+text = "2nd player's name:"
+
+[node name="Name1" type="LineEdit" parent="MarginContainer/VBox/HBox1"]
+margin_left = 176.0
+margin_right = 300.0
+margin_bottom = 31.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_fonts/font = ExtResource( 2 )
+
+[node name="HBox2" type="HBoxContainer" parent="MarginContainer/VBox"]
+visible = false
+margin_top = 102.0
+margin_right = 300.0
+margin_bottom = 133.0
+
+[node name="Name2Label" type="Label" parent="MarginContainer/VBox/HBox2"]
+margin_top = -1.0
+margin_right = 171.4
+margin_bottom = 30.4
+custom_fonts/font = ExtResource( 2 )
+text = "3rd player's name:"
+
+[node name="Name2" type="LineEdit" parent="MarginContainer/VBox/HBox2"]
+margin_left = 174.0
+margin_right = 300.0
+margin_bottom = 31.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_fonts/font = ExtResource( 2 )
+
+[node name="HBox3" type="HBoxContainer" parent="MarginContainer/VBox"]
+visible = false
+margin_top = 136.0
+margin_right = 300.0
+margin_bottom = 167.0
+
+[node name="Name3Label" type="Label" parent="MarginContainer/VBox/HBox3"]
+margin_top = -1.0
+margin_right = 169.4
+margin_bottom = 30.4
+custom_fonts/font = ExtResource( 2 )
+text = "4th player's name:"
+
+[node name="Name3" type="LineEdit" parent="MarginContainer/VBox/HBox3"]
+margin_left = 172.0
+margin_right = 300.0
+margin_bottom = 31.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_fonts/font = ExtResource( 2 )
+
+[node name="HBox4" type="HBoxContainer" parent="MarginContainer/VBox"]
+visible = false
+margin_top = 170.0
+margin_right = 300.0
+margin_bottom = 201.0
+
+[node name="Name4Label" type="Label" parent="MarginContainer/VBox/HBox4"]
+margin_top = -1.0
+margin_right = 170.4
+margin_bottom = 30.4
+custom_fonts/font = ExtResource( 2 )
+text = "5th player's name:"
+
+[node name="Name4" type="LineEdit" parent="MarginContainer/VBox/HBox4"]
+margin_left = 173.0
+margin_right = 300.0
+margin_bottom = 31.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_fonts/font = ExtResource( 2 )
+
+[node name="Button" type="Button" parent="MarginContainer/VBox"]
+margin_top = 102.0
 margin_right = 300.0
 margin_bottom = 134.0
 size_flags_horizontal = 3
@@ -67,5 +152,5 @@ size_flags_stretch_ratio = 0.0
 custom_fonts/font = ExtResource( 2 )
 text = "OK"
 
-[connection signal="text_entered" from="MarginContainer/VBox/HBox1/Name" to="." method="_on_Name_text_entered"]
+[connection signal="text_entered" from="MarginContainer/VBox/HBox0/Name0" to="." method="_on_Name0_text_entered"]
 [connection signal="button_down" from="MarginContainer/VBox/Button" to="." method="_on_Button_button_down"]
