@@ -48,16 +48,17 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 alignment = 1
 
-[node name="Control" type="Control" parent="Panel/HBoxContainer/Control2/VBoxContainer"]
+[node name="Control" type="CenterContainer" parent="Panel/HBoxContainer/Control2/VBoxContainer"]
 margin_right = 424.0
-margin_bottom = 158.0
+margin_bottom = 162.0
+mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Control2" type="Control" parent="Panel/HBoxContainer/Control2/VBoxContainer"]
-margin_top = 162.0
+margin_top = 166.0
 margin_right = 424.0
-margin_bottom = 478.0
+margin_bottom = 490.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 2.0
@@ -124,13 +125,14 @@ __meta__ = {
 "_edit_use_anchors_": true
 }
 
-[node name="Control3" type="Control" parent="Panel/HBoxContainer/Control2/VBoxContainer"]
-margin_top = 482.0
+[node name="Control3" type="CenterContainer" parent="Panel/HBoxContainer/Control2/VBoxContainer"]
+margin_top = 494.0
 margin_right = 424.0
 margin_bottom = 720.0
+mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-size_flags_stretch_ratio = 1.5
+size_flags_stretch_ratio = 1.39
 
 [node name="Control" type="Control" parent="Panel/HBoxContainer"]
 margin_left = 856.0
@@ -140,6 +142,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="SaveLoadRoot" type="CenterContainer" parent="Panel"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
