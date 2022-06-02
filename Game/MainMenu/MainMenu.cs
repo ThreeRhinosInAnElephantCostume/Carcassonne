@@ -22,6 +22,7 @@ public class MainMenu : Control, SaveLoadGame.ISaveLoadHandler
     AudioPlayer _gameAudio;
 
     Button _play;
+    Button _credits;
     Button _quit;
     BaseButton _loadGameButton;
     SaveLoadGame _saveLoadGame;
@@ -45,6 +46,9 @@ public class MainMenu : Control, SaveLoadGame.ISaveLoadHandler
         _play = GetNode<Button>("Play");
         _play.Connect("pressed", this, nameof(OnPlayPressed));
 
+        _credits = GetNode<Button>("Credits");
+        _credits.Connect("pressed", this, nameof(OnCreditsPressed));
+
         _quit = GetNode<Button>("Quit");
         _quit.Connect("pressed", this, nameof(OnQuitPressed));
 
@@ -61,6 +65,11 @@ public class MainMenu : Control, SaveLoadGame.ISaveLoadHandler
     void OnPlayPressed()
     {
         SetMainScene(Globals.Scenes.SingleMultiSelectionPacked);
+    }
+
+    void OnCreditsPressed()
+    {
+        SetMainScene(Globals.Scenes.CreditsPacked);
     }
 
     void OnQuitPressed()
