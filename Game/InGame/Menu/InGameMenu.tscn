@@ -102,24 +102,13 @@ __meta__ = {
 "_edit_use_anchors_": true
 }
 
-[node name="SettingsButton" type="Button" parent="Panel/HBoxContainer/Control2/VBoxContainer/Control2/VBoxContainer"]
+[node name="QuitButton" type="Button" parent="Panel/HBoxContainer/Control2/VBoxContainer/Control2/VBoxContainer"]
 margin_top = 276.0
 margin_right = 424.0
 margin_bottom = 344.0
 custom_fonts/font = ExtResource( 1 )
 toggle_mode = true
-text = "Settings"
-__meta__ = {
-"_edit_use_anchors_": true
-}
-
-[node name="ExitButton" type="Button" parent="Panel/HBoxContainer/Control2/VBoxContainer/Control2/VBoxContainer"]
-margin_top = 368.0
-margin_right = 424.0
-margin_bottom = 436.0
-custom_fonts/font = ExtResource( 1 )
-toggle_mode = true
-text = "Exit"
+text = "Quit Game"
 __meta__ = {
 "_edit_use_anchors_": true
 }
