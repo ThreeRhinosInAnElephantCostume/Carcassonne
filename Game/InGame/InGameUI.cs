@@ -76,17 +76,12 @@ public class InGameUI : Control, Game.IGameHandles
         Assert(_game == null);
         _game = game;
     }
-    public static void LoadGameFromFile(string path, SceneTree tree)
+    public void LoadGameFromFile(string path)
     {
         var ui = (InGameUI)Globals.Scenes.InGameUIPacked.Instance();
         var game = Game.LoadLocalGame(ui, path);
         ui.SetGame(game);
-        tree.Root.AddChild(ui);
-    }
-    public void LoadGameFromFile(string path)
-    {
-        LoadGameFromFile(path, GetTree());
-        DestroyNode(this);
+        SetMainScene(ui);
     }
     public override void _Process(float delta)
     {

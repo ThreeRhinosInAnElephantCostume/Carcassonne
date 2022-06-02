@@ -20,7 +20,6 @@ using static Utils;
 
 public partial class Game
 {
-
     public delegate GameAgent AgentGenerator(Game game, GameEngine engine, int indx, GameEngine.Player player, RNG rng);
     public class SerializableState
     {
