@@ -24,8 +24,7 @@ public class StartMenu : Control
     void OnPlayPressed()
     {
         GD.Print("Play pressed!");
-        GetTree().ChangeScene("res://Game/Loading/MainMenuLoad.tscn");
-        DestroyNode(this);
+        SetMainScene("res://Game/Loading/MainMenuLoad.tscn");
     }
 
     void OnQuitPressed()

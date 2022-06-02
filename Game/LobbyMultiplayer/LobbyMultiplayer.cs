@@ -102,8 +102,7 @@ public class LobbyMultiplayer : Control
         GD.Print("Seed is: ", seed);
         var game = Game.NewLocalGame(ui, generators, "BaseGame/BaseTileset.json", seed);
         ui.SetGame(game);
-        GetTree().Root.AddChild(ui);
-        DestroyNode(this);
+        SetMainScene(ui);
     }
 
     // choose and add player to the game

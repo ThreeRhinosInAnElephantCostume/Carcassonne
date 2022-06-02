@@ -158,9 +158,7 @@ public class MainMenuLoad : Control
                         Input.IsKeyPressed((int)KeyList.Tab) || Input.IsMouseButtonPressed((int)ButtonList.Left) ||
                         Input.IsMouseButtonPressed((int)ButtonList.Right) || Input.IsMouseButtonPressed((int)ButtonList.Middle))
                     {
-                        var scene = Globals.Scenes.MainMenuPacked.Instance();
-                        GetTree().Root.AddChild(scene);
-                        DestroyNode(this);
+                        SetMainScene(Globals.Scenes.MainMenuPacked);
                         return;
                     }
                     break;

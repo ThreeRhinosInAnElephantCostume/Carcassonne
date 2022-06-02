@@ -28,21 +28,8 @@ using Expression = System.Linq.Expressions.Expression;
 public class GlobalScript : Node
 {
     public static GlobalScript GS;
-    readonly ConcurrentQueue<Action> _toExec = new ConcurrentQueue<Action>();
     readonly System.Threading.Mutex _saveSettingsMX = new System.Threading.Mutex();
     int _saveIndex = 0;
-    void DequeDeferred()
-    {
-        System.Action action;
-        Assert(_toExec.TryDequeue(out action), "Error: queue desynchronization");
-        action();
-    }
-    public void QueueDeferred(System.Action action)
-    {
-        Assert(action != null);
-        _toExec.Enqueue(action);
-        CallDeferred(nameof(DequeDeferred));
-    }
     public void SaveSettingsAsync(bool clearmodified)
     {
         _saveSettingsMX.WaitOne();
