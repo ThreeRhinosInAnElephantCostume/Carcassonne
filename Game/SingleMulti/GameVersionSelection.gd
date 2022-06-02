@@ -20,7 +20,7 @@ func _ready():
 	texture = selectorTexture
 	
 func _input(event):
-	if event is InputEventKey and event.pressed:
+	if event is InputEventKey and !event.pressed:
 		if event.scancode == KEY_RIGHT:
 			if(currentColumnSpot < gridContainer.columns - 1):
 				print("KEY_RIGHT was pressed")
