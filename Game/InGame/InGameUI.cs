@@ -41,7 +41,7 @@ public class InGameUI : Control, Game.IGameHandles
         this._game = game;
         UpdateUI();
     }
-    public void UpdateUI()
+    public void UpdateUI() // tu dorzucić oznaczenie na biezacego gracza
     {
         _map.Playable = _game.CurrentAgent != null && _game.CurrentAgent is Game.GameLocalAgent;
         if (_map.Playable)
