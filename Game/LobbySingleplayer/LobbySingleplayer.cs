@@ -167,8 +167,7 @@ public class LobbySingleplayer : Control
 
     void OnQuitPressed()
     {
-        GD.Print("Quit pressed!");
-        GetTree().Quit();
+        SetMainScene(Globals.Scenes.MainMenuPacked);
     }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
