@@ -1,0 +1,65 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Game/Credits/splash-screen.webm" type="VideoStream" id=1]
+[ext_resource path="res://GUI/DarkTheme/Dark.theme" type="Theme" id=2]
+[ext_resource path="res://Game/Credits/Credits.cs" type="Script" id=3]
+
+[node name="Credits" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource( 2 )
+script = ExtResource( 3 )
+
+[node name="VideoPlayer" type="VideoPlayer" parent="."]
+margin_right = 1280.0
+margin_bottom = 720.0
+stream = ExtResource( 1 )
+autoplay = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 1
+
+[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer"]
+margin_right = 1280.0
+margin_bottom = 100.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer"]
+margin_top = 103.0
+margin_right = 1280.0
+margin_bottom = 299.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 1
+
+[node name="text" type="Label" parent="VBoxContainer/VBoxContainer"]
+margin_right = 1280.0
+margin_bottom = 196.4
+size_flags_horizontal = 3
+size_flags_vertical = 7
+text = "tekst
+tekst
+tekst"
+align = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
+margin_top = 302.0
+margin_right = 1280.0
+margin_bottom = 720.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 4.16
+
+[node name="QuitMainMenuButton" type="Button" parent="."]
+margin_left = 434.948
+margin_top = 636.548
+margin_right = 887.948
+margin_bottom = 702.548
+text = "Quit to Main Menu"
