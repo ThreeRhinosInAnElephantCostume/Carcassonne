@@ -75,15 +75,7 @@ public class GlobalScript : Node
     }
     public override void _Ready()
     {
-        List<string> requiredpaths = new List<string>()
-        {
-            Constants.DataPaths.TILE_DIRECTORY,
-            Constants.DataPaths.TILESET_DIRECTORY,
-            Constants.DataPaths.TILE_MODEL_DIRECTORY,
-            Constants.DataPaths.PLAYER_THEMES_DIRECTORY,
-            Constants.DataPaths.THEMEABLE_ICONS_DIRECTORY,
-        };
-        foreach (var it in requiredpaths)
+        foreach (var it in Constants.DataPaths.REQUIRED_PATHS)
         {
             EnsurePathExists(it);
         }

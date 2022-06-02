@@ -31,6 +31,7 @@ public class InGameMenu : Control, SaveLoadGame.ISaveLoadHandler
     Button _resumeButton;
     Button _saveButton;
     Button _loadButton;
+    Button _quitToMainMenuButton;
     Button _quitButton;
     List<Control> Children = new List<Control>();
     List<BaseButton> Buttons = new List<BaseButton>();
@@ -121,7 +122,7 @@ public class InGameMenu : Control, SaveLoadGame.ISaveLoadHandler
         else
         {
             Assert(FileExists(path));
-            _inGameUI.LoadGameFromFile(path);
+            InGameUI.LoadGameFromFile(path);
         }
         _saveLoadRoot.Visible = false;
         OnResumePressed();
@@ -153,6 +154,13 @@ public class InGameMenu : Control, SaveLoadGame.ISaveLoadHandler
         _loadButton = this.GetNodeSafe<Button>
             ("Panel/HBoxContainer/Control2/VBoxContainer/Control2/VBoxContainer/LoadButton");
         _loadButton.OnButtonPressed(OnLoadPressed);
+
+        _quitToMainMenuButton = this.GetNodeSafe<Button>
+            ("Panel/HBoxContainer/Control2/VBoxContainer/Control2/VBoxContainer/QuitMainMenuButton");
+        _quitToMainMenuButton.OnButtonPressed(() => 
+        {
+            SetMainScene(Globals.Scenes.MainMenuPacked);
+        });
 
         _quitButton = this.GetNodeSafe<Button>
             ("Panel/HBoxContainer/Control2/VBoxContainer/Control2/VBoxContainer/QuitButton");

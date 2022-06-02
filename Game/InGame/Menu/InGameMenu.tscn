@@ -71,7 +71,7 @@ custom_constants/separation = 24
 alignment = 1
 
 [node name="ResumeButton" type="Button" parent="Panel/HBoxContainer/Control2/VBoxContainer/Control2/VBoxContainer"]
-margin_right = 424.0
+margin_right = 461.0
 margin_bottom = 68.0
 custom_fonts/font = ExtResource( 1 )
 toggle_mode = true
@@ -82,7 +82,7 @@ __meta__ = {
 
 [node name="SaveButton" type="Button" parent="Panel/HBoxContainer/Control2/VBoxContainer/Control2/VBoxContainer"]
 margin_top = 92.0
-margin_right = 424.0
+margin_right = 461.0
 margin_bottom = 160.0
 custom_fonts/font = ExtResource( 1 )
 toggle_mode = true
@@ -93,7 +93,7 @@ __meta__ = {
 
 [node name="LoadButton" type="Button" parent="Panel/HBoxContainer/Control2/VBoxContainer/Control2/VBoxContainer"]
 margin_top = 184.0
-margin_right = 424.0
+margin_right = 461.0
 margin_bottom = 252.0
 custom_fonts/font = ExtResource( 1 )
 toggle_mode = true
@@ -102,10 +102,21 @@ __meta__ = {
 "_edit_use_anchors_": true
 }
 
-[node name="QuitButton" type="Button" parent="Panel/HBoxContainer/Control2/VBoxContainer/Control2/VBoxContainer"]
+[node name="QuitMainMenuButton" type="Button" parent="Panel/HBoxContainer/Control2/VBoxContainer/Control2/VBoxContainer"]
 margin_top = 276.0
-margin_right = 424.0
+margin_right = 461.0
 margin_bottom = 344.0
+custom_fonts/font = ExtResource( 1 )
+toggle_mode = true
+text = "Quit to Main Menu"
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="QuitButton" type="Button" parent="Panel/HBoxContainer/Control2/VBoxContainer/Control2/VBoxContainer"]
+margin_top = 368.0
+margin_right = 461.0
+margin_bottom = 436.0
 custom_fonts/font = ExtResource( 1 )
 toggle_mode = true
 text = "Quit Game"

@@ -17,13 +17,25 @@ using static Utils;
 using Expression = System.Linq.Expressions.Expression;
 using Thread = System.Threading.Thread;
 
-public class MainMenu : Control
+public class MainMenu : Control, SaveLoadGame.ISaveLoadHandler
 {
     AudioPlayer _gameAudio;
 
     Button _play;
     Button _quit;
+    BaseButton _loadGameButton;
+    SaveLoadGame _saveLoadGame;
 
+    void SetButtons(bool enabled)
+    {
+        foreach(var it in this.GetChildren())
+        {
+            if(it is BaseButton b)
+            {
+                b.Disabled = !enabled;
+            }
+        }
+    }
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
@@ -35,6 +47,15 @@ public class MainMenu : Control
 
         _quit = GetNode<Button>("Quit");
         _quit.Connect("pressed", this, nameof(OnQuitPressed));
+
+        _loadGameButton = this.GetNodeSafe<BaseButton>("Load");
+        _loadGameButton.OnButtonPressed(() => 
+        {
+            SetButtons(false);
+            _saveLoadGame.StartLoad(this, Constants.DataPaths.SAVES_BASE_PATH, Constants.DataPaths.SAVES_BASE_PATH);
+        });
+
+        _saveLoadGame = this.GetNodeSafe<SaveLoadGame>("SaveLoadGame");
     }
 
     void OnPlayPressed()
@@ -62,5 +83,25 @@ public class MainMenu : Control
     public override void _Process(float delta)
     {
 
+    }
+
+    bool SaveLoadGame.ISaveLoadHandler.CanDelete(string path)
+    {
+        return true;
+    }
+
+    void SaveLoadGame.ISaveLoadHandler.OnSelected(string path)
+    {
+        InGameUI.LoadGameFromFile(path);
+    }
+
+    void SaveLoadGame.ISaveLoadHandler.OnDelete(string path)
+    {
+        
+    }
+
+    void SaveLoadGame.ISaveLoadHandler.OnCancelled()
+    {
+        SetButtons(true);
     }
 }
