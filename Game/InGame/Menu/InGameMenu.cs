@@ -31,8 +31,7 @@ public class InGameMenu : Control, SaveLoadGame.ISaveLoadHandler
     Button _resumeButton;
     Button _saveButton;
     Button _loadButton;
-    Button _settingsButton;
-    Button _exitButton;
+    Button _quitButton;
     List<Control> Children = new List<Control>();
     List<BaseButton> Buttons = new List<BaseButton>();
     public Action OnResume = () => { };
@@ -86,13 +85,9 @@ public class InGameMenu : Control, SaveLoadGame.ISaveLoadHandler
         _saveLoadRoot.Visible = true;
         _saveLoadGame.StartLoad(this, basepath, subpath);
     }
-    void OnSettingsPressed()
+    void OnQuitPressed()
     {
-
-    }
-    void OnExitPressed()
-    {
-
+        GetTree().Quit();
     }
     public void Init(Game game, InGameUI gameui)
     {
@@ -159,13 +154,9 @@ public class InGameMenu : Control, SaveLoadGame.ISaveLoadHandler
             ("Panel/HBoxContainer/Control2/VBoxContainer/Control2/VBoxContainer/LoadButton");
         _loadButton.OnButtonPressed(OnLoadPressed);
 
-        _settingsButton = this.GetNodeSafe<Button>
-            ("Panel/HBoxContainer/Control2/VBoxContainer/Control2/VBoxContainer/SettingsButton");
-        _settingsButton.OnButtonPressed(OnSettingsPressed);
-
-        _exitButton = this.GetNodeSafe<Button>
-            ("Panel/HBoxContainer/Control2/VBoxContainer/Control2/VBoxContainer/ExitButton");
-        _exitButton.OnButtonPressed(OnExitPressed);
+        _quitButton = this.GetNodeSafe<Button>
+            ("Panel/HBoxContainer/Control2/VBoxContainer/Control2/VBoxContainer/QuitButton");
+        _quitButton.OnButtonPressed(OnQuitPressed);
 
         _saveLoadRoot = this.GetNodeSafe<Control>("Panel/SaveLoadRoot");
         _saveLoadRoot.Visible = false;
