@@ -37,13 +37,16 @@ func _input(event):
 				
 		elif event.scancode == KEY_ENTER:
 			print("KEY_ENTER was pressed")
+			var GUS = get_tree().root.get_node("GlobalUtilsScript")
 			if gameVersions[currentSelected].name == "Single":
 				print("go to LobbySingleplayer")
 				queue_free()
 				get_parent().queue_free()
-				get_tree().change_scene("res://Game/LobbySingleplayer/LobbySingleplayer.tscn")
+				var scene = load("res://Game/LobbySingleplayer/LobbySingleplayer.tscn").instance()
+				GUS.SetMainScene(scene)
 			elif gameVersions[currentSelected].name == "Multi":
 				print("go to LobbyMultiplayer")
 				queue_free()
 				get_parent().queue_free()
-				get_tree().change_scene("res://Game/LobbyMultiplayer/LobbyMultiplayer.tscn")
+				var scene = load("res://Game/LobbyMultiplayer/LobbyMultiplayer.tscn").instance()
+				GUS.SetMainScene(scene)

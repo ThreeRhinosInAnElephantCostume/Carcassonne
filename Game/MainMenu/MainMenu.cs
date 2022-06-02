@@ -39,8 +39,7 @@ public class MainMenu : Control
 
     void OnPlayPressed()
     {
-        GetTree().Root.AddChild(Globals.Scenes.SingleMultiSelectionPacked.Instance());
-        DestroyNode(this);
+        SetMainScene(Globals.Scenes.SingleMultiSelectionPacked);
     }
 
     void OnQuitPressed()
