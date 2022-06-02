@@ -40,16 +40,16 @@ public class MainMenu : Control, SaveLoadGame.ISaveLoadHandler
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
-        _gameAudio = GetNode<AudioPlayer>("/root/AudioPlayer");
+        _gameAudio = this.GetNodeSafe<AudioPlayer>("/root/AudioPlayer");
         _gameAudio.PlayMainMenuMusic(0);
 
-        _play = GetNode<Button>("Play");
+        _play = this.GetNodeSafe<Button>("Play");
         _play.Connect("pressed", this, nameof(OnPlayPressed));
 
-        _credits = GetNode<Button>("Credits");
+        _credits = this.GetNodeSafe<Button>("Credits");
         _credits.Connect("pressed", this, nameof(OnCreditsPressed));
 
-        _quit = GetNode<Button>("Quit");
+        _quit = this.GetNodeSafe<Button>("Quit");
         _quit.Connect("pressed", this, nameof(OnQuitPressed));
 
         _loadGameButton = this.GetNodeSafe<BaseButton>("Load");
