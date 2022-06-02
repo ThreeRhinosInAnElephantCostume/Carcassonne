@@ -33,8 +33,12 @@ public class LobbyMultiplayer : Control
     }
 
     readonly List<TextureRect> _players = new List<TextureRect>();
-    readonly int _black, _blue, _yellow, _green;
-    readonly string _namePlayer = "Player";
+    readonly int _red, _black, _blue, _yellow, _green;
+    readonly string _namePlayer0 = "Player 1";
+    readonly string _namePlayer1 = "Player 2";
+    readonly string _namePlayer2 = "Player 3";
+    readonly string _namePlayer3 = "Player 4";
+    readonly string _namePlayer4 = "Player 5";
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -61,6 +65,8 @@ public class LobbyMultiplayer : Control
     void OnPlayPressed()
     {
         // Load avatars of players
+        PlayerAvatar _playerRed = (PlayerAvatar)_red;
+        GD.Print($"Red player is {_playerRed}");
         PlayerAvatar _playerBlack = (PlayerAvatar)_black;
         GD.Print($"Black player is {_playerBlack}");
         PlayerAvatar _playerBlue = (PlayerAvatar)_blue;
@@ -76,23 +82,19 @@ public class LobbyMultiplayer : Control
         var yellowtheme = Globals.PersonalThemes["yellow"].Copy();
         var greentheme = Globals.PersonalThemes["green"].Copy();
 
-        var avatarplayerPath = "res://GUI/avatars/avatar3.png";
-        redtheme.IconPath = avatarplayerPath;
-        redtheme.AvatarPath = avatarplayerPath;
-
         var generators = new List<Game.AgentGenerator>()
         {
-            (g, e, i, p, rng) => new Game.GameLocalAgent(g, _namePlayer, p, redtheme),
         };
 
         // choose and add players
-        ChoosePlayer(blacktheme, _playerBlack, generators);
+        ChoosePlayer(redtheme, _playerRed, _namePlayer0, generators);
+        ChoosePlayer(blacktheme, _playerBlack, _namePlayer1, generators);
         if (_amountOfPlayers > 2)
-            ChoosePlayer(bluetheme, _playerBlue, generators);
+            ChoosePlayer(bluetheme, _playerBlue, _namePlayer2, generators);
         if (_amountOfPlayers > 3)
-            ChoosePlayer(yellowtheme, _playerYellow, generators);
+            ChoosePlayer(yellowtheme, _playerYellow, _namePlayer3, generators);
         if (_amountOfPlayers > 4)
-            ChoosePlayer(greentheme, _playerGreen, generators);
+            ChoosePlayer(greentheme, _playerGreen, _namePlayer4, generators);
 
         var ui = (InGameUI)Globals.Scenes.InGameUIPacked.Instance();
         ulong seed = new RNG().NextULong(); // TODO: find a better way to do this
@@ -105,7 +107,7 @@ public class LobbyMultiplayer : Control
     }
 
     // choose and add player to the game
-    void ChoosePlayer(PersonalTheme theme, PlayerAvatar avatar, List<Game.AgentGenerator> generator)
+    void ChoosePlayer(PersonalTheme theme, PlayerAvatar avatar, string name, List<Game.AgentGenerator> generator)
     {
         var avatarPath = "";
         Game.AgentGenerator player = null;
@@ -115,25 +117,25 @@ public class LobbyMultiplayer : Control
                 avatarPath = "res://GUI/avatars/avatar1.png";
                 theme.IconPath = avatarPath;
                 theme.AvatarPath = avatarPath;
-                player = (g, e, i, p, rng) => new Game.GameLocalAgent(g, $"Player", p, theme);
+                player = (g, e, i, p, rng) => new Game.GameLocalAgent(g, name, p, theme);
                 break;
             case PlayerAvatar.Avatar2:
                 avatarPath = "res://GUI/avatars/avatar2.png";
                 theme.IconPath = avatarPath;
                 theme.AvatarPath = avatarPath;
-                player = (g, e, i, p, rng) => new Game.GameLocalAgent(g, $"Player", p, theme);
+                player = (g, e, i, p, rng) => new Game.GameLocalAgent(g, name, p, theme);
                 break;
             case PlayerAvatar.Avatar4:
                 avatarPath = "res://GUI/avatars/avatar4.png";
                 theme.IconPath = avatarPath;
                 theme.AvatarPath = avatarPath;
-                player = (g, e, i, p, rng) => new Game.GameLocalAgent(g, $"Player", p, theme);
+                player = (g, e, i, p, rng) => new Game.GameLocalAgent(g, name, p, theme);
                 break;
             default:
                 avatarPath = "res://GUI/avatars/avatar3.png";
                 theme.IconPath = avatarPath;
                 theme.AvatarPath = avatarPath;
-                player = (g, e, i, p, rng) => new Game.GameLocalAgent(g, $"Player", p, theme);
+                player = (g, e, i, p, rng) => new Game.GameLocalAgent(g, name, p, theme);
                 break;
         }
 
