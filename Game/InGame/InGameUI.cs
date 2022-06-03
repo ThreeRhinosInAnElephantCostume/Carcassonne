@@ -45,9 +45,67 @@ public class InGameUI : Control, Game.IGameHandles
         this._game = game;
         UpdateUI();
     }
+
+    public void ActivePlayerMark()
+    {
+        var redtheme = Globals.PersonalThemes["red"].Copy();
+        var blacktheme = Globals.PersonalThemes["black"].Copy();
+        var bluetheme = Globals.PersonalThemes["blue"].Copy();
+        var yellowtheme = Globals.PersonalThemes["yellow"].Copy();
+        var greentheme = Globals.PersonalThemes["green"].Copy();
+
+        var currentTheme = _game.CurrentAgent.CurrentTheme;
+        GD.Print(currentTheme.Colors[0]);
+        if(currentTheme.Colors[0] == redtheme.Colors[0])
+        {
+            GD.Print("RED Player is active");
+            _playerInfoContainers[0].GetNode<Sprite>("ActivePlayer").Visible = true;
+            _playerInfoContainers[1].GetNode<Sprite>("ActivePlayer").Visible = false;
+            _playerInfoContainers[2].GetNode<Sprite>("ActivePlayer").Visible = false;
+            _playerInfoContainers[3].GetNode<Sprite>("ActivePlayer").Visible = false;
+            _playerInfoContainers[4].GetNode<Sprite>("ActivePlayer").Visible = false;
+        }
+        else if(currentTheme.Colors[0] == blacktheme.Colors[0])
+        {
+            GD.Print("BLACK Player is active");
+            _playerInfoContainers[0].GetNode<Sprite>("ActivePlayer").Visible = false;
+            _playerInfoContainers[1].GetNode<Sprite>("ActivePlayer").Visible = true;
+            _playerInfoContainers[2].GetNode<Sprite>("ActivePlayer").Visible = false;
+            _playerInfoContainers[3].GetNode<Sprite>("ActivePlayer").Visible = false;
+            _playerInfoContainers[4].GetNode<Sprite>("ActivePlayer").Visible = false;
+        }
+        else if(currentTheme.Colors[0] == bluetheme.Colors[0])
+        {
+            GD.Print("BLUE Player is active");
+            _playerInfoContainers[0].GetNode<Sprite>("ActivePlayer").Visible = false;
+            _playerInfoContainers[1].GetNode<Sprite>("ActivePlayer").Visible = false;
+            _playerInfoContainers[2].GetNode<Sprite>("ActivePlayer").Visible = true;
+            _playerInfoContainers[3].GetNode<Sprite>("ActivePlayer").Visible = false;
+            _playerInfoContainers[4].GetNode<Sprite>("ActivePlayer").Visible = false;
+        }
+        else if(currentTheme.Colors[0] == yellowtheme.Colors[0])
+        {
+            GD.Print("YELLOW Player is active");
+            _playerInfoContainers[0].GetNode<Sprite>("ActivePlayer").Visible = false;
+            _playerInfoContainers[1].GetNode<Sprite>("ActivePlayer").Visible = false;
+            _playerInfoContainers[2].GetNode<Sprite>("ActivePlayer").Visible = false;
+            _playerInfoContainers[3].GetNode<Sprite>("ActivePlayer").Visible = true;
+            _playerInfoContainers[4].GetNode<Sprite>("ActivePlayer").Visible = false;
+        }
+        else if(currentTheme.Colors[0] == greentheme.Colors[0])
+        {
+            GD.Print("GREEN Player is active");
+            _playerInfoContainers[0].GetNode<Sprite>("ActivePlayer").Visible = false;
+            _playerInfoContainers[1].GetNode<Sprite>("ActivePlayer").Visible = false;
+            _playerInfoContainers[2].GetNode<Sprite>("ActivePlayer").Visible = false;
+            _playerInfoContainers[3].GetNode<Sprite>("ActivePlayer").Visible = false;
+            _playerInfoContainers[4].GetNode<Sprite>("ActivePlayer").Visible = true;
+        }
+    }
     public void UpdateUI()
     {
         _map.Playable = _game.CurrentAgent != null && _game.CurrentAgent is Game.GameLocalAgent;
+
         if (_map.Playable)
         {
             _map.Player = (Game.GameLocalAgent)_game.CurrentAgent;
@@ -59,7 +117,9 @@ public class InGameUI : Control, Game.IGameHandles
     }
     void Game.IGameHandles.OnAction(Game.GameAgent agent, GameEngine.Action action)
     {
+        ActivePlayerMark();
         UpdateUI();
+        
     }
 
     void Game.IGameHandles.OnGameOver(List<Game.GameAgent> winners)
