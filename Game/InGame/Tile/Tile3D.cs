@@ -21,15 +21,16 @@ public class Tile3D : Spatial
 
     readonly TileDataLoader.TileModel _model;
     readonly Spatial _root;
+    readonly Game _game;
 
     Vector2I _position = new Vector2I();
-    readonly Dictionary<string, Vector3> _groupAveragePosition = new Dictionary<string, Vector3>();
+    //readonly Dictionary<string, Vector3> _groupAveragePosition = new Dictionary<string, Vector3>();
     readonly Dictionary<string, List<IProp>> _propGroups = new Dictionary<string, List<IProp>>();
-    readonly List<PotentialMeeplePlacement> _potentialPlacements = new List<PotentialMeeplePlacement>();
     readonly List<MeeplePlacement> _placements = new List<MeeplePlacement>();
     List<MeshInstance> _allMeshes = new List<MeshInstance>();
     readonly List<MeshInstance> _transparentMeshes = new List<MeshInstance>();
     float _alpha = 1.0f;
+    readonly List<CapturableProp> _currentPotentialCapturables = new List<CapturableProp>();
     public float Alpha
     {
         get => _alpha;
@@ -54,59 +55,61 @@ public class Tile3D : Spatial
             }
         }
     }
-    public Vector3 CalculateAttributePlacementPosition(int indx)
-    {
-        Assert(_groupAveragePosition.Count > 0, $"_groupAveragePosition was not calculated for tile {_model.Scene.ResourcePath}");
-        List<string> associated = new List<string>();
-        return _groupAveragePosition[_model.Config.AttributeAssociations.Keys.ToList().Find(it =>
-            _model.Config.AttributeAssociations[it] == indx)];
-    }
-    public Vector3 CalculateNodePlacementPosition(int indx)
-    {
-        Assert(_groupAveragePosition.Count > 0, $"_groupAveragePosition was not calculated for tile {_model.Scene.ResourcePath}");
-        List<string> associated = new List<string>();
-        return _groupAveragePosition[_model.Config.NodeAssociations.Keys.ToList().Find(it =>
-            _model.Config.NodeAssociations[it] == indx)];
-    }
+    // public Vector3 CalculateAttributePlacementPosition(int indx)
+    // {
+    //     Assert(_groupAveragePosition.Count > 0, $"_groupAveragePosition was not calculated for tile {_model.Scene.ResourcePath}");
+    //     List<string> associated = new List<string>();
+    //     return _groupAveragePosition[_model.Config.AttributeAssociations.Keys.ToList().Find(it =>
+    //         _model.Config.AttributeAssociations[it] == indx)];
+    // }
+    // public Vector3 CalculateNodePlacementPosition(int indx)
+    // {
+    //     Assert(_groupAveragePosition.Count > 0, $"_groupAveragePosition was not calculated for tile {_model.Scene.ResourcePath}");
+    //     List<string> associated = new List<string>();
+    //     return _groupAveragePosition[_model.Config.NodeAssociations.Keys.ToList().Find(it =>
+    //         _model.Config.NodeAssociations[it] == indx)];
+    // }
     public void ClearPotentialPlacements()
     {
-        _potentialPlacements.ForEach(it => DestroyNode(it));
-        _potentialPlacements.Clear();
+        _currentPotentialCapturables.ForEach(it =>
+        {
+            if (it.Potential)
+            {
+                it.Potential = false;
+                Defer(() => (it as IProp).UpdateProp());
+            }
+        });
+        _currentPotentialCapturables.Clear();
     }
     public void AddPotentialAttributePlacement(Game.GameLocalAgent agent, int indx)
     {
-        var pot = Globals.Scenes.PotentialMeeplePlacementPacked.Instance<PotentialMeeplePlacement>();
-        pot.Agent = agent;
-        pot.Index = indx;
-        pot.IsAttribute = true;
-        pot.Translation = CalculateAttributePlacementPosition(indx);
-        pot.AssociatedTile = AssociatedTile;
-        AddChild(pot);
-        _potentialPlacements.Add(pot);
+        var rootnode = _model.Config.AttributeAssociations.Keys.ToList().Find(it =>
+            _model.Config.AttributeAssociations[it] == indx);
+        Assert(rootnode != null);
+        Defer(() => AddPotentialOccupierPlacement(agent, rootnode));
     }
     public void AddPotentialNodePlacement(Game.GameLocalAgent agent, int indx)
     {
-        var pot = Globals.Scenes.PotentialMeeplePlacementPacked.Instance<PotentialMeeplePlacement>();
-        pot.Agent = agent;
-        pot.Index = indx;
-        pot.IsAttribute = false;
-        pot.Translation = CalculateNodePlacementPosition(indx);
-        pot.AssociatedTile = AssociatedTile;
-        AddChild(pot);
-        _potentialPlacements.Add(pot);
+        var rootnode = _model.Config.NodeAssociations.Keys.ToList().Find(it =>
+            _model.Config.NodeAssociations[it] == indx);
+        Assert(rootnode != null);
+        Defer(() => AddPotentialOccupierPlacement(agent, rootnode));
+    }
+    void AddPotentialOccupierPlacement(Game.GameAgent agent, string rootnode)
+    {
+        Assert(_propGroups.ContainsKey(rootnode));
+        _propGroups[rootnode].ForEach(prop =>
+        {
+            if (prop is CapturableProp cap)
+            {
+                _currentPotentialCapturables.Add(cap);
+                cap.Potential = true;
+                (cap as IProp).UpdateProp();
+            }
+        });
     }
     public void AddAttributePlacement(Game.GameAgent agent, int indx)
     {
-        // if (_placements.Any(it => it.Agent == agent && it.Index == indx && it.IsAttribute))
-        //     return;
-        // var meep = Globals.MeeplePlacementPacked.Instance<MeeplePlacement>();
-        // (meep as IProp).CurrentTheme = agent.CurrentTheme;
-        // meep.Agent = agent;
-        // meep.IsAttribute = false;
-        // meep.Index = indx;
-        // meep.Translation = CalculateAttributePlacementPosition(indx);
-        // AddChild(meep);
-        // _placements.Add(meep);
 
         var rootnode = _model.Config.AttributeAssociations.Keys.ToList().Find(it =>
             _model.Config.AttributeAssociations[it] == indx);
@@ -115,16 +118,6 @@ public class Tile3D : Spatial
     }
     public void AddNodePlacement(Game.GameAgent agent, int indx)
     {
-        // if (_placements.Any(it => it.Agent == agent && it.Index == indx && !it.IsAttribute))
-        //     return;
-        // var meep = Globals.MeeplePlacementPacked.Instance<MeeplePlacement>();
-        // (meep as IProp).CurrentTheme = agent.CurrentTheme;
-        // meep.Agent = agent;
-        // meep.IsAttribute = false;
-        // meep.Index = indx;
-        // meep.Translation = CalculateNodePlacementPosition(indx);
-        // AddChild(meep);
-        // _placements.Add(meep);
         var rootnode = _model.Config.NodeAssociations.Keys.ToList().Find(it =>
             _model.Config.NodeAssociations[it] == indx);
         Assert(rootnode != null);
@@ -159,42 +152,42 @@ public class Tile3D : Spatial
             this.Rotation = new Vector3(this.Rotation.x, -(float)_rotation * (float)PI / 2, this.Rotation.z);
         }
     }
-    void CachePositions()
-    {
+    // void CachePositions()
+    // {
 
-        _groupAveragePosition.Clear();
+    //     _groupAveragePosition.Clear();
 
-        void Cache(Dictionary<string, int> dict)
-        {
-            dict.Keys.ToList().ForEach(s => _groupAveragePosition.Add(s, new Vector3(0, 0, 0)));
+    //     void Cache(Dictionary<string, int> dict)
+    //     {
+    //         dict.Keys.ToList().ForEach(s => _groupAveragePosition.Add(s, new Vector3(0, 0, 0)));
 
-            dict.Keys.ToList().ForEach(s =>
-            {
-                int n = 0;
-                _root.GetNode<Spatial>(s).GetChildrenRecrusively<MeshInstance>().ForEach(
-                mi =>
-                {
-                    n++;
-                    Vector3 av = new Vector3(0, 0, 0);
-                    for (int i = 0; i < mi.Mesh.GetSurfaceCount(); i++)
-                    {
-                        var arr = mi.Mesh.SurfaceGetArrays(i);
-                        Vector3[] a = (Vector3[])arr[(int)ArrayMesh.ArrayType.Vertex];
-                        foreach (var it in a)
-                        {
-                            av += it / a.Length;
-                        }
-                    }
-                    _groupAveragePosition[s] = _groupAveragePosition[s] + av;
-                });
-                _groupAveragePosition[s] = (_groupAveragePosition[s] / n) + _root.GetNode<Spatial>(s).Translation;
-            });
-        }
+    //         dict.Keys.ToList().ForEach(s =>
+    //         {
+    //             int n = 0;
+    //             _root.GetNode<Spatial>(s).GetChildrenRecrusively<MeshInstance>().ForEach(
+    //             mi =>
+    //             {
+    //                 n++;
+    //                 Vector3 av = new Vector3(0, 0, 0);
+    //                 for (int i = 0; i < mi.Mesh.GetSurfaceCount(); i++)
+    //                 {
+    //                     var arr = mi.Mesh.SurfaceGetArrays(i);
+    //                     Vector3[] a = (Vector3[])arr[(int)ArrayMesh.ArrayType.Vertex];
+    //                     foreach (var it in a)
+    //                     {
+    //                         av += it / a.Length;
+    //                     }
+    //                 }
+    //                 _groupAveragePosition[s] = _groupAveragePosition[s] + av;
+    //             });
+    //             _groupAveragePosition[s] = (_groupAveragePosition[s] / n) + _root.GetNode<Spatial>(s).Translation;
+    //         });
+    //     }
 
-        // TODO: Change when meshes get proper transforms. TAGS: translations, transforms, meshinstances
-        Cache(_model.Config.NodeAssociations);
-        Cache(_model.Config.AttributeAssociations);
-    }
+    //     // TODO: Change when meshes get proper transforms. TAGS: translations, transforms, meshinstances
+    //     Cache(_model.Config.NodeAssociations);
+    //     Cache(_model.Config.AttributeAssociations);
+    // }
     void PreProcessProps()
     {
         void ProcessPotentialPropNodes(Dictionary<string, int> dict, bool attribute)
@@ -219,7 +212,7 @@ public class Tile3D : Spatial
                 {
                     if (p is CapturableProp cap)
                     {
-                        cap.Data = (cont, (attribute) ? null : ((InternalNode)cont).Graph);
+                        cap.Data = (cont, (attribute) ? null : ((InternalNode)cont).Graph, this._game);
                     }
                     p.CurrentTheme = null;
                 }
@@ -255,8 +248,9 @@ public class Tile3D : Spatial
         PreProcessProps();
         PrepareTransparency();
     }
-    public Tile3D(Tile tile, int rot, RNG rng)
+    public Tile3D(Game game, Tile tile, int rot, RNG rng)
     {
+        this._game = game;
         this.AssociatedTile = tile;
         Assert(tile.MetaData is string);
         string path = (string)tile.MetaData;
@@ -270,6 +264,6 @@ public class Tile3D : Spatial
         _root.RotateY((float)(_model.Config.Rotation * PI / 2));
         Pos = tile.Position;
         Rot = rot;
-        CachePositions();
+        //CachePositions();
     }
 }

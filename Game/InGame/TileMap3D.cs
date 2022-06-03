@@ -92,7 +92,7 @@ public class TileMap3D : Spatial
     }
     void RepresentTile(Tile tile)
     {
-        var t = new Tile3D(tile, FigureTileRotation(tile), _rng);
+        var t = new Tile3D(_game, tile, FigureTileRotation(tile), _rng);
         _tiles.Add(t);
         AttachTile(t);
     }
@@ -112,7 +112,7 @@ public class TileMap3D : Spatial
         }
         if (NextTile == null || NextTile.AssociatedTile != Engine.CurrentTile)
         {
-            NextTile = new Tile3D(Engine.CurrentTile, 0, _rng);
+            NextTile = new Tile3D(_game, Engine.CurrentTile, 0, _rng);
         }
         if (Engine.CurrentState == GameEngine.State.PLACE_TILE)
         {

@@ -20,6 +20,8 @@ using Expression = System.Linq.Expressions.Expression;
 [Tool]
 public class CapturableProp : SpatialProp, IProp
 {
+    List<Spatial> _controlledNodes = new List<Spatial>();
+    List<CapturableProp> _capturableChildren = new List<CapturableProp>();
     int _requiredMeeple = 0;
     [Export(PropertyHint.Enum, "None,Farmer,Knight,Highwayman,Monk")]
     public int RequiredMeeple
@@ -35,15 +37,27 @@ public class CapturableProp : SpatialProp, IProp
         set { _requiredState = value; (this as IProp).UpdateProp(); }
     }
 
-    public bool Potential = false;
-    (OccupierContainer container, Map.Graph graph)? _data = null;
-    public (OccupierContainer container, Map.Graph graph)? Data
+    bool _potential = false;
+    public bool Potential
+    {
+        get => _potential;
+        set
+        {
+            _potential = value;
+            foreach (var it in _capturableChildren)
+            {
+                it.Potential = value;
+            }
+        }
+    }
+    (OccupierContainer container, Map.Graph graph, Game game)? _data = null;
+    public (OccupierContainer container, Map.Graph graph, Game game)? Data
     {
         get => _data;
         set
         {
             _data = value.Value;
-            foreach (var it in this.FindChildren<CapturableProp>())
+            foreach (var it in _capturableChildren)
             {
                 it.Data = value;
             }
@@ -64,18 +78,22 @@ public class CapturableProp : SpatialProp, IProp
     {
         AttachedHandles.ForEach(it => it.OnRemove -= OnMeepleRemoved);
     }
+    void SetChildrenVisiblity(bool b)
+    {
+        _controlledNodes.ForEach(it => it.Visible = b);
+    }
 
     void IProp.UpdateTheme()
     {
         var prop = (IProp)this;
         if (Engine.EditorHint)
         {
-            Visible = true;
+            SetChildrenVisiblity(true);
             return;
         }
-        if (Data == null || (((this as IProp).CurrentTheme) == null && RequiredState != 0))
+        if (Data == null || (((this as IProp).CurrentTheme) == null && RequiredState != 0 && RequiredState != 4))
         {
-            Visible = false;
+            SetChildrenVisiblity(false);
             return;
         }
         var data = Data.Value;
@@ -118,7 +136,7 @@ public class CapturableProp : SpatialProp, IProp
             _ => throw new Exception("impossible RequiredState")
         };
 end:;
-        Visible = showprop;
+        SetChildrenVisiblity(showprop);
     }
     bool _dirty = true;
 
@@ -129,6 +147,8 @@ end:;
     public override void _Ready()
     {
         (this as IProp).InitHierarchy();
+        _controlledNodes = this.FindChildren<Spatial>().FindAll(it => !(it is CapturableProp));
+        _capturableChildren = this.FindChildren<CapturableProp>();
     }
     public override void _Process(float delta)
     {

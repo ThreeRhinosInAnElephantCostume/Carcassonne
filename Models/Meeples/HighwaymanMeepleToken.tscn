@@ -1,7 +1,8 @@
-[gd_scene load_steps=71 format=2]
+[gd_scene load_steps=72 format=2]
 
 [ext_resource path="res://Props/CapturableProp.cs" type="Script" id=1]
 [ext_resource path="res://Props/MeshProp.cs" type="Script" id=2]
+[ext_resource path="res://Models/Meeples/HighwaymanPotentialToken.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Props/BannerProp.cs" type="Script" id=4]
 [ext_resource path="res://Icons/Themeable/PlayerIcons/DefaultIcon.png" type="Texture" id=5]
 [ext_resource path="res://Props/PropBanner.gdshader" type="Shader" id=6]
@@ -70,7 +71,7 @@ tracks/1/keys = {
 resource_local_to_scene = true
 albedo_color = Color( 1, 0, 0, 2 )
 
-[sub_resource type="ShaderMaterial" id=72]
+[sub_resource type="ShaderMaterial" id=75]
 resource_local_to_scene = true
 shader = ExtResource( 6 )
 shader_param/albedo = Color( 1, 1, 1, 0 )
@@ -999,7 +1000,7 @@ IconScale = Vector2( 1, 1 )
 
 [node name="BannerMesh" type="MeshInstance" parent="MeshProp/BannerProp"]
 transform = Transform( 1, 0, 0, 0, 1, -5.58794e-08, 0, 5.58794e-08, 1, 0, 0.0159457, -0.0304177 )
-material_override = SubResource( 72 )
+material_override = SubResource( 75 )
 mesh = SubResource( 2 )
 material/0 = null
 
@@ -1067,7 +1068,7 @@ anims/RESET = SubResource( 73 )
 anims/Wing_flap = SubResource( 74 )
 
 [node name="Wing1" type="MeshInstance" parent="MeshProp/highwayman_glider"]
-transform = Transform( 1, 3.72529e-09, 1.42109e-14, -3.72529e-09, 1, 3.33067e-16, -1.42109e-14, -3.33067e-16, 1, -4.80213e-10, -3.18196e-05, 0.00476444 )
+transform = Transform( 1, 3.72528e-09, 1.42109e-14, -3.72528e-09, 1, 3.33066e-16, -1.42109e-14, -3.33066e-16, 1, -4.80213e-10, -3.18196e-05, 0.00476444 )
 mesh = SubResource( 36 )
 skeleton = NodePath("../..")
 material/0 = null
@@ -1175,7 +1176,7 @@ skeleton = NodePath("../../..")
 material/0 = null
 
 [node name="Wing2" type="MeshInstance" parent="MeshProp/highwayman_glider"]
-transform = Transform( 1, 3.72529e-09, 1.42109e-14, -3.72529e-09, 1, 3.33067e-16, -1.42109e-14, -3.33067e-16, 1, -4.80213e-10, -3.18196e-05, 0.00476444 )
+transform = Transform( 1, 3.72528e-09, 1.42109e-14, -3.72528e-09, 1, 3.33066e-16, -1.42109e-14, -3.33066e-16, 1, -4.80213e-10, -3.18196e-05, 0.00476444 )
 mesh = SubResource( 54 )
 skeleton = NodePath("../..")
 material/0 = null
@@ -1335,3 +1336,6 @@ transform = Transform( 1, 3.72529e-09, 0, -3.72529e-09, 1, -2.22045e-16, 0, -2.6
 mesh = SubResource( 16 )
 skeleton = NodePath("../../..")
 material/0 = null
+
+[node name="HighwaymanPotentialToken" parent="." instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.395177, 0 )
