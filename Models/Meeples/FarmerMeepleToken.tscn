@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://Props/CapturableProp.cs" type="Script" id=1]
 [ext_resource path="res://Props/MeshProp.cs" type="Script" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://Icons/Themeable/PlayerIcons/DefaultIcon.png" type="Texture" id=5]
 [ext_resource path="res://Props/PropBanner.gdshader" type="Shader" id=6]
 [ext_resource path="res://Models/MATERIALS/Material-Wood_Dark.material" type="Material" id=7]
+[ext_resource path="res://Models/Meeples/FarmerPotentialToken.tscn" type="PackedScene" id=8]
 
 [sub_resource type="Animation" id=66]
 length = 0.001
@@ -410,3 +411,6 @@ transform = Transform( 1, 4.47035e-08, 7.10543e-15, -4.47035e-08, 1, -1.33227e-1
 mesh = SubResource( 65 )
 skeleton = NodePath("../..")
 material/0 = null
+
+[node name="FarmerPotentialToken" parent="." instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.373734, -0.0342559 )

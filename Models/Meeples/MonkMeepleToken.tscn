@@ -1,7 +1,8 @@
-[gd_scene load_steps=38 format=2]
+[gd_scene load_steps=39 format=2]
 
 [ext_resource path="res://Props/CapturableProp.cs" type="Script" id=1]
 [ext_resource path="res://Props/MeshProp.cs" type="Script" id=2]
+[ext_resource path="res://Models/Meeples/MonkPotentialToken.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Props/BannerProp.cs" type="Script" id=4]
 [ext_resource path="res://Icons/Themeable/PlayerIcons/DefaultIcon.png" type="Texture" id=5]
 [ext_resource path="res://Props/PropBanner.gdshader" type="Shader" id=6]
@@ -638,3 +639,6 @@ root_node = NodePath("../MeshProp")
 autoplay = "last_placed"
 anims/RESET = SubResource( 38 )
 anims/last_placed = SubResource( 39 )
+
+[node name="MonkPotentialToken" parent="." instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.187082, 0 )
