@@ -21,6 +21,7 @@ using Thread = System.Threading.Thread;
 
 public class PlayerInfoContainer : ControlProp
 {
+    Game _game;
     Game.GameAgent _agent;
     Carcassonne.GameEngine.Player _player;
     TextureRectProp _playerAvatarRect;
@@ -29,8 +30,10 @@ public class PlayerInfoContainer : ControlProp
     Label _nPointsLabel;
     Label _playerNameLabel;
     TextureRect _playerFrame;
-    public void SetPlayer(Game.GameAgent player)
+    Sprite _activePlayerMarker;
+    public void Init(Game game, Game.GameAgent player)
     {
+        this._game = game;
         this._agent = player;
         this._player = player.Player;
         Defer
@@ -52,6 +55,7 @@ public class PlayerInfoContainer : ControlProp
         _nMeeplesLabel.Text = $"{_player.Pawns.Count(it => it is Meeple meep && !meep.IsInPlay)}/{_player.Pawns.Count(it => it is Meeple)}"; // dlaczego nie aktualizuje się liczba meepli?
         _nPointsLabel.Text = $"{_player.Score}(+{_player.PotentialScore})";
         _playerNameLabel.Text = _agent.Name;
+        _activePlayerMarker.Visible = (_game.CurrentAgent == _agent);
     }
     public override void _Ready()
     {
@@ -61,5 +65,7 @@ public class PlayerInfoContainer : ControlProp
         _playerFrame = this.GetNodeSafe<TextureRect>("PlayerContainerH/InfoPanelAvatar");
         _playerAvatarRect = _playerFrame.GetNodeSafe<TextureRectProp>("Background");
         _playerMeepleRect = this.GetNodeSafe<TextureRectProp>("PlayerContainerH/PlayerStatusContainer/MeepleContainer/MeepleImg");
+        _activePlayerMarker = this.GetNodeSafe<Sprite>("ActivePlayer");
+        _activePlayerMarker.Visible = false;
     }
 }

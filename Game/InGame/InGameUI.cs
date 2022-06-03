@@ -39,68 +39,13 @@ public class InGameUI : Control, Game.IGameHandles
     Control _inGameMenuRoot;
     InGameMenu _inGameMenu;
 
+    EndScreen _endScreen;
+
     readonly List<PlayerInfoContainer> _playerInfoContainers = new List<PlayerInfoContainer>();
     public void Start(Game game)
     {
         this._game = game;
         UpdateUI();
-    }
-
-    public void ActivePlayerMark()
-    {
-        var redtheme = Globals.PersonalThemes["red"].Copy();
-        var blacktheme = Globals.PersonalThemes["black"].Copy();
-        var bluetheme = Globals.PersonalThemes["blue"].Copy();
-        var yellowtheme = Globals.PersonalThemes["yellow"].Copy();
-        var greentheme = Globals.PersonalThemes["green"].Copy();
-
-        var currentTheme = _game.CurrentAgent.CurrentTheme;
-        GD.Print(currentTheme.Colors[0]);
-        if(currentTheme.Colors[0] == redtheme.Colors[0])
-        {
-            GD.Print("RED Player is active");
-            _playerInfoContainers[0].GetNode<Sprite>("ActivePlayer").Visible = true;
-            _playerInfoContainers[1].GetNode<Sprite>("ActivePlayer").Visible = false;
-            _playerInfoContainers[2].GetNode<Sprite>("ActivePlayer").Visible = false;
-            _playerInfoContainers[3].GetNode<Sprite>("ActivePlayer").Visible = false;
-            _playerInfoContainers[4].GetNode<Sprite>("ActivePlayer").Visible = false;
-        }
-        else if(currentTheme.Colors[0] == blacktheme.Colors[0])
-        {
-            GD.Print("BLACK Player is active");
-            _playerInfoContainers[0].GetNode<Sprite>("ActivePlayer").Visible = false;
-            _playerInfoContainers[1].GetNode<Sprite>("ActivePlayer").Visible = true;
-            _playerInfoContainers[2].GetNode<Sprite>("ActivePlayer").Visible = false;
-            _playerInfoContainers[3].GetNode<Sprite>("ActivePlayer").Visible = false;
-            _playerInfoContainers[4].GetNode<Sprite>("ActivePlayer").Visible = false;
-        }
-        else if(currentTheme.Colors[0] == bluetheme.Colors[0])
-        {
-            GD.Print("BLUE Player is active");
-            _playerInfoContainers[0].GetNode<Sprite>("ActivePlayer").Visible = false;
-            _playerInfoContainers[1].GetNode<Sprite>("ActivePlayer").Visible = false;
-            _playerInfoContainers[2].GetNode<Sprite>("ActivePlayer").Visible = true;
-            _playerInfoContainers[3].GetNode<Sprite>("ActivePlayer").Visible = false;
-            _playerInfoContainers[4].GetNode<Sprite>("ActivePlayer").Visible = false;
-        }
-        else if(currentTheme.Colors[0] == yellowtheme.Colors[0])
-        {
-            GD.Print("YELLOW Player is active");
-            _playerInfoContainers[0].GetNode<Sprite>("ActivePlayer").Visible = false;
-            _playerInfoContainers[1].GetNode<Sprite>("ActivePlayer").Visible = false;
-            _playerInfoContainers[2].GetNode<Sprite>("ActivePlayer").Visible = false;
-            _playerInfoContainers[3].GetNode<Sprite>("ActivePlayer").Visible = true;
-            _playerInfoContainers[4].GetNode<Sprite>("ActivePlayer").Visible = false;
-        }
-        else if(currentTheme.Colors[0] == greentheme.Colors[0])
-        {
-            GD.Print("GREEN Player is active");
-            _playerInfoContainers[0].GetNode<Sprite>("ActivePlayer").Visible = false;
-            _playerInfoContainers[1].GetNode<Sprite>("ActivePlayer").Visible = false;
-            _playerInfoContainers[2].GetNode<Sprite>("ActivePlayer").Visible = false;
-            _playerInfoContainers[3].GetNode<Sprite>("ActivePlayer").Visible = false;
-            _playerInfoContainers[4].GetNode<Sprite>("ActivePlayer").Visible = true;
-        }
     }
     public void UpdateUI()
     {
@@ -114,12 +59,15 @@ public class InGameUI : Control, Game.IGameHandles
 
         _skipPlacementButton.Disabled = !(_game.Engine.CurrentState == State.PLACE_PAWN);
         _playerInfoContainers.ForEach(pic => pic.UpdatePlayer());
+
+        if (_game.Engine.CurrentState == State.GAME_OVER)
+        {
+            _endScreen.Activate(_game);
+        }
     }
     void Game.IGameHandles.OnAction(Game.GameAgent agent, GameEngine.Action action)
     {
-        ActivePlayerMark();
         UpdateUI();
-        
     }
 
     void Game.IGameHandles.OnGameOver(List<Game.GameAgent> winners)
@@ -170,61 +118,6 @@ public class InGameUI : Control, Game.IGameHandles
         _previewRoot.Rotation = new Vector3(-_mainCamera.Rotation.x, _mainCamera.Rotation.y, _mainCamera.Rotation.z);
         if (!_skipPlacementButton.Disabled && Input.IsActionJustPressed(SKIP_MEEPLE_PLACEMENT_ACTION))
             OnSkipMepleButtonPressed();
-    }
-
-    public override void _Ready()
-    {
-        _inGameMenuRoot = this.GetNodeSafe<Control>("CanvasLayer/GameUIRoot/InGameMenuRoot/");
-        _inGameMenuRoot.Visible = false;
-        _inGameMenu = this.GetNodeSafe<InGameMenu>("CanvasLayer/GameUIRoot/InGameMenuRoot/InGameMenu");
-        _inGameMenu.Init(_game, this);
-
-        _inGameMenu.OnResume += () =>
-        {
-            _inGameMenuRoot.Visible = false;
-        };
-
-        _menuButton = this.GetNodeSafe<TextureButton>("CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/HBoxContainer/HBoxContainer2/MenuButton");
-        _menuButton.OnButtonPressed(OnShowInGameMenuButtonPressed);
-
-        _previewEdgeIndicator = Globals.Scenes.TileEdgeIndicatorsPacked.Instance<TileEdgeIndicators>();
-        _previewEdgeIndicator.Name = "PEI";
-
-        Assert(_game != null, "_game is null. Remember to call SetGame before initialization!");
-        _inGame3D = this.GetNodeSafe<Spatial>("InGame3D");
-
-        _mainInfoContainer = this.GetNodeSafe<VBoxContainer>("CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer");
-
-        _previewRoot = this.GetNodeSafe<Spatial>("CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/AspectRatioContainer/ViewportContainer/Viewport/PreviewRoot");
-
-        _mainCamera = this.GetNodeSafe<Camera>("InGame3D/Camera");
-
-        _map = new TileMap3D(_game);
-        _map.Engine = _game.Engine;
-        _inGame3D.AddChild(_map);
-
-        _skipPlacementButton = this.GetNodeSafe<TextureButton>("CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/HBoxContainer2/SkipMepleButton");
-
-        RepeatN(_engine.Players.Count, i =>
-        {
-            var pic = (PlayerInfoContainer)Globals.Scenes.PlayerInfoContainerPacked.Instance();
-            pic.SetPlayer(_game.Agents[i]);
-            _playerInfoContainers.Add(pic);
-            _mainInfoContainer.AddChild(pic);
-        });
-
-        Start(_game);
-
-        _gameAudio = this.GetNodeSafe<AudioPlayer>("/root/AudioPlayer");
-
-        _effectsVolumeSlider = this.GetNodeSafe<HSlider>("CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/HBoxContainer/AudioMenu/VBoxContainer/HBoxContainer/SoundVolumeSlider");
-        _effectsVolumeSlider.MaxValue = 100;
-        _effectsVolumeSlider.Value = _effectsVolumeSlider.MaxValue * Globals.Settings.Audio.EffectsVolume;
-
-        _musicVolumeSlider = this.GetNodeSafe<HSlider>("CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/HBoxContainer/AudioMenu/VBoxContainer/HBoxContainer2/MusicVolumeSlider");
-        _musicVolumeSlider.MaxValue = 100;
-        _musicVolumeSlider.Value = _musicVolumeSlider.MaxValue * Globals.Settings.Audio.MusicVolume;
-
     }
 
     public override void _PhysicsProcess(float delta)
@@ -290,6 +183,61 @@ public class InGameUI : Control, Game.IGameHandles
     {
         _game.Engine.SkipPlacingPawn();
         _game.AgentExecuteImplied(_game.CurrentAgent);
+    }
+    public override void _Ready()
+    {
+        _endScreen = this.GetNodeSafe<EndScreen>("EndScreen");
+
+        _inGameMenuRoot = this.GetNodeSafe<Control>("CanvasLayer/GameUIRoot/InGameMenuRoot/");
+        _inGameMenuRoot.Visible = false;
+        _inGameMenu = this.GetNodeSafe<InGameMenu>("CanvasLayer/GameUIRoot/InGameMenuRoot/InGameMenu");
+        _inGameMenu.Init(_game, this);
+
+        _inGameMenu.OnResume += () =>
+        {
+            _inGameMenuRoot.Visible = false;
+        };
+
+        _menuButton = this.GetNodeSafe<TextureButton>("CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/HBoxContainer/HBoxContainer2/MenuButton");
+        _menuButton.OnButtonPressed(OnShowInGameMenuButtonPressed);
+
+        _previewEdgeIndicator = Globals.Scenes.TileEdgeIndicatorsPacked.Instance<TileEdgeIndicators>();
+        _previewEdgeIndicator.Name = "PEI";
+
+        Assert(_game != null, "_game is null. Remember to call SetGame before initialization!");
+        _inGame3D = this.GetNodeSafe<Spatial>("InGame3D");
+
+        _mainInfoContainer = this.GetNodeSafe<VBoxContainer>("CanvasLayer/GameUIRoot/HBoxContainer/MainInfoContainer");
+
+        _previewRoot = this.GetNodeSafe<Spatial>("CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/AspectRatioContainer/ViewportContainer/Viewport/PreviewRoot");
+
+        _mainCamera = this.GetNodeSafe<Camera>("InGame3D/Camera");
+
+        _map = new TileMap3D(_game);
+        _map.Engine = _game.Engine;
+        _inGame3D.AddChild(_map);
+
+        _skipPlacementButton = this.GetNodeSafe<TextureButton>("CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/HBoxContainer2/SkipMepleButton");
+
+        RepeatN(_engine.Players.Count, i =>
+        {
+            var pic = (PlayerInfoContainer)Globals.Scenes.PlayerInfoContainerPacked.Instance();
+            pic.Init(_game, _game.Agents[i]);
+            _playerInfoContainers.Add(pic);
+            _mainInfoContainer.AddChild(pic);
+        });
+
+        Start(_game);
+
+        _gameAudio = this.GetNodeSafe<AudioPlayer>("/root/AudioPlayer");
+
+        _effectsVolumeSlider = this.GetNodeSafe<HSlider>("CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/HBoxContainer/AudioMenu/VBoxContainer/HBoxContainer/SoundVolumeSlider");
+        _effectsVolumeSlider.MaxValue = 100;
+        _effectsVolumeSlider.Value = _effectsVolumeSlider.MaxValue * Globals.Settings.Audio.EffectsVolume;
+
+        _musicVolumeSlider = this.GetNodeSafe<HSlider>("CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/HBoxContainer/AudioMenu/VBoxContainer/HBoxContainer2/MusicVolumeSlider");
+        _musicVolumeSlider.MaxValue = 100;
+        _musicVolumeSlider.Value = _musicVolumeSlider.MaxValue * Globals.Settings.Audio.MusicVolume;
     }
 }
 
