@@ -1,7 +1,8 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Props/TextureRectProp.cs" type="Script" id=1]
 [ext_resource path="res://GUI/fonts/Frederic.tres" type="DynamicFont" id=2]
+[ext_resource path="res://GUI/img/active.png" type="Texture" id=3]
 [ext_resource path="res://GUI/img/money-bag.png" type="Texture" id=4]
 [ext_resource path="res://Props/Sprite2DProp.gdshader" type="Shader" id=5]
 [ext_resource path="res://Icons/Themeable/ThemableMeepleIcon16x16.png" type="Texture" id=6]
@@ -42,6 +43,12 @@ shader_param/icon_offset = null
 [node name="PlayerContainer" type="VBoxContainer"]
 material = SubResource( 1 )
 script = ExtResource( 7 )
+
+[node name="ActivePlayer" type="Sprite" parent="."]
+visible = false
+position = Vector2( 124.445, 84.0338 )
+scale = Vector2( 1.0672, 1 )
+texture = ExtResource( 3 )
 
 [node name="PlayerContainerH" type="HBoxContainer" parent="."]
 margin_right = 147.0
