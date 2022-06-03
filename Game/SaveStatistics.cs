@@ -31,7 +31,6 @@ public partial class Game
         public string[] PlayerDescriptors;
         public PlayerType[] PlayerTypes;
         public string[] PlayerTypeNames;
-        public Dictionary<string, long> PlayerIDsByName = new Dictionary<string, long>();
         public Dictionary<long, string> PlayerNamesByID = new Dictionary<long, string>();
         public GameEngine.Statistics Statistics;
         string GenerateCSV(List<(string name, Func<int, string> generator)> columns)
@@ -182,7 +181,6 @@ public partial class Game
             (
                 it =>
                 {
-                    PlayerIDsByName.Add(it.Name, it.Player.ID);
                     PlayerNamesByID.Add(it.Player.ID, it.Name);
                 }
             );
