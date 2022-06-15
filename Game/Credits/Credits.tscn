@@ -36,15 +36,17 @@ alignment = 1
 
 [node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer"]
 margin_right = 1280.0
-margin_bottom = 16.0
+margin_bottom = 3.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.63
 
 [node name="Label" type="Label" parent="VBoxContainer"]
-margin_top = 18.0
+margin_top = 6.0
 margin_right = 1280.0
-margin_bottom = 610.4
+margin_bottom = 598.4
+size_flags_horizontal = 3
+size_flags_vertical = 3
 custom_colors/font_color = Color( 0, 0, 0.176471, 1 )
 custom_colors/font_color_shadow = Color( 0.0156863, 0.00784314, 0.109804, 1 )
 custom_constants/shadow_offset_x = 1
@@ -67,17 +69,28 @@ at Gdansk University of Technology"
 align = 1
 valign = 1
 
+[node name="MarginContainer3" type="MarginContainer" parent="VBoxContainer"]
+margin_top = 601.0
+margin_right = 1280.0
+margin_bottom = 631.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 4.16
+
+[node name="QuitMainMenuButton" type="Button" parent="VBoxContainer"]
+margin_left = 413.0
+margin_top = 627.0
+margin_right = 866.0
+margin_bottom = 693.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+text = "Quit to Main Menu"
+
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
-margin_top = 614.0
+margin_top = 696.0
 margin_right = 1280.0
 margin_bottom = 720.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 4.16
-
-[node name="QuitMainMenuButton" type="Button" parent="."]
-margin_left = 434.948
-margin_top = 636.548
-margin_right = 887.948
-margin_bottom = 702.548
-text = "Quit to Main Menu"
