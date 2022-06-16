@@ -26,49 +26,86 @@ onready var botGreen = get_node("/root/LobbySingle/GridContainer/GridContainerBo
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	for nameOfBotLevels_3 in get_tree().get_nodes_in_group("BotLevels_3"):
-		botLevels_3.append(nameOfBotLevels_3)
-	
-	texture = selectorTexture
-	
-	selectorLabel3.text = "Easy bot"
-	print(selectorLabel3.text)
-	
-	print(previousSelected)
-	
-	
+    for nameOfBotLevels_3 in get_tree().get_nodes_in_group("BotLevels_3"):
+        botLevels_3.append(nameOfBotLevels_3)
+    
+    texture = selectorTexture
+    
+    selectorLabel3.text = "Easy bot"
+    print(selectorLabel3.text)
+    
+    print(previousSelected)
+    
+    
 func _input(event):
-	if event is InputEventKey and event.pressed and previousSelected and not enterPressed:
-		
-		
-		if event.scancode == KEY_UP:
-			if(currentRowSpot > 0):
-				print("KEY_UP was pressed")
-				currentSelected -= 1
-				currentRowSpot -= 1
-				position.y -= avatarsOffset.y
-			
-		elif event.scancode == KEY_DOWN:
-			if(currentRowSpot < amountOfRows - 1):
-				print("KEY_DOWN was pressed")
-				currentSelected += 1
-				currentRowSpot += 1
-				position.y += avatarsOffset.y
-				
-		if currentSelected == 0:
-			selectorLabel3.text = "Easy bot"
-		elif currentSelected == 1:
-			selectorLabel3.text = "Mid bot"
-		elif currentSelected == 2:
-			selectorLabel3.text = "Hard bot"
-		print(selectorLabel3.text)
-		
-		if event.scancode == KEY_ENTER:
-			enterPressed = true
-			botYellowLevel = currentSelected
-			print(botYellowLevel)
-			nextSelector.previousSelected = true
-			mainScript._yellow = currentSelected
-			
-			if botGreen.visible == true:
-				nextSelector.visible = true
+    if event is InputEventKey and event.pressed and previousSelected and not enterPressed:
+        
+        
+        if event.scancode == KEY_UP:
+            if(currentRowSpot > 0):
+                print("KEY_UP was pressed")
+                currentSelected -= 1
+                currentRowSpot -= 1
+                position.y -= avatarsOffset.y
+            
+        elif event.scancode == KEY_DOWN:
+            if(currentRowSpot < amountOfRows - 1):
+                print("KEY_DOWN was pressed")
+                currentSelected += 1
+                currentRowSpot += 1
+                position.y += avatarsOffset.y
+                
+        if currentSelected == 0:
+            selectorLabel3.text = "Easy bot"
+        elif currentSelected == 1:
+            selectorLabel3.text = "Mid bot"
+        elif currentSelected == 2:
+            selectorLabel3.text = "Hard bot"
+        print(selectorLabel3.text)
+        
+        if event.scancode == KEY_ENTER:
+            enterPressed = true
+            botYellowLevel = currentSelected
+            print(botYellowLevel)
+            nextSelector.previousSelected = true
+            mainScript._yellow = currentSelected
+            
+            if botGreen.visible == true:
+                nextSelector.visible = true
+
+
+    if event is InputEventMouseButton and previousSelected and not enterPressed and mainScript._popupClosed:
+        if event.button_index == BUTTON_LEFT and event.pressed:
+            print("KLIK")
+            enterPressed = true
+            botYellowLevel = currentSelected
+            print(botYellowLevel)
+            nextSelector.previousSelected = true
+            mainScript._yellow = currentSelected
+            
+            if botGreen.visible == true:
+                nextSelector.visible = true
+
+            
+func _on_BotEasyYellow_mouse_entered():
+    if(enterPressed):
+        return
+    currentSelected = 0
+    position.y = 130
+    selectorLabel3.text = "Easy bot"
+
+
+func _on_BotMidYellow_mouse_entered():
+    if(enterPressed):
+        return
+    currentSelected = 1
+    position.y = 130 + 206
+    selectorLabel3.text = "Mid bot"
+
+
+func _on_BotHardYellow_mouse_entered():
+    if(enterPressed):
+        return
+    currentSelected = 2
+    position.y = 130 + 206 + 206
+    selectorLabel3.text = "Hard bot"
