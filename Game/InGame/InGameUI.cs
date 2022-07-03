@@ -103,6 +103,7 @@ public class InGameUI : Control, Game.IGameHandles
         else if (_map.NextTile.GetParent() == null)
         {
             _previewRoot.AddChild(_map.NextTile);
+            _previewRoot.Rotation = new Vector3(0.5f, 0, 0);
             if (_previewEdgeIndicator.GetParent() != _map.NextTile)
             {
                 _map.NextTile.StealChild(_previewEdgeIndicator);
@@ -115,7 +116,8 @@ public class InGameUI : Control, Game.IGameHandles
         {
             _previewEdgeIndicator.Visible = false;
         }
-        _previewRoot.Rotation = new Vector3(-_mainCamera.Rotation.x, _mainCamera.Rotation.y, _mainCamera.Rotation.z);
+        //_previewRoot.Rotation = new Vector3(-_mainCamera.Rotation.x, _mainCamera.Rotation.y, _mainCamera.Rotation.z);
+       
         if (!_skipPlacementButton.Disabled && Input.IsActionJustPressed(SKIP_MEEPLE_PLACEMENT_ACTION))
             OnSkipMepleButtonPressed();
     }
