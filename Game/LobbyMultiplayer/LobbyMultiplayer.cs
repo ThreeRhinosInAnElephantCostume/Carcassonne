@@ -40,6 +40,8 @@ public class LobbyMultiplayer : Control
     readonly string _namePlayer3 = "Player 4";
     readonly string _namePlayer4 = "Player 5";
 
+    bool _popupClosed = false;
+
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
@@ -60,6 +62,7 @@ public class LobbyMultiplayer : Control
     {
         PreparePlayers(_amountOfPlayers);
         PlayersVisibilityOn();
+        _popupClosed = true;
     }
 
     void OnPlayPressed()

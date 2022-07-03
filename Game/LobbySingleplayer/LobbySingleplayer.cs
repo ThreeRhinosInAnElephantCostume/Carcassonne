@@ -36,6 +36,8 @@ public class LobbySingleplayer : Control
     readonly int _black, _blue, _yellow, _green;
     readonly string _namePlayer = "Player";
 
+    bool _popupClosed = false;
+
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
@@ -56,6 +58,7 @@ public class LobbySingleplayer : Control
     {
         PrepareBots(_amountOfBots);
         BotsVisibilityOn();
+        _popupClosed = true;
     }
 
     void OnPlayPressed()

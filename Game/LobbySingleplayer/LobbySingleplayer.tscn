@@ -201,4 +201,16 @@ margin_right = 920.0
 margin_bottom = 451.0
 script = ExtResource( 25 )
 
+[connection signal="mouse_entered" from="GridContainer/GridContainerBots/HBoxContainerBotsEasy/BotEasyBlack" to="Selector1" method="_on_BotEasyBlack_mouse_entered"]
+[connection signal="mouse_entered" from="GridContainer/GridContainerBots/HBoxContainerBotsEasy/BotEasyBlue" to="Selector2" method="_on_BotEasyBlue_mouse_entered"]
+[connection signal="mouse_entered" from="GridContainer/GridContainerBots/HBoxContainerBotsEasy/BotEasyYellow" to="Selector3" method="_on_BotEasyYellow_mouse_entered"]
+[connection signal="mouse_entered" from="GridContainer/GridContainerBots/HBoxContainerBotsEasy/BotEasyGreen" to="Selector4" method="_on_BotEasyGreen_mouse_entered"]
+[connection signal="mouse_entered" from="GridContainer/GridContainerBots/HBoxContainerBotsMid/BotMidBlack" to="Selector1" method="_on_BotMidBlack_mouse_entered"]
+[connection signal="mouse_entered" from="GridContainer/GridContainerBots/HBoxContainerBotsMid/BotMidBlue" to="Selector2" method="_on_BotMidBlue_mouse_entered"]
+[connection signal="mouse_entered" from="GridContainer/GridContainerBots/HBoxContainerBotsMid/BotMidYellow" to="Selector3" method="_on_BotMidYellow_mouse_entered"]
+[connection signal="mouse_entered" from="GridContainer/GridContainerBots/HBoxContainerBotsMid/BotMidGreen" to="Selector4" method="_on_BotMidGreen_mouse_entered"]
+[connection signal="mouse_entered" from="GridContainer/GridContainerBots/HBoxContainerBotsHard/BotHardBlack" to="Selector1" method="_on_BotHardBlack_mouse_entered"]
+[connection signal="mouse_entered" from="GridContainer/GridContainerBots/HBoxContainerBotsHard/BotHardBlue" to="Selector2" method="_on_BotHardBlue_mouse_entered"]
+[connection signal="mouse_entered" from="GridContainer/GridContainerBots/HBoxContainerBotsHard/BotHardYellow" to="Selector3" method="_on_BotHardYellow_mouse_entered"]
+[connection signal="mouse_entered" from="GridContainer/GridContainerBots/HBoxContainerBotsHard/BotHardGreen" to="Selector4" method="_on_BotHardGreen_mouse_entered"]
 [connection signal="popup_hide" from="HalloDialog" to="." method="OnPopupHide"]
