@@ -1,0 +1,87 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Game/Statistics/Statistics.cs" type="Script" id=1]
+[ext_resource path="res://GUI/DarkTheme/Dark.theme" type="Theme" id=2]
+[ext_resource path="res://GUI/fonts/FrederickatheGreat-Regular.ttf" type="DynamicFontData" id=4]
+
+[sub_resource type="DynamicFont" id=2]
+resource_local_to_scene = true
+size = 32
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 4 )
+
+[node name="Statistics" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource( 2 )
+script = ExtResource( 1 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 1
+
+[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer"]
+margin_right = 1280.0
+margin_bottom = 3.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.63
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+margin_top = 6.0
+margin_right = 1280.0
+margin_bottom = 598.4
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_colors/font_color = Color( 0, 0, 0.176471, 1 )
+custom_colors/font_color_shadow = Color( 0.0156863, 0.00784314, 0.109804, 1 )
+custom_constants/shadow_offset_x = 1
+custom_constants/shadow_offset_y = 1
+custom_fonts/font = SubResource( 2 )
+text = "
+
+
+tutaj bedzie
+ekran wyboru
+zbierania / nie zbierania
+statystyk
+
+
+
+
+
+
+"
+align = 1
+valign = 1
+
+[node name="MarginContainer3" type="MarginContainer" parent="VBoxContainer"]
+margin_top = 601.0
+margin_right = 1280.0
+margin_bottom = 624.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 4.16
+
+[node name="QuitMainMenuButton" type="Button" parent="VBoxContainer"]
+margin_left = 413.0
+margin_top = 627.0
+margin_right = 866.0
+margin_bottom = 693.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+text = "Quit to Main Menu"
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
+margin_top = 696.0
+margin_right = 1280.0
+margin_bottom = 720.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 4.16
