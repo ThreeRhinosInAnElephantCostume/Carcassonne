@@ -20,34 +20,62 @@ onready var selectorLabel4 = selector4.get_node("Label")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	for nameOfAvatars_4 in get_tree().get_nodes_in_group("Avatars_4"):
-		avatars_4.append(nameOfAvatars_4)
-	
-	texture = selectorTexture
+    for nameOfAvatars_4 in get_tree().get_nodes_in_group("Avatars_4"):
+        avatars_4.append(nameOfAvatars_4)
+    
+    texture = selectorTexture
 
 
 func _input(event):
-	if event is InputEventKey and event.pressed and previousSelected and not enterPressed:
-		
-		
-		if event.scancode == KEY_UP:
-			if(currentRowSpot > 0):
-				print("KEY_UP was pressed")
-				currentSelected -= 1
-				currentRowSpot -= 1
-				position.y -= avatarsOffset.y
+    if event is InputEventKey and event.pressed and previousSelected and not enterPressed and mainScript._popupClosed:
+        
+        
+        if event.scancode == KEY_UP:
+            if(currentRowSpot > 0):
+                print("KEY_UP was pressed")
+                currentSelected -= 1
+                currentRowSpot -= 1
+                position.y -= avatarsOffset.y
 
-		elif event.scancode == KEY_DOWN:
-			if(currentRowSpot < amountOfRows - 1):
-				print("KEY_DOWN was pressed")
-				currentSelected += 1
-				currentRowSpot += 1
-				position.y += avatarsOffset.y
-				
+        elif event.scancode == KEY_DOWN:
+            if(currentRowSpot < amountOfRows - 1):
+                print("KEY_DOWN was pressed")
+                currentSelected += 1
+                currentRowSpot += 1
+                position.y += avatarsOffset.y
+                
 
-		if event.scancode == KEY_ENTER:
-			enterPressed = true
-			playerGreenAvatar = currentSelected
-			print(playerGreenAvatar)
-			mainScript._green = currentSelected
-			
+        if event.scancode == KEY_ENTER:
+            enterPressed = true
+            playerGreenAvatar = currentSelected
+            print(playerGreenAvatar)
+            mainScript._green = currentSelected
+            
+    if event is InputEventMouseButton and previousSelected and not enterPressed and mainScript._popupClosed:
+        if event.button_index == BUTTON_LEFT and event.pressed:
+            print("KLIK")
+            enterPressed = true
+            playerGreenAvatar = currentSelected
+            print(playerGreenAvatar)
+            mainScript._green = currentSelected
+
+
+func _on_Avatar1Green_mouse_entered():
+    if(enterPressed):
+        return
+    currentSelected = 0
+    position.y = 130
+
+
+func _on_Avatar2Green_mouse_entered():
+    if(enterPressed):
+        return
+    currentSelected = 1
+    position.y = 130 + 206
+
+
+func _on_Avatar4Green_mouse_entered():
+    if(enterPressed):
+        return
+    currentSelected = 2
+    position.y = 130 + 206 + 206

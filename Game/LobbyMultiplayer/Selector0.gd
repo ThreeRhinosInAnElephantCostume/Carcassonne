@@ -22,37 +22,71 @@ onready var avatarBlack = get_node("/root/LobbyMulti/GridContainer/GridContainer
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	for nameOfAvatars_0 in get_tree().get_nodes_in_group("Avatars_0"):
-		avatars_0.append(nameOfAvatars_0)
-	
-	texture = selectorTexture
+    for nameOfAvatars_0 in get_tree().get_nodes_in_group("Avatars_0"):
+        avatars_0.append(nameOfAvatars_0)
+    
+    texture = selectorTexture
 
 
 func _input(event):
-	if event is InputEventKey and event.pressed and not enterPressed:
-		
-		
-		if event.scancode == KEY_UP:
-			if(currentRowSpot > 0):
-				print("KEY_UP was pressed")
-				currentSelected -= 1
-				currentRowSpot -= 1
-				position.y -= avatarsOffset.y
+    if event is InputEventKey and event.pressed and not enterPressed and mainScript._popupClosed:
+        
+        
+        if event.scancode == KEY_UP:
+            if(currentRowSpot > 0):
+                print("KEY_UP was pressed")
+                currentSelected -= 1
+                currentRowSpot -= 1
+                position.y -= avatarsOffset.y
 
-		elif event.scancode == KEY_DOWN:
-			if(currentRowSpot < amountOfRows - 1):
-				print("KEY_DOWN was pressed")
-				currentSelected += 1
-				currentRowSpot += 1
-				position.y += avatarsOffset.y
-				
+        elif event.scancode == KEY_DOWN:
+            if(currentRowSpot < amountOfRows - 1):
+                print("KEY_DOWN was pressed")
+                currentSelected += 1
+                currentRowSpot += 1
+                position.y += avatarsOffset.y
+                
 
-		if event.scancode == KEY_ENTER:
-			enterPressed = true
-			playerRedAvatar = currentSelected
-			print(playerRedAvatar)
-			nextSelector.previousSelected = true
-			mainScript._red = currentSelected
-			
-			if avatarBlack.visible == true:
-				nextSelector.visible = true
+        if event.scancode == KEY_ENTER:
+            enterPressed = true
+            playerRedAvatar = currentSelected
+            print(playerRedAvatar)
+            nextSelector.previousSelected = true
+            mainScript._red = currentSelected
+            
+            if avatarBlack.visible == true:
+                nextSelector.visible = true
+
+
+    if event is InputEventMouseButton and not enterPressed and mainScript._popupClosed:
+        if event.button_index == BUTTON_LEFT and event.pressed:
+            print("KLIK")
+            enterPressed = true
+            playerRedAvatar = currentSelected
+            print(playerRedAvatar)
+            nextSelector.previousSelected = true
+            mainScript._red = currentSelected
+            
+            if avatarBlack.visible == true:
+                nextSelector.visible = true
+
+
+func _on_Avatar1Red_mouse_entered():
+    if(enterPressed):
+        return
+    currentSelected = 0
+    position.y = 130
+
+
+func _on_Avatar2Red_mouse_entered():
+    if(enterPressed):
+        return
+    currentSelected = 1
+    position.y = 130 + 206
+
+
+func _on_Avatar4Red_mouse_entered():
+    if(enterPressed):
+        return
+    currentSelected = 2
+    position.y = 130 + 206 + 206
