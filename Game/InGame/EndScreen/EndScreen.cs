@@ -33,8 +33,7 @@ public class EndScreen : Control
         }
         else
         {
-            var winner = winners[0];
-            var wa = game.GetAgent(winner);
+            var wa = game.GetAgent(playersByScore.First());
             _winnerLabel.Text = $"{wa.Name} HAS WON!";
             _winnerLabel.AddColorOverride("font_color", wa.CurrentTheme.PrimaryColor);
         }
