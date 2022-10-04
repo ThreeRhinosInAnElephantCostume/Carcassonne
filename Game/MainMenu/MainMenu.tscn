@@ -63,6 +63,7 @@ __meta__ = {
 }
 
 [node name="Settings" type="Button" parent="."]
+visible = false
 anchor_left = 0.664
 anchor_top = 0.444
 anchor_right = 0.937

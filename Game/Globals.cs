@@ -30,6 +30,12 @@ public static partial class Globals
         [LoadFrom("res://Game/MainMenu/MainMenu.tscn")]
         public static PackedScene MainMenuPacked { get; set; }
 
+        [LoadFrom("res://Game/Statistics/Statistics.tscn")]
+        public static PackedScene StatisticsPacked { get; set; }
+
+        [LoadFrom("res://Game/Help/Help.tscn")]
+        public static PackedScene HelpPacked { get; set; }
+
         [LoadFrom("res://Game/Credits/Credits.tscn")]
         public static PackedScene CreditsPacked { get; set; }
 
