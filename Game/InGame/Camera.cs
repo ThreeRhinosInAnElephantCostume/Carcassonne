@@ -96,6 +96,13 @@ public class Camera : Godot.Camera
         Rotation = r;
     }
 
+    public void CenterCamera()
+    {
+        Position = new Vector2(-0.1f, 2.67f);
+        Height = 2;
+        Rotation = new Vector3(-0.78f,0,0);
+    }
+
     bool IsMoveTrigger(InputEventMouseButton btn)
     {
         return btn.ButtonIndex == ((int)ButtonList.Left) && btn.Pressed;
@@ -189,7 +196,12 @@ public class Camera : Godot.Camera
     {
         lock (_physMX)
         {
-            //GD.Print(Position, _momentum, _velocity);
+            //GD.Print(Position, Height, Rotation);
+            if(Input.IsActionPressed("camera_center"))
+            {
+                 CenterCamera();
+            }
+
             if (MovementMomentum)
             {
                 if (_velocity.Length() > MaxSpeed)
