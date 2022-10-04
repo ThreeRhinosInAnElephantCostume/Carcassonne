@@ -38,6 +38,8 @@ public class InGameUI : Control, Game.IGameHandles
 
     Control _inGameMenuRoot;
     InGameMenu _inGameMenu;
+    Control _F1helpRoot;
+    F1help _F1help;
 
     EndScreen _endScreen;
 
@@ -128,6 +130,12 @@ public class InGameUI : Control, Game.IGameHandles
         {
             OnShowInGameMenuButtonPressed();
         }
+
+        if (Input.IsActionPressed("ui_help") && !_F1help.Visible)
+        {
+            OnShowF1Pressed();
+        }
+
     }
 
     void OnMusicToggleButtonToggled(bool button_pressed)
@@ -176,6 +184,12 @@ public class InGameUI : Control, Game.IGameHandles
         _inGameMenu.Visible = true;
     }
 
+    void OnShowF1Pressed()
+    {
+        _F1helpRoot.Visible = true;
+        _F1help.Visible = true;
+    }
+
     // void OnQuitButtonPressed()
     // {
     //     GetTree().Quit();
@@ -198,6 +212,15 @@ public class InGameUI : Control, Game.IGameHandles
         _inGameMenu.OnResume += () =>
         {
             _inGameMenuRoot.Visible = false;
+        };
+
+        _F1helpRoot = this.GetNodeSafe<Control>("CanvasLayer/GameUIRoot/F1helpRoot/");
+        _F1help = this.GetNodeSafe<F1help>("CanvasLayer/GameUIRoot/F1helpRoot/F1help");
+        _F1help.Init(_game, this);
+
+        _F1help.OnResume += () =>
+        {
+            _F1helpRoot.Visible = false;
         };
 
         _menuButton = this.GetNodeSafe<TextureButton>("CanvasLayer/GameUIRoot/HBoxContainer/VBoxContainer/HBoxContainer/HBoxContainer2/MenuButton");
