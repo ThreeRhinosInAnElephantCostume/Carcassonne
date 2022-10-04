@@ -1,7 +1,7 @@
 using Godot;
 using static Utils;
 
-public class Credits : Control
+public class Statistics : Control
 {
     Button _quitToMainMenuButton;
 
