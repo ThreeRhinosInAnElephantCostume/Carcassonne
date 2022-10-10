@@ -50,7 +50,7 @@ margin_left = 10.0
 margin_top = 645.341
 margin_right = 345.995
 margin_bottom = 712.341
-text = "Quit"
+text = "Back"
 
 [node name="Selector0" parent="." instance=ExtResource( 19 )]
 position = Vector2( 200, 130 )
