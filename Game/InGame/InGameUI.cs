@@ -119,7 +119,7 @@ public class InGameUI : Control, Game.IGameHandles
             _previewEdgeIndicator.Visible = false;
         }
         //_previewRoot.Rotation = new Vector3(-_mainCamera.Rotation.x, _mainCamera.Rotation.y, _mainCamera.Rotation.z);
-       
+
         if (!_skipPlacementButton.Disabled && Input.IsActionJustPressed(SKIP_MEEPLE_PLACEMENT_ACTION))
             OnSkipMepleButtonPressed();
     }
@@ -199,6 +199,11 @@ public class InGameUI : Control, Game.IGameHandles
     {
         _game.Engine.SkipPlacingPawn();
         _game.AgentExecuteImplied(_game.CurrentAgent);
+    }
+
+    void OnCameraCenterButtonPressed()
+    {
+        _mainCamera.CenterCamera();
     }
     public override void _Ready()
     {
