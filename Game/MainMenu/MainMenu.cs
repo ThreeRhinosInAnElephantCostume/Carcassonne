@@ -23,6 +23,7 @@ public class MainMenu : Control, SaveLoadGame.ISaveLoadHandler
 
     Button _play;
     Button _statistics;
+    Button _ranking;
     Button _help;
     Button _credits;
     Button _quit;
@@ -47,6 +48,9 @@ public class MainMenu : Control, SaveLoadGame.ISaveLoadHandler
 
         _play = this.GetNodeSafe<Button>("Play");
         _play.Connect("pressed", this, nameof(OnPlayPressed));
+        
+        _statistics = this.GetNodeSafe<Button>("Ranking");
+        _statistics.Connect("pressed", this, nameof(OnRankingPressed));
 
         _statistics = this.GetNodeSafe<Button>("Statistics");
         _statistics.Connect("pressed", this, nameof(OnStatisticsPressed));
@@ -73,6 +77,11 @@ public class MainMenu : Control, SaveLoadGame.ISaveLoadHandler
     void OnPlayPressed()
     {
         SetMainScene(Globals.Scenes.SingleMultiSelectionPacked);
+    }
+
+    void OnRankingPressed()
+    {
+        SetMainScene(Globals.Scenes.RankingPacked);
     }
 
     void OnStatisticsPressed()
