@@ -19,7 +19,7 @@ public class F1help : Control
         Visible = false;
         OnResume();
     }
-    
+
     public void Init(Game game, InGameUI gameui)
     {
         this._game = game;
@@ -42,10 +42,11 @@ public class F1help : Control
     {
         Visible = false;
 
-        _mainRoot = this.GetNodeSafe<Control>("Panel/HBoxContainer");
+        _mainRoot = this.GetNodeSafe<Control>("Panel/HelpScreen");
 
         _resumeButton = this.GetNodeSafe<Button>
-            ("Panel/HBoxContainer/Control2/VBoxContainer/Control2/VBoxContainer/ResumeButton");
+            ("Panel/Buttons/ResumeButton");
         _resumeButton.OnButtonPressed(OnResumePressed);
+
     }
 }

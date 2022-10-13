@@ -1,8 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://GUI/DarkTheme/Fonts/Frederic.tres" type="DynamicFont" id=1]
 [ext_resource path="res://Game/InGame/F1help/F1help.cs" type="Script" id=2]
-[ext_resource path="res://GUI/img/pexels-anna-tarazevich-5697250.jpg" type="Texture" id=3]
+[ext_resource path="res://GUI/img/help-keyboard.png" type="Texture" id=3]
+[ext_resource path="res://GUI/img/help-scoring.png" type="Texture" id=4]
+[ext_resource path="res://GUI/img/help-rules.png" type="Texture" id=5]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0, 0, 0, 0.152941 )
@@ -17,70 +19,32 @@ script = ExtResource( 2 )
 [node name="Panel" type="Panel" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_styles/panel = SubResource( 1 )
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Panel"]
-anchor_right = 1.0
-anchor_bottom = 1.0
+[node name="Buttons" type="VBoxContainer" parent="Panel"]
+anchor_left = 0.5
+anchor_top = 0.1
+anchor_right = 0.5
+anchor_bottom = 0.1
+grow_horizontal = 2
+grow_vertical = 2
+rect_min_size = Vector2( 200, 70 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
 alignment = 1
 
-[node name="Control3" type="Control" parent="Panel/HBoxContainer"]
-margin_right = 200.0
-margin_bottom = 720.0
+[node name="ResumeButton" type="Button" parent="Panel/Buttons"]
+margin_left = -400.0
+margin_right = -100.0
+margin_bottom = 70.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-
-[node name="Control2" type="Control" parent="Panel/HBoxContainer"]
-margin_left = 200.0
-margin_right = 1000.0
-margin_bottom = 720.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Panel/HBoxContainer/Control2"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-alignment = 1
-
-[node name="Control" type="CenterContainer" parent="Panel/HBoxContainer/Control2/VBoxContainer"]
-margin_right = 800.0
-margin_bottom = 162.0
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Control2" type="Control" parent="Panel/HBoxContainer/Control2/VBoxContainer"]
-margin_top = 166.0
-margin_right = 800.0
-margin_bottom = 490.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-size_flags_stretch_ratio = 2.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Panel/HBoxContainer/Control2/VBoxContainer/Control2"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-custom_constants/separation = 24
-alignment = 1
-
-[node name="QuickHelpImage" type="TextureRect" parent="Panel/HBoxContainer/Control2/VBoxContainer/Control2/VBoxContainer"]
-margin_right = 800.0
-margin_bottom = 427.0
-texture = ExtResource( 3 )
-stretch_mode = 1
-
-[node name="ResumeButton" type="Button" parent="Panel/HBoxContainer/Control2/VBoxContainer/Control2/VBoxContainer"]
-margin_top = 451.0
-margin_right = 800.0
-margin_bottom = 519.0
 custom_fonts/font = ExtResource( 1 )
 toggle_mode = true
 text = "Resume"
@@ -88,18 +52,92 @@ __meta__ = {
 "_edit_use_anchors_": true
 }
 
-[node name="Control3" type="CenterContainer" parent="Panel/HBoxContainer/Control2/VBoxContainer"]
-margin_top = 494.0
-margin_right = 800.0
-margin_bottom = 720.0
-mouse_filter = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-size_flags_stretch_ratio = 1.39
+[node name="HelpScreen" type="VBoxContainer" parent="Panel"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -500.0
+margin_top = -200.0
+margin_right = 500.0
+margin_bottom = 300.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 15
+size_flags_vertical = 15
 
-[node name="Control" type="Control" parent="Panel/HBoxContainer"]
-margin_left = 1000.0
-margin_right = 1280.0
-margin_bottom = 720.0
+[node name="TabContainer" type="TabContainer" parent="Panel/HelpScreen"]
+margin_right = 1000.0
+margin_bottom = 500.0
+rect_min_size = Vector2( 0, 500 )
+tab_align = 0
+drag_to_rearrange_enabled = true
+
+[node name="Scoring" type="Tabs" parent="Panel/HelpScreen/TabContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="Score" type="TextureRect" parent="Panel/HelpScreen/TabContainer/Scoring"]
+margin_left = 20.0
+margin_top = 20.0
+margin_right = 1000.0
+margin_bottom = 470.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource( 4 )
+expand = true
+stretch_mode = 6
+
+[node name="Rules" type="Tabs" parent="Panel/HelpScreen/TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 24.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="Rules" type="TextureRect" parent="Panel/HelpScreen/TabContainer/Rules"]
+margin_left = 20.0
+margin_top = 20.0
+margin_right = 1000.0
+margin_bottom = 470.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource( 5 )
+expand = true
+stretch_mode = 6
+
+[node name="Keyboard" type="Tabs" parent="Panel/HelpScreen/TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 24.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="Keyboard" type="TextureRect" parent="Panel/HelpScreen/TabContainer/Keyboard"]
+margin_left = 20.0
+margin_top = 20.0
+margin_right = 1000.0
+margin_bottom = 470.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource( 3 )
+expand = true
+stretch_mode = 6
+
+[node name="-old" type="HBoxContainer" parent="Panel"]
+margin_left = 140.0
+margin_top = 70.0
+margin_right = 330.0
+margin_bottom = 138.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
