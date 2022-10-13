@@ -33,6 +33,9 @@ public static partial class Globals
         [LoadFrom("res://Game/Statistics/Statistics.tscn")]
         public static PackedScene StatisticsPacked { get; set; }
 
+        [LoadFrom("res://Game/Ranking/Ranking.tscn")]
+        public static PackedScene RankingPacked { get; set; }
+
         [LoadFrom("res://Game/Help/Help.tscn")]
         public static PackedScene HelpPacked { get; set; }
 

@@ -62,8 +62,7 @@ __meta__ = {
 "_edit_use_anchors_": true
 }
 
-[node name="Settings" type="Button" parent="."]
-visible = false
+[node name="Ranking" type="Button" parent="."]
 anchor_left = 0.664
 anchor_top = 0.444
 anchor_right = 0.937
@@ -74,7 +73,7 @@ margin_right = 0.639893
 margin_bottom = -0.320038
 custom_fonts/font = ExtResource( 1 )
 toggle_mode = true
-text = "Settings"
+text = "Ranking"
 __meta__ = {
 "_edit_use_anchors_": true
 }
@@ -1201,7 +1200,7 @@ size_flags_vertical = 3
 [connection signal="mouse_entered" from="Play" to="." method="_onPlayMouseEntered"]
 [connection signal="mouse_entered" from="Load" to="." method="_onPlayMouseEntered"]
 [connection signal="mouse_entered" from="Statistics" to="." method="_onPlayMouseEntered"]
-[connection signal="mouse_entered" from="Settings" to="." method="_onPlayMouseEntered"]
+[connection signal="mouse_entered" from="Ranking" to="." method="_onPlayMouseEntered"]
 [connection signal="mouse_entered" from="Help" to="." method="_onPlayMouseEntered"]
 [connection signal="mouse_entered" from="Credits" to="." method="_onPlayMouseEntered"]
 [connection signal="mouse_entered" from="Quit" to="." method="_onQuitMouseEntered"]
