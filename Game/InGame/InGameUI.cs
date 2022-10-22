@@ -26,6 +26,7 @@ public class InGameUI : Control, Game.IGameHandles
     VBoxContainer _mainInfoContainer;
 
     TextureButton _skipPlacementButton;
+    TextureProgress _gameProgress;
 
     HSlider _musicVolumeSlider;
     HSlider _effectsVolumeSlider;
@@ -56,6 +57,8 @@ public class InGameUI : Control, Game.IGameHandles
         if (_map.Playable)
         {
             _map.Player = (Game.GameLocalAgent)_game.CurrentAgent;
+            _gameProgress.Value = _game.Engine.Turn;
+            GD.Print("Aktualna tura: " + _game.Engine.Turn);
         }
         _map.Update();
 
@@ -64,6 +67,7 @@ public class InGameUI : Control, Game.IGameHandles
 
         if (_game.Engine.CurrentState == State.GAME_OVER)
         {
+            _gameProgress.Value = _gameProgress.MaxValue;
             _endScreen.Activate(_game);
         }
     }
@@ -233,6 +237,9 @@ public class InGameUI : Control, Game.IGameHandles
 
         _previewEdgeIndicator = Globals.Scenes.TileEdgeIndicatorsPacked.Instance<TileEdgeIndicators>();
         _previewEdgeIndicator.Name = "PEI";
+
+        _gameProgress = GetNode<TextureProgress>("CanvasLayer/GameUIRoot/GameProgress");
+
 
         Assert(_game != null, "_game is null. Remember to call SetGame before initialization!");
         _inGame3D = this.GetNodeSafe<Spatial>("InGame3D");
