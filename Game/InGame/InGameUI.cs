@@ -23,6 +23,7 @@ public class InGameUI : Control, Game.IGameHandles
     Spatial _inGame3D;
     Spatial _previewRoot;
     Camera _mainCamera;
+    WorldEnvironment _mainEnvironment;
     VBoxContainer _mainInfoContainer;
 
     TextureButton _skipPlacementButton;
@@ -41,6 +42,12 @@ public class InGameUI : Control, Game.IGameHandles
     InGameMenu _inGameMenu;
     Control _F1helpRoot;
     F1help _F1help;
+
+    // Pre-loading different sky textures
+    Sky _duskSky = ResourceLoader.Load<Sky>("res://Game/InGame/Sky/Morning.tres");
+    Sky _noonSky = ResourceLoader.Load<Sky>("res://Game/InGame/Sky/Noon.tres");
+    Sky _morningSky = ResourceLoader.Load<Sky>("res://Game/InGame/Sky/Dusk.tres");
+    Sky _nightSky = ResourceLoader.Load<Sky>("res://Game/InGame/Sky/Night.tres");
 
     EndScreen _endScreen;
 
@@ -203,6 +210,30 @@ public class InGameUI : Control, Game.IGameHandles
     {
         _game.Engine.SkipPlacingPawn();
         _game.AgentExecuteImplied(_game.CurrentAgent);
+    }
+
+    void OnSkyChangeButtonPressed()
+    {
+        _mainEnvironment = this.GetNodeSafe<WorldEnvironment>("InGame3D/GameEnvironment");
+
+        Sky _currentSky = _mainEnvironment.Environment.BackgroundSky;
+
+        if (_currentSky == _morningSky)
+        {
+            _mainEnvironment.Environment.BackgroundSky = _noonSky;
+        }
+        else if (_currentSky == _noonSky)
+        {
+            _mainEnvironment.Environment.BackgroundSky = _duskSky;
+        }
+        else if (_currentSky == _duskSky)
+        {
+            _mainEnvironment.Environment.BackgroundSky = _nightSky;
+        }
+        else //currentSky == _nightSky
+        {
+            _mainEnvironment.Environment.BackgroundSky = _morningSky;
+        }
     }
 
     void OnCameraCenterButtonPressed()
