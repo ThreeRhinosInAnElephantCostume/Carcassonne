@@ -38,8 +38,7 @@ size_flags_vertical = 3
 alignment = 1
 
 [node name="ResumeButton" type="Button" parent="Panel/Buttons"]
-margin_left = -400.0
-margin_right = -100.0
+margin_right = 200.0
 margin_bottom = 70.0
 grow_horizontal = 2
 grow_vertical = 2
